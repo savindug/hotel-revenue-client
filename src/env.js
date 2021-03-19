@@ -1,1 +1,1 @@
-export const apiURI = 'https://3efd8d20a5e9.ngrok.io/api/';
+export const apiURI = 'https://funny-bird-36.loca.lt/api/';
