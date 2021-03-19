@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchClusterData } from '../redux/actions/cluster.actions';
 import { ClusterAttribs } from './ClusterAtribs';
 import DataTable from './DataTable';
+import { LoadingOverlay } from './UI/LoadingOverlay';
 
 export const ClusteredData = () => {
   const dispatch = useDispatch();
@@ -40,12 +41,10 @@ export const ClusteredData = () => {
     <div>
       <h1>Clustered Data Viewer</h1>
       {loading ? (
-        <div className="my-5 mx-auto">
-          <CircularProgress />
-        </div>
+        <LoadingOverlay show={loading} />
       ) : err ? (
         <Alert severity="error">{err}</Alert>
-      ) : (
+      ) : clusterData.length > 0 ? (
         clusterData
           .sort((a, b) => b.index - a.index)
           .map(
@@ -61,6 +60,8 @@ export const ClusteredData = () => {
               // />
             )
           )
+      ) : (
+        <></>
       )}
     </div>
   );
