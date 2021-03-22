@@ -1,1 +1,1 @@
-export const apiURI = 'https://funny-bird-36.loca.lt/api/';
+export const apiURI = 'http://54.172.96.155:5000/api';
