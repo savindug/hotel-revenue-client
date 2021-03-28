@@ -100,7 +100,7 @@ const useStyles = makeStyles((theme) => ({
 export default function MiniDrawer() {
   const classes = useStyles();
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -174,7 +174,7 @@ export default function MiniDrawer() {
             )}
           </IconButton>
         </div>
-        <Divider variant="inset" />
+        <Divider />
         <List>
           {' '}
           <Link
@@ -195,7 +195,7 @@ export default function MiniDrawer() {
             </ListItem>
           </Link>
         </List>
-        <Divider variant="inset" />
+        <Divider />
         <List>
           {' '}
           <Link
@@ -216,7 +216,7 @@ export default function MiniDrawer() {
             </ListItem>
           </Link>
         </List>
-        <Divider variant="inset" />
+        <Divider />
         <List>
           {' '}
           <Link
@@ -237,7 +237,7 @@ export default function MiniDrawer() {
             </ListItem>
           </Link>
         </List>
-        <Divider variant="inset" />
+        <Divider />
       </Drawer>
     </div>
   );

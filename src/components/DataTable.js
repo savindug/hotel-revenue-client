@@ -1,17 +1,22 @@
+import {
+  Box,
+  makeStyles,
+  TableCell,
+  TableContainer,
+  TableRow,
+  withStyles,
+} from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
+import Table from 'react-bootstrap/Table';
 import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
     backgroundColor: theme.palette.common.white,
     color: theme.palette.common.black,
+    fontWeight: 'bold',
   },
   body: {
     fontSize: 14,
@@ -27,133 +32,291 @@ const StyledTableRow = withStyles((theme) => ({
 }))(TableRow);
 const useStyles = makeStyles({
   table: {
-    minWidth: 650,
+    '& .MuiTableCell-root': {
+      borderLeft: '1px solid rgba(224, 224, 224, 1)',
+    },
   },
 });
 
-export default function DataTable({ cluster }) {
+export default function DataTable({ cluster, stars }) {
   const classes = useStyles();
-  const [stars, setStars] = useState(0);
+
+  const [load, setLoad] = useState(true);
 
   useEffect(() => {
-    setStars((cluster.index += 2));
+    //setStars((cluster.index += 2));
+
+    setLoad(true);
+
+    const setClusterAtributes = () => {};
+
+    setClusterAtributes();
+    setLoad(false);
+
+    //console.log(`no of Hotels length : ${noOfHotels.length} => ${noOfHotels}`);
   }, []);
 
   return (
-    <TableContainer component={Paper}>
-      <Table
-        className={classes.table}
-        size="small"
-        aria-label="customized table"
-      >
-        <TableHead>
-          <TableRow>
-            <StyledTableCell width={1} size="small">
-              Clustered Matrix
-            </StyledTableCell>
-            <StyledTableCell width={1} size="small">
-              Stars
-            </StyledTableCell>
-            <StyledTableCell width={1} size="small">
-              12-03-2021
-            </StyledTableCell>
-            {/* <TableCell width={1} size="small" align="right">Fat&nbsp;(g)</TableCell>
-            <TableCell width={1} size="small" align="right">Carbs&nbsp;(g)</TableCell>
-            <TableCell width={1} size="small" align="right">Protein&nbsp;(g)</TableCell> */}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          <StyledTableRow Key={stars}>
-            <StyledTableCell width={1} size="small" component="th" scope="row">
-              Number of Hotels
-            </StyledTableCell>
-            <StyledTableCell width={1} size="small">
-              {stars}
-            </StyledTableCell>
-            <StyledTableCell width={1} size="small">
-              {cluster.items}
-            </StyledTableCell>
-          </StyledTableRow>
-          <StyledTableRow Key={stars}>
-            <StyledTableCell width={1} size="small" component="th" scope="row">
-              Average Rate
-            </StyledTableCell>
-            <StyledTableCell width={1} size="small">
-              {stars}
-            </StyledTableCell>
-            <StyledTableCell width={1} size="small">
-              {cluster.mean}
-            </StyledTableCell>
-          </StyledTableRow>
-          <StyledTableRow Key={stars}>
-            <StyledTableCell width={1} size="small" component="th" scope="row">
-              Middle Rate
-            </StyledTableCell>
-            <StyledTableCell width={1} size="small">
-              {stars}
-            </StyledTableCell>
-            <StyledTableCell width={1} size="small">
-              {cluster.median}
-            </StyledTableCell>
-          </StyledTableRow>
-          <StyledTableRow Key={stars}>
-            <StyledTableCell width={1} size="small" component="th" scope="row">
-              &emsp;Highest Rate
-            </StyledTableCell>
-            <StyledTableCell width={1} size="small">
-              {stars}
-            </StyledTableCell>
-            <StyledTableCell width={1} size="small">
-              {cluster.max}
-            </StyledTableCell>
-          </StyledTableRow>
-          <StyledTableRow Key={stars}>
-            <StyledTableCell width={1} size="small" component="th" scope="row">
-              &emsp;&emsp;Average of the Highest Rate
-            </StyledTableCell>
-            <StyledTableCell width={1} size="small">
-              {stars}
-            </StyledTableCell>
-            <StyledTableCell width={1} size="small">
-              {cluster.highAVG}
-            </StyledTableCell>
-          </StyledTableRow>
-          <StyledTableRow Key={stars}>
-            <StyledTableCell width={1} size="small" component="th" scope="row">
-              &emsp;&emsp;Average of the Middle Rate
-            </StyledTableCell>
-            <StyledTableCell width={1} size="small">
-              {stars}
-            </StyledTableCell>
-            <StyledTableCell width={1} size="small">
-              {cluster.midAVG}
-            </StyledTableCell>
-          </StyledTableRow>
-          <StyledTableRow Key={stars}>
-            <StyledTableCell width={1} size="small" component="th" scope="row">
-              &emsp;&emsp;Average of the Lowest Rate
-            </StyledTableCell>
-            <StyledTableCell width={1} size="small">
-              {stars}
-            </StyledTableCell>
-            <StyledTableCell width={1} size="small">
-              {cluster.lowAVG}
-            </StyledTableCell>
-          </StyledTableRow>
-          <StyledTableRow Key={stars}>
-            <StyledTableCell width={1} size="small" component="th" scope="row">
-              &emsp;Lowest Rate
-            </StyledTableCell>
-            <StyledTableCell width={1} size="small">
-              {stars}
-            </StyledTableCell>
-            <StyledTableCell width={1} size="small">
-              {cluster.min}
-            </StyledTableCell>
-          </StyledTableRow>
-        </TableBody>
-      </Table>
-      <br />
-    </TableContainer>
+    <>
+      {!load ? (
+        <TableContainer component={Paper} className="my-5">
+          <Box width={100}>
+            <Table
+              className={classes.table}
+              size="medium"
+              aria-label="customized table"
+              stickyHeader
+              bodyStyle={{ overflow: 'visible' }}
+            >
+              <TableHead>
+                <StyledTableCell
+                  className="d-flex"
+                  style={{ display: 'flex', width: '250px' }}
+                >
+                  Clustered Matrix
+                </StyledTableCell>
+                <StyledTableCell size="small">Stars</StyledTableCell>
+                {cluster.map((e, index) => (
+                  <StyledTableCell size="small" key={index}>
+                    {e.date}
+                  </StyledTableCell>
+                ))}
+              </TableHead>
+              <TableBody>
+                <StyledTableRow Key={stars}>
+                  <StyledTableCell
+                    size="medium"
+                    component="th"
+                    scope="col"
+                    className="d-flex"
+                    style={{ display: 'flex', width: '250px' }}
+                  >
+                    Number of Hotels
+                  </StyledTableCell>
+                  <StyledTableCell size="small">{stars}</StyledTableCell>
+                  {cluster.map((e, index) => (
+                    <StyledTableCell size="small" key={index}>
+                      {e.items}
+                    </StyledTableCell>
+                  ))}
+                </StyledTableRow>
+                <StyledTableRow Key={stars}>
+                  <StyledTableCell
+                    size="small"
+                    component="th"
+                    scope="row"
+                    className="d-flex"
+                    style={{ display: 'flex', width: '250px' }}
+                  >
+                    Average Rate
+                  </StyledTableCell>
+                  <StyledTableCell size="small">{stars}</StyledTableCell>
+                  {cluster.map((e, index) => (
+                    <StyledTableCell size="small" key={index}>
+                      {Math.round(e.mean)}
+                    </StyledTableCell>
+                  ))}
+                </StyledTableRow>
+
+                <StyledTableRow Key={stars}>
+                  <StyledTableCell
+                    size="small"
+                    component="th"
+                    scope="row"
+                    className="d-flex"
+                    style={{ display: 'flex', width: '250px' }}
+                  >
+                    Most Repeated rate (mode)
+                  </StyledTableCell>
+                  <StyledTableCell size="small">{stars}</StyledTableCell>
+                  {cluster.map((e, index) => (
+                    <StyledTableCell size="small" key={index}>
+                      {Math.round(e.mod)}
+                    </StyledTableCell>
+                  ))}
+                </StyledTableRow>
+
+                <StyledTableRow Key={stars}>
+                  <StyledTableCell
+                    size="small"
+                    component="th"
+                    scope="row"
+                    className="d-flex"
+                    style={{ display: 'flex', width: '250px' }}
+                  >
+                    Middle Rate
+                  </StyledTableCell>
+                  <StyledTableCell size="small">{stars}</StyledTableCell>
+                  {cluster.map((e, index) => (
+                    <StyledTableCell size="small" key={index}>
+                      {Math.round(e.median)}
+                    </StyledTableCell>
+                  ))}
+                </StyledTableRow>
+                <StyledTableRow Key={stars}>
+                  <StyledTableCell
+                    size="small"
+                    component="th"
+                    scope="row"
+                    className="d-flex"
+                    style={{ display: 'flex', width: '250px' }}
+                  >
+                    &emsp;Highest Rate
+                  </StyledTableCell>
+                  <StyledTableCell size="small">{stars}</StyledTableCell>
+                  {cluster.map((e, index) => (
+                    <StyledTableCell size="small" key={index}>
+                      {Math.round(e.max)}
+                    </StyledTableCell>
+                  ))}
+                </StyledTableRow>
+                <StyledTableRow Key={stars}>
+                  <StyledTableCell
+                    size="small"
+                    component="th"
+                    scope="row"
+                    className="d-flex"
+                    style={{ display: 'flex', width: '250px' }}
+                  >
+                    &emsp;&emsp;Average of the Highest Rate
+                  </StyledTableCell>
+                  <StyledTableCell size="small">{stars}</StyledTableCell>
+                  {cluster.map((e, index) => (
+                    <StyledTableCell size="small" key={index}>
+                      {Math.round(e.highAVG)}
+                    </StyledTableCell>
+                  ))}
+                </StyledTableRow>
+                <StyledTableRow Key={stars}>
+                  <StyledTableCell
+                    size="small"
+                    component="th"
+                    scope="row"
+                    className="d-flex"
+                    style={{ display: 'flex', width: '250px' }}
+                  >
+                    &emsp;&emsp;Average of the Middle Rate
+                  </StyledTableCell>
+                  <StyledTableCell size="small">{stars}</StyledTableCell>
+                  {cluster.map((e, index) => (
+                    <StyledTableCell size="small" key={index}>
+                      {Math.round(e.midAVG)}
+                    </StyledTableCell>
+                  ))}
+                </StyledTableRow>
+                <StyledTableRow Key={stars}>
+                  <StyledTableCell
+                    size="small"
+                    component="th"
+                    scope="row"
+                    className="d-flex"
+                    style={{ display: 'flex', width: '250px' }}
+                  >
+                    &emsp;&emsp;Average of the Lowest Rate
+                  </StyledTableCell>
+                  <StyledTableCell size="small">{stars}</StyledTableCell>
+                  {cluster.map((e, index) => (
+                    <StyledTableCell size="small" key={index}>
+                      {Math.round(e.lowAVG)}
+                    </StyledTableCell>
+                  ))}
+                </StyledTableRow>
+                <StyledTableRow Key={stars}>
+                  <StyledTableCell
+                    size="small"
+                    component="th"
+                    scope="row"
+                    className="d-flex"
+                    style={{ display: 'flex', width: '250px' }}
+                  >
+                    &emsp;Lowest Rate
+                  </StyledTableCell>
+                  <StyledTableCell size="small">{stars}</StyledTableCell>
+                  {cluster.map((e, index) => (
+                    <StyledTableCell size="small" key={index}>
+                      {Math.round(e.min)}
+                    </StyledTableCell>
+                  ))}
+                </StyledTableRow>
+              </TableBody>
+            </Table>
+            <br />
+          </Box>
+        </TableContainer>
+      ) : (
+        <h1>loading.....</h1>
+      )}
+    </>
   );
+
+  const bootstrapTBL = () => {
+    return (
+      <Table striped bordered hover>
+        <thead>
+          <tr>
+            <th></th>
+            {cluster.map((e, index) => (
+              <th key={index}>{e.date}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>No of Hotels</td>
+            {cluster.map((e, index) => (
+              <td key={index}>{e.items}</td>
+            ))}
+          </tr>
+          <tr>
+            <td>Average Rate</td>
+            {cluster.map((e, index) => (
+              <td key={index}>{e.mean}</td>
+            ))}
+          </tr>
+          <tr>
+            <td>Most Repeated rate (mode)</td>
+            {cluster.map((e, index) => (
+              <td key={index}>{e.mod}</td>
+            ))}
+          </tr>
+          <tr>
+            <td>Middle Rate</td>
+            {cluster.map((e, index) => (
+              <td key={index}>{e.median}</td>
+            ))}
+          </tr>
+          <tr>
+            <td>&emsp;Highest Rate</td>
+            {cluster.map((e, index) => (
+              <td key={index}>{e.max}</td>
+            ))}
+          </tr>
+          <tr>
+            <td>&emsp;&emsp;Average of the Highest Rates</td>
+            {cluster.map((e, index) => (
+              <td key={index}>{e.highAVG}</td>
+            ))}
+          </tr>
+          <tr>
+            <td>&emsp;&emsp;Average of the Middle Rates</td>
+            {cluster.map((e, index) => (
+              <td key={index}>{e.midAVG}</td>
+            ))}
+          </tr>
+          <tr>
+            <td>&emsp;&emsp;Average of the Lowest Rates</td>
+            {cluster.map((e, index) => (
+              <td key={index}>{e.lowAVG}</td>
+            ))}
+          </tr>
+          <tr>
+            <td>&emsp;Lowest Rate</td>
+            {cluster.map((e, index) => (
+              <td key={index}>{e.min}</td>
+            ))}
+          </tr>
+        </tbody>
+      </Table>
+    );
+  };
 }

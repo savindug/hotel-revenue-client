@@ -1,8 +1,12 @@
 import * as ACTION_TYPES from '../actions/types';
 
 const initialState = {
-  clusterData: {},
+  clusterData: [],
   loading: true,
+  cluster1: [],
+  cluster2: [],
+  cluster3: [],
+  cluster4: [],
   err: null,
 };
 
@@ -26,6 +30,31 @@ const clusterDataReducer = (state = initialState, action) => {
         ...state,
         loading: false,
         err: action.payload,
+      };
+
+    case ACTION_TYPES.SET_CLUSTER_1:
+      return {
+        ...state,
+        cluster1: action.payload,
+        loading: false,
+      };
+    case ACTION_TYPES.SET_CLUSTER_2:
+      return {
+        ...state,
+        cluster2: action.payload,
+        loading: false,
+      };
+    case ACTION_TYPES.SET_CLUSTER_3:
+      return {
+        ...state,
+        cluster3: action.payload,
+        loading: false,
+      };
+    case ACTION_TYPES.SET_CLUSTER_4:
+      return {
+        ...state,
+        cluster4: action.payload,
+        loading: false,
       };
 
     default:
