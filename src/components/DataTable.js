@@ -71,7 +71,7 @@ export default function DataTable({ cluster, stars }) {
               <TableHead>
                 <StyledTableCell
                   className="d-flex"
-                  style={{ display: 'flex', width: '250px' }}
+                  style={{ fontWeight: 'bold', width: '250px' }}
                 >
                   Clustered Matrix
                 </StyledTableCell>
@@ -89,7 +89,7 @@ export default function DataTable({ cluster, stars }) {
                     component="th"
                     scope="col"
                     className="d-flex"
-                    style={{ display: 'flex', width: '250px' }}
+                    style={{ fontWeight: 'bold', width: '250px' }}
                   >
                     Number of Hotels
                   </StyledTableCell>
@@ -106,7 +106,7 @@ export default function DataTable({ cluster, stars }) {
                     component="th"
                     scope="row"
                     className="d-flex"
-                    style={{ display: 'flex', width: '250px' }}
+                    style={{ fontWeight: 'bold', width: '250px' }}
                   >
                     Average Rate
                   </StyledTableCell>
@@ -124,7 +124,7 @@ export default function DataTable({ cluster, stars }) {
                     component="th"
                     scope="row"
                     className="d-flex"
-                    style={{ display: 'flex', width: '250px' }}
+                    style={{ fontWeight: 'bold', width: '250px' }}
                   >
                     Most Repeated rate (mode)
                   </StyledTableCell>
@@ -142,7 +142,7 @@ export default function DataTable({ cluster, stars }) {
                     component="th"
                     scope="row"
                     className="d-flex"
-                    style={{ display: 'flex', width: '250px' }}
+                    style={{ fontWeight: 'bold', width: '250px' }}
                   >
                     Middle Rate
                   </StyledTableCell>
@@ -159,7 +159,7 @@ export default function DataTable({ cluster, stars }) {
                     component="th"
                     scope="row"
                     className="d-flex"
-                    style={{ display: 'flex', width: '250px' }}
+                    style={{ fontWeight: 'bold', width: '250px' }}
                   >
                     &emsp;Highest Rate
                   </StyledTableCell>
@@ -176,7 +176,7 @@ export default function DataTable({ cluster, stars }) {
                     component="th"
                     scope="row"
                     className="d-flex"
-                    style={{ display: 'flex', width: '250px' }}
+                    style={{ fontWeight: 'bold', width: '250px' }}
                   >
                     &emsp;&emsp;Average of the Highest Rate
                   </StyledTableCell>
@@ -193,7 +193,7 @@ export default function DataTable({ cluster, stars }) {
                     component="th"
                     scope="row"
                     className="d-flex"
-                    style={{ display: 'flex', width: '250px' }}
+                    style={{ fontWeight: 'bold', width: '250px' }}
                   >
                     &emsp;&emsp;Average of the Middle Rate
                   </StyledTableCell>
@@ -210,7 +210,7 @@ export default function DataTable({ cluster, stars }) {
                     component="th"
                     scope="row"
                     className="d-flex"
-                    style={{ display: 'flex', width: '250px' }}
+                    style={{ fontWeight: 'bold', width: '250px' }}
                   >
                     &emsp;&emsp;Average of the Lowest Rate
                   </StyledTableCell>
@@ -227,7 +227,7 @@ export default function DataTable({ cluster, stars }) {
                     component="th"
                     scope="row"
                     className="d-flex"
-                    style={{ display: 'flex', width: '250px' }}
+                    style={{ fontWeight: 'bold', width: '250px' }}
                   >
                     &emsp;Lowest Rate
                   </StyledTableCell>
