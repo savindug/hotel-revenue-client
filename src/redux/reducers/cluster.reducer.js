@@ -2,6 +2,7 @@ import * as ACTION_TYPES from '../actions/types';
 
 const initialState = {
   clusterData: [],
+  hotels: [],
   loading: true,
   cluster1: [],
   cluster2: [],
@@ -26,6 +27,26 @@ const clusterDataReducer = (state = initialState, action) => {
       };
 
     case ACTION_TYPES.GET_CLUSTER_FAILED:
+      return {
+        ...state,
+        loading: false,
+        err: action.payload,
+      };
+
+    case ACTION_TYPES.GET_HOTELS:
+      return {
+        ...state,
+        hotels: action.payload,
+        loading: false,
+      };
+
+    case ACTION_TYPES.GET_HOTELS_PROGRESS:
+      return {
+        ...state,
+        loading: true,
+      };
+
+    case ACTION_TYPES.GET_HOTELS_FAILED:
       return {
         ...state,
         loading: false,

@@ -1,7 +1,10 @@
 import { Alert } from '@material-ui/lab';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchClusterData } from '../redux/actions/cluster.actions';
+import {
+  fetchClusterData,
+  fetchHotelData,
+} from '../redux/actions/cluster.actions';
 import DataTable from './DataTable';
 import { LoadingOverlay } from './UI/LoadingOverlay';
 import MomentUtils from '@date-io/moment';
@@ -9,11 +12,28 @@ import {
   KeyboardDatePicker,
   MuiPickersUtilsProvider,
 } from '@material-ui/pickers';
-import { Grid } from '@material-ui/core';
+import {
+  FormControl,
+  Grid,
+  InputLabel,
+  makeStyles,
+  Select,
+} from '@material-ui/core';
 import moment from 'moment';
+import HotelDataTable from './HotelDataTable';
+import { Nav } from 'react-bootstrap';
+
+const useStyles = makeStyles((theme) => ({
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  },
+}));
 
 export const ClusteredData = () => {
+  const classes = useStyles();
   const dispatch = useDispatch();
+  const [tab, setTab] = useState(0);
   const [selectedDate, setSelectedDate] = useState(
     moment().format('YYYY-MM-DD')
   );
@@ -26,21 +46,75 @@ export const ClusteredData = () => {
     cluster2,
     cluster3,
     cluster4,
+    hotels,
   } = getClusterDataSet;
 
   const handdleDatePicker = (date) => {
     setSelectedDate(moment(date).format('YYYY-MM-DD'));
   };
 
+  useEffect(() => {}, []);
+
   useEffect(() => {
-    dispatch(fetchClusterData('1447930', selectedDate));
+    async function getClusters() {
+      await dispatch(fetchClusterData('1447930', selectedDate));
+    }
+
+    async function getHotels() {
+      await dispatch(fetchHotelData('1447930', selectedDate));
+    }
+    getClusters();
+    getHotels();
   }, [selectedDate, dispatch]);
+
+  const TabularNav = () => {
+    const [tabularNavCls] = useState(
+      'bg-secondary text-light border-bottom-0 border-secondary'
+    );
+    return (
+      <Nav variant="tabs">
+        <Nav.Item>
+          <Nav.Link
+            className={tab === 0 ? tabularNavCls : 'text-dark'}
+            eventKey="link-0"
+            onClick={() => setTab(0)}
+          >
+            Clustered Matrix
+          </Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link
+            className={tab === 1 ? tabularNavCls : 'text-dark'}
+            eventKey="link-1"
+            onClick={() => setTab(1)}
+          >
+            Hotel Data
+          </Nav.Link>
+        </Nav.Item>
+      </Nav>
+    );
+  };
 
   return (
     <div>
       <MuiPickersUtilsProvider utils={MomentUtils}>
         <Grid container justify="space-around">
-          <h1>Clustered Hotel Rates</h1>
+          <FormControl className={classes.formControl}>
+            <InputLabel htmlFor="grouped-native-select">
+              Destination ID
+            </InputLabel>
+            <Select native defaultValue="" id="grouped-native-select">
+              <option value={1447930}>1447930</option>
+              {/* <optgroup label="Category 1">
+                <option value={1}>Option 1</option>
+                <option value={2}>Option 2</option>
+              </optgroup>
+              <optgroup label="Category 2">
+                <option value={3}>Option 3</option>
+                <option value={4}>Option 4</option>
+              </optgroup> */}
+            </Select>
+          </FormControl>
           <KeyboardDatePicker
             disableToolbar
             variant="inline"
@@ -58,17 +132,21 @@ export const ClusteredData = () => {
           />
         </Grid>
       </MuiPickersUtilsProvider>
+
+      <TabularNav />
       {loading ? (
         <LoadingOverlay show={loading} />
       ) : err ? (
         <Alert severity="error">{err}</Alert>
-      ) : clusterData.length > 0 ? (
+      ) : clusterData.length > 0 && tab === 0 ? (
         <>
           <DataTable cluster={cluster4} stars={5} />
           <DataTable cluster={cluster3} stars={4} />
           <DataTable cluster={cluster2} stars={3} />
           <DataTable cluster={cluster1} stars={2} />
         </>
+      ) : hotels.length > 0 ? (
+        <HotelDataTable hotels={hotels} selectedDate={selectedDate} />
       ) : (
         <></>
       )}

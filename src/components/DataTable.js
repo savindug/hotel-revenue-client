@@ -244,79 +244,8 @@ export default function DataTable({ cluster, stars }) {
           </Box>
         </TableContainer>
       ) : (
-        <h1>loading.....</h1>
+        <></>
       )}
     </>
   );
-
-  const bootstrapTBL = () => {
-    return (
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th></th>
-            {cluster.map((e, index) => (
-              <th key={index}>{e.date}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>No of Hotels</td>
-            {cluster.map((e, index) => (
-              <td key={index}>{e.items}</td>
-            ))}
-          </tr>
-          <tr>
-            <td>Average Rate</td>
-            {cluster.map((e, index) => (
-              <td key={index}>{e.mean}</td>
-            ))}
-          </tr>
-          <tr>
-            <td>Most Repeated rate (mode)</td>
-            {cluster.map((e, index) => (
-              <td key={index}>{e.mod}</td>
-            ))}
-          </tr>
-          <tr>
-            <td>Middle Rate</td>
-            {cluster.map((e, index) => (
-              <td key={index}>{e.median}</td>
-            ))}
-          </tr>
-          <tr>
-            <td>&emsp;Highest Rate</td>
-            {cluster.map((e, index) => (
-              <td key={index}>{e.max}</td>
-            ))}
-          </tr>
-          <tr>
-            <td>&emsp;&emsp;Average of the Highest Rates</td>
-            {cluster.map((e, index) => (
-              <td key={index}>{e.highAVG}</td>
-            ))}
-          </tr>
-          <tr>
-            <td>&emsp;&emsp;Average of the Middle Rates</td>
-            {cluster.map((e, index) => (
-              <td key={index}>{e.midAVG}</td>
-            ))}
-          </tr>
-          <tr>
-            <td>&emsp;&emsp;Average of the Lowest Rates</td>
-            {cluster.map((e, index) => (
-              <td key={index}>{e.lowAVG}</td>
-            ))}
-          </tr>
-          <tr>
-            <td>&emsp;Lowest Rate</td>
-            {cluster.map((e, index) => (
-              <td key={index}>{e.min}</td>
-            ))}
-          </tr>
-        </tbody>
-      </Table>
-    );
-  };
 }

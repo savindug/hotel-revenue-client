@@ -4,6 +4,7 @@ import { ClusteredData } from './components/ClusteredData';
 import MiniDrawer from './components/UI/layout/sideDrawer';
 import { makeStyles, Typography } from '@material-ui/core';
 import { Dashboard } from './components/UI/Dashboard';
+import HotelDataTable from './components/HotelDataTable';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,6 +37,7 @@ function App() {
           <Switch>
             <Route path="/clusters" component={ClusteredData} />
             <Route path="/" component={Dashboard} />
+            <Route path="/hotels" component={HotelDataTable} />
           </Switch>
         </main>
       </div>

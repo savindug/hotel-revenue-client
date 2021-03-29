@@ -58,6 +58,26 @@ export const fetchClusterData = (destID, date) => async (dispatch) => {
     });
 };
 
+export const fetchHotelData = (destID, date) => async (dispatch) => {
+  dispatch({ type: ACTION_TYPES.GET_HOTELS_PROGRESS });
+
+  await axios(`${apiURI}hotels/report/${destID}/${date}`)
+    .then((res) => {
+      let hotelDataSet = res.data.data;
+      dispatch({
+        type: ACTION_TYPES.GET_HOTELS,
+        payload: hotelDataSet,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      dispatch({
+        type: ACTION_TYPES.GET_HOTELS_FAILED,
+        payload: err,
+      });
+    });
+};
+
 // const sortClusters = (clusterData) => {
 //   let clusterArr = [];
 //   clusterArr.push(clusterData.cluster1.mean);
@@ -89,34 +109,3 @@ export const fetchClusterData = (destID, date) => async (dispatch) => {
 
 //   clusterData.sortClusters = clusterArr;
 // };
-
-// export const addTodo = (todo) => async (dispatch, getState) => {
-//   dispatch({ type: ACTION_TYPES.ADD_TODO_PROGRESS });
-
-//   dispatch({
-//     type: ACTION_TYPES.ADD_TODO,
-//     payload: todo,
-//   });
-
-//   localStorage.setItem('todos', JSON.stringify(getState().todos.todoList));
-// };
-
-// export const editTodo = (todo) => async (dispatch, getState) => {
-//   dispatch({ type: ACTION_TYPES.SELECT_TODO_PROGRESS });
-
-//   dispatch({
-//     type: ACTION_TYPES.SELECT_TODO,
-//     payload: todo,
-//   });
-
-//   localStorage.setItem('todos', JSON.stringify(getState().todos.todoList));
-// };
-
-export const removeTodo = (id) => (dispatch, getState) => {
-  dispatch({
-    type: ACTION_TYPES.DELETE_TODO,
-    payload: id,
-  });
-
-  //localStorage.setItem('todos', JSON.stringify(getState().todos.todoList));
-};
