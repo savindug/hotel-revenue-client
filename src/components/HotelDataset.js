@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const ClusteredData = () => {
+export const HotelDataset = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [tab, setTab] = useState(0);
@@ -39,32 +39,16 @@ export const ClusteredData = () => {
     moment().format('YYYY-MM-DD')
   );
   const getClusterDataSet = useSelector((state) => state.clusterDataSet);
-  const {
-    clusterData,
-    loading,
-    err,
-    cluster1,
-    cluster2,
-    cluster3,
-    cluster4,
-    hotels,
-  } = getClusterDataSet;
+  const { loading, err, hotels } = getClusterDataSet;
 
   const handdleDatePicker = (date) => {
     setSelectedDate(moment(date).format('YYYY-MM-DD'));
   };
 
-  useEffect(() => {}, []);
-
   useEffect(() => {
-    async function getClusters() {
-      await dispatch(fetchClusterData('1447930', selectedDate, 90));
-    }
-
     async function getHotels() {
       await dispatch(fetchHotelData('1447930', selectedDate, 90));
     }
-    getClusters();
     getHotels();
   }, [selectedDate, dispatch]);
 
@@ -136,20 +120,12 @@ export const ClusteredData = () => {
         </Grid>
       </MuiPickersUtilsProvider>
 
-      <TabularNav />
       {loading ? (
         <LoadingOverlay show={loading} />
       ) : err ? (
         <Alert severity="error">{err}</Alert>
-      ) : clusterData.length > 0 && tab === 0 ? (
-        <>
-          <DataTable cluster={cluster4} stars={5} />
-          <DataTable cluster={cluster3} stars={4} />
-          <DataTable cluster={cluster2} stars={3} />
-          <DataTable cluster={cluster1} stars={2} />
-        </>
-      ) : hotels.length > 0 && tab === 1 ? (
-        <HotelDataTable hotels={hotels} selectedDate={selectedDate} />
+      ) : hotels.length > 0 ? (
+        <HotelDataTable />
       ) : (
         //<></>
         <></>

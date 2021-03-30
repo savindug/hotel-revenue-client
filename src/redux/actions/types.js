@@ -10,3 +10,5 @@ export const SET_CLUSTER_1 = 'SET_CLUSTER_1';
 export const SET_CLUSTER_2 = 'SET_CLUSTER_2';
 export const SET_CLUSTER_3 = 'SET_CLUSTER_3';
 export const SET_CLUSTER_4 = 'SET_CLUSTER_4';
+
+export const SET_QUARY = 'SET_QUARY';

@@ -9,6 +9,7 @@ const initialState = {
   cluster3: [],
   cluster4: [],
   err: null,
+  quary: null,
 };
 
 const clusterDataReducer = (state = initialState, action) => {
@@ -76,6 +77,12 @@ const clusterDataReducer = (state = initialState, action) => {
         ...state,
         cluster4: action.payload,
         loading: false,
+      };
+
+    case ACTION_TYPES.SET_QUARY:
+      return {
+        ...state,
+        quary: action.payload,
       };
 
     default:

@@ -2,16 +2,20 @@ import axios from 'axios';
 import { apiURI } from '../../env';
 import * as ACTION_TYPES from './types';
 
-export const fetchClusterData = (destID, date) => async (dispatch) => {
+export const fetchClusterData = (destID, date, range) => async (dispatch) => {
   dispatch({ type: ACTION_TYPES.GET_CLUSTER_PROGRESS });
   let cl1 = [];
   let cl2 = [];
   let cl3 = [];
   let cl4 = [];
 
-  await axios(`${apiURI}cluster/report/${destID}/${date}`)
+  await axios(`${apiURI}cluster/report/${destID}/${date}?range=${range}`)
     .then((res) => {
       let clusterData = res.data.data;
+      dispatch({
+        type: ACTION_TYPES.SET_QUARY,
+        payload: res.data.quary,
+      });
       clusterData.map((day, index) => {
         day.map((cl, el) => {
           if (el === 0) {
@@ -58,10 +62,10 @@ export const fetchClusterData = (destID, date) => async (dispatch) => {
     });
 };
 
-export const fetchHotelData = (destID, date) => async (dispatch) => {
+export const fetchHotelData = (destID, date, range) => async (dispatch) => {
   dispatch({ type: ACTION_TYPES.GET_HOTELS_PROGRESS });
 
-  await axios(`${apiURI}hotels/report/${destID}/${date}`)
+  await axios(`${apiURI}hotels/report/${destID}/${date}?range=${range}`)
     .then((res) => {
       let hotelDataSet = res.data.data;
       dispatch({

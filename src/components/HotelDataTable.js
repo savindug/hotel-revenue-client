@@ -5,11 +5,12 @@ import {
   makeStyles,
   TableCell,
   TableContainer,
+  TablePagination,
   TableRow,
   withStyles,
 } from '@material-ui/core';
 import { useEffect, useState } from 'react';
-import Table from 'react-bootstrap/Table';
+import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableHead from '@material-ui/core/TableHead';
 import Paper from '@material-ui/core/Paper';
@@ -43,37 +44,65 @@ const useStyles = makeStyles({
   },
 });
 
-export default function HotelDataTable({ selectedDate }) {
+export default function HotelDataTable() {
   const classes = useStyles();
   const [dates, setDates] = useState([]);
+  const [hotelsList, setHotelsList] = useState([]);
 
   const getClusterDataSet = useSelector((state) => state.clusterDataSet);
-  const { loading, err, hotels } = getClusterDataSet;
+  const { loading, err, hotels, quary } = getClusterDataSet;
+
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(25);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
 
   useEffect(() => {
-    console.log('from HotelDataTable');
+    const fetchHotelList = async () => {
+      let hotelsArr = [];
+
+      await hotels
+        .slice(rowsPerPage * page, rowsPerPage * page + rowsPerPage)
+        .map((hotel) => {
+          hotelsArr.push(hotel);
+        });
+
+      setHotelsList(hotelsArr);
+    };
+
+    fetchHotelList();
+  }, [hotels, rowsPerPage, page]);
+
+  useEffect(() => {
     const hotelsList = async () => {
       let dateRange = [];
 
       for (let i = 0; i < 90; i++) {
-        dateRange.push(moment(selectedDate).subtract(i, 'd').format('MM/DD'));
+        dateRange.push(moment(quary.CheckIn).subtract(i, 'd').format('MM/DD'));
       }
 
-      setDates(dateRange);
+      await setDates(dateRange);
     };
 
     hotelsList();
-  }, []);
+  }, [quary.CheckIn, dates]);
 
-  const DateColumns = ({ priceArr }) => {
+  const DateColumns = (priceArr) => {
     let dateArr = [];
     dates.map((d) => {
       dateArr.push('N/A');
     });
 
-    console.log(`dateArr => ${dateArr}, length: ${dateArr.length}`);
+    //console.log(`dateArr => ${dateArr}, length: ${dateArr.length}`);
 
-    priceArr.map((rate, day) => {
+    priceArr.map((rate) => {
       let ins = dates.findIndex((x) => x === moment(rate.date).format('MM/DD'));
       if (ins !== -1) {
         dateArr[ins] = rate.price;
@@ -95,7 +124,7 @@ export default function HotelDataTable({ selectedDate }) {
         <LoadingOverlay show={loading} />
       ) : err ? (
         <Alert severity="error">{err}</Alert>
-      ) : hotels.length > 0 && dates.length > 0 ? (
+      ) : hotelsList.length > 0 && dates.length > 0 ? (
         <>
           <TableContainer component={Paper} className="my-5">
             <Box width={100}>
@@ -107,6 +136,7 @@ export default function HotelDataTable({ selectedDate }) {
                 bodyStyle={{ overflow: 'visible' }}
               >
                 <TableHead>
+                  <StyledTableCell size="small">#</StyledTableCell>
                   <StyledTableCell
                     className="d-flex"
                     style={{ fontWeight: 'bold', width: '250px' }}
@@ -119,8 +149,11 @@ export default function HotelDataTable({ selectedDate }) {
                   })}
                 </TableHead>
                 <TableBody>
-                  {hotels.map((_hotel, index) => (
+                  {hotelsList.map((_hotel, index) => (
                     <StyledTableRow>
+                      <StyledTableCell size="small">
+                        {index + 1}
+                      </StyledTableCell>
                       <StyledTableCell
                         size="medium"
                         component="th"
@@ -133,7 +166,7 @@ export default function HotelDataTable({ selectedDate }) {
                       <StyledTableCell size="small">
                         {_hotel.stars}
                       </StyledTableCell>
-                      <DateColumns priceArr={_hotel.prices} />
+                      {DateColumns(_hotel.prices)}
                     </StyledTableRow>
                   ))}
                 </TableBody>
@@ -141,6 +174,15 @@ export default function HotelDataTable({ selectedDate }) {
               <br />
             </Box>
           </TableContainer>
+          <TablePagination
+            rowsPerPageOptions={[10, 25]}
+            component="div"
+            count={hotels.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onChangePage={handleChangePage}
+            onChangeRowsPerPage={handleChangeRowsPerPage}
+          />
         </>
       ) : (
         <></>
