@@ -10,6 +10,7 @@ const initialState = {
   cluster4: [],
   err: null,
   quary: null,
+  reqHotel: [],
 };
 
 const clusterDataReducer = (state = initialState, action) => {
@@ -83,6 +84,13 @@ const clusterDataReducer = (state = initialState, action) => {
       return {
         ...state,
         quary: action.payload,
+      };
+
+    case ACTION_TYPES.SET_REQ_HOTEL:
+      return {
+        ...state,
+        reqHotel: action.payload,
+        loading: false,
       };
 
     default:

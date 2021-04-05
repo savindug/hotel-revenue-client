@@ -2,19 +2,28 @@ import axios from 'axios';
 import { apiURI } from '../../env';
 import * as ACTION_TYPES from './types';
 
-export const fetchClusterData = (destID, date, range) => async (dispatch) => {
+export const fetchClusterData = (destID, date, range, property) => async (
+  dispatch
+) => {
   dispatch({ type: ACTION_TYPES.GET_CLUSTER_PROGRESS });
   let cl1 = [];
   let cl2 = [];
   let cl3 = [];
   let cl4 = [];
 
-  await axios(`${apiURI}cluster/report/${destID}/${date}?range=${range}`)
+  await axios(
+    `${apiURI}cluster/report/${property}/${destID}/${date}?range=${range}`
+  )
     .then((res) => {
       let clusterData = res.data.data;
+      let reqHotelData = res.data.reqHotelData;
       dispatch({
         type: ACTION_TYPES.SET_QUARY,
         payload: res.data.quary,
+      });
+      dispatch({
+        type: ACTION_TYPES.SET_REQ_HOTEL,
+        payload: reqHotelData,
       });
       clusterData.map((day, index) => {
         day.map((cl, el) => {

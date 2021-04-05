@@ -44,13 +44,12 @@ const useStyles = makeStyles({
   },
 });
 
-export default function HotelDataTable() {
+export default function HotelDataTable({ hotels, selectedDate }) {
   const classes = useStyles();
   const [dates, setDates] = useState([]);
   const [hotelsList, setHotelsList] = useState([]);
-
-  const getClusterDataSet = useSelector((state) => state.clusterDataSet);
-  const { loading, err, hotels, quary } = getClusterDataSet;
+  // const getClusterDataSet = useSelector((state) => state.clusterDataSet);
+  // const { loading, err, quary } = getClusterDataSet;
 
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(25);
@@ -64,35 +63,35 @@ export default function HotelDataTable() {
     setPage(0);
   };
 
+  // useEffect(() => {
+  //   const fetchHotelList = async () => {
+  //     let hotelsArr = [];
+
+  //     await hotels
+  //       .slice(rowsPerPage * page, rowsPerPage * page + rowsPerPage)
+  //       .map((hotel) => {
+  //         hotelsArr.push(hotel);
+  //       });
+
+  //     setHotelsList(hotelsArr);
+  //   };
+
+  //   fetchHotelList();
+  // }, [hotels, rowsPerPage, page]);
+
   useEffect(() => {
-    const fetchHotelList = async () => {
-      let hotelsArr = [];
-
-      await hotels
-        .slice(rowsPerPage * page, rowsPerPage * page + rowsPerPage)
-        .map((hotel) => {
-          hotelsArr.push(hotel);
-        });
-
-      setHotelsList(hotelsArr);
-    };
-
-    fetchHotelList();
-  }, [hotels, rowsPerPage, page]);
-
-  useEffect(() => {
-    const hotelsList = async () => {
+    const datesList = async () => {
       let dateRange = [];
 
       for (let i = 0; i < 90; i++) {
-        dateRange.push(moment(quary.CheckIn).subtract(i, 'd').format('MM/DD'));
+        dateRange.push(moment(selectedDate).subtract(i, 'd').format('MM/DD'));
       }
 
       await setDates(dateRange);
     };
 
-    hotelsList();
-  }, [quary.CheckIn, dates]);
+    datesList();
+  }, [dates]);
 
   const DateColumns = (priceArr) => {
     let dateArr = [];
@@ -120,11 +119,7 @@ export default function HotelDataTable() {
 
   return (
     <>
-      {loading ? (
-        <LoadingOverlay show={loading} />
-      ) : err ? (
-        <Alert severity="error">{err}</Alert>
-      ) : hotelsList.length > 0 && dates.length > 0 ? (
+      {hotels.length > 0 && dates.length > 0 ? (
         <>
           <TableContainer component={Paper} className="my-5">
             <Box width={100}>
@@ -149,7 +144,7 @@ export default function HotelDataTable() {
                   })}
                 </TableHead>
                 <TableBody>
-                  {hotelsList.map((_hotel, index) => (
+                  {hotels.map((_hotel, index) => (
                     <StyledTableRow>
                       <StyledTableCell size="small">
                         {index + 1}
@@ -174,7 +169,7 @@ export default function HotelDataTable() {
               <br />
             </Box>
           </TableContainer>
-          <TablePagination
+          {/* <TablePagination
             rowsPerPageOptions={[10, 25]}
             component="div"
             count={hotels.length}
@@ -182,7 +177,7 @@ export default function HotelDataTable() {
             page={page}
             onChangePage={handleChangePage}
             onChangeRowsPerPage={handleChangeRowsPerPage}
-          />
+          /> */}
         </>
       ) : (
         <></>

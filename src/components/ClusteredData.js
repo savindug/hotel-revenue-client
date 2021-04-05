@@ -23,6 +23,7 @@ import moment from 'moment';
 import HotelDataTable from './HotelDataTable';
 import { Nav } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import ClusterBucket from './ClusterBucket';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -58,14 +59,21 @@ export const ClusteredData = () => {
 
   useEffect(() => {
     async function getClusters() {
-      await dispatch(fetchClusterData('1447930', selectedDate, 90));
+      await dispatch(
+        fetchClusterData(
+          1447930,
+          moment(selectedDate).subtract(90, 'd').format('YYYY-MM-DD'),
+          90,
+          106399
+        )
+      );
     }
 
-    async function getHotels() {
-      await dispatch(fetchHotelData('1447930', selectedDate, 90));
-    }
+    // async function getHotels() {
+    //   await dispatch(fetchHotelData('1447930', selectedDate, 90));
+    // }
     getClusters();
-    getHotels();
+    // getHotels();
   }, [selectedDate, dispatch]);
 
   const TabularNav = () => {
@@ -118,6 +126,14 @@ export const ClusteredData = () => {
               </optgroup> */}
             </Select>
           </FormControl>
+          <FormControl className={classes.formControl}>
+            <InputLabel htmlFor="grouped-native-select">
+              Select Property
+            </InputLabel>
+            <Select native defaultValue="" id="grouped-native-select">
+              <option value={106399}>106399</option>
+            </Select>
+          </FormControl>
           <KeyboardDatePicker
             disableToolbar
             variant="inline"
@@ -136,20 +152,19 @@ export const ClusteredData = () => {
         </Grid>
       </MuiPickersUtilsProvider>
 
-      <TabularNav />
+      {/* <TabularNav /> */}
       {loading ? (
         <LoadingOverlay show={loading} />
       ) : err ? (
         <Alert severity="error">{err}</Alert>
       ) : clusterData.length > 0 && tab === 0 ? (
         <>
+          <ClusterBucket />
           <DataTable cluster={cluster4} stars={5} />
           <DataTable cluster={cluster3} stars={4} />
           <DataTable cluster={cluster2} stars={3} />
           <DataTable cluster={cluster1} stars={2} />
         </>
-      ) : hotels.length > 0 && tab === 1 ? (
-        <HotelDataTable hotels={hotels} selectedDate={selectedDate} />
       ) : (
         //<></>
         <></>

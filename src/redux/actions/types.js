@@ -12,3 +12,4 @@ export const SET_CLUSTER_3 = 'SET_CLUSTER_3';
 export const SET_CLUSTER_4 = 'SET_CLUSTER_4';
 
 export const SET_QUARY = 'SET_QUARY';
+export const SET_REQ_HOTEL = 'SET_REQ_HOTEL';

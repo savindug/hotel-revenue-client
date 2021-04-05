@@ -125,7 +125,7 @@ export const HotelDataset = () => {
       ) : err ? (
         <Alert severity="error">{err}</Alert>
       ) : hotels.length > 0 ? (
-        <HotelDataTable />
+        <HotelDataTable selectedDate={selectedDate} hotels={hotels} />
       ) : (
         //<></>
         <></>
