@@ -18,12 +18,12 @@ export const Graphs = () => {
     datasets: [
       {
         label: 'Stars 2',
-        backgroundColor: 'rgba(255,99,132,0.2)',
-        borderColor: 'rgba(255,99,132,1)',
+        backgroundColor: '#d9534f',
+        borderColor: '#d9534f',
         borderWidth: 1,
         //stack: 1,
-        hoverBackgroundColor: 'rgba(255,99,132,0.4)',
-        hoverBorderColor: 'rgba(255,99,132,1)',
+        hoverBackgroundColor: '#d9534f',
+        hoverBorderColor: '#d9534f',
         data: cluster1.map((a) => a.max),
       },
 
