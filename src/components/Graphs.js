@@ -1,6 +1,6 @@
 import { Box } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
-import { Bar } from 'react-chartjs-2';
+import { Bar, Line } from 'react-chartjs-2';
 import { useSelector } from 'react-redux';
 
 export const Graphs = () => {
@@ -29,32 +29,32 @@ export const Graphs = () => {
 
       {
         label: 'Stars 3',
-        backgroundColor: 'rgba(255,99,132,0.2)',
-        borderColor: 'rgba(255,99,132,1)',
+        backgroundColor: '#0275d8',
+        borderColor: '#0275d8',
         borderWidth: 1,
         //stack: 1,
-        hoverBackgroundColor: 'rgba(255,99,132,0.4)',
-        hoverBorderColor: 'rgba(255,99,132,1)',
+        hoverBackgroundColor: '#0275d8',
+        hoverBorderColor: '#0275d8',
         data: cluster2.map((a) => a.max),
       },
       {
         label: 'Stars 4',
-        backgroundColor: 'rgba(255,99,132,0.2)',
-        borderColor: 'rgba(255,99,132,1)',
+        backgroundColor: '#5cb85c',
+        borderColor: '#5cb85c',
         borderWidth: 1,
         //stack: 1,
-        hoverBackgroundColor: 'rgba(255,99,132,0.4)',
-        hoverBorderColor: 'rgba(255,99,132,1)',
+        hoverBackgroundColor: '#5cb85c',
+        hoverBorderColor: '#5cb85c',
         data: cluster3.map((a) => a.max),
       },
       {
         label: 'Stars 5',
-        backgroundColor: 'rgba(255,99,132,0.2)',
-        borderColor: 'rgba(255,99,132,1)',
+        backgroundColor: '#f0ad4e',
+        borderColor: '#f0ad4e',
         borderWidth: 1,
         // stack: 1,
-        hoverBackgroundColor: 'rgba(255,99,132,0.4)',
-        hoverBorderColor: 'rgba(255,99,132,1)',
+        hoverBackgroundColor: '#f0ad4e',
+        hoverBorderColor: '#f0ad4e',
         data: cluster4.map((a) => a.max),
       },
     ],
@@ -97,17 +97,21 @@ export const Graphs = () => {
   //   bindData().then(setBind(true));
   // }, []);
   return (
-    <Box>
+    <div>
       {bind ? (
         <>
           {/* {chartData.datasets.map((x) => {
             console.log(x.data);
           })} */}
-          <Bar height={400} width={600} data={chartData} options={options} />
+          <Box className="my-5">
+            <Bar height={400} width={100} data={chartData} options={options} />
+          </Box>
+
+          <Line data={chartData} options={{ fill: false }} />
         </>
       ) : (
         <>Binding Data...</>
       )}
-    </Box>
+    </div>
   );
 };
