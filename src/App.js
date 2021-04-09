@@ -5,6 +5,7 @@ import MiniDrawer from './components/UI/layout/sideDrawer';
 import { makeStyles, Typography } from '@material-ui/core';
 import { Dashboard } from './components/UI/Dashboard';
 import { HotelDataset } from './components/HotelDataset';
+import { Graphs } from './components/Graphs';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -38,6 +39,7 @@ function App() {
             <Route exact path="/" component={Dashboard} />
             <Route path="/clusters" component={ClusteredData} />
             <Route path="/hotels" component={HotelDataset} />
+            <Route path="/graphs" component={Graphs} />
           </Switch>
         </main>
       </div>

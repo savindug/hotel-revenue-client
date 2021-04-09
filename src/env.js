@@ -1,2 +1,2 @@
-export const apiURI = 'https://6dcd6f7626fa.ngrok.io/api/';
-export const lApiURI = 'http://localhost/:5000/api/';
+export const apiURI = 'https://4fee10b036b5.ngrok.io/api/';
+//export const apiURI = 'http://localhost:5000/api/';

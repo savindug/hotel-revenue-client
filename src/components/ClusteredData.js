@@ -24,6 +24,7 @@ import HotelDataTable from './HotelDataTable';
 import { Nav } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import ClusterBucket from './ClusterBucket';
+import { Graphs } from './Graphs';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -99,7 +100,7 @@ export const ClusteredData = () => {
             disabled={loading}
             onClick={() => setTab(1)}
           >
-            Hotel Data
+            Clustered Graphs
           </Nav.Link>
         </Nav.Item>
       </Nav>
@@ -152,7 +153,7 @@ export const ClusteredData = () => {
         </Grid>
       </MuiPickersUtilsProvider>
 
-      {/* <TabularNav /> */}
+      <TabularNav />
       {loading ? (
         <LoadingOverlay show={loading} />
       ) : err ? (
@@ -165,8 +166,9 @@ export const ClusteredData = () => {
           <DataTable cluster={cluster2} stars={3} />
           <DataTable cluster={cluster1} stars={2} />
         </>
+      ) : clusterData.length > 0 && tab === 1 ? (
+        <Graphs />
       ) : (
-        //<></>
         <></>
       )}
     </div>
