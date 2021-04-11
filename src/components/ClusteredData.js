@@ -13,6 +13,7 @@ import {
   MuiPickersUtilsProvider,
 } from '@material-ui/pickers';
 import {
+  Button,
   FormControl,
   Grid,
   InputLabel,
@@ -38,7 +39,7 @@ export const ClusteredData = () => {
   const dispatch = useDispatch();
   const [tab, setTab] = useState(0);
   const [selectedDate, setSelectedDate] = useState(
-    moment().format('YYYY-MM-DD')
+    moment().subtract(90, 'd').format('YYYY-MM-DD')
   );
   const getClusterDataSet = useSelector((state) => state.clusterDataSet);
   const {
@@ -60,14 +61,7 @@ export const ClusteredData = () => {
 
   useEffect(() => {
     async function getClusters() {
-      await dispatch(
-        fetchClusterData(
-          1447930,
-          moment(selectedDate).subtract(90, 'd').format('YYYY-MM-DD'),
-          90,
-          106399
-        )
-      );
+      await dispatch(fetchClusterData(1447930, selectedDate, 90, 106399));
     }
 
     // async function getHotels() {
@@ -110,7 +104,7 @@ export const ClusteredData = () => {
   return (
     <div>
       <MuiPickersUtilsProvider utils={MomentUtils}>
-        <Grid container justify="space-around">
+        <Grid container justify="space-around" className="my-5">
           <FormControl className={classes.formControl}>
             <InputLabel htmlFor="grouped-native-select">
               Destination ID
@@ -135,25 +129,31 @@ export const ClusteredData = () => {
               <option value={106399}>106399</option>
             </Select>
           </FormControl>
-          <KeyboardDatePicker
-            disableToolbar
-            variant="inline"
-            format="YYYY-MM-DD"
-            margin="normal"
-            id="date-picker-inline"
-            label="Select the Date"
-            maxDate={new Date()}
-            value={selectedDate}
-            onChange={(date) => handdleDatePicker(date)}
-            KeyboardButtonProps={{
-              'aria-label': 'change date',
-            }}
-            autoOk={true}
-          />
+          <FormControl className={classes.formControl}>
+            <KeyboardDatePicker
+              disableToolbar
+              variant="inline"
+              format="YYYY-MM-DD"
+              id="date-picker-inline"
+              label="Select the Date"
+              value={selectedDate}
+              onChange={(date) => handdleDatePicker(date)}
+              KeyboardButtonProps={{
+                'aria-label': 'change date',
+              }}
+              autoOk={true}
+            />
+          </FormControl>
+
+          <FormControl className={classes.formControl}>
+            <Button variant="outlined" size="small" color="dark">
+              Fetch
+            </Button>
+          </FormControl>
         </Grid>
       </MuiPickersUtilsProvider>
 
-      <TabularNav />
+      <TabularNav className="my-5" />
       {loading ? (
         <LoadingOverlay show={loading} />
       ) : err ? (
