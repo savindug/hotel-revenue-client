@@ -39,7 +39,7 @@ export const ClusteredData = () => {
   const dispatch = useDispatch();
   const [tab, setTab] = useState(0);
   const [selectedDate, setSelectedDate] = useState(
-    moment().subtract(90, 'd').format('YYYY-MM-DD')
+    moment().format('YYYY-MM-DD')
   );
   const getClusterDataSet = useSelector((state) => state.clusterDataSet);
   const {
