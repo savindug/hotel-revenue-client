@@ -17,6 +17,7 @@ import Paper from '@material-ui/core/Paper';
 import { Alert } from 'bootstrap';
 import moment from 'moment';
 import { LoadingOverlay } from './UI/LoadingOverlay';
+import { AssignmentReturn } from '@material-ui/icons';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -47,21 +48,21 @@ const useStyles = makeStyles({
 export default function HotelDataTable({ hotels, selectedDate }) {
   const classes = useStyles();
   const [dates, setDates] = useState([]);
-  const [hotelsList, setHotelsList] = useState([]);
-  // const getClusterDataSet = useSelector((state) => state.clusterDataSet);
-  // const { loading, err, quary } = getClusterDataSet;
+  // const [hotelsList, setHotelsList] = useState([]);
+  // // const getClusterDataSet = useSelector((state) => state.clusterDataSet);
+  // // const { loading, err, quary } = getClusterDataSet;
 
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(25);
+  // const [page, setPage] = React.useState(0);
+  // const [rowsPerPage, setRowsPerPage] = React.useState(25);
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
+  // const handleChangePage = (event, newPage) => {
+  //   setPage(newPage);
+  // };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
+  // const handleChangeRowsPerPage = (event) => {
+  //   setRowsPerPage(+event.target.value);
+  //   setPage(0);
+  // };
 
   // useEffect(() => {
   //   const fetchHotelList = async () => {
@@ -79,47 +80,47 @@ export default function HotelDataTable({ hotels, selectedDate }) {
   //   fetchHotelList();
   // }, [hotels, rowsPerPage, page]);
 
-  useEffect(() => {
-    const datesList = async () => {
-      let dateRange = [];
+  // useEffect(() => {
+  //   const datesList = async () => {
+  //     let dateRange = [];
 
-      for (let i = 0; i < 90; i++) {
-        dateRange.push(moment(selectedDate).subtract(i, 'd').format('MM/DD'));
-      }
+  //     for (let i = 0; i < 90; i++) {
+  //       dateRange.push(moment(selectedDate).add(i, 'd').format('MM/DD'));
+  //     }
 
-      await setDates(dateRange);
-    };
+  //     await setDates(dateRange);
+  //   };
 
-    datesList();
-  }, [dates]);
+  //   datesList();
+  // }, [dates]);
 
-  const DateColumns = (priceArr) => {
-    let dateArr = [];
-    dates.map((d) => {
-      dateArr.push('N/A');
-    });
+  // const DateColumns = (priceArr) => {
+  //   let dateArr = [];
+  //   dates.map((d) => {
+  //     dateArr.push('N/A');
+  //   });
 
-    //console.log(`dateArr => ${dateArr}, length: ${dateArr.length}`);
+  //   //console.log(`dateArr => ${dateArr}, length: ${dateArr.length}`);
 
-    priceArr.map((rate) => {
-      let ins = dates.findIndex((x) => x === moment(rate.date).format('MM/DD'));
-      if (ins !== -1) {
-        dateArr[ins] = rate.price;
-      }
-    });
+  //   priceArr.map((rate) => {
+  //     let ins = dates.findIndex((x) => x === moment(rate.date).format('MM/DD'));
+  //     if (ins !== -1) {
+  //       dateArr[ins] = rate.price;
+  //     }
+  //   });
 
-    return (
-      <>
-        {dateArr.map((dt) => {
-          return <StyledTableCell size="small">{dt}</StyledTableCell>;
-        })}
-      </>
-    );
-  };
+  //   return (
+  //     <>
+  //       {dateArr.map((dt) => {
+  //         return <StyledTableCell size="small">{dt}</StyledTableCell>;
+  //       })}
+  //     </>
+  //   );
+  // };
 
   return (
     <>
-      {hotels.length > 0 && dates.length > 0 ? (
+      {hotels.length > 0 ? (
         <>
           <TableContainer component={Paper} className="my-5">
             <Box width={100}>
@@ -139,8 +140,12 @@ export default function HotelDataTable({ hotels, selectedDate }) {
                     Hotels
                   </StyledTableCell>
                   <StyledTableCell size="small">Stars</StyledTableCell>
-                  {dates.map((d) => {
-                    return <StyledTableCell size="small">{d}</StyledTableCell>;
+                  {hotels[0].prices.map((d, i) => {
+                    return (
+                      <StyledTableCell size="small">
+                        {moment(selectedDate).add(i, 'd').format('MM/DD')}
+                      </StyledTableCell>
+                    );
                   })}
                 </TableHead>
                 <TableBody>
@@ -161,7 +166,15 @@ export default function HotelDataTable({ hotels, selectedDate }) {
                       <StyledTableCell size="small">
                         {_hotel.stars}
                       </StyledTableCell>
-                      {DateColumns(_hotel.prices)}
+                      {_hotel.prices.map((dt) => {
+                        return dt !== null ? (
+                          <StyledTableCell size="small">
+                            {dt.price}
+                          </StyledTableCell>
+                        ) : (
+                          <StyledTableCell size="small">N/A</StyledTableCell>
+                        );
+                      })}
                     </StyledTableRow>
                   ))}
                 </TableBody>

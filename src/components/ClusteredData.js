@@ -64,11 +64,11 @@ export const ClusteredData = () => {
       await dispatch(fetchClusterData(1447930, selectedDate, 90, 106399));
     }
 
-    // async function getHotels() {
-    //   await dispatch(fetchHotelData('1447930', selectedDate, 90));
-    // }
+    async function getHotels() {
+      await dispatch(fetchHotelData(1447930, selectedDate, 90, 106399));
+    }
     getClusters();
-    // getHotels();
+    getHotels();
   }, [selectedDate, dispatch]);
 
   const TabularNav = () => {
@@ -95,6 +95,16 @@ export const ClusteredData = () => {
             onClick={() => setTab(1)}
           >
             Clustered Graphs
+          </Nav.Link>
+        </Nav.Item>{' '}
+        <Nav.Item>
+          <Nav.Link
+            className={tab === 2 ? tabularNavCls : 'text-dark'}
+            eventKey="link-1"
+            disabled={loading}
+            onClick={() => setTab(2)}
+          >
+            Hotels
           </Nav.Link>
         </Nav.Item>
       </Nav>
@@ -168,6 +178,8 @@ export const ClusteredData = () => {
         </>
       ) : clusterData.length > 0 && tab === 1 ? (
         <Graphs />
+      ) : hotels.length > 0 && tab === 2 ? (
+        <HotelDataTable hotels={hotels} selectedDate={selectedDate} />
       ) : (
         <></>
       )}

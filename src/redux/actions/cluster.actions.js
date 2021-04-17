@@ -71,10 +71,14 @@ export const fetchClusterData = (destID, date, range, property) => async (
     });
 };
 
-export const fetchHotelData = (destID, date, range) => async (dispatch) => {
+export const fetchHotelData = (destID, date, range, property) => async (
+  dispatch
+) => {
   dispatch({ type: ACTION_TYPES.GET_HOTELS_PROGRESS });
 
-  await axios(`${apiURI}hotels/report/${destID}/${date}?range=${range}`)
+  await axios(
+    `${apiURI}hotels/report/${property}/${destID}/${date}?range=${range}`
+  )
     .then((res) => {
       let hotelDataSet = res.data.data;
       dispatch({
