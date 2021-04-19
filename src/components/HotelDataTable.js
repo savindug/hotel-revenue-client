@@ -193,9 +193,10 @@ export default function HotelDataTable({ selectedDate }) {
                           key={i}
                           className={
                             day === 'Sat' || day === 'Fri'
-                              ? 'bg-secondary text-light'
-                              : ''
+                              ? 'bg-secondary text-light text-center'
+                              : 'text-center'
                           }
+                          style={{ fontSize: '12px' }}
                         >
                           {`${day.toUpperCase()}\n${moment(date).format(
                             'MM/DD'
