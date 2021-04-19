@@ -6,6 +6,7 @@ import {
   makeStyles,
   Select,
 } from '@material-ui/core';
+import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { Bar, Line } from 'react-chartjs-2';
 import { useSelector } from 'react-redux';
@@ -18,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
 export const Graphs = () => {
   const classes = useStyles();
   const [matrix, setMatrix] = useState('avg');
+  const clusterBG = ['#BFBFBF', '#CCC0DA', '#C4D79B', '#DCE6F1'];
   const getClusterDataSet = useSelector((state) => state.clusterDataSet);
   const {
     loading,
@@ -28,82 +30,82 @@ export const Graphs = () => {
     cluster4,
   } = getClusterDataSet;
   const [chartData, setChartDatae] = useState({
-    labels: cluster1.map((a) => a.date),
+    labels: cluster1.map((a) => moment(a.date).format('MM/DD')),
     datasets: [
       {
         label: 'Stars 2',
-        backgroundColor: '#d9534f',
-        borderColor: '#d9534f',
+        backgroundColor: clusterBG[0],
+        borderColor: clusterBG[0],
         borderWidth: 1,
         //stack: 1,
-        hoverBackgroundColor: '#d9534f',
-        hoverBorderColor: '#d9534f',
+        hoverBackgroundColor: clusterBG[0],
+        hoverBorderColor: clusterBG[0],
         data: cluster1.map((a) => a.mean),
       },
 
       {
         label: 'Stars 3',
-        backgroundColor: '#0275d8',
-        borderColor: '#0275d8',
+        backgroundColor: clusterBG[1],
+        borderColor: clusterBG[1],
         borderWidth: 1,
         //stack: 1,
-        hoverBackgroundColor: '#0275d8',
-        hoverBorderColor: '#0275d8',
+        hoverBackgroundColor: clusterBG[1],
+        hoverBorderColor: clusterBG[1],
         data: cluster2.map((a) => a.mean),
       },
       {
         label: 'Stars 4',
-        backgroundColor: '#5cb85c',
-        borderColor: '#5cb85c',
+        backgroundColor: clusterBG[2],
+        borderColor: clusterBG[2],
         borderWidth: 1,
         //stack: 1,
-        hoverBackgroundColor: '#5cb85c',
-        hoverBorderColor: '#5cb85c',
+        hoverBackgroundColor: clusterBG[2],
+        hoverBorderColor: clusterBG[2],
         data: cluster3.map((a) => a.mean),
       },
       {
         label: 'Stars 5',
-        backgroundColor: '#f0ad4e',
-        borderColor: '#f0ad4e',
+        backgroundColor: clusterBG[3],
+        borderColor: clusterBG[3],
         borderWidth: 1,
         // stack: 1,
-        hoverBackgroundColor: '#f0ad4e',
-        hoverBorderColor: '#f0ad4e',
+        hoverBackgroundColor: clusterBG[3],
+        hoverBorderColor: clusterBG[3],
         data: cluster4.map((a) => a.mean),
       },
     ],
   });
   const [lineData, setLineData] = useState({
-    labels: cluster1.map((a) => a.date),
+    labels: cluster1.map((a) => moment(a.date).format('MM/DD')),
     datasets: [
       {
-        label: 'Stars 2',
+        label: '2 Star Cluster',
         fill: true,
-        borderColor: '#d9534f',
-        borderWidth: 1,
+        borderColor: clusterBG[0],
+        borderWidth: 2,
         data: cluster1.map((a) => a.mean),
       },
 
       {
-        label: 'Stars 3',
+        label: '3 Star Cluster',
         fill: true,
-        borderColor: '#0275d8',
-        borderWidth: 1,
+        borderColor: clusterBG[1],
+        borderWidth: 2,
         data: cluster2.map((a) => a.mean),
       },
       {
-        label: 'Stars 4',
+        label: '4 Star Cluster',
         fill: true,
-        borderColor: '#5cb85c',
-        borderWidth: 1,
+        borderColor: clusterBG[2],
+        borderWidth: 2,
         data: cluster3.map((a) => a.mean),
       },
       {
-        label: 'Stars 5',
+        label: '5 Star Cluster',
         fill: true,
         backgroundColor: 'rgba(75,192,192,0.2)',
-        borderColor: '#f0ad4e',
-        borderWidth: 1,
+        borderColor: clusterBG[3],
+        borderWidth: 2,
         data: cluster4.map((a) => a.mean),
       },
     ],

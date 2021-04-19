@@ -79,11 +79,14 @@ export const fetchHotelData = (destID, date, range, property) => async (
   await axios(
     `${apiURI}hotels/report/${property}/${destID}/${date}?range=${range}`
   )
+    // await axios(
+    //   `http://localhost:5000/api/hotels/report/106399/1447930/2021-04-19?range=90`
+    // )
     .then((res) => {
-      let hotelDataSet = res.data.data;
+      //let hotelDataSet = res.data.data;
       dispatch({
         type: ACTION_TYPES.GET_HOTELS,
-        payload: hotelDataSet,
+        payload: res.data.data,
       });
     })
     .catch((err) => {
@@ -95,34 +98,21 @@ export const fetchHotelData = (destID, date, range, property) => async (
     });
 };
 
-// const sortClusters = (clusterData) => {
-//   let clusterArr = [];
-//   clusterArr.push(clusterData.cluster1.mean);
-//   clusterArr.push(clusterData.cluster2.mean);
-//   clusterArr.push(clusterData.cluster3.mean);
-//   clusterArr.push(clusterData.cluster4.mean);
+export const fetchHotelsList = () => async (dispatch) => {
+  dispatch({ type: ACTION_TYPES.GET_HOTELSLIST_PROGRESS });
 
-//   clusterArr.sort((a, b) => a - b);
-//   console.log(`clusterArr => ${clusterArr.length} => ${clusterArr}`);
-
-//   clusterArr.map((e, i) => {
-//     if (e === clusterData.cluster1.mean) {
-//       clusterArr[i] = 'cluster1';
-//       clusterData.cluster1.index = i;
-//     }
-//     if (e === clusterData.cluster2.mean) {
-//       clusterArr[i] = 'cluster2';
-//       clusterData.cluster2.index = i;
-//     }
-//     if (e === clusterData.cluster3.mean) {
-//       clusterArr[i] = 'cluster3';
-//       clusterData.cluster3.index = i;
-//     }
-//     if (e === clusterData.cluster4.mean) {
-//       clusterArr[i] = 'cluster4';
-//       clusterData.cluster4.index = i;
-//     }
-//   });
-
-//   clusterData.sortClusters = clusterArr;
-// };
+  await axios(`${apiURI}hotels`)
+    .then((res) => {
+      dispatch({
+        type: ACTION_TYPES.GET_HOTELSLIST,
+        payload: res.data.data,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      dispatch({
+        type: ACTION_TYPES.GET_HOTELSLIST_FAILED,
+        payload: err,
+      });
+    });
+};

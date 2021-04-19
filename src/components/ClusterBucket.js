@@ -12,6 +12,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableHead from '@material-ui/core/TableHead';
 import Paper from '@material-ui/core/Paper';
 import { useDispatch, useSelector } from 'react-redux';
+import moment from 'moment';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -25,11 +26,7 @@ const StyledTableCell = withStyles((theme) => ({
 }))(TableCell);
 
 const StyledTableRow = withStyles((theme) => ({
-  root: {
-    '&:nth-of-type(odd)': {
-      backgroundColor: theme.palette.action.hover,
-    },
-  },
+  root: {},
 }))(TableRow);
 const useStyles = makeStyles({
   table: {
@@ -41,6 +38,8 @@ const useStyles = makeStyles({
 
 export default function ClusterBucket({ cluster, stars }) {
   const classes = useStyles();
+
+  const clusterBG = ['#BFBFBF', '#CCC0DA', '#C4D79B', '#DCE6F1'];
 
   const getClusterDataSet = useSelector((state) => state.clusterDataSet);
   const { loading, err, reqHotel } = getClusterDataSet;
@@ -65,11 +64,27 @@ export default function ClusterBucket({ cluster, stars }) {
                   Your Property
                 </StyledTableCell>
                 <StyledTableCell size="small">Stars</StyledTableCell>
-                {reqHotel.map((e, index) => (
-                  <StyledTableCell size="small" key={index}>
-                    {e.checkIn}
-                  </StyledTableCell>
-                ))}
+                {reqHotel.map((e, index) =>
+                  (() => {
+                    let date = moment(e.checkIn).format('dddd').substring(0, 3);
+                    return (
+                      <StyledTableCell
+                        size="small"
+                        key={index}
+                        className={
+                          date === 'Sat' || date === 'Fri'
+                            ? 'bg-secondary text-light text-center'
+                            : 'text-center'
+                        }
+                        style={{ fontSize: '12px' }}
+                      >
+                        {`${date.toUpperCase()}\n${moment(e.checkIn).format(
+                          'MM/DD'
+                        )}`}
+                      </StyledTableCell>
+                    );
+                  })()
+                )}
               </TableHead>
               <TableBody>
                 <StyledTableRow>
@@ -87,7 +102,11 @@ export default function ClusterBucket({ cluster, stars }) {
                     {reqHotel[0].stars}
                   </StyledTableCell>
                   {reqHotel.map((e, index) => (
-                    <StyledTableCell size="small" key={index}>
+                    <StyledTableCell
+                      size="small"
+                      key={index}
+                      style={{ backgroundColor: clusterBG[e.cluster - 2] }}
+                    >
                       {e.rate}
                     </StyledTableCell>
                   ))}
@@ -131,7 +150,7 @@ export default function ClusterBucket({ cluster, stars }) {
                     <StyledTableCell
                       size="small"
                       key={index}
-                      style={{ fontSize: '11px' }}
+                      style={{ fontWeight: 'bold', fontSize: '12px' }}
                     >
                       {e.pos}
                     </StyledTableCell>

@@ -38,6 +38,9 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 const useStyles = makeStyles({
+  container: {
+    maxHeight: 500,
+  },
   table: {
     '& .MuiTableCell-root': {
       borderLeft: '1px solid rgba(224, 224, 224, 1)',
@@ -45,12 +48,22 @@ const useStyles = makeStyles({
   },
 });
 
-export default function HotelDataTable({ hotels, selectedDate }) {
+export default function HotelDataTable({ selectedDate }) {
   const classes = useStyles();
   const [dates, setDates] = useState([]);
+
+  const clusterBG = ['#BFBFBF', '#CCC0DA', '#C4D79B', '#DCE6F1'];
   // const [hotelsList, setHotelsList] = useState([]);
-  // // const getClusterDataSet = useSelector((state) => state.clusterDataSet);
-  // // const { loading, err, quary } = getClusterDataSet;
+  const getClusterDataSet = useSelector((state) => state.clusterDataSet);
+  const {
+    loading,
+    err,
+    cluster1,
+    cluster2,
+    cluster3,
+    cluster4,
+    hotels,
+  } = getClusterDataSet;
 
   // const [page, setPage] = React.useState(0);
   // const [rowsPerPage, setRowsPerPage] = React.useState(25);
@@ -118,11 +131,38 @@ export default function HotelDataTable({ hotels, selectedDate }) {
   //   );
   // };
 
+  const getClusterByPrice = (rate, ix) => {
+    console.log('rate: ' + rate + 'cluster1.min: ' + cluster1.min);
+    if (rate >= cluster1[ix].min && rate <= cluster1[ix].max) {
+      //console.log(`${cluster1.min} < ${rate} > ${cluster1.max} `);
+      return 0;
+    }
+    if (rate >= cluster2[ix].min && rate <= cluster2[ix].max) {
+      //console.log(`${cluster2.min} < ${rate} > ${cluster2.max} `);
+      return 1;
+    }
+    if (rate >= cluster3[ix].min && rate <= cluster3[ix].max) {
+      //console.log(`${cluster3.min} < ${rate} > ${cluster3.max} `);
+      return 2;
+    }
+    if (rate >= cluster4[ix].min && rate <= cluster4[ix].max) {
+      //console.log(`${cluster4.min} < ${rate} > ${cluster4.max} `);
+      return 3;
+    }
+  };
+
   return (
     <>
-      {hotels.length > 0 ? (
+      {hotels.length > 0 &&
+      cluster1.length > 0 &&
+      cluster2.length > 0 &&
+      cluster3.length > 0 &&
+      cluster4.length > 0 ? (
         <>
-          <TableContainer component={Paper} className="my-5">
+          <TableContainer
+            component={Paper}
+            className={classes.container + ' mt-3'}
+          >
             <Box width={100}>
               <Table
                 className={classes.table}
@@ -140,13 +180,30 @@ export default function HotelDataTable({ hotels, selectedDate }) {
                     Hotels
                   </StyledTableCell>
                   <StyledTableCell size="small">Stars</StyledTableCell>
-                  {hotels[0].prices.map((d, i) => {
-                    return (
-                      <StyledTableCell size="small">
-                        {moment(selectedDate).add(i, 'd').format('MM/DD')}
-                      </StyledTableCell>
-                    );
-                  })}
+                  {hotels[0].prices.map((d, i) =>
+                    (() => {
+                      let date = moment(selectedDate)
+                        .add(i, 'd')
+                        .format('YYYY-MM-DD');
+                      let day = moment(date).format('dddd').substring(0, 3);
+                      console.log('selectedDate+: ' + date + ', day: ' + day);
+                      return (
+                        <StyledTableCell
+                          size="small"
+                          key={i}
+                          className={
+                            day === 'Sat' || day === 'Fri'
+                              ? 'bg-secondary text-light'
+                              : ''
+                          }
+                        >
+                          {`${day.toUpperCase()}\n${moment(date).format(
+                            'MM/DD'
+                          )}`}
+                        </StyledTableCell>
+                      );
+                    })()
+                  )}
                 </TableHead>
                 <TableBody>
                   {hotels.map((_hotel, index) => (
@@ -166,9 +223,15 @@ export default function HotelDataTable({ hotels, selectedDate }) {
                       <StyledTableCell size="small">
                         {_hotel.stars}
                       </StyledTableCell>
-                      {_hotel.prices.map((dt) => {
+                      {_hotel.prices.map((dt, ix) => {
                         return dt !== null ? (
-                          <StyledTableCell size="small">
+                          <StyledTableCell
+                            size="small"
+                            style={{
+                              backgroundColor:
+                                clusterBG[getClusterByPrice(dt.price, ix)],
+                            }}
+                          >
                             {dt.price}
                           </StyledTableCell>
                         ) : (

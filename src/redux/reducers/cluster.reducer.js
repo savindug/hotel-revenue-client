@@ -11,6 +11,7 @@ const initialState = {
   err: null,
   quary: null,
   reqHotel: [],
+  hotelList: [],
 };
 
 const clusterDataReducer = (state = initialState, action) => {
@@ -91,6 +92,25 @@ const clusterDataReducer = (state = initialState, action) => {
         ...state,
         reqHotel: action.payload,
         loading: false,
+      };
+
+    case ACTION_TYPES.GET_HOTELSLIST:
+      return {
+        ...state,
+        hotelList: action.payload,
+      };
+
+    case ACTION_TYPES.GET_HOTELSLIST_PROGRESS:
+      return {
+        ...state,
+        loading: true,
+      };
+
+    case ACTION_TYPES.GET_HOTELSLIST_FAILED:
+      return {
+        ...state,
+        loading: false,
+        err: action.payload,
       };
 
     default:
