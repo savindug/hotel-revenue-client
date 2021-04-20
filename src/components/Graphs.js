@@ -8,7 +8,7 @@ import {
 } from '@material-ui/core';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
-import { Bar, Line } from 'react-chartjs-2';
+import { Bar, Line, Scatter } from 'react-chartjs-2';
 import { useSelector } from 'react-redux';
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -19,11 +19,12 @@ const useStyles = makeStyles((theme) => ({
 export const Graphs = () => {
   const classes = useStyles();
   const [matrix, setMatrix] = useState('avg');
-  const clusterBG = ['#BFBFBF', '#CCC0DA', '#C4D79B', '#DCE6F1'];
+  const clusterBG = ['#E6B8B8', '#CCC0DA', '#C4D79B', '#DDE6F6'];
   const getClusterDataSet = useSelector((state) => state.clusterDataSet);
   const {
     loading,
     err,
+    clusterData,
     cluster1,
     cluster2,
     cluster3,
@@ -127,6 +128,13 @@ export const Graphs = () => {
     // }
   });
 
+  const [scatterData2, setScatterData2] = useState([]);
+  const [scatterData3, setScatterData3] = useState([]);
+  const [scatterData4, setScatterData4] = useState([]);
+  const [scatterData5, setScatterData5] = useState([]);
+
+  const [scatterPlot, setScatterPlot] = useState(2);
+
   const [bind, setBind] = useState(true);
 
   const hanndleMatrixChange = (m) => {
@@ -189,9 +197,34 @@ export const Graphs = () => {
     }
   };
 
-  // useEffect(() => {
+  const handleScatterPlotMatrix = (e) => {
+    setScatterPlot(e);
+  };
 
-  // }, [matrix]);
+  useEffect(() => {
+    if (clusterData.length > 0) {
+      cluster1.map((cl) => {
+        cl.cluster.map((data) => {
+          setScatterData2((state) => [...state, data]);
+        });
+      });
+      cluster2.map((cl) => {
+        cl.cluster.map((data) => {
+          setScatterData3((state) => [...state, data]);
+        });
+      });
+      cluster3.map((cl) => {
+        cl.cluster.map((data) => {
+          setScatterData4((state) => [...state, data]);
+        });
+      });
+      cluster4.map((cl) => {
+        cl.cluster.map((data) => {
+          setScatterData5((state) => [...state, data]);
+        });
+      });
+    }
+  }, [cluster1, cluster2, cluster3, cluster4]);
   return (
     <div>
       {bind ? (
@@ -222,8 +255,106 @@ export const Graphs = () => {
           <Box className="my-5">
             <Bar height={400} width={100} data={chartData} options={options} />
           </Box>
-
+          <hr className="my-5"></hr>
           <Line data={lineData} height={100} />
+
+          <hr className="my-5"></hr>
+
+          <Grid container justify="space-around" className="my-5">
+            <h1>Scatter Plot</h1>
+            <FormControl className={classes.formControl}>
+              <InputLabel htmlFor="grouped-native-select">
+                Scatter Plot for
+              </InputLabel>
+              <Select
+                native={true}
+                onChange={(e) => handleScatterPlotMatrix(e.target.value)}
+                id="grouped-native-select"
+                value={scatterPlot}
+              >
+                <option value="2">2 Star Cluster</option>
+                <option value="3">3 Star Cluster</option>
+                <option value="4">4 Star Cluster</option>
+                <option value="5">5 Star Cluster</option>
+              </Select>
+            </FormControl>
+          </Grid>
+
+          {scatterData2.length > 0 && scatterPlot == 2 ? (
+            //(console.log('scatterData => ' + JSON.stringify(scatterData)),
+            <Line
+              data={{
+                labels: cluster1.map((a) => moment(a.date).format('MM/DD')),
+                datasets: [
+                  {
+                    label: '2 Star Cluster',
+                    showLine: false,
+                    backgroundColor: '#000000',
+                    borderColor: '#000000',
+                    hoverBackgroundColor: '#000000',
+                    hoverBorderColor: '#000000',
+                    data: scatterData2,
+                  },
+                ],
+              }}
+            />
+          ) : scatterData3.length > 0 && scatterPlot == 3 ? (
+            //(console.log('scatterData => ' + JSON.stringify(scatterData)),
+            <Line
+              data={{
+                labels: cluster2.map((a) => moment(a.date).format('MM/DD')),
+                datasets: [
+                  {
+                    label: '3 Star Cluster',
+                    showLine: false,
+                    backgroundColor: '#000000',
+                    borderColor: '#000000',
+                    hoverBackgroundColor: '#000000',
+                    hoverBorderColor: '#000000',
+                    data: scatterData3,
+                  },
+                ],
+              }}
+            />
+          ) : scatterData4.length > 0 && scatterPlot == 4 ? (
+            //(console.log('scatterData => ' + JSON.stringify(scatterData)),
+            <Line
+              data={{
+                labels: cluster3.map((a) => moment(a.date).format('MM/DD')),
+                datasets: [
+                  {
+                    label: '4 Star Cluster',
+                    showLine: false,
+                    backgroundColor: '#000000',
+                    borderColor: '#000000',
+                    hoverBackgroundColor: '#000000',
+                    hoverBorderColor: '#000000',
+                    data: scatterData4,
+                  },
+                ],
+              }}
+            />
+          ) : scatterData5.length > 0 && scatterPlot == 5 ? (
+            //(console.log('scatterData => ' + JSON.stringify(scatterData)),
+            <Line
+              data={{
+                labels: cluster4.map((a) => moment(a.date).format('MM/DD')),
+                datasets: [
+                  {
+                    label: '5 Star Cluster',
+                    showLine: false,
+                    backgroundColor: '#000000',
+                    borderColor: '#000000',
+                    hoverBackgroundColor: '#000000',
+                    hoverBorderColor: '#000000',
+                    data: scatterData5,
+                  },
+                ],
+              }}
+            />
+          ) : (
+            <></>
+          )}
         </>
       ) : (
         <>Binding Data...</>

@@ -7,6 +7,7 @@ import {
   TableContainer,
   TablePagination,
   TableRow,
+  TableSortLabel,
   withStyles,
 } from '@material-ui/core';
 import { useEffect, useState } from 'react';
@@ -17,7 +18,7 @@ import Paper from '@material-ui/core/Paper';
 import { Alert } from 'bootstrap';
 import moment from 'moment';
 import { LoadingOverlay } from './UI/LoadingOverlay';
-import { AssignmentReturn } from '@material-ui/icons';
+import { AssignmentReturn, DirectionsBike } from '@material-ui/icons';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -51,8 +52,12 @@ const useStyles = makeStyles({
 export default function HotelDataTable({ selectedDate }) {
   const classes = useStyles();
   const [dates, setDates] = useState([]);
+  const [sortBy, setSortBy] = useState({
+    col: 0,
+    dir: 0,
+  });
 
-  const clusterBG = ['#BFBFBF', '#CCC0DA', '#C4D79B', '#DCE6F1'];
+  const clusterBG = ['#E6B8B8', '#CCC0DA', '#C4D79B', '#DCE6F1'];
   // const [hotelsList, setHotelsList] = useState([]);
   const getClusterDataSet = useSelector((state) => state.clusterDataSet);
   const {
@@ -64,72 +69,6 @@ export default function HotelDataTable({ selectedDate }) {
     cluster4,
     hotels,
   } = getClusterDataSet;
-
-  // const [page, setPage] = React.useState(0);
-  // const [rowsPerPage, setRowsPerPage] = React.useState(25);
-
-  // const handleChangePage = (event, newPage) => {
-  //   setPage(newPage);
-  // };
-
-  // const handleChangeRowsPerPage = (event) => {
-  //   setRowsPerPage(+event.target.value);
-  //   setPage(0);
-  // };
-
-  // useEffect(() => {
-  //   const fetchHotelList = async () => {
-  //     let hotelsArr = [];
-
-  //     await hotels
-  //       .slice(rowsPerPage * page, rowsPerPage * page + rowsPerPage)
-  //       .map((hotel) => {
-  //         hotelsArr.push(hotel);
-  //       });
-
-  //     setHotelsList(hotelsArr);
-  //   };
-
-  //   fetchHotelList();
-  // }, [hotels, rowsPerPage, page]);
-
-  // useEffect(() => {
-  //   const datesList = async () => {
-  //     let dateRange = [];
-
-  //     for (let i = 0; i < 90; i++) {
-  //       dateRange.push(moment(selectedDate).add(i, 'd').format('MM/DD'));
-  //     }
-
-  //     await setDates(dateRange);
-  //   };
-
-  //   datesList();
-  // }, [dates]);
-
-  // const DateColumns = (priceArr) => {
-  //   let dateArr = [];
-  //   dates.map((d) => {
-  //     dateArr.push('N/A');
-  //   });
-
-  //   //console.log(`dateArr => ${dateArr}, length: ${dateArr.length}`);
-
-  //   priceArr.map((rate) => {
-  //     let ins = dates.findIndex((x) => x === moment(rate.date).format('MM/DD'));
-  //     if (ins !== -1) {
-  //       dateArr[ins] = rate.price;
-  //     }
-  //   });
-
-  //   return (
-  //     <>
-  //       {dateArr.map((dt) => {
-  //         return <StyledTableCell size="small">{dt}</StyledTableCell>;
-  //       })}
-  //     </>
-  //   );
-  // };
 
   const getClusterByPrice = (rate, ix) => {
     console.log('rate: ' + rate + 'cluster1.min: ' + cluster1.min);
@@ -149,6 +88,31 @@ export default function HotelDataTable({ selectedDate }) {
       //console.log(`${cluster4.min} < ${rate} > ${cluster4.max} `);
       return 3;
     }
+  };
+
+  // useEffect(() => {
+  //   if (hotels.length > 0) {
+  //     if (sortBy.col === 0 && sortBy.dir === 0) {
+  //       hotels.sort((a, b) => a.stars - b.stars);
+  //     }
+  //     if (sortBy.col === 0 && sortBy.dir === 1) {
+  //       hotels.sort((a, b) => b.name - a.name);
+  //     }
+
+  //     if (sortBy.col === 1 && sortBy.dir === 0) {
+  //       hotels.sort((a, b) => a.stars - b.stars);
+  //     }
+  //     if (sortBy.col === 1 && sortBy.dir === 1) {
+  //       hotels.sort((a, b) => b.stars - a.stars);
+  //     }
+  //   }
+  // }, [sortBy, hotels]);
+
+  const handleSort = (col) => {
+    setSortBy({
+      col: col,
+      dir: sortBy.dir === 0 ? 1 : 0,
+    });
   };
 
   return (
@@ -178,6 +142,7 @@ export default function HotelDataTable({ selectedDate }) {
                     style={{ fontWeight: 'bold', width: '250px' }}
                   >
                     Hotels
+                    {/* <TableSortLabel onClick={handleSort(0)}></TableSortLabel> */}
                   </StyledTableCell>
                   <StyledTableCell size="small">Stars</StyledTableCell>
                   {hotels[0].prices.map((d, i) =>

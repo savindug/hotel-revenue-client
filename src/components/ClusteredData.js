@@ -72,6 +72,19 @@ export const ClusteredData = () => {
     getHotelList();
   }, []);
 
+  const setScatterPlotData = () => {
+    let scD = [];
+    if (cluster1.length > 0) {
+      cluster1.map((cl) => {
+        cl.cluster.map((data) => {
+          scD.push([moment(cl.date).format('MM/DD'), data]);
+        });
+      });
+    }
+
+    return scD;
+  };
+
   useEffect(() => {
     async function getClusters() {
       await dispatch(

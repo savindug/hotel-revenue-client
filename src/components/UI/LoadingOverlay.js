@@ -5,7 +5,9 @@ export const LoadingOverlay = ({ show }) => {
     <div class={styles.wrapper}>
       <div class={styles.overlay + show ? (styles.show = true) : ''}></div>
       <div class={styles.spanner + show ? (styles.show = true) : ''}>
-        <div class={styles.loader}></div>
+        <div class={styles.loader}>
+          <h1>Fetching Data</h1>
+        </div>
       </div>
     </div>
   );

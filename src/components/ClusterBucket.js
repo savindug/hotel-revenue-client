@@ -39,7 +39,7 @@ const useStyles = makeStyles({
 export default function ClusterBucket({ cluster, stars }) {
   const classes = useStyles();
 
-  const clusterBG = ['#BFBFBF', '#CCC0DA', '#C4D79B', '#DCE6F1'];
+  const clusterBG = ['#E6B8B8', '#CCC0DA', '#C4D79B', '#DCE6F1'];
 
   const getClusterDataSet = useSelector((state) => state.clusterDataSet);
   const { loading, err, reqHotel } = getClusterDataSet;
@@ -175,7 +175,7 @@ export default function ClusterBucket({ cluster, stars }) {
                     <StyledTableCell
                       size="small"
                       key={index}
-                      style={{ fontSize: '11px' }}
+                      style={{ fontSize: '14px' }}
                     >
                       {e.rank}
                     </StyledTableCell>
