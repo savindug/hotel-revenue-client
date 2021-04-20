@@ -128,7 +128,11 @@ export const Graphs = () => {
     // }
   });
 
-  const [scatterData2, setScatterData2] = useState([]);
+  const [scatterData2avg, setScatterData2avg] = useState([]);
+  const [scatterData2high, setScatterData2high] = useState([]);
+  const [scatterData2low, setScatterData2low] = useState([]);
+  const [scatterData2mod, setScatterData2mod] = useState([]);
+
   const [scatterData3, setScatterData3] = useState([]);
   const [scatterData4, setScatterData4] = useState([]);
   const [scatterData5, setScatterData5] = useState([]);
@@ -204,9 +208,10 @@ export const Graphs = () => {
   useEffect(() => {
     if (clusterData.length > 0) {
       cluster1.map((cl) => {
-        cl.cluster.map((data) => {
-          setScatterData2((state) => [...state, data]);
-        });
+        setScatterData2avg((state) => [...state, cl.mean]);
+        setScatterData2high((state) => [...state, cl.max]);
+        setScatterData2low((state) => [...state, cl.min]);
+        setScatterData2mod((state) => [...state, cl.mod]);
       });
       cluster2.map((cl) => {
         cl.cluster.map((data) => {
@@ -280,20 +285,47 @@ export const Graphs = () => {
             </FormControl>
           </Grid>
 
-          {scatterData2.length > 0 && scatterPlot == 2 ? (
+          {scatterData2avg.length > 0 && scatterPlot == 2 ? (
             //(console.log('scatterData => ' + JSON.stringify(scatterData)),
             <Line
               data={{
                 labels: cluster1.map((a) => moment(a.date).format('MM/DD')),
                 datasets: [
                   {
-                    label: '2 Star Cluster',
+                    label: 'MAX',
                     showLine: false,
-                    backgroundColor: '#000000',
-                    borderColor: '#000000',
-                    hoverBackgroundColor: '#000000',
-                    hoverBorderColor: '#000000',
-                    data: scatterData2,
+                    backgroundColor: '#0D47A1',
+                    borderColor: '#0D47A1',
+                    hoverBackgroundColor: '#0D47A1',
+                    hoverBorderColor: '#0D47A1',
+                    data: scatterData2high,
+                  },
+                  {
+                    label: 'AVG',
+                    showLine: false,
+                    backgroundColor: '#1A237E',
+                    borderColor: '#1A237E',
+                    hoverBackgroundColor: '#1A237E',
+                    hoverBorderColor: '#1A237E',
+                    data: scatterData2avg,
+                  },
+                  {
+                    label: 'MOD',
+                    showLine: false,
+                    backgroundColor: '#311B92',
+                    borderColor: '#311B92',
+                    hoverBackgroundColor: '#311B92',
+                    hoverBorderColor: '#311B92',
+                    data: scatterData2mod,
+                  },
+                  {
+                    label: 'LOW',
+                    showLine: false,
+                    backgroundColor: '#FF8A80',
+                    borderColor: '#FF8A80',
+                    hoverBackgroundColor: '#FF8A80',
+                    hoverBorderColor: '#FF8A80',
+                    data: scatterData2low,
                   },
                 ],
               }}
