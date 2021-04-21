@@ -28,6 +28,7 @@ import { Link } from 'react-router-dom';
 import ClusterBucket from './ClusterBucket';
 import { Graphs } from './Graphs';
 import img_star_bucktet from '../assets/imgs/star-buckets.png';
+import SimpleMap from './SimpleMap';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -134,7 +135,17 @@ export const ClusteredData = () => {
             disabled={loading}
             onClick={() => setTab(2)}
           >
-            Hotels
+            Hotels Rates
+          </Nav.Link>
+        </Nav.Item>{' '}
+        <Nav.Item>
+          <Nav.Link
+            className={tab === 3 ? tabularNavCls : 'text-dark'}
+            eventKey="link-1"
+            disabled={loading}
+            onClick={() => setTab(3)}
+          >
+            Hotels Map
           </Nav.Link>
         </Nav.Item>
       </Nav>
@@ -218,6 +229,8 @@ export const ClusteredData = () => {
         <Graphs />
       ) : hotels.length > 0 && tab === 2 ? (
         <HotelDataTable selectedDate={selectedDate} />
+      ) : hotels.length > 0 && tab === 3 ? (
+        <SimpleMap />
       ) : (
         <></>
       )}

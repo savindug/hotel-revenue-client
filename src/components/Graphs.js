@@ -131,11 +131,18 @@ export const Graphs = () => {
   const [scatterData2avg, setScatterData2avg] = useState([]);
   const [scatterData2high, setScatterData2high] = useState([]);
   const [scatterData2low, setScatterData2low] = useState([]);
-  const [scatterData2mod, setScatterData2mod] = useState([]);
 
-  const [scatterData3, setScatterData3] = useState([]);
-  const [scatterData4, setScatterData4] = useState([]);
-  const [scatterData5, setScatterData5] = useState([]);
+  const [scatterData3avg, setScatterData3avg] = useState([]);
+  const [scatterData3high, setScatterData3high] = useState([]);
+  const [scatterData3low, setScatterData3low] = useState([]);
+
+  const [scatterData4avg, setScatterData4avg] = useState([]);
+  const [scatterData4high, setScatterData4high] = useState([]);
+  const [scatterData4low, setScatterData4low] = useState([]);
+
+  const [scatterData5avg, setScatterData5avg] = useState([]);
+  const [scatterData5high, setScatterData5high] = useState([]);
+  const [scatterData5low, setScatterData5low] = useState([]);
 
   const [scatterPlot, setScatterPlot] = useState(2);
 
@@ -211,22 +218,21 @@ export const Graphs = () => {
         setScatterData2avg((state) => [...state, cl.mean]);
         setScatterData2high((state) => [...state, cl.max]);
         setScatterData2low((state) => [...state, cl.min]);
-        setScatterData2mod((state) => [...state, cl.mod]);
       });
       cluster2.map((cl) => {
-        cl.cluster.map((data) => {
-          setScatterData3((state) => [...state, data]);
-        });
+        setScatterData3avg((state) => [...state, cl.mean]);
+        setScatterData3high((state) => [...state, cl.max]);
+        setScatterData3low((state) => [...state, cl.min]);
       });
       cluster3.map((cl) => {
-        cl.cluster.map((data) => {
-          setScatterData4((state) => [...state, data]);
-        });
+        setScatterData4avg((state) => [...state, cl.mean]);
+        setScatterData4high((state) => [...state, cl.max]);
+        setScatterData4low((state) => [...state, cl.min]);
       });
       cluster4.map((cl) => {
-        cl.cluster.map((data) => {
-          setScatterData5((state) => [...state, data]);
-        });
+        setScatterData5avg((state) => [...state, cl.mean]);
+        setScatterData5high((state) => [...state, cl.max]);
+        setScatterData5low((state) => [...state, cl.min]);
       });
     }
   }, [cluster1, cluster2, cluster3, cluster4]);
@@ -310,15 +316,6 @@ export const Graphs = () => {
                     data: scatterData2avg,
                   },
                   {
-                    label: 'MOD',
-                    showLine: false,
-                    backgroundColor: '#311B92',
-                    borderColor: '#311B92',
-                    hoverBackgroundColor: '#311B92',
-                    hoverBorderColor: '#311B92',
-                    data: scatterData2mod,
-                  },
-                  {
                     label: 'LOW',
                     showLine: false,
                     backgroundColor: '#FF8A80',
@@ -330,56 +327,110 @@ export const Graphs = () => {
                 ],
               }}
             />
-          ) : scatterData3.length > 0 && scatterPlot == 3 ? (
+          ) : scatterData3avg.length > 0 && scatterPlot == 3 ? (
             //(console.log('scatterData => ' + JSON.stringify(scatterData)),
             <Line
               data={{
                 labels: cluster2.map((a) => moment(a.date).format('MM/DD')),
                 datasets: [
                   {
-                    label: '3 Star Cluster',
+                    label: 'MAX',
                     showLine: false,
-                    backgroundColor: '#000000',
-                    borderColor: '#000000',
-                    hoverBackgroundColor: '#000000',
-                    hoverBorderColor: '#000000',
-                    data: scatterData3,
+                    backgroundColor: '#0D47A1',
+                    borderColor: '#0D47A1',
+                    hoverBackgroundColor: '#0D47A1',
+                    hoverBorderColor: '#0D47A1',
+                    data: scatterData3high,
+                  },
+                  {
+                    label: 'AVG',
+                    showLine: false,
+                    backgroundColor: '#1A237E',
+                    borderColor: '#1A237E',
+                    hoverBackgroundColor: '#1A237E',
+                    hoverBorderColor: '#1A237E',
+                    data: scatterData3avg,
+                  },
+                  {
+                    label: 'LOW',
+                    showLine: false,
+                    backgroundColor: '#FF8A80',
+                    borderColor: '#FF8A80',
+                    hoverBackgroundColor: '#FF8A80',
+                    hoverBorderColor: '#FF8A80',
+                    data: scatterData3low,
                   },
                 ],
               }}
             />
-          ) : scatterData4.length > 0 && scatterPlot == 4 ? (
+          ) : scatterData4avg.length > 0 && scatterPlot == 4 ? (
             //(console.log('scatterData => ' + JSON.stringify(scatterData)),
             <Line
               data={{
                 labels: cluster3.map((a) => moment(a.date).format('MM/DD')),
                 datasets: [
                   {
-                    label: '4 Star Cluster',
+                    label: 'MAX',
                     showLine: false,
-                    backgroundColor: '#000000',
-                    borderColor: '#000000',
-                    hoverBackgroundColor: '#000000',
-                    hoverBorderColor: '#000000',
-                    data: scatterData4,
+                    backgroundColor: '#0D47A1',
+                    borderColor: '#0D47A1',
+                    hoverBackgroundColor: '#0D47A1',
+                    hoverBorderColor: '#0D47A1',
+                    data: scatterData4high,
+                  },
+                  {
+                    label: 'AVG',
+                    showLine: false,
+                    backgroundColor: '#1A237E',
+                    borderColor: '#1A237E',
+                    hoverBackgroundColor: '#1A237E',
+                    hoverBorderColor: '#1A237E',
+                    data: scatterData4avg,
+                  },
+                  {
+                    label: 'LOW',
+                    showLine: false,
+                    backgroundColor: '#FF8A80',
+                    borderColor: '#FF8A80',
+                    hoverBackgroundColor: '#FF8A80',
+                    hoverBorderColor: '#FF8A80',
+                    data: scatterData4low,
                   },
                 ],
               }}
             />
-          ) : scatterData5.length > 0 && scatterPlot == 5 ? (
+          ) : scatterData5avg.length > 0 && scatterPlot == 5 ? (
             //(console.log('scatterData => ' + JSON.stringify(scatterData)),
             <Line
               data={{
                 labels: cluster4.map((a) => moment(a.date).format('MM/DD')),
                 datasets: [
                   {
-                    label: '5 Star Cluster',
+                    label: 'MAX',
                     showLine: false,
-                    backgroundColor: '#000000',
-                    borderColor: '#000000',
-                    hoverBackgroundColor: '#000000',
-                    hoverBorderColor: '#000000',
-                    data: scatterData5,
+                    backgroundColor: '#0D47A1',
+                    borderColor: '#0D47A1',
+                    hoverBackgroundColor: '#0D47A1',
+                    hoverBorderColor: '#0D47A1',
+                    data: scatterData5high,
+                  },
+                  {
+                    label: 'AVG',
+                    showLine: false,
+                    backgroundColor: '#1A237E',
+                    borderColor: '#1A237E',
+                    hoverBackgroundColor: '#1A237E',
+                    hoverBorderColor: '#1A237E',
+                    data: scatterData5avg,
+                  },
+                  {
+                    label: 'LOW',
+                    showLine: false,
+                    backgroundColor: '#FF8A80',
+                    borderColor: '#FF8A80',
+                    hoverBackgroundColor: '#FF8A80',
+                    hoverBorderColor: '#FF8A80',
+                    data: scatterData5low,
                   },
                 ],
               }}
