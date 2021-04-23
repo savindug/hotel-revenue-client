@@ -30,8 +30,19 @@ export const Graphs = () => {
     cluster3,
     cluster4,
   } = getClusterDataSet;
+
+  const [dateRange, setDateRange] = useState([
+    [0, 30],
+    [30, 60],
+    [60, 90],
+  ]);
+
+  const [datePage, setDatePage] = useState(0);
+
   const [chartData, setChartDatae] = useState({
-    labels: cluster1.map((a) => moment(a.date).format('MM/DD')),
+    labels: cluster1
+      .slice(dateRange[datePage][0], dateRange[datePage][1])
+      .map((a) => moment(a.date).format('MM/DD')),
     datasets: [
       {
         label: 'Stars 2',
@@ -41,7 +52,9 @@ export const Graphs = () => {
         //stack: 1,
         hoverBackgroundColor: clusterBG[0],
         hoverBorderColor: clusterBG[0],
-        data: cluster1.map((a) => a.mean),
+        data: cluster1
+          .slice(dateRange[datePage][0], dateRange[datePage][1])
+          .map((a) => a.mean),
       },
 
       {
@@ -52,7 +65,9 @@ export const Graphs = () => {
         //stack: 1,
         hoverBackgroundColor: clusterBG[1],
         hoverBorderColor: clusterBG[1],
-        data: cluster2.map((a) => a.mean),
+        data: cluster2
+          .slice(dateRange[datePage][0], dateRange[datePage][1])
+          .map((a) => a.mean),
       },
       {
         label: 'Stars 4',
@@ -62,7 +77,9 @@ export const Graphs = () => {
         //stack: 1,
         hoverBackgroundColor: clusterBG[2],
         hoverBorderColor: clusterBG[2],
-        data: cluster3.map((a) => a.mean),
+        data: cluster3
+          .slice(dateRange[datePage][0], dateRange[datePage][1])
+          .map((a) => a.mean),
       },
       {
         label: 'Stars 5',
@@ -72,19 +89,25 @@ export const Graphs = () => {
         // stack: 1,
         hoverBackgroundColor: clusterBG[3],
         hoverBorderColor: clusterBG[3],
-        data: cluster4.map((a) => a.mean),
+        data: cluster4
+          .slice(dateRange[datePage][0], dateRange[datePage][1])
+          .map((a) => a.mean),
       },
     ],
   });
   const [lineData, setLineData] = useState({
-    labels: cluster1.map((a) => moment(a.date).format('MM/DD')),
+    labels: cluster1
+      .slice(dateRange[datePage][0], dateRange[datePage][1])
+      .map((a) => moment(a.date).format('MM/DD')),
     datasets: [
       {
         label: '2 Star Cluster',
         fill: true,
         borderColor: clusterBG[0],
         borderWidth: 2,
-        data: cluster1.map((a) => a.mean),
+        data: cluster1
+          .slice(dateRange[datePage][0], dateRange[datePage][1])
+          .map((a) => a.mean),
       },
 
       {
@@ -92,14 +115,18 @@ export const Graphs = () => {
         fill: true,
         borderColor: clusterBG[1],
         borderWidth: 2,
-        data: cluster2.map((a) => a.mean),
+        data: cluster2
+          .slice(dateRange[datePage][0], dateRange[datePage][1])
+          .map((a) => a.mean),
       },
       {
         label: '4 Star Cluster',
         fill: true,
         borderColor: clusterBG[2],
         borderWidth: 2,
-        data: cluster3.map((a) => a.mean),
+        data: cluster3
+          .slice(dateRange[datePage][0], dateRange[datePage][1])
+          .map((a) => a.mean),
       },
       {
         label: '5 Star Cluster',
@@ -107,7 +134,9 @@ export const Graphs = () => {
         backgroundColor: 'rgba(75,192,192,0.2)',
         borderColor: clusterBG[3],
         borderWidth: 2,
-        data: cluster4.map((a) => a.mean),
+        data: cluster4
+          .slice(dateRange[datePage][0], dateRange[datePage][1])
+          .map((a) => a.mean),
       },
     ],
   });
@@ -146,64 +175,177 @@ export const Graphs = () => {
 
   const [scatterPlot, setScatterPlot] = useState(2);
 
+  const [scatterPlotLabels, setScatterPlotLabels] = useState(
+    cluster1
+      .slice(dateRange[datePage][0], dateRange[datePage][1])
+      .map((a) => moment(a.date).format('MM/DD'))
+  );
+
   const [bind, setBind] = useState(true);
 
   const hanndleMatrixChange = (m) => {
     setMatrix(m);
-    if (m === 'avg') {
+    setChartDataset(datePage, m);
+  };
+
+  const setChartDataset = (datePage, matrix) => {
+    chartData.labels = cluster1
+      .slice(dateRange[datePage][0], dateRange[datePage][1])
+      .map((a) => moment(a.date).format('MM/DD'));
+    lineData.labels = cluster1
+      .slice(dateRange[datePage][0], dateRange[datePage][1])
+      .map((a) => moment(a.date).format('MM/DD'));
+
+    if (matrix === 'avg') {
       chartData.datasets.map((set, ix) => {
-        if (ix === 0) set.data = cluster1.map((a) => a.mean);
-        if (ix === 1) set.data = cluster2.map((a) => a.mean);
-        if (ix === 2) set.data = cluster3.map((a) => a.mean);
-        if (ix === 3) set.data = cluster4.map((a) => a.mean);
+        if (ix === 0)
+          set.data = cluster1
+            .slice(dateRange[datePage][0], dateRange[datePage][1])
+            .map((a) => a.mean);
+        if (ix === 1)
+          set.data = cluster2
+            .slice(dateRange[datePage][0], dateRange[datePage][1])
+            .map((a) => a.mean);
+        if (ix === 2)
+          set.data = cluster3
+            .slice(dateRange[datePage][0], dateRange[datePage][1])
+            .map((a) => a.mean);
+        if (ix === 3)
+          set.data = cluster4
+            .slice(dateRange[datePage][0], dateRange[datePage][1])
+            .map((a) => a.mean);
       });
       lineData.datasets.map((set, ix) => {
-        if (ix === 0) set.data = cluster1.map((a) => a.mean);
-        if (ix === 1) set.data = cluster2.map((a) => a.mean);
-        if (ix === 2) set.data = cluster3.map((a) => a.mean);
-        if (ix === 3) set.data = cluster4.map((a) => a.mean);
+        if (ix === 0)
+          set.data = cluster1
+            .slice(dateRange[datePage][0], dateRange[datePage][1])
+            .map((a) => a.mean);
+        if (ix === 1)
+          set.data = cluster2
+            .slice(dateRange[datePage][0], dateRange[datePage][1])
+            .map((a) => a.mean);
+        if (ix === 2)
+          set.data = cluster3
+            .slice(dateRange[datePage][0], dateRange[datePage][1])
+            .map((a) => a.mean);
+        if (ix === 3)
+          set.data = cluster4
+            .slice(dateRange[datePage][0], dateRange[datePage][1])
+            .map((a) => a.mean);
       });
     }
-    if (m === 'max') {
+    if (matrix === 'max') {
       chartData.datasets.map((set, ix) => {
-        if (ix === 0) set.data = cluster1.map((a) => a.max);
-        if (ix === 1) set.data = cluster2.map((a) => a.max);
-        if (ix === 2) set.data = cluster3.map((a) => a.max);
-        if (ix === 3) set.data = cluster4.map((a) => a.max);
+        if (ix === 0)
+          set.data = cluster1
+            .slice(dateRange[datePage][0], dateRange[datePage][1])
+            .map((a) => a.max);
+        if (ix === 1)
+          set.data = cluster2
+            .slice(dateRange[datePage][0], dateRange[datePage][1])
+            .map((a) => a.max);
+        if (ix === 2)
+          set.data = cluster3
+            .slice(dateRange[datePage][0], dateRange[datePage][1])
+            .map((a) => a.max);
+        if (ix === 3)
+          set.data = cluster4
+            .slice(dateRange[datePage][0], dateRange[datePage][1])
+            .map((a) => a.max);
       });
       lineData.datasets.map((set, ix) => {
-        if (ix === 0) set.data = cluster1.map((a) => a.max);
-        if (ix === 1) set.data = cluster2.map((a) => a.max);
-        if (ix === 2) set.data = cluster3.map((a) => a.max);
-        if (ix === 3) set.data = cluster4.map((a) => a.max);
+        if (ix === 0)
+          set.data = cluster1
+            .slice(dateRange[datePage][0], dateRange[datePage][1])
+            .map((a) => a.max);
+        if (ix === 1)
+          set.data = cluster2
+            .slice(dateRange[datePage][0], dateRange[datePage][1])
+            .map((a) => a.max);
+        if (ix === 2)
+          set.data = cluster3
+            .slice(dateRange[datePage][0], dateRange[datePage][1])
+            .map((a) => a.max);
+        if (ix === 3)
+          set.data = cluster4
+            .slice(dateRange[datePage][0], dateRange[datePage][1])
+            .map((a) => a.max);
       });
     }
-    if (m === 'min') {
+    if (matrix === 'min') {
       chartData.datasets.map((set, ix) => {
-        if (ix === 0) set.data = cluster1.map((a) => a.min);
-        if (ix === 1) set.data = cluster2.map((a) => a.min);
-        if (ix === 2) set.data = cluster3.map((a) => a.min);
-        if (ix === 3) set.data = cluster4.map((a) => a.min);
+        if (ix === 0)
+          set.data = cluster1
+            .slice(dateRange[datePage][0], dateRange[datePage][1])
+            .map((a) => a.min);
+        if (ix === 1)
+          set.data = cluster2
+            .slice(dateRange[datePage][0], dateRange[datePage][1])
+            .map((a) => a.min);
+        if (ix === 2)
+          set.data = cluster3
+            .slice(dateRange[datePage][0], dateRange[datePage][1])
+            .map((a) => a.min);
+        if (ix === 3)
+          set.data = cluster4
+            .slice(dateRange[datePage][0], dateRange[datePage][1])
+            .map((a) => a.min);
       });
       lineData.datasets.map((set, ix) => {
-        if (ix === 0) set.data = cluster1.map((a) => a.min);
-        if (ix === 1) set.data = cluster2.map((a) => a.min);
-        if (ix === 2) set.data = cluster3.map((a) => a.min);
-        if (ix === 3) set.data = cluster4.map((a) => a.min);
+        if (ix === 0)
+          set.data = cluster1
+            .slice(dateRange[datePage][0], dateRange[datePage][1])
+            .map((a) => a.min);
+        if (ix === 1)
+          set.data = cluster2
+            .slice(dateRange[datePage][0], dateRange[datePage][1])
+            .map((a) => a.min);
+        if (ix === 2)
+          set.data = cluster3
+            .slice(dateRange[datePage][0], dateRange[datePage][1])
+            .map((a) => a.min);
+        if (ix === 3)
+          set.data = cluster4
+            .slice(dateRange[datePage][0], dateRange[datePage][1])
+            .map((a) => a.min);
       });
     }
-    if (m === 'mod') {
+    if (matrix === 'mod') {
       chartData.datasets.map((set, ix) => {
-        if (ix === 0) set.data = cluster1.map((a) => a.mod);
-        if (ix === 1) set.data = cluster2.map((a) => a.mod);
-        if (ix === 2) set.data = cluster3.map((a) => a.mod);
-        if (ix === 3) set.data = cluster4.map((a) => a.mod);
+        if (ix === 0)
+          set.data = cluster1
+            .slice(dateRange[datePage][0], dateRange[datePage][1])
+            .map((a) => a.mod);
+        if (ix === 1)
+          set.data = cluster2
+            .slice(dateRange[datePage][0], dateRange[datePage][1])
+            .map((a) => a.mod);
+        if (ix === 2)
+          set.data = cluster3
+            .slice(dateRange[datePage][0], dateRange[datePage][1])
+            .map((a) => a.mod);
+        if (ix === 3)
+          set.data = cluster4
+            .slice(dateRange[datePage][0], dateRange[datePage][1])
+            .map((a) => a.mod);
       });
       lineData.datasets.map((set, ix) => {
-        if (ix === 0) set.data = cluster1.map((a) => a.mod);
-        if (ix === 1) set.data = cluster2.map((a) => a.mod);
-        if (ix === 2) set.data = cluster3.map((a) => a.mod);
-        if (ix === 3) set.data = cluster4.map((a) => a.mod);
+        if (ix === 0)
+          set.data = cluster1
+            .slice(dateRange[datePage][0], dateRange[datePage][1])
+            .map((a) => a.mod);
+        if (ix === 1)
+          set.data = cluster2
+            .slice(dateRange[datePage][0], dateRange[datePage][1])
+            .map((a) => a.mod);
+        if (ix === 2)
+          set.data = cluster3
+            .slice(dateRange[datePage][0], dateRange[datePage][1])
+            .map((a) => a.mod);
+        if (ix === 3)
+          set.data = cluster4
+            .slice(dateRange[datePage][0], dateRange[datePage][1])
+            .map((a) => a.mod);
       });
     }
   };
@@ -212,30 +354,60 @@ export const Graphs = () => {
     setScatterPlot(e);
   };
 
+  const handleDatePage = (e) => {
+    setDatePage(e);
+    setChartDataset(e, matrix);
+    console.log(
+      'datePage = ' + datePage + 'dateRange = ' + dateRange[datePage][0],
+      dateRange[datePage][1]
+    );
+  };
+
   useEffect(() => {
     if (clusterData.length > 0) {
-      cluster1.map((cl) => {
-        setScatterData2avg((state) => [...state, cl.mean]);
-        setScatterData2high((state) => [...state, cl.max]);
-        setScatterData2low((state) => [...state, cl.min]);
-      });
-      cluster2.map((cl) => {
-        setScatterData3avg((state) => [...state, cl.mean]);
-        setScatterData3high((state) => [...state, cl.max]);
-        setScatterData3low((state) => [...state, cl.min]);
-      });
-      cluster3.map((cl) => {
-        setScatterData4avg((state) => [...state, cl.mean]);
-        setScatterData4high((state) => [...state, cl.max]);
-        setScatterData4low((state) => [...state, cl.min]);
-      });
-      cluster4.map((cl) => {
-        setScatterData5avg((state) => [...state, cl.mean]);
-        setScatterData5high((state) => [...state, cl.max]);
-        setScatterData5low((state) => [...state, cl.min]);
-      });
+      setScatterPlotLabels(
+        cluster1
+          .slice(dateRange[datePage][0], dateRange[datePage][1])
+          .map((a) => moment(a.date).format('MM/DD'))
+      );
+      cluster1
+        .slice(dateRange[datePage][0], dateRange[datePage][1])
+        .map((cl) => {
+          setScatterData2avg((state) => [...state, cl.mean]);
+          setScatterData2high((state) => [...state, cl.max]);
+          setScatterData2low((state) => [...state, cl.min]);
+        });
+      cluster2
+        .slice(dateRange[datePage][0], dateRange[datePage][1])
+        .map((cl) => {
+          setScatterData3avg((state) => [...state, cl.mean]);
+          setScatterData3high((state) => [...state, cl.max]);
+          setScatterData3low((state) => [...state, cl.min]);
+        });
+      cluster3
+        .slice(dateRange[datePage][0], dateRange[datePage][1])
+        .map((cl) => {
+          setScatterData4avg((state) => [...state, cl.mean]);
+          setScatterData4high((state) => [...state, cl.max]);
+          setScatterData4low((state) => [...state, cl.min]);
+        });
+      cluster4
+        .slice(dateRange[datePage][0], dateRange[datePage][1])
+        .map((cl) => {
+          setScatterData5avg((state) => [...state, cl.mean]);
+          setScatterData5high((state) => [...state, cl.max]);
+          setScatterData5low((state) => [...state, cl.min]);
+        });
     }
-  }, [cluster1, cluster2, cluster3, cluster4, scatterPlot]);
+  }, [
+    cluster1,
+    cluster2,
+    cluster3,
+    cluster4,
+    scatterPlot,
+    datePage,
+    dateRange,
+  ]);
   return (
     <div>
       {bind ? (
@@ -259,6 +431,22 @@ export const Graphs = () => {
                 <option value="max">Highest Rate</option>
                 <option value="min">Lowest Rate</option>
                 <option value="mod">Most Repeated rate (mode)</option>
+              </Select>
+            </FormControl>
+
+            <FormControl className={classes.formControl}>
+              <InputLabel htmlFor="grouped-native-select">
+                Date Range
+              </InputLabel>
+              <Select
+                native={true}
+                onChange={(e) => handleDatePage(e.target.value)}
+                id="grouped-native-select"
+                value={datePage}
+              >
+                <option value="0">{`${dateRange[0][0]} - ${dateRange[0][1]}`}</option>
+                <option value="1">{`${dateRange[1][0]} - ${dateRange[1][1]}`}</option>
+                <option value="2">{`${dateRange[2][0]} - ${dateRange[2][1]}`}</option>
               </Select>
             </FormControl>
           </Grid>
@@ -295,7 +483,7 @@ export const Graphs = () => {
             //(console.log('scatterData => ' + JSON.stringify(scatterData)),
             <Line
               data={{
-                labels: cluster1.map((a) => moment(a.date).format('MM/DD')),
+                labels: scatterPlotLabels,
                 datasets: [
                   {
                     label: 'MAX',
@@ -334,7 +522,7 @@ export const Graphs = () => {
             //(console.log('scatterData => ' + JSON.stringify(scatterData)),
             <Line
               data={{
-                labels: cluster2.map((a) => moment(a.date).format('MM/DD')),
+                labels: scatterPlotLabels,
                 datasets: [
                   {
                     label: 'MAX',
@@ -373,7 +561,7 @@ export const Graphs = () => {
             //(console.log('scatterData => ' + JSON.stringify(scatterData)),
             <Line
               data={{
-                labels: cluster3.map((a) => moment(a.date).format('MM/DD')),
+                labels: scatterPlotLabels,
                 datasets: [
                   {
                     label: 'MAX',
@@ -412,7 +600,7 @@ export const Graphs = () => {
             //(console.log('scatterData => ' + JSON.stringify(scatterData)),
             <Line
               data={{
-                labels: cluster4.map((a) => moment(a.date).format('MM/DD')),
+                labels: scatterPlotLabels,
                 datasets: [
                   {
                     label: 'MAX',

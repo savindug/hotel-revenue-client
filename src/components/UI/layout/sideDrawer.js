@@ -143,7 +143,7 @@ export default function MiniDrawer() {
           </Typography>
         </Toolbar>
       </AppBar>
-      <Drawer
+      {/* <Drawer
         variant="permanent"
         className={clsx(classes.drawer, {
           [classes.drawerOpen]: open,
@@ -237,7 +237,7 @@ export default function MiniDrawer() {
           </Link>
         </List>
         <Divider />
-      </Drawer>
+      </Drawer>*/}
     </div>
   );
 }
