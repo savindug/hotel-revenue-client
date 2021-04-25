@@ -49,7 +49,7 @@ export default function DataTable({ cluster, stars }) {
 
     setLoad(true);
 
-    const setClusterAtributes = () => {};
+    const setClusterAtributes = () => { };
 
     setClusterAtributes();
     setLoad(false);
@@ -113,7 +113,7 @@ export default function DataTable({ cluster, stars }) {
                   <StyledTableCell size="small">{stars}</StyledTableCell>
                   {cluster.map((e, index) => (
                     <StyledTableCell size="small" key={index}>
-                      {e.items !== 'NaN' ? Math.round(e.items) : 'N/A'}
+                      {e.items !== 'NaN' && e.items >= 3 ? Math.round(e.items) : e.items !== 'NaN' && e.items < 3 ? 'NED' : 'N/A'}
                     </StyledTableCell>
                   ))}
                 </StyledTableRow>
@@ -130,7 +130,7 @@ export default function DataTable({ cluster, stars }) {
                   <StyledTableCell size="small">{stars}</StyledTableCell>
                   {cluster.map((e, index) => (
                     <StyledTableCell size="small" key={index}>
-                      {e.mean !== 'NaN' ? Math.round(e.mean) : 'N/A'}
+                      {e.mean !== 'NaN' && e.items >= 3 ? Math.round(e.mean) : e.mean !== 'NaN' && e.items < 3 ? 'NED' : 'N/A'}
                     </StyledTableCell>
                   ))}
                 </StyledTableRow>
@@ -148,7 +148,7 @@ export default function DataTable({ cluster, stars }) {
                   <StyledTableCell size="small">{stars}</StyledTableCell>
                   {cluster.map((e, index) => (
                     <StyledTableCell size="small" key={index}>
-                      {e.mod !== 'NaN' ? Math.round(e.mod) : 'N/A'}
+                      {e.mod !== 'NaN' && e.items >= 3 ? Math.round(e.mod) : e.mod !== 'NaN' && e.items < 3 ? 'NED' : 'N/A'}
                     </StyledTableCell>
                   ))}
                 </StyledTableRow>
@@ -166,7 +166,7 @@ export default function DataTable({ cluster, stars }) {
                   <StyledTableCell size="small">{stars}</StyledTableCell>
                   {cluster.map((e, index) => (
                     <StyledTableCell size="small" key={index}>
-                      {e.median !== 'NaN' ? Math.round(e.median) : 'N/A'}
+                      {e.median !== 'NaN' && e.items >= 3 ? Math.round(e.median) : e.median !== 'NaN' && e.items < 3 ? 'NED' : 'N/A'}
                     </StyledTableCell>
                   ))}
                 </StyledTableRow>
@@ -183,7 +183,7 @@ export default function DataTable({ cluster, stars }) {
                   <StyledTableCell size="small">{stars}</StyledTableCell>
                   {cluster.map((e, index) => (
                     <StyledTableCell size="small" key={index}>
-                      {e.max !== 'NaN' ? Math.round(e.max) : 'N/A'}
+                      {e.max !== 'NaN' && e.items >= 3 ? Math.round(e.max) : e.max !== 'NaN' && e.items < 3 ? 'NED' : 'N/A'}
                     </StyledTableCell>
                   ))}
                 </StyledTableRow>
@@ -200,7 +200,7 @@ export default function DataTable({ cluster, stars }) {
                   <StyledTableCell size="small">{stars}</StyledTableCell>
                   {cluster.map((e, index) => (
                     <StyledTableCell size="small" key={index}>
-                      {e.highAVG !== 'NaN' ? Math.round(e.highAVG) : 'N/A'}
+                      {e.highAVG !== 'NaN' && e.items >= 3 ? Math.round(e.highAVG) : e.highAVG !== 'NaN' && e.items < 3 ? 'NED' : 'N/A'}
                     </StyledTableCell>
                   ))}
                 </StyledTableRow>
@@ -217,7 +217,7 @@ export default function DataTable({ cluster, stars }) {
                   <StyledTableCell size="small">{stars}</StyledTableCell>
                   {cluster.map((e, index) => (
                     <StyledTableCell size="small" key={index}>
-                      {e.midAVG !== 'NaN' ? Math.round(e.midAVG) : 'N/A'}
+                      {e.midAVG !== 'NaN' && e.items >= 3 ? Math.round(e.midAVG) : e.midAVG !== 'NaN' && e.items < 3 ? 'NED' : 'N/A'}
                     </StyledTableCell>
                   ))}
                 </StyledTableRow>
@@ -234,7 +234,7 @@ export default function DataTable({ cluster, stars }) {
                   <StyledTableCell size="small">{stars}</StyledTableCell>
                   {cluster.map((e, index) => (
                     <StyledTableCell size="small" key={index}>
-                      {e.lowAVG !== 'NaN' ? Math.round(e.lowAVG) : 'N/A'}
+                      {e.lowAVG !== 'NaN' && e.items >= 3 ? Math.round(e.lowAVG) : e.lowAVG !== 'NaN' && e.items < 3 ? 'NED' : 'N/A'}
                     </StyledTableCell>
                   ))}
                 </StyledTableRow>
@@ -251,7 +251,7 @@ export default function DataTable({ cluster, stars }) {
                   <StyledTableCell size="small">{stars}</StyledTableCell>
                   {cluster.map((e, index) => (
                     <StyledTableCell size="small" key={index}>
-                      {e.min !== 'NaN' ? Math.round(e.min) : 'N/A'}
+                      {e.min !== 'NaN' && e.items >= 3 ? Math.round(e.min) : e.min !== 'NaN' && e.items < 3 ? 'NED' : 'N/A'}
                     </StyledTableCell>
                   ))}
                 </StyledTableRow>
@@ -261,8 +261,8 @@ export default function DataTable({ cluster, stars }) {
           </Box>
         </TableContainer>
       ) : (
-        <></>
-      )}
+          <></>
+        )}
     </>
   );
 }

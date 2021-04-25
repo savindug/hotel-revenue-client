@@ -47,19 +47,19 @@ export const fetchClusterData = (destID, date, range, property) => async (
       });
       dispatch({
         type: ACTION_TYPES.SET_CLUSTER_1,
-        payload: cl1,
+        payload: setOutliers(cl1, 2),
       });
       dispatch({
         type: ACTION_TYPES.SET_CLUSTER_2,
-        payload: cl2,
+        payload: setOutliers(cl2, 3),
       });
       dispatch({
         type: ACTION_TYPES.SET_CLUSTER_3,
-        payload: cl3,
+        payload: setOutliers(cl3, 4),
       });
       dispatch({
         type: ACTION_TYPES.SET_CLUSTER_4,
-        payload: cl4,
+        payload: setOutliers(cl4, 5),
       });
     })
     .catch((err) => {
@@ -116,3 +116,14 @@ export const fetchHotelsList = () => async (dispatch) => {
       });
     });
 };
+
+const setOutliers = (cluster, star) => {
+  cluster.map((day, index) => {
+    day.outliers_up = day.unwanted.filter(e => e.stars < star)
+    day.outliers_down = day.unwanted.filter(e => e.stars > star)
+    // console.log(` ${star} outlier Up => ${day.unwanted.filter(e => e.stars < star).length}`)
+    // console.log(` ${star} outlier Down => ${day.unwanted.filter(e => e.stars > star).length}`)
+  })
+
+  return cluster;
+}
