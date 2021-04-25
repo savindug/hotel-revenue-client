@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import GoogleMapReact from 'google-map-react';
 import RoomIcon from '@material-ui/icons/Room';
 import { Tooltip } from '@material-ui/core';
@@ -31,27 +31,40 @@ const SimpleMap = () => {
     zoom: 15,
   });
 
+  // useEffect(() => {
+  //   defaultProps.center = {
+  //     lat: hotels[0].location.lat,
+  //     lng: hotels[0].location.lng,
+  //   };
+  // }, []);
+
   return (
     // Important! Always set the container height explicitly
     <div style={{ height: '100vh', width: '100%' }}>
-      <GoogleMapReact
-        bootstrapURLKeys={{
-          key: 'AIzaSyDdpbmo2Dgu_QjmNW5r7_oSrp-HDZ7wpRA',
-        }}
-        defaultCenter={defaultProps.center}
-        defaultZoom={defaultProps.zoom}
-      >
-        {hotels.map((_hotel, index) => (
-          <AnyReactComponent
-            lat={_hotel.location.lat}
-            lng={_hotel.location.lng}
-            color={
-              index === 0 ? '#D50000' : clusterBG[Math.floor(_hotel.stars) - 2]
-            }
-            text={_hotel.hotelName}
-          />
-        ))}
-      </GoogleMapReact>
+      {hotels.length > 0 ? (
+        <GoogleMapReact
+          bootstrapURLKeys={{
+            key: 'AIzaSyDdpbmo2Dgu_QjmNW5r7_oSrp-HDZ7wpRA',
+          }}
+          defaultCenter={defaultProps.center}
+          defaultZoom={defaultProps.zoom}
+        >
+          {hotels.map((_hotel, index) => (
+            <AnyReactComponent
+              lat={_hotel.location.lat}
+              lng={_hotel.location.lng}
+              color={
+                index === 0
+                  ? '#D50000'
+                  : clusterBG[Math.floor(_hotel.stars) - 2]
+              }
+              text={_hotel.hotelName}
+            />
+          ))}
+        </GoogleMapReact>
+      ) : (
+        <></>
+      )}
     </div>
   );
 };

@@ -37,10 +37,10 @@ function App() {
         <main className={classes.content}>
           <div className={classes.toolbar} />
           <Switch>
-            <Route exact path="/" component={Dashboard} />
-            <Route path="/clusters" component={ClusteredData} />
+            <Route exact path="/" component={ClusteredData} />
+            {/* <Route path="/clusters" component={ClusteredData} />
             <Route path="/hotels" component={HotelDataset} />
-            <Route path="/graphs" component={Graphs} />
+            <Route path="/graphs" component={Graphs} /> */}
           </Switch>
         </main>
       </div>

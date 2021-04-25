@@ -119,11 +119,11 @@ export const fetchHotelsList = () => async (dispatch) => {
 
 const setOutliers = (cluster, star) => {
   cluster.map((day, index) => {
-    day.outliers_up = day.unwanted.filter(e => e.stars < star)
-    day.outliers_down = day.unwanted.filter(e => e.stars > star)
+    day.outliers_up = day.unwanted.filter((e) => e.stars < star);
+    day.outliers_down = day.unwanted.filter((e) => e.stars > star);
     // console.log(` ${star} outlier Up => ${day.unwanted.filter(e => e.stars < star).length}`)
     // console.log(` ${star} outlier Down => ${day.unwanted.filter(e => e.stars > star).length}`)
-  })
+  });
 
   return cluster;
-}
+};

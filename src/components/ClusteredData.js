@@ -157,11 +157,9 @@ export const ClusteredData = () => {
       <MuiPickersUtilsProvider utils={MomentUtils}>
         <Grid container justify="space-around" className="mb-3">
           <FormControl className={classes.formControl}>
-            <InputLabel htmlFor="grouped-native-select">
-              Destination ID
-            </InputLabel>
+            <InputLabel htmlFor="grouped-native-select">Destination</InputLabel>
             <Select native defaultValue="" id="grouped-native-select" disabled>
-              <option value={1447930}>1447930</option>
+              <option value={1447930}>Miami Beach</option>
             </Select>
           </FormControl>
           <FormControl className={classes.formControl}>
