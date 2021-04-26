@@ -6,6 +6,8 @@ import { makeStyles, Typography } from '@material-ui/core';
 import { Dashboard } from './components/UI/Dashboard';
 import { HotelDataset } from './components/HotelDataset';
 import { Graphs } from './components/Graphs';
+import { Login } from './components/auth/Login';
+import { Register } from './components/auth/Register';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -37,9 +39,11 @@ function App() {
         <main className={classes.content}>
           <div className={classes.toolbar} />
           <Switch>
-            <Route exact path="/" component={ClusteredData} />
-            {/* <Route path="/clusters" component={ClusteredData} />
-            <Route path="/hotels" component={HotelDataset} />
+            <Route exact path="/" component={Dashboard} />
+            {/* <Route path="/login" component={Login} /> */}
+            {/* <Route path="/clusters" component={ClusteredData} /> */}
+            {/* <Route path="/register" component={Register} /> */}
+            {/*  <Route path="/hotels" component={HotelDataset} />
             <Route path="/graphs" component={Graphs} /> */}
           </Switch>
         </main>

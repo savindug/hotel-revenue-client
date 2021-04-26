@@ -73,19 +73,6 @@ export const ClusteredData = () => {
     getHotelList();
   }, []);
 
-  const setScatterPlotData = () => {
-    let scD = [];
-    if (cluster1.length > 0) {
-      cluster1.map((cl) => {
-        cl.cluster.map((data) => {
-          scD.push([moment(cl.date).format('MM/DD'), data]);
-        });
-      });
-    }
-
-    return scD;
-  };
-
   useEffect(() => {
     async function getClusters() {
       await dispatch(
@@ -158,7 +145,7 @@ export const ClusteredData = () => {
         <Grid container justify="space-around" className="mb-3">
           <FormControl className={classes.formControl}>
             <InputLabel htmlFor="grouped-native-select">Destination</InputLabel>
-            <Select native defaultValue="" id="grouped-native-select" disabled>
+            <Select native defaultValue="" id="grouped-native-select">
               <option value={1447930}>Miami Beach</option>
             </Select>
           </FormControl>

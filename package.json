@@ -17,6 +17,7 @@
     "bootstrap": "^4.6.0",
     "chart.js": "^2.9.4",
     "date-fns": "^2.19.0",
+    "firebase": "^8.2.10",
     "google-map-react": "^2.1.9",
     "jquery": "^3.6.0",
     "moment": "^2.29.1",

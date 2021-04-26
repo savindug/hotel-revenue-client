@@ -3,7 +3,19 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 import rootReducer from './reducers/index';
 
-const initialState = {};
+// const getAuthToken = localStorage.getItem('token')
+//   ? JSON.parse(localStorage.getItem('token'))
+//   : [];
+
+const initialState = {
+  auth: {
+    user: {
+      username: null,
+      password: null,
+    },
+    isLoggedIn: false,
+  },
+};
 
 const middleware = [thunk];
 
