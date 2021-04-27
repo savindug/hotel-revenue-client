@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Alert, Container } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -10,16 +10,16 @@ import { customLogin } from '../../redux/actions/auth.actions';
 import logo from '../../assets/imgs/logo/logo.jpg';
 
 export const Login = (props) => {
+  const USERNAME = 'ratebuckets';
+  const PASSWORD = 'b0EPPj@N&j9b';
+
   const { handleSignin, userData, setUserData } = useContext(firebaseAuth);
   const dispatch = useDispatch();
   const [formError, setformError] = useState(null);
   const handleSubmit = async (e) => {
     e.preventDefault();
     // await handleSignin();
-    if (
-      userData.email === 'ratebuckets' &&
-      userData.password === 'b0EPPj@N&j9b'
-    ) {
+    if (userData.email === USERNAME && userData.password === PASSWORD) {
       const result = await dispatch(
         customLogin(userData.email, userData.password)
       );
@@ -30,6 +30,10 @@ export const Login = (props) => {
       setformError('* Invaild Credentials');
     }
   };
+
+  useEffect(() => {
+    dispatch(customLogin(USERNAME, PASSWORD));
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

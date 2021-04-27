@@ -54,7 +54,7 @@ export const Graphs = () => {
         hoverBorderColor: clusterBG[0],
         data: cluster1
           .slice(dateRange[datePage][0], dateRange[datePage][1])
-          .map((a) => a.items >= 3 ? a.mean : 'NED'),
+          .map((a) => (a.items >= 3 ? a.mean : 'NED')),
       },
 
       {
@@ -67,7 +67,7 @@ export const Graphs = () => {
         hoverBorderColor: clusterBG[1],
         data: cluster2
           .slice(dateRange[datePage][0], dateRange[datePage][1])
-          .map((a) => a.items >= 3 ? a.mean : 'NED'),
+          .map((a) => (a.items >= 3 ? a.mean : 'NED')),
       },
       {
         label: 'Stars 4',
@@ -79,7 +79,7 @@ export const Graphs = () => {
         hoverBorderColor: clusterBG[2],
         data: cluster3
           .slice(dateRange[datePage][0], dateRange[datePage][1])
-          .map((a) => a.items >= 3 ? a.mean : 'NED'),
+          .map((a) => (a.items >= 3 ? a.mean : 'NED')),
       },
       {
         label: 'Stars 5',
@@ -91,7 +91,7 @@ export const Graphs = () => {
         hoverBorderColor: clusterBG[3],
         data: cluster4
           .slice(dateRange[datePage][0], dateRange[datePage][1])
-          .map((a) => a.items >= 3 ? a.mean : 'NED'),
+          .map((a) => (a.items >= 3 ? a.mean : 'NED')),
       },
     ],
   });
@@ -107,7 +107,7 @@ export const Graphs = () => {
         borderWidth: 2,
         data: cluster1
           .slice(dateRange[datePage][0], dateRange[datePage][1])
-          .map((a) => a.items >= 3 ? a.mean : 'NED'),
+          .map((a) => (a.items >= 3 ? a.mean : 'NED')),
       },
 
       {
@@ -117,7 +117,7 @@ export const Graphs = () => {
         borderWidth: 2,
         data: cluster2
           .slice(dateRange[datePage][0], dateRange[datePage][1])
-          .map((a) => a.items >= 3 ? a.mean : 'NED'),
+          .map((a) => (a.items >= 3 ? a.mean : 'NED')),
       },
       {
         label: '4 Star Cluster',
@@ -126,7 +126,7 @@ export const Graphs = () => {
         borderWidth: 2,
         data: cluster3
           .slice(dateRange[datePage][0], dateRange[datePage][1])
-          .map((a) => a.items >= 3 ? a.mean : 'NED'),
+          .map((a) => (a.items >= 3 ? a.mean : 'NED')),
       },
       {
         label: '5 Star Cluster',
@@ -136,7 +136,7 @@ export const Graphs = () => {
         borderWidth: 2,
         data: cluster4
           .slice(dateRange[datePage][0], dateRange[datePage][1])
-          .map((a) => a.items >= 3 ? a.mean : 'NED'),
+          .map((a) => (a.items >= 3 ? a.mean : 'NED')),
       },
     ],
   });
@@ -201,37 +201,37 @@ export const Graphs = () => {
         if (ix === 0)
           set.data = cluster1
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => a.items >= 3 ? a.mean : 'NED');
+            .map((a) => (a.items >= 3 ? a.mean : 'NED'));
         if (ix === 1)
           set.data = cluster2
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => a.items >= 3 ? a.mean : 'NED');
+            .map((a) => (a.items >= 3 ? a.mean : 'NED'));
         if (ix === 2)
           set.data = cluster3
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => a.items >= 3 ? a.mean : 'NED');
+            .map((a) => (a.items >= 3 ? a.mean : 'NED'));
         if (ix === 3)
           set.data = cluster4
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => a.items >= 3 ? a.mean : 'NED');
+            .map((a) => (a.items >= 3 ? a.mean : 'NED'));
       });
       lineData.datasets.map((set, ix) => {
         if (ix === 0)
           set.data = cluster1
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => a.items >= 3 ? a.mean : 'NED');
+            .map((a) => (a.items >= 3 ? a.mean : 'NED'));
         if (ix === 1)
           set.data = cluster2
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => a.items >= 3 ? a.mean : 'NED');
+            .map((a) => (a.items >= 3 ? a.mean : 'NED'));
         if (ix === 2)
           set.data = cluster3
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => a.items >= 3 ? a.mean : 'NED');
+            .map((a) => (a.items >= 3 ? a.mean : 'NED'));
         if (ix === 3)
           set.data = cluster4
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => a.items >= 3 ? a.mean : 'NED');
+            .map((a) => (a.items >= 3 ? a.mean : 'NED'));
       });
     }
     if (matrix === 'max') {
@@ -239,37 +239,37 @@ export const Graphs = () => {
         if (ix === 0)
           set.data = cluster1
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => a.items >= 3 ? a.max : 'NED');
+            .map((a) => (a.items >= 3 ? a.max : 'NED'));
         if (ix === 1)
           set.data = cluster2
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => a.items >= 3 ? a.max : 'NED');
+            .map((a) => (a.items >= 3 ? a.max : 'NED'));
         if (ix === 2)
           set.data = cluster3
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => a.items >= 3 ? a.max : 'NED');
+            .map((a) => (a.items >= 3 ? a.max : 'NED'));
         if (ix === 3)
           set.data = cluster4
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => a.items >= 3 ? a.max : 'NED');
+            .map((a) => (a.items >= 3 ? a.max : 'NED'));
       });
       lineData.datasets.map((set, ix) => {
         if (ix === 0)
           set.data = cluster1
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => a.items >= 3 ? a.max : 'NED');
+            .map((a) => (a.items >= 3 ? a.max : 'NED'));
         if (ix === 1)
           set.data = cluster2
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => a.items >= 3 ? a.max : 'NED');
+            .map((a) => (a.items >= 3 ? a.max : 'NED'));
         if (ix === 2)
           set.data = cluster3
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => a.items >= 3 ? a.max : 'NED');
+            .map((a) => (a.items >= 3 ? a.max : 'NED'));
         if (ix === 3)
           set.data = cluster4
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => a.items >= 3 ? a.max : 'NED');
+            .map((a) => (a.items >= 3 ? a.max : 'NED'));
       });
     }
     if (matrix === 'min') {
@@ -277,37 +277,37 @@ export const Graphs = () => {
         if (ix === 0)
           set.data = cluster1
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => a.items >= 3 ? a.min : 'NED');
+            .map((a) => (a.items >= 3 ? a.min : 'NED'));
         if (ix === 1)
           set.data = cluster2
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => a.items >= 3 ? a.min : 'NED');
+            .map((a) => (a.items >= 3 ? a.min : 'NED'));
         if (ix === 2)
           set.data = cluster3
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => a.items >= 3 ? a.min : 'NED');
+            .map((a) => (a.items >= 3 ? a.min : 'NED'));
         if (ix === 3)
           set.data = cluster4
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => a.items >= 3 ? a.min : 'NED');
+            .map((a) => (a.items >= 3 ? a.min : 'NED'));
       });
       lineData.datasets.map((set, ix) => {
         if (ix === 0)
           set.data = cluster1
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => a.items >= 3 ? a.min : 'NED');
+            .map((a) => (a.items >= 3 ? a.min : 'NED'));
         if (ix === 1)
           set.data = cluster2
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => a.items >= 3 ? a.min : 'NED');
+            .map((a) => (a.items >= 3 ? a.min : 'NED'));
         if (ix === 2)
           set.data = cluster3
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => a.items >= 3 ? a.min : 'NED');
+            .map((a) => (a.items >= 3 ? a.min : 'NED'));
         if (ix === 3)
           set.data = cluster4
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => a.items >= 3 ? a.min : 'NED');
+            .map((a) => (a.items >= 3 ? a.min : 'NED'));
       });
     }
     if (matrix === 'mod') {
@@ -315,37 +315,37 @@ export const Graphs = () => {
         if (ix === 0)
           set.data = cluster1
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => a.items >= 3 ? a.mod : 'NED');
+            .map((a) => (a.items >= 3 ? a.mod : 'NED'));
         if (ix === 1)
           set.data = cluster2
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => a.items >= 3 ? a.mod : 'NED');
+            .map((a) => (a.items >= 3 ? a.mod : 'NED'));
         if (ix === 2)
           set.data = cluster3
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => a.items >= 3 ? a.mod : 'NED');
+            .map((a) => (a.items >= 3 ? a.mod : 'NED'));
         if (ix === 3)
           set.data = cluster4
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => a.items >= 3 ? a.mod : 'NED');
+            .map((a) => (a.items >= 3 ? a.mod : 'NED'));
       });
       lineData.datasets.map((set, ix) => {
         if (ix === 0)
           set.data = cluster1
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => a.items >= 3 ? a.mod : 'NED');
+            .map((a) => (a.items >= 3 ? a.mod : 'NED'));
         if (ix === 1)
           set.data = cluster2
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => a.items >= 3 ? a.mod : 'NED');
+            .map((a) => (a.items >= 3 ? a.mod : 'NED'));
         if (ix === 2)
           set.data = cluster3
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => a.items >= 3 ? a.mod : 'NED');
+            .map((a) => (a.items >= 3 ? a.mod : 'NED'));
         if (ix === 3)
           set.data = cluster4
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => a.items >= 3 ? a.mod : 'NED');
+            .map((a) => (a.items >= 3 ? a.mod : 'NED'));
       });
     }
   };
@@ -382,7 +382,6 @@ export const Graphs = () => {
             setScatterData2high((state) => [...state, 'NED']);
             setScatterData2low((state) => [...state, 'NED']);
           }
-
         });
       cluster2
         .slice(dateRange[datePage][0], dateRange[datePage][1])
@@ -396,7 +395,6 @@ export const Graphs = () => {
             setScatterData3high((state) => [...state, 'NED']);
             setScatterData3low((state) => [...state, 'NED']);
           }
-
         });
       cluster3
         .slice(dateRange[datePage][0], dateRange[datePage][1])
@@ -410,7 +408,6 @@ export const Graphs = () => {
             setScatterData4high((state) => [...state, 'NED']);
             setScatterData4low((state) => [...state, 'NED']);
           }
-
         });
       cluster4
         .slice(dateRange[datePage][0], dateRange[datePage][1])
@@ -424,7 +421,6 @@ export const Graphs = () => {
             setScatterData5high((state) => [...state, 'NED']);
             setScatterData5low((state) => [...state, 'NED']);
           }
-
         });
     }
   }, [
@@ -440,54 +436,7 @@ export const Graphs = () => {
     <div>
       {bind ? (
         <>
-          {/* {chartData.datasets.map((x) => {
-            console.log(x.data);
-          })} */}
-          <Grid container justify="space-around" className="my-5">
-            <h1>Analytic Graphs</h1>
-            <FormControl className={classes.formControl}>
-              <InputLabel htmlFor="grouped-native-select">
-                Generate Graphs By
-              </InputLabel>
-              <Select
-                native={true}
-                onChange={(e) => hanndleMatrixChange(e.target.value)}
-                id="grouped-native-select"
-                value={matrix}
-              >
-                <option value="avg">Average Rate</option>
-                <option value="max">Highest Rate</option>
-                <option value="min">Lowest Rate</option>
-                <option value="mod">Most Repeated rate (mode)</option>
-              </Select>
-            </FormControl>
-
-            <FormControl className={classes.formControl}>
-              <InputLabel htmlFor="grouped-native-select">
-                Date Range
-              </InputLabel>
-              <Select
-                native={true}
-                onChange={(e) => handleDatePage(e.target.value)}
-                id="grouped-native-select"
-                value={datePage}
-              >
-                <option value="0">{`${dateRange[0][0]} - ${dateRange[0][1]}`}</option>
-                <option value="1">{`${dateRange[1][0]} - ${dateRange[1][1]}`}</option>
-                <option value="2">{`${dateRange[2][0]} - ${dateRange[2][1]}`}</option>
-              </Select>
-            </FormControl>
-          </Grid>
-
-          <Box className="my-5">
-            <Bar height={400} width={100} data={chartData} options={options} />
-          </Box>
-          <hr className="my-5"></hr>
-          <Line data={lineData} height={100} />
-
-          <hr className="my-5"></hr>
-
-          <Grid container justify="space-around">
+          <Grid className="my-5" container justify="space-around">
             <h1>Scatter Plot</h1>
             <FormControl className={classes.formControl}>
               <InputLabel htmlFor="grouped-native-select">
@@ -505,8 +454,22 @@ export const Graphs = () => {
                 <option value="5">5 Star Cluster</option>
               </Select>
             </FormControl>
+            <FormControl className={classes.formControl}>
+              <InputLabel htmlFor="grouped-native-select">
+                Date Range
+              </InputLabel>
+              <Select
+                native={true}
+                onChange={(e) => handleDatePage(e.target.value)}
+                id="grouped-native-select"
+                value={datePage}
+              >
+                <option value="0">{`${dateRange[0][0]} - ${dateRange[0][1]}`}</option>
+                <option value="1">{`${dateRange[1][0]} - ${dateRange[1][1]}`}</option>
+                <option value="2">{`${dateRange[2][0]} - ${dateRange[2][1]}`}</option>
+              </Select>
+            </FormControl>
           </Grid>
-
           {scatterData2avg.length > 0 && scatterPlot == 2 ? (
             //(console.log('scatterData => ' + JSON.stringify(scatterData)),
             <Line
@@ -514,7 +477,7 @@ export const Graphs = () => {
                 labels: scatterPlotLabels,
                 datasets: [
                   {
-                    label: 'MAX',
+                    label: 'HIGH',
                     showLine: false,
                     backgroundColor: '#f4f4f4',
                     borderColor: '#3F51B5',
@@ -553,7 +516,7 @@ export const Graphs = () => {
                 labels: scatterPlotLabels,
                 datasets: [
                   {
-                    label: 'MAX',
+                    label: 'HIGH',
                     showLine: false,
                     backgroundColor: '#f4f4f4',
                     borderColor: '#3F51B5',
@@ -592,7 +555,7 @@ export const Graphs = () => {
                 labels: scatterPlotLabels,
                 datasets: [
                   {
-                    label: 'MAX',
+                    label: 'HIGH',
                     showLine: false,
                     backgroundColor: '#f4f4f4',
                     borderColor: '#3F51B5',
@@ -664,12 +627,54 @@ export const Graphs = () => {
               }}
             />
           ) : (
-                    <></>
-                  )}
+            <></>
+          )}
+          <hr className="my-5"></hr>
+          <Grid container justify="space-around" className="my-5">
+            <h1>Analytic Graphs</h1>
+            <FormControl className={classes.formControl}>
+              <InputLabel htmlFor="grouped-native-select">
+                Generate Graphs By
+              </InputLabel>
+              <Select
+                native={true}
+                onChange={(e) => hanndleMatrixChange(e.target.value)}
+                id="grouped-native-select"
+                value={matrix}
+              >
+                <option value="avg">Average Rate</option>
+                <option value="max">Highest Rate</option>
+                <option value="min">Lowest Rate</option>
+                <option value="mod">Most Repeated rate (mode)</option>
+              </Select>
+            </FormControl>
+
+            <FormControl className={classes.formControl}>
+              <InputLabel htmlFor="grouped-native-select">
+                Date Range
+              </InputLabel>
+              <Select
+                native={true}
+                onChange={(e) => handleDatePage(e.target.value)}
+                id="grouped-native-select"
+                value={datePage}
+              >
+                <option value="0">{`${dateRange[0][0]} - ${dateRange[0][1]}`}</option>
+                <option value="1">{`${dateRange[1][0]} - ${dateRange[1][1]}`}</option>
+                <option value="2">{`${dateRange[2][0]} - ${dateRange[2][1]}`}</option>
+              </Select>
+            </FormControl>
+          </Grid>
+
+          <Box className="my-5">
+            <Bar height={400} width={100} data={chartData} options={options} />
+          </Box>
+          <hr className="my-5"></hr>
+          <Line data={lineData} height={100} />
         </>
       ) : (
-          <>Binding Data...</>
-        )}
+        <>Binding Data...</>
+      )}
     </div>
   );
 };

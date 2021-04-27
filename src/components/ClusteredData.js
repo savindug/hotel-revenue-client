@@ -160,13 +160,14 @@ export const ClusteredData = () => {
               onChange={handlePropertyChange}
               value={selectedProperty}
             >
-              {hotelList.length > 0 ? (
+              <option value={selectedProperty}>The Palms Hotel & Spa</option>
+              {/* {hotelList.length > 0 ? (
                 hotelList.map((h) => {
                   return <option value={h.id}>{h.name}</option>;
                 })
               ) : (
                 <></>
-              )}
+              )} */}
             </Select>
           </FormControl>
           <FormControl className={classes.formControl}>

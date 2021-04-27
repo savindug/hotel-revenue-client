@@ -42,12 +42,16 @@ export default function ClusterBucket({ cluster, stars }) {
   const clusterBG = ['#E6B8B8', '#CCC0DA', '#C4D79B', '#DCE6F1'];
 
   const getClusterDataSet = useSelector((state) => state.clusterDataSet);
-  const { loading, err, reqHotel, cluster1,
+  const {
+    loading,
+    err,
+    reqHotel,
+    cluster1,
     cluster2,
     cluster3,
     cluster4,
-    hotels } = getClusterDataSet;
-
+    hotels,
+  } = getClusterDataSet;
 
   return (
     <>
@@ -68,11 +72,13 @@ export default function ClusterBucket({ cluster, stars }) {
                     style={{ fontWeight: 'bold', width: '250px' }}
                   >
                     Your Property
-                </StyledTableCell>
+                  </StyledTableCell>
                   <StyledTableCell size="small">Stars</StyledTableCell>
                   {reqHotel.map((e, index) =>
                     (() => {
-                      let date = moment(e.checkIn).format('dddd').substring(0, 3);
+                      let date = moment(e.checkIn)
+                        .format('dddd')
+                        .substring(0, 3);
                       return (
                         <StyledTableCell
                           size="small"
@@ -126,7 +132,7 @@ export default function ClusterBucket({ cluster, stars }) {
                       style={{ fontWeight: 'bold', width: '250px' }}
                     >
                       Current Clustered Bucket
-                  </StyledTableCell>
+                    </StyledTableCell>
 
                     <StyledTableCell size="small">
                       {reqHotel[0].stars}
@@ -147,7 +153,7 @@ export default function ClusterBucket({ cluster, stars }) {
                       style={{ fontWeight: 'bold', width: '250px' }}
                     >
                       Clustered Rate Bucket Position
-                  </StyledTableCell>
+                    </StyledTableCell>
 
                     <StyledTableCell size="small">
                       {reqHotel[0].stars}
@@ -172,7 +178,7 @@ export default function ClusterBucket({ cluster, stars }) {
                       style={{ fontWeight: 'bold', width: '250px' }}
                     >
                       Clustered Rate Bucket Rank (Highest to Lowest)
-                  </StyledTableCell>
+                    </StyledTableCell>
 
                     <StyledTableCell size="small">
                       {reqHotel[0].stars}
@@ -207,8 +213,8 @@ export default function ClusterBucket({ cluster, stars }) {
                     className="d-flex"
                     style={{ fontWeight: 'bold', width: '250px' }}
                   >
-                    Cluster Outliers
-                </StyledTableCell>
+                    Bucket Movements
+                  </StyledTableCell>
                   <StyledTableCell size="small">Stars</StyledTableCell>
                   {cluster1.map((e, index) =>
                     (() => {
@@ -240,26 +246,23 @@ export default function ClusterBucket({ cluster, stars }) {
                       scope="row"
                       className="d-flex"
                       style={{
-                        fontWeight: 'bold', width: '250px', backgroundColor:
-                          clusterBG[3]
+                        fontWeight: 'bold',
+                        width: '250px',
+                        backgroundColor: clusterBG[3],
                       }}
                     >
                       5 Star Pricing Up
-                  </StyledTableCell>
-                    <StyledTableCell size="small">
                     </StyledTableCell>
-                    {cluster4.map((day, index) =>
-                      (
-                        <StyledTableCell
-                          size="small"
-                          key={index}
-                          style={{ fontSize: '14px' }}
-                        >
-                          {day.outliers_up.length}
-                        </StyledTableCell>
-                      )
-                    )}
-
+                    <StyledTableCell size="small"></StyledTableCell>
+                    {cluster4.map((day, index) => (
+                      <StyledTableCell
+                        size="small"
+                        key={index}
+                        style={{ fontSize: '14px' }}
+                      >
+                        {day.outliers_up.length}
+                      </StyledTableCell>
+                    ))}
                   </StyledTableRow>
 
                   <StyledTableRow>
@@ -269,26 +272,23 @@ export default function ClusterBucket({ cluster, stars }) {
                       scope="row"
                       className="d-flex"
                       style={{
-                        fontWeight: 'bold', width: '250px', backgroundColor:
-                          clusterBG[3]
+                        fontWeight: 'bold',
+                        width: '250px',
+                        backgroundColor: clusterBG[3],
                       }}
                     >
                       5 Star Pricing Down
-                  </StyledTableCell>
-                    <StyledTableCell size="small">
                     </StyledTableCell>
-                    {cluster4.map((day, index) =>
-                      (
-                        <StyledTableCell
-                          size="small"
-                          key={index}
-                          style={{ fontSize: '14px' }}
-                        >
-                          {day.outliers_down.length}
-                        </StyledTableCell>
-                      )
-                    )}
-
+                    <StyledTableCell size="small"></StyledTableCell>
+                    {cluster4.map((day, index) => (
+                      <StyledTableCell
+                        size="small"
+                        key={index}
+                        style={{ fontSize: '14px' }}
+                      >
+                        {day.outliers_down.length}
+                      </StyledTableCell>
+                    ))}
                   </StyledTableRow>
 
                   <StyledTableRow>
@@ -298,26 +298,23 @@ export default function ClusterBucket({ cluster, stars }) {
                       scope="row"
                       className="d-flex"
                       style={{
-                        fontWeight: 'bold', width: '250px', backgroundColor:
-                          clusterBG[2]
+                        fontWeight: 'bold',
+                        width: '250px',
+                        backgroundColor: clusterBG[2],
                       }}
                     >
                       4 Star Pricing Up
-                  </StyledTableCell>
-                    <StyledTableCell size="small">
                     </StyledTableCell>
-                    {cluster3.map((day, index) =>
-                      (
-                        <StyledTableCell
-                          size="small"
-                          key={index}
-                          style={{ fontSize: '14px' }}
-                        >
-                          {day.outliers_up.length}
-                        </StyledTableCell>
-                      )
-                    )}
-
+                    <StyledTableCell size="small"></StyledTableCell>
+                    {cluster3.map((day, index) => (
+                      <StyledTableCell
+                        size="small"
+                        key={index}
+                        style={{ fontSize: '14px' }}
+                      >
+                        {day.outliers_up.length}
+                      </StyledTableCell>
+                    ))}
                   </StyledTableRow>
 
                   <StyledTableRow>
@@ -327,26 +324,23 @@ export default function ClusterBucket({ cluster, stars }) {
                       scope="row"
                       className="d-flex"
                       style={{
-                        fontWeight: 'bold', width: '250px', backgroundColor:
-                          clusterBG[2]
+                        fontWeight: 'bold',
+                        width: '250px',
+                        backgroundColor: clusterBG[2],
                       }}
                     >
                       4 Star Pricing Down
-                  </StyledTableCell>
-                    <StyledTableCell size="small">
                     </StyledTableCell>
-                    {cluster3.map((day, index) =>
-                      (
-                        <StyledTableCell
-                          size="small"
-                          key={index}
-                          style={{ fontSize: '14px' }}
-                        >
-                          {day.outliers_down.length}
-                        </StyledTableCell>
-                      )
-                    )}
-
+                    <StyledTableCell size="small"></StyledTableCell>
+                    {cluster3.map((day, index) => (
+                      <StyledTableCell
+                        size="small"
+                        key={index}
+                        style={{ fontSize: '14px' }}
+                      >
+                        {day.outliers_down.length}
+                      </StyledTableCell>
+                    ))}
                   </StyledTableRow>
 
                   <StyledTableRow>
@@ -356,26 +350,23 @@ export default function ClusterBucket({ cluster, stars }) {
                       scope="row"
                       className="d-flex"
                       style={{
-                        fontWeight: 'bold', width: '250px', backgroundColor:
-                          clusterBG[1]
+                        fontWeight: 'bold',
+                        width: '250px',
+                        backgroundColor: clusterBG[1],
                       }}
                     >
                       3 Star Pricing Up
-                  </StyledTableCell>
-                    <StyledTableCell size="small">
                     </StyledTableCell>
-                    {cluster2.map((day, index) =>
-                      (
-                        <StyledTableCell
-                          size="small"
-                          key={index}
-                          style={{ fontSize: '14px' }}
-                        >
-                          {day.outliers_up.length}
-                        </StyledTableCell>
-                      )
-                    )}
-
+                    <StyledTableCell size="small"></StyledTableCell>
+                    {cluster2.map((day, index) => (
+                      <StyledTableCell
+                        size="small"
+                        key={index}
+                        style={{ fontSize: '14px' }}
+                      >
+                        {day.outliers_up.length}
+                      </StyledTableCell>
+                    ))}
                   </StyledTableRow>
 
                   <StyledTableRow>
@@ -385,26 +376,23 @@ export default function ClusterBucket({ cluster, stars }) {
                       scope="row"
                       className="d-flex"
                       style={{
-                        fontWeight: 'bold', width: '250px', backgroundColor:
-                          clusterBG[1]
+                        fontWeight: 'bold',
+                        width: '250px',
+                        backgroundColor: clusterBG[1],
                       }}
                     >
                       3 Star Pricing Down
-                  </StyledTableCell>
-                    <StyledTableCell size="small">
                     </StyledTableCell>
-                    {cluster2.map((day, index) =>
-                      (
-                        <StyledTableCell
-                          size="small"
-                          key={index}
-                          style={{ fontSize: '14px' }}
-                        >
-                          {day.outliers_down.length}
-                        </StyledTableCell>
-                      )
-                    )}
-
+                    <StyledTableCell size="small"></StyledTableCell>
+                    {cluster2.map((day, index) => (
+                      <StyledTableCell
+                        size="small"
+                        key={index}
+                        style={{ fontSize: '14px' }}
+                      >
+                        {day.outliers_down.length}
+                      </StyledTableCell>
+                    ))}
                   </StyledTableRow>
 
                   <StyledTableRow>
@@ -414,26 +402,23 @@ export default function ClusterBucket({ cluster, stars }) {
                       scope="row"
                       className="d-flex"
                       style={{
-                        fontWeight: 'bold', width: '250px', backgroundColor:
-                          clusterBG[0]
+                        fontWeight: 'bold',
+                        width: '250px',
+                        backgroundColor: clusterBG[0],
                       }}
                     >
                       2 Star Pricing Up
-                  </StyledTableCell>
-                    <StyledTableCell size="small">
                     </StyledTableCell>
-                    {cluster1.map((day, index) =>
-                      (
-                        <StyledTableCell
-                          size="small"
-                          key={index}
-                          style={{ fontSize: '14px' }}
-                        >
-                          {day.outliers_up.length}
-                        </StyledTableCell>
-                      )
-                    )}
-
+                    <StyledTableCell size="small"></StyledTableCell>
+                    {cluster1.map((day, index) => (
+                      <StyledTableCell
+                        size="small"
+                        key={index}
+                        style={{ fontSize: '14px' }}
+                      >
+                        {day.outliers_up.length}
+                      </StyledTableCell>
+                    ))}
                   </StyledTableRow>
 
                   <StyledTableRow>
@@ -443,38 +428,32 @@ export default function ClusterBucket({ cluster, stars }) {
                       scope="row"
                       className="d-flex"
                       style={{
-                        fontWeight: 'bold', width: '250px', backgroundColor:
-                          clusterBG[0]
+                        fontWeight: 'bold',
+                        width: '250px',
+                        backgroundColor: clusterBG[0],
                       }}
                     >
                       2 Star Pricing Down
-                  </StyledTableCell>
-                    <StyledTableCell size="small">
                     </StyledTableCell>
-                    {cluster1.map((day, index) =>
-                      (
-                        <StyledTableCell
-                          size="small"
-                          key={index}
-                          style={{ fontSize: '14px' }}
-                        >
-                          {day.outliers_down.length}
-                        </StyledTableCell>
-                      )
-                    )}
-
+                    <StyledTableCell size="small"></StyledTableCell>
+                    {cluster1.map((day, index) => (
+                      <StyledTableCell
+                        size="small"
+                        key={index}
+                        style={{ fontSize: '14px' }}
+                      >
+                        {day.outliers_down.length}
+                      </StyledTableCell>
+                    ))}
                   </StyledTableRow>
                 </TableBody>
               </Table>
             </Box>
           </TableContainer>
-
         </>
-
       ) : (
-          <>loading</>
-        )
-      }
+        <>loading</>
+      )}
     </>
   );
 }
