@@ -23,7 +23,7 @@ import {
 } from '@material-ui/core';
 import moment from 'moment';
 import HotelDataTable from './HotelDataTable';
-import { Nav } from 'react-bootstrap';
+import { Badge, Nav } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import ClusterBucket from './ClusterBucket';
 import { Graphs } from './Graphs';
@@ -57,6 +57,8 @@ export const ClusteredData = () => {
     hotels,
     hotelList,
   } = getClusterDataSet;
+
+  const clusterBG = ['#E6B8B8', '#CCC0DA', '#C4D79B', '#DCE6F1'];
 
   const handdleDatePicker = (date) => {
     setSelectedDate(moment(date).format('YYYY-MM-DD'));
@@ -194,7 +196,21 @@ export const ClusteredData = () => {
           </FormControl> */}
         </Grid>
         <Grid container justify="space-around" className="mb-3">
-          <img src={img_star_bucktet} />
+          {/* <img src={img_star_bucktet} /> */}
+          <div>
+            <Badge style={{ backgroundColor: clusterBG[0] }}>
+              2 Star Cluster
+            </Badge>{' '}
+            <Badge style={{ backgroundColor: clusterBG[1] }}>
+              3 Star Cluster
+            </Badge>{' '}
+            <Badge style={{ backgroundColor: clusterBG[2] }}>
+              4 Star Cluster
+            </Badge>{' '}
+            <Badge style={{ backgroundColor: clusterBG[3] }}>
+              5 Star Cluster
+            </Badge>{' '}
+          </div>
         </Grid>
       </MuiPickersUtilsProvider>
 
