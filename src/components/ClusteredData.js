@@ -143,78 +143,82 @@ export const ClusteredData = () => {
 
   return (
     <div>
-      <MuiPickersUtilsProvider utils={MomentUtils}>
-        <Grid container justify="space-around" className="mb-3">
-          <FormControl className={classes.formControl}>
-            <InputLabel htmlFor="grouped-native-select">Destination</InputLabel>
-            <Select native defaultValue="" id="grouped-native-select">
-              <option value={1447930}>Miami Beach</option>
-            </Select>
-          </FormControl>
-          <FormControl className={classes.formControl}>
-            <InputLabel htmlFor="grouped-native-select">
-              Select Property
-            </InputLabel>
-            <Select
-              native
-              defaultValue=""
-              id="grouped-native-select"
-              onChange={handlePropertyChange}
-              value={selectedProperty}
-            >
-              <option value={selectedProperty}>The Palms Hotel & Spa</option>
-              {/* {hotelList.length > 0 ? (
+      <Grid className="position-relative">
+        <MuiPickersUtilsProvider utils={MomentUtils}>
+          <Grid container justify="space-around" className="mb-3">
+            <FormControl className={classes.formControl}>
+              <InputLabel htmlFor="grouped-native-select">
+                Destination
+              </InputLabel>
+              <Select native defaultValue="" id="grouped-native-select">
+                <option value={1447930}>Miami Beach</option>
+              </Select>
+            </FormControl>
+            <FormControl className={classes.formControl}>
+              <InputLabel htmlFor="grouped-native-select">
+                Select Property
+              </InputLabel>
+              <Select
+                native
+                defaultValue=""
+                id="grouped-native-select"
+                onChange={handlePropertyChange}
+                value={selectedProperty}
+              >
+                <option value={selectedProperty}>The Palms Hotel & Spa</option>
+                {/* {hotelList.length > 0 ? (
                 hotelList.map((h) => {
                   return <option value={h.id}>{h.name}</option>;
                 })
               ) : (
                 <></>
               )} */}
-            </Select>
-          </FormControl>
-          <FormControl className={classes.formControl}>
-            <KeyboardDatePicker
-              disableToolbar
-              variant="inline"
-              format="YYYY-MM-DD"
-              id="date-picker-inline"
-              label="Select the Date"
-              value={selectedDate}
-              onChange={(date) => handdleDatePicker(date)}
-              KeyboardButtonProps={{
-                'aria-label': 'change date',
-              }}
-              autoOk={true}
-              disabled
-            />
-          </FormControl>
-          {/* 
+              </Select>
+            </FormControl>
+            <FormControl className={classes.formControl}>
+              <KeyboardDatePicker
+                disableToolbar
+                variant="inline"
+                format="YYYY-MM-DD"
+                id="date-picker-inline"
+                label="Select the Date"
+                value={selectedDate}
+                onChange={(date) => handdleDatePicker(date)}
+                KeyboardButtonProps={{
+                  'aria-label': 'change date',
+                }}
+                autoOk={true}
+                disabled
+              />
+            </FormControl>
+            {/* 
           <FormControl className={classes.formControl}>
             <Button variant="outlined" size="small" color="dark">
               Fetch
             </Button>
           </FormControl> */}
-        </Grid>
-        <Grid container justify="space-around" className="mb-3">
-          {/* <img src={img_star_bucktet} /> */}
-          <div>
-            <Badge style={{ backgroundColor: clusterBG[0] }}>
-              2 Star Cluster
-            </Badge>{' '}
-            <Badge style={{ backgroundColor: clusterBG[1] }}>
-              3 Star Cluster
-            </Badge>{' '}
-            <Badge style={{ backgroundColor: clusterBG[2] }}>
-              4 Star Cluster
-            </Badge>{' '}
-            <Badge style={{ backgroundColor: clusterBG[3] }}>
-              5 Star Cluster
-            </Badge>{' '}
-          </div>
-        </Grid>
-      </MuiPickersUtilsProvider>
+          </Grid>
+          <Grid container justify="space-around" className="mb-3">
+            {/* <img src={img_star_bucktet} /> */}
+            <div>
+              <Badge className="p-2" style={{ backgroundColor: clusterBG[0] }}>
+                2 Star Cluster
+              </Badge>{' '}
+              <Badge className="p-2" style={{ backgroundColor: clusterBG[1] }}>
+                3 Star Cluster
+              </Badge>{' '}
+              <Badge className="p-2" style={{ backgroundColor: clusterBG[2] }}>
+                4 Star Cluster
+              </Badge>{' '}
+              <Badge className="p-2" style={{ backgroundColor: clusterBG[3] }}>
+                5 Star Cluster
+              </Badge>{' '}
+            </div>
+          </Grid>
+        </MuiPickersUtilsProvider>
 
-      <TabularNav className="my-5" />
+        <TabularNav className="my-5" />
+      </Grid>
       {loading ? (
         <LoadingOverlay show={loading} />
       ) : err ? (
