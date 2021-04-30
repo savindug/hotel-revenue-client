@@ -107,11 +107,27 @@ export default function ClusterBucket({ cluster, stars }) {
                       className="d-flex"
                       style={{ fontWeight: 'bold', width: '250px' }}
                     >
-                      {reqHotel[0].name}
+                      {(() => {
+                        let name = null;
+                        reqHotel.map((e, index) => {
+                          if (e.name !== null) {
+                            name = e.name;
+                          }
+                        });
+                        return name;
+                      })()}
                     </StyledTableCell>
 
                     <StyledTableCell size="small">
-                      {reqHotel[0].stars}
+                      {(() => {
+                        let stars = null;
+                        reqHotel.map((e, index) => {
+                          if (e.name !== null) {
+                            stars = e.stars;
+                          }
+                        });
+                        return stars;
+                      })()}
                     </StyledTableCell>
                     {reqHotel.map((e, index) => (
                       <StyledTableCell
@@ -135,7 +151,15 @@ export default function ClusterBucket({ cluster, stars }) {
                     </StyledTableCell>
 
                     <StyledTableCell size="small">
-                      {reqHotel[0].stars}
+                      {(() => {
+                        let stars = null;
+                        reqHotel.map((e, index) => {
+                          if (e.name !== null) {
+                            stars = e.stars;
+                          }
+                        });
+                        return stars;
+                      })()}
                     </StyledTableCell>
                     {reqHotel.map((e, index) => (
                       <StyledTableCell size="small" key={index}>
@@ -156,7 +180,15 @@ export default function ClusterBucket({ cluster, stars }) {
                     </StyledTableCell>
 
                     <StyledTableCell size="small">
-                      {reqHotel[0].stars}
+                      {(() => {
+                        let stars = null;
+                        reqHotel.map((e, index) => {
+                          if (e.name !== null) {
+                            stars = e.stars;
+                          }
+                        });
+                        return stars;
+                      })()}
                     </StyledTableCell>
                     {reqHotel.map((e, index) => (
                       <StyledTableCell
@@ -181,7 +213,15 @@ export default function ClusterBucket({ cluster, stars }) {
                     </StyledTableCell>
 
                     <StyledTableCell size="small">
-                      {reqHotel[0].stars}
+                      {(() => {
+                        let stars = null;
+                        reqHotel.map((e, index) => {
+                          if (e.name !== null) {
+                            stars = e.stars;
+                          }
+                        });
+                        return stars;
+                      })()}
                     </StyledTableCell>
                     {reqHotel.map((e, index) => (
                       <StyledTableCell

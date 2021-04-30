@@ -44,7 +44,10 @@ export const ClusteredData = () => {
   const [selectedDate, setSelectedDate] = useState(
     moment().format('YYYY-MM-DD')
   );
-  const [selectedProperty, setSelectedProperty] = useState(106399);
+  const [selectedProperty, setSelectedProperty] = useState(454244);
+
+  const [selectedMarket, setSelectedMarket] = useState(1535616);
+
   const getClusterDataSet = useSelector((state) => state.clusterDataSet);
   const {
     clusterData,
@@ -65,6 +68,10 @@ export const ClusteredData = () => {
   };
 
   const handlePropertyChange = (event) => {
+    setSelectedMarket(event.target.value);
+  };
+
+  const handleMarketChange = (event) => {
     setSelectedProperty(event.target.value);
   };
 
@@ -78,13 +85,13 @@ export const ClusteredData = () => {
   useEffect(() => {
     async function getClusters() {
       await dispatch(
-        fetchClusterData(1447930, selectedDate, 90, selectedProperty)
+        fetchClusterData(selectedMarket, selectedDate, 90, selectedProperty)
       );
     }
 
     async function getHotels() {
       await dispatch(
-        fetchHotelData(1447930, selectedDate, 90, selectedProperty)
+        fetchHotelData(selectedMarket, selectedDate, 90, selectedProperty)
       );
     }
     getClusters();
@@ -150,8 +157,16 @@ export const ClusteredData = () => {
               <InputLabel htmlFor="grouped-native-select">
                 Destination
               </InputLabel>
-              <Select native defaultValue="" id="grouped-native-select">
+              <Select
+                native
+                defaultValue=""
+                id="grouped-native-select"
+                onChange={handleMarketChange}
+                value={selectedMarket}
+              >
                 <option value={1447930}>Miami Beach</option>
+                {/* <option value={1535616}>New York</option>
+                <option value={504261}>Paris</option> */}
               </Select>
             </FormControl>
             <FormControl className={classes.formControl}>
@@ -165,7 +180,16 @@ export const ClusteredData = () => {
                 onChange={handlePropertyChange}
                 value={selectedProperty}
               >
-                <option value={selectedProperty}>The Palms Hotel & Spa</option>
+                {selectedMarket === 1447930 ? (
+                  <option value={106399}>The Palms Hotel & Spa</option>
+                ) : selectedMarket === 1535616 ? (
+                  <option value={454244}>
+                    Hilton Garden Inn New York-Times Square Central
+                  </option>
+                ) : (
+                  <></>
+                )}
+
                 {/* {hotelList.length > 0 ? (
                 hotelList.map((h) => {
                   return <option value={h.id}>{h.name}</option>;

@@ -71,21 +71,28 @@ export default function HotelDataTable({ selectedDate }) {
   } = getClusterDataSet;
 
   const getClusterByPrice = (rate, ix) => {
-    console.log('rate: ' + rate + 'cluster1.min: ' + cluster1.min);
     if (rate >= cluster1[ix].min && rate <= cluster1[ix].max) {
-      //console.log(`${cluster1.min} < ${rate} > ${cluster1.max} `);
+      console.log(
+        `${ix} => ${cluster1[ix].min} < ${rate} > ${cluster1[ix].max} `
+      );
       return 0;
     }
     if (rate >= cluster2[ix].min && rate <= cluster2[ix].max) {
-      //console.log(`${cluster2.min} < ${rate} > ${cluster2.max} `);
+      console.log(
+        `${ix} =>${cluster2[ix].min} < ${rate} > ${cluster2[ix].max} `
+      );
       return 1;
     }
     if (rate >= cluster3[ix].min && rate <= cluster3[ix].max) {
-      //console.log(`${cluster3.min} < ${rate} > ${cluster3.max} `);
+      console.log(
+        `${ix} =>${cluster3[ix].min} < ${rate} > ${cluster3[ix].max} `
+      );
       return 2;
     }
     if (rate >= cluster4[ix].min && rate <= cluster4[ix].max) {
-      //console.log(`${cluster4.min} < ${rate} > ${cluster4.max} `);
+      console.log(
+        `${ix} =>${cluster4[ix].min} < ${rate} > ${cluster4[ix].max} `
+      );
       return 3;
     }
   };
@@ -151,7 +158,7 @@ export default function HotelDataTable({ selectedDate }) {
                         .add(i, 'd')
                         .format('YYYY-MM-DD');
                       let day = moment(date).format('dddd').substring(0, 3);
-                      console.log('selectedDate+: ' + date + ', day: ' + day);
+                      // console.log('selectedDate+: ' + date + ', day: ' + day);
                       return (
                         <StyledTableCell
                           size="small"
