@@ -25,18 +25,11 @@ const SimpleMap = () => {
 
   const [defaultProps] = useState({
     center: {
-      lat: 25.806182,
-      lng: -80.12442,
+      lat: Number(hotels[0].location.lat),
+      lng: Number(hotels[0].location.lng),
     },
     zoom: 15,
   });
-
-  // useEffect(() => {
-  //   defaultProps.center = {
-  //     lat: hotels[0].location.lat,
-  //     lng: hotels[0].location.lng,
-  //   };
-  // }, []);
 
   return (
     // Important! Always set the container height explicitly
