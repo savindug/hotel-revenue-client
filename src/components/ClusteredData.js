@@ -44,9 +44,9 @@ export const ClusteredData = () => {
   const [selectedDate, setSelectedDate] = useState(
     moment().format('YYYY-MM-DD')
   );
-  const [selectedProperty, setSelectedProperty] = useState(454244);
+  const [selectedProperty, setSelectedProperty] = useState(106399);
 
-  const [selectedMarket, setSelectedMarket] = useState(1535616);
+  const [selectedMarket, setSelectedMarket] = useState(1447930);
 
   const getClusterDataSet = useSelector((state) => state.clusterDataSet);
   const {
