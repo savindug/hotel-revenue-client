@@ -31,9 +31,9 @@ export const Login = (props) => {
     }
   };
 
-  useEffect(() => {
-    dispatch(customLogin(USERNAME, PASSWORD));
-  }, []);
+  // useEffect(() => {
+  //   dispatch(customLogin(USERNAME, PASSWORD));
+  // }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
