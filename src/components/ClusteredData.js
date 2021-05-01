@@ -44,9 +44,9 @@ export const ClusteredData = () => {
   const [selectedDate, setSelectedDate] = useState(
     moment().format('YYYY-MM-DD')
   );
-  const [selectedProperty, setSelectedProperty] = useState(106399);
+  const [selectedProperty, setSelectedProperty] = useState(454244);
 
-  const [selectedMarket, setSelectedMarket] = useState(1447930);
+  const [selectedMarket, setSelectedMarket] = useState(1535616);
 
   const getClusterDataSet = useSelector((state) => state.clusterDataSet);
   const {
@@ -164,9 +164,9 @@ export const ClusteredData = () => {
                 onChange={handleMarketChange}
                 value={selectedMarket}
               >
-                <option value={1447930}>Miami Beach</option>
-                {/* <option value={1535616}>New York</option>
-                <option value={504261}>Paris</option> */}
+                {/* <option value={1447930}>Miami Beach</option> */}
+                <option value={1535616}>New York</option>
+                {/* <option value={504261}>Paris</option>  */}
               </Select>
             </FormControl>
             <FormControl className={classes.formControl}>

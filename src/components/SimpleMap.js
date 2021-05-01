@@ -37,7 +37,7 @@ const SimpleMap = () => {
       {hotels.length > 0 ? (
         <GoogleMapReact
           bootstrapURLKeys={{
-            key: 'AIzaSyDdpbmo2Dgu_QjmNW5r7_oSrp-HDZ7wpRA',
+            key: 'AIzaSyCzDd8gDOD8VTT40i6J8wl543L6sxLv8L8',
           }}
           defaultCenter={defaultProps.center}
           defaultZoom={defaultProps.zoom}
