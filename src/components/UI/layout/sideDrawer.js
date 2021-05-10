@@ -125,7 +125,7 @@ export default function MiniDrawer() {
             onClick={handleDrawerOpen}
             edge="start"
             className={clsx(classes.menuButton, {
-              [classes.hide]: open,
+              [classes.hide]: true,
             })}
           >
             <MenuIcon />

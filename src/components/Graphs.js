@@ -10,6 +10,7 @@ import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { Bar, Line, Scatter } from 'react-chartjs-2';
 import { useSelector } from 'react-redux';
+import { CLUSTER_BACKGROUND } from '../utils/const';
 const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
@@ -19,7 +20,6 @@ const useStyles = makeStyles((theme) => ({
 export const Graphs = () => {
   const classes = useStyles();
   const [matrix, setMatrix] = useState('avg');
-  const clusterBG = ['#E6B8B8', '#CCC0DA', '#C4D79B', '#DDE6F6'];
   const getClusterDataSet = useSelector((state) => state.clusterDataSet);
   const {
     loading,
@@ -46,12 +46,12 @@ export const Graphs = () => {
     datasets: [
       {
         label: 'Stars 2',
-        backgroundColor: clusterBG[0],
-        borderColor: clusterBG[0],
+        backgroundColor: CLUSTER_BACKGROUND[0],
+        borderColor: CLUSTER_BACKGROUND[0],
         borderWidth: 1,
         //stack: 1,
-        hoverBackgroundColor: clusterBG[0],
-        hoverBorderColor: clusterBG[0],
+        hoverBackgroundColor: CLUSTER_BACKGROUND[0],
+        hoverBorderColor: CLUSTER_BACKGROUND[0],
         data: cluster1
           .slice(dateRange[datePage][0], dateRange[datePage][1])
           .map((a) => (a.items >= 3 ? a.mean : 'NED')),
@@ -59,36 +59,36 @@ export const Graphs = () => {
 
       {
         label: 'Stars 3',
-        backgroundColor: clusterBG[1],
-        borderColor: clusterBG[1],
+        backgroundColor: CLUSTER_BACKGROUND[1],
+        borderColor: CLUSTER_BACKGROUND[1],
         borderWidth: 1,
         //stack: 1,
-        hoverBackgroundColor: clusterBG[1],
-        hoverBorderColor: clusterBG[1],
+        hoverBackgroundColor: CLUSTER_BACKGROUND[1],
+        hoverBorderColor: CLUSTER_BACKGROUND[1],
         data: cluster2
           .slice(dateRange[datePage][0], dateRange[datePage][1])
           .map((a) => (a.items >= 3 ? a.mean : 'NED')),
       },
       {
         label: 'Stars 4',
-        backgroundColor: clusterBG[2],
-        borderColor: clusterBG[2],
+        backgroundColor: CLUSTER_BACKGROUND[2],
+        borderColor: CLUSTER_BACKGROUND[2],
         borderWidth: 1,
         //stack: 1,
-        hoverBackgroundColor: clusterBG[2],
-        hoverBorderColor: clusterBG[2],
+        hoverBackgroundColor: CLUSTER_BACKGROUND[2],
+        hoverBorderColor: CLUSTER_BACKGROUND[2],
         data: cluster3
           .slice(dateRange[datePage][0], dateRange[datePage][1])
           .map((a) => (a.items >= 3 ? a.mean : 'NED')),
       },
       {
         label: 'Stars 5',
-        backgroundColor: clusterBG[3],
-        borderColor: clusterBG[3],
+        backgroundColor: CLUSTER_BACKGROUND[3],
+        borderColor: CLUSTER_BACKGROUND[3],
         borderWidth: 1,
         // stack: 1,
-        hoverBackgroundColor: clusterBG[3],
-        hoverBorderColor: clusterBG[3],
+        hoverBackgroundColor: CLUSTER_BACKGROUND[3],
+        hoverBorderColor: CLUSTER_BACKGROUND[3],
         data: cluster4
           .slice(dateRange[datePage][0], dateRange[datePage][1])
           .map((a) => (a.items >= 3 ? a.mean : 'NED')),
@@ -103,7 +103,7 @@ export const Graphs = () => {
       {
         label: '2 Star Cluster',
         fill: true,
-        borderColor: clusterBG[0],
+        borderColor: CLUSTER_BACKGROUND[0],
         borderWidth: 2,
         data: cluster1
           .slice(dateRange[datePage][0], dateRange[datePage][1])
@@ -113,7 +113,7 @@ export const Graphs = () => {
       {
         label: '3 Star Cluster',
         fill: true,
-        borderColor: clusterBG[1],
+        borderColor: CLUSTER_BACKGROUND[1],
         borderWidth: 2,
         data: cluster2
           .slice(dateRange[datePage][0], dateRange[datePage][1])
@@ -122,7 +122,7 @@ export const Graphs = () => {
       {
         label: '4 Star Cluster',
         fill: true,
-        borderColor: clusterBG[2],
+        borderColor: CLUSTER_BACKGROUND[2],
         borderWidth: 2,
         data: cluster3
           .slice(dateRange[datePage][0], dateRange[datePage][1])
@@ -132,7 +132,7 @@ export const Graphs = () => {
         label: '5 Star Cluster',
         fill: true,
         backgroundColor: 'rgba(75,192,192,0.2)',
-        borderColor: clusterBG[3],
+        borderColor: CLUSTER_BACKGROUND[3],
         borderWidth: 2,
         data: cluster4
           .slice(dateRange[datePage][0], dateRange[datePage][1])

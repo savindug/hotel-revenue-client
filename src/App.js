@@ -8,6 +8,7 @@ import { HotelDataset } from './components/HotelDataset';
 import { Graphs } from './components/Graphs';
 import { Login } from './components/auth/Login';
 import { Register } from './components/auth/Register';
+import PrivateRoute from './routes/PrivateRoute';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,8 +40,8 @@ function App() {
         <main className={classes.content}>
           <div className={classes.toolbar} />
           <Switch>
-            <Route exact path="/" component={Dashboard} />
-            {/* <Route path="/login" component={Login} /> */}
+            <PrivateRoute exact path="/" component={ClusteredData} />
+            <Route path="/login" component={Login} />
             {/* <Route path="/clusters" component={ClusteredData} /> */}
             {/* <Route path="/register" component={Register} /> */}
             {/*  <Route path="/hotels" component={HotelDataset} />

@@ -12,6 +12,7 @@ const initialState = {
   quary: null,
   reqHotel: [],
   hotelList: [],
+  markets: [],
 };
 
 const clusterDataReducer = (state = initialState, action) => {
@@ -50,6 +51,26 @@ const clusterDataReducer = (state = initialState, action) => {
       };
 
     case ACTION_TYPES.GET_HOTELS_FAILED:
+      return {
+        ...state,
+        loading: false,
+        err: action.payload,
+      };
+
+    case ACTION_TYPES.GET_MARKETS:
+      return {
+        ...state,
+        markets: action.payload,
+        loading: false,
+      };
+
+    case ACTION_TYPES.GET_MARKETS_PROGRESS:
+      return {
+        ...state,
+        loading: true,
+      };
+
+    case ACTION_TYPES.GET_MARKETS_FAILED:
       return {
         ...state,
         loading: false,
@@ -98,6 +119,7 @@ const clusterDataReducer = (state = initialState, action) => {
       return {
         ...state,
         hotelList: action.payload,
+        loading: false,
       };
 
     case ACTION_TYPES.GET_HOTELSLIST_PROGRESS:

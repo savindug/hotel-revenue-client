@@ -1,5 +1,7 @@
 import axios from 'axios';
 import { apiURI } from '../../env';
+import { getReqHeaders } from '../../services/auth.service';
+import { AUTHORIZATION_KEY, REFRESH_KEY } from '../../utils/const';
 import * as ACTION_TYPES from './types';
 
 export const fetchClusterData = (destID, date, range, property) => async (
@@ -12,7 +14,10 @@ export const fetchClusterData = (destID, date, range, property) => async (
   let cl4 = [];
 
   await axios(
-    `${apiURI}cluster/report/${property}/${destID}/${date}?range=${range}`
+    `${apiURI}app/cluster/report/${property}/${destID}/${date}?range=${range}`,
+    {
+      headers: await getReqHeaders(),
+    }
   )
     .then((res) => {
       let clusterData = res.data.data;
@@ -77,7 +82,10 @@ export const fetchHotelData = (destID, date, range, property) => async (
   dispatch({ type: ACTION_TYPES.GET_HOTELS_PROGRESS });
 
   await axios(
-    `${apiURI}hotels/report/${property}/${destID}/${date}?range=${range}`
+    `${apiURI}app/hotels/report/${property}/${destID}/${date}?range=${range}`,
+    {
+      headers: await getReqHeaders(),
+    }
   )
     // await axios(
     //   `http://localhost:5000/api/hotels/report/106399/1447930/2021-04-19?range=90`
@@ -98,10 +106,13 @@ export const fetchHotelData = (destID, date, range, property) => async (
     });
 };
 
-export const fetchHotelsList = () => async (dispatch) => {
+export const fetchHotelsList = (destID) => async (dispatch) => {
   dispatch({ type: ACTION_TYPES.GET_HOTELSLIST_PROGRESS });
 
-  await axios(`${apiURI}hotels`)
+  await axios
+    .get(`${apiURI}app/hotels/${destID}`, {
+      headers: await getReqHeaders(),
+    })
     .then((res) => {
       dispatch({
         type: ACTION_TYPES.GET_HOTELSLIST,
@@ -112,6 +123,28 @@ export const fetchHotelsList = () => async (dispatch) => {
       console.log(err);
       dispatch({
         type: ACTION_TYPES.GET_HOTELSLIST_FAILED,
+        payload: err,
+      });
+    });
+};
+
+export const fetchMarkets = () => async (dispatch) => {
+  dispatch({ type: ACTION_TYPES.GET_MARKETS_PROGRESS });
+
+  await axios
+    .get(`${apiURI}app/markets`, {
+      headers: await getReqHeaders(),
+    })
+    .then((res) => {
+      dispatch({
+        type: ACTION_TYPES.GET_MARKETS,
+        payload: res.data.data,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      dispatch({
+        type: ACTION_TYPES.GET_MARKETS_FAILED,
         payload: err,
       });
     });

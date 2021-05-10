@@ -5,7 +5,7 @@ import {
   fetchClusterData,
   fetchHotelData,
 } from '../redux/actions/cluster.actions';
-import DataTable from './DataTable';
+import DataTable from './ClusterDataTable';
 import { LoadingOverlay } from './UI/LoadingOverlay';
 import MomentUtils from '@date-io/moment';
 import {

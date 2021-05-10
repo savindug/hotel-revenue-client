@@ -1,16 +1,49 @@
 import React, { Component, useEffect, useState } from 'react';
 import GoogleMapReact from 'google-map-react';
 import RoomIcon from '@material-ui/icons/Room';
-import { Tooltip } from '@material-ui/core';
+import { Popover, Tooltip, Typography } from '@material-ui/core';
 import { useSelector } from 'react-redux';
-const AnyReactComponent = ({ text, lat, long, color }) => (
-  <Tooltip title={text} arrow>
-    <RoomIcon fontSize="medium" style={{ fill: color }} lat={lat} lng={long} />
-  </Tooltip>
+import { CLUSTER_BACKGROUND } from '../utils/const';
+
+import stars2 from '../assets/imgs/hote-icons/2stars.png';
+import stars3 from '../assets/imgs/hote-icons/3stars.png';
+import stars4 from '../assets/imgs/hote-icons/4stars.png';
+import stars5 from '../assets/imgs/hote-icons/5stars.png';
+import black_Hotel from '../assets/imgs/hote-icons/blck_Hotel.png';
+import {
+  greatPlaceStyle,
+  greatPlaceStyleHover,
+  K_SIZE,
+} from '../styles/mapStyles';
+
+const hotelIconDim = {
+  width: '25px',
+  height: '30px',
+};
+
+const AnyReactComponent = ({ text, lat, long, stars }) => (
+  <div style={greatPlaceStyle}>
+    <Tooltip title={text} arrow>
+      <img
+        src={
+          stars === 2
+            ? stars2
+            : stars === 3
+            ? stars3
+            : stars === 4
+            ? stars4
+            : stars === 5
+            ? stars5
+            : black_Hotel
+        }
+        width={hotelIconDim.width}
+        height={hotelIconDim.height}
+      />
+    </Tooltip>
+  </div>
 );
 
 const SimpleMap = () => {
-  const clusterBG = ['#E6B8B8', '#CCC0DA', '#C4D79B', '#DCE6F1'];
   // const [hotelsList, setHotelsList] = useState([]);
   const getClusterDataSet = useSelector((state) => state.clusterDataSet);
   const {
@@ -32,34 +65,56 @@ const SimpleMap = () => {
   });
 
   return (
-    // Important! Always set the container height explicitly
-    <div style={{ height: '100vh', width: '100%' }}>
+    <div className="mt-5" style={{ height: '100vh', width: '100%' }}>
       {hotels.length > 0 ? (
-        <GoogleMapReact
-          bootstrapURLKeys={{
-            key: 'AIzaSyCzDd8gDOD8VTT40i6J8wl543L6sxLv8L8',
-          }}
-          defaultCenter={defaultProps.center}
-          defaultZoom={defaultProps.zoom}
-        >
-          {hotels.map((_hotel, index) => (
-            <AnyReactComponent
-              lat={_hotel.location.lat}
-              lng={_hotel.location.lng}
-              color={
-                index === 0
-                  ? '#D50000'
-                  : clusterBG[Math.floor(_hotel.stars) - 2]
-              }
-              text={_hotel.hotelName}
-            />
-          ))}
-        </GoogleMapReact>
+        <>
+          <GoogleMapReact
+            bootstrapURLKeys={{
+              key: 'AIzaSyCzDd8gDOD8VTT40i6J8wl543L6sxLv8L8',
+            }}
+            defaultCenter={defaultProps.center}
+            defaultZoom={defaultProps.zoom}
+            options={{
+              styles: [
+                {
+                  stylers: [
+                    { saturation: 20 },
+                    { gamma: 0.7 },
+                    { backgroundColor: '#2e2e2e' },
+                  ],
+                },
+              ],
+            }}
+          >
+            {hotels.map((_hotel, index) => (
+              <AnyReactComponent
+                lat={_hotel.location.lat}
+                lng={_hotel.location.lng}
+                stars={Math.floor(_hotel.stars)}
+                text={_hotel.hotelName}
+              />
+            ))}
+          </GoogleMapReact>
+        </>
       ) : (
         <></>
       )}
     </div>
   );
 };
+
+// const styles = StyleSheet.create({
+//   overlay: {
+//     position: 'absolute',
+//     top: '0px',
+//     width: '100%',
+//     height: '100%',
+//     backgroundColor: '#000',
+//     opacity: 0.5,
+//   },
+//   map: {
+//     position: 'relative',
+//   },
+// });
 
 export default SimpleMap;

@@ -19,6 +19,7 @@ import { Alert } from 'bootstrap';
 import moment from 'moment';
 import { LoadingOverlay } from './UI/LoadingOverlay';
 import { AssignmentReturn, DirectionsBike } from '@material-ui/icons';
+import { CLUSTER_BACKGROUND } from '../utils/const';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -40,7 +41,7 @@ const StyledTableRow = withStyles((theme) => ({
 }))(TableRow);
 const useStyles = makeStyles({
   container: {
-    maxHeight: 500,
+    maxHeight: window.innerHeight - 275,
   },
   table: {
     '& .MuiTableCell-root': {
@@ -57,7 +58,6 @@ export default function HotelDataTable({ selectedDate }) {
     dir: 0,
   });
 
-  const clusterBG = ['#E6B8B8', '#CCC0DA', '#C4D79B', '#DCE6F1'];
   // const [hotelsList, setHotelsList] = useState([]);
   const getClusterDataSet = useSelector((state) => state.clusterDataSet);
   const {
@@ -202,7 +202,9 @@ export default function HotelDataTable({ selectedDate }) {
                             size="small"
                             style={{
                               backgroundColor:
-                                clusterBG[getClusterByPrice(dt.price, ix)],
+                                CLUSTER_BACKGROUND[
+                                  getClusterByPrice(dt.price, ix)
+                                ],
                             }}
                           >
                             {dt.price}

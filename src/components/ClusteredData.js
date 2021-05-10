@@ -5,8 +5,8 @@ import {
   fetchClusterData,
   fetchHotelData,
   fetchHotelsList,
+  fetchMarkets,
 } from '../redux/actions/cluster.actions';
-import DataTable from './DataTable';
 import { LoadingOverlay } from './UI/LoadingOverlay';
 import MomentUtils from '@date-io/moment';
 import {
@@ -29,6 +29,8 @@ import ClusterBucket from './ClusterBucket';
 import { Graphs } from './Graphs';
 import img_star_bucktet from '../assets/imgs/star-buckets.png';
 import SimpleMap from './SimpleMap';
+import ClusterDataTable from './ClusterDataTable';
+import { CLUSTER_BACKGROUND } from '../utils/const';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -40,13 +42,13 @@ const useStyles = makeStyles((theme) => ({
 export const ClusteredData = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const [tab, setTab] = useState(0);
+  const [tab, setTab] = useState(3);
   const [selectedDate, setSelectedDate] = useState(
     moment().format('YYYY-MM-DD')
   );
-  const [selectedProperty, setSelectedProperty] = useState(106399);
+  const [selectedProperty, setSelectedProperty] = useState(0);
 
-  const [selectedMarket, setSelectedMarket] = useState(1447930);
+  const [selectedMarket, setSelectedMarket] = useState(0);
 
   const getClusterDataSet = useSelector((state) => state.clusterDataSet);
   const {
@@ -59,6 +61,7 @@ export const ClusteredData = () => {
     cluster4,
     hotels,
     hotelList,
+    markets,
   } = getClusterDataSet;
 
   const clusterBG = ['#E6B8B8', '#CCC0DA', '#C4D79B', '#DCE6F1'];
@@ -68,19 +71,32 @@ export const ClusteredData = () => {
   };
 
   const handlePropertyChange = (event) => {
-    setSelectedMarket(event.target.value);
+    const option = event.target.value;
+    if (option != -100) {
+      setSelectedProperty(option);
+    }
   };
 
-  const handleMarketChange = (event) => {
-    setSelectedProperty(event.target.value);
+  async function getHotelList(value) {
+    await dispatch(fetchHotelsList(value));
+  }
+
+  const handleMarketChange = async (event) => {
+    const option = event.target.value;
+    if (option != -100) {
+      setSelectedMarket(option);
+
+      await getHotelList(option);
+    }
   };
 
   useEffect(() => {
-    async function getHotelList() {
-      await dispatch(fetchHotelsList());
+    async function getMarkets() {
+      await dispatch(fetchMarkets());
     }
-    getHotelList();
-  }, []);
+    getMarkets();
+    console.log('selected market => ' + selectedMarket);
+  }, [dispatch]);
 
   useEffect(() => {
     async function getClusters() {
@@ -94,8 +110,11 @@ export const ClusteredData = () => {
         fetchHotelData(selectedMarket, selectedDate, 90, selectedProperty)
       );
     }
-    getClusters();
-    getHotels();
+
+    if (selectedMarket > 0 && selectedProperty > 0) {
+      getClusters();
+      getHotels();
+    }
   }, [selectedDate, dispatch, selectedProperty]);
 
   const TabularNav = () => {
@@ -106,6 +125,16 @@ export const ClusteredData = () => {
       <Nav variant="tabs">
         <Nav.Item>
           <Nav.Link
+            className={tab === 3 ? tabularNavCls : 'text-dark'}
+            eventKey="link-1"
+            disabled={loading}
+            onClick={() => setTab(3)}
+          >
+            Hotels Map
+          </Nav.Link>{' '}
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link
             className={tab === 0 ? tabularNavCls : 'text-dark'}
             eventKey="link-0"
             disabled={loading}
@@ -113,7 +142,7 @@ export const ClusteredData = () => {
           >
             Clustered Matrix
           </Nav.Link>
-        </Nav.Item>
+        </Nav.Item>{' '}
         <Nav.Item>
           <Nav.Link
             className={tab === 1 ? tabularNavCls : 'text-dark'}
@@ -134,16 +163,6 @@ export const ClusteredData = () => {
             Hotels Rates
           </Nav.Link>
         </Nav.Item>{' '}
-        <Nav.Item>
-          <Nav.Link
-            className={tab === 3 ? tabularNavCls : 'text-dark'}
-            eventKey="link-1"
-            disabled={loading}
-            onClick={() => setTab(3)}
-          >
-            Hotels Map
-          </Nav.Link>
-        </Nav.Item>
       </Nav>
     );
   };
@@ -164,9 +183,18 @@ export const ClusteredData = () => {
                 onChange={handleMarketChange}
                 value={selectedMarket}
               >
-                <option value={1447930}>Miami Beach</option>
-                {/* <option value={1535616}>New York</option> */}
-                {/* <option value={504261}>Paris</option>  */}
+                <option value={-100}>Destinations</option>
+                {markets.length > 0 ? (
+                  markets.map((d, index) => {
+                    return (
+                      <option value={d.id} key={index}>
+                        {d.id} | {d.name}
+                      </option>
+                    );
+                  })
+                ) : (
+                  <></>
+                )}
               </Select>
             </FormControl>
             <FormControl className={classes.formControl}>
@@ -180,7 +208,7 @@ export const ClusteredData = () => {
                 onChange={handlePropertyChange}
                 value={selectedProperty}
               >
-                {selectedMarket === 1447930 ? (
+                {/* {selectedMarket === 1447930 ? (
                   <option value={106399}>The Palms Hotel & Spa</option>
                 ) : selectedMarket === 1535616 ? (
                   <option value={454244}>
@@ -188,15 +216,19 @@ export const ClusteredData = () => {
                   </option>
                 ) : (
                   <></>
+                )} */}
+                <option value={-100}>Properties</option>
+                {hotelList.length > 0 ? (
+                  hotelList.map((h, index) => {
+                    return (
+                      <option value={h.id} key={index}>
+                        {h.name}
+                      </option>
+                    );
+                  })
+                ) : (
+                  <></>
                 )}
-
-                {/* {hotelList.length > 0 ? (
-                hotelList.map((h) => {
-                  return <option value={h.id}>{h.name}</option>;
-                })
-              ) : (
-                <></>
-              )} */}
               </Select>
             </FormControl>
             <FormControl className={classes.formControl}>
@@ -225,17 +257,29 @@ export const ClusteredData = () => {
           <Grid container justify="space-around" className="mb-3">
             {/* <img src={img_star_bucktet} /> */}
             <div>
-              <Badge className="p-2" style={{ backgroundColor: clusterBG[0] }}>
-                2 Star Cluster
+              <Badge
+                className="p-2"
+                style={{ backgroundColor: CLUSTER_BACKGROUND[3] }}
+              >
+                5 Star Cluster
               </Badge>{' '}
-              <Badge className="p-2" style={{ backgroundColor: clusterBG[1] }}>
-                3 Star Cluster
-              </Badge>{' '}
-              <Badge className="p-2" style={{ backgroundColor: clusterBG[2] }}>
+              <Badge
+                className="p-2"
+                style={{ backgroundColor: CLUSTER_BACKGROUND[2] }}
+              >
                 4 Star Cluster
               </Badge>{' '}
-              <Badge className="p-2" style={{ backgroundColor: clusterBG[3] }}>
-                5 Star Cluster
+              <Badge
+                className="p-2"
+                style={{ backgroundColor: CLUSTER_BACKGROUND[1] }}
+              >
+                3 Star Cluster
+              </Badge>{' '}
+              <Badge
+                className="p-2"
+                style={{ backgroundColor: CLUSTER_BACKGROUND[0] }}
+              >
+                2 Star Cluster
               </Badge>{' '}
             </div>
           </Grid>
@@ -245,15 +289,15 @@ export const ClusteredData = () => {
       </Grid>
       {loading ? (
         <LoadingOverlay show={loading} />
-      ) : err ? (
+      ) : err !== null ? (
         <Alert severity="error">{err}</Alert>
       ) : clusterData.length > 0 && tab === 0 ? (
         <>
           <ClusterBucket />
-          <DataTable cluster={cluster4} stars={5} />
-          <DataTable cluster={cluster3} stars={4} />
-          <DataTable cluster={cluster2} stars={3} />
-          <DataTable cluster={cluster1} stars={2} />
+          <ClusterDataTable cluster={cluster4} stars={5} />
+          <ClusterDataTable cluster={cluster3} stars={4} />
+          <ClusterDataTable cluster={cluster2} stars={3} />
+          <ClusterDataTable cluster={cluster1} stars={2} />
         </>
       ) : clusterData.length > 0 && tab === 1 ? (
         <Graphs />

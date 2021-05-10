@@ -13,6 +13,7 @@ import TableHead from '@material-ui/core/TableHead';
 import Paper from '@material-ui/core/Paper';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
+import { CLUSTER_BACKGROUND } from '../utils/const';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -38,8 +39,6 @@ const useStyles = makeStyles({
 
 export default function ClusterBucket({ cluster, stars }) {
   const classes = useStyles();
-
-  const clusterBG = ['#E6B8B8', '#CCC0DA', '#C4D79B', '#DCE6F1'];
 
   const getClusterDataSet = useSelector((state) => state.clusterDataSet);
   const {
@@ -133,7 +132,9 @@ export default function ClusterBucket({ cluster, stars }) {
                       <StyledTableCell
                         size="small"
                         key={index}
-                        style={{ backgroundColor: clusterBG[e.cluster - 2] }}
+                        style={{
+                          backgroundColor: CLUSTER_BACKGROUND[e.cluster - 2],
+                        }}
                       >
                         {e.rate}
                       </StyledTableCell>
@@ -288,7 +289,7 @@ export default function ClusterBucket({ cluster, stars }) {
                       style={{
                         fontWeight: 'bold',
                         width: '250px',
-                        backgroundColor: clusterBG[3],
+                        backgroundColor: CLUSTER_BACKGROUND[3],
                       }}
                     >
                       5 Star Pricing Down
@@ -313,7 +314,7 @@ export default function ClusterBucket({ cluster, stars }) {
                       style={{
                         fontWeight: 'bold',
                         width: '250px',
-                        backgroundColor: clusterBG[2],
+                        backgroundColor: CLUSTER_BACKGROUND[2],
                       }}
                     >
                       4 Star Pricing Up
@@ -338,7 +339,7 @@ export default function ClusterBucket({ cluster, stars }) {
                       style={{
                         fontWeight: 'bold',
                         width: '250px',
-                        backgroundColor: clusterBG[2],
+                        backgroundColor: CLUSTER_BACKGROUND[2],
                       }}
                     >
                       4 Star Pricing Down
@@ -363,7 +364,7 @@ export default function ClusterBucket({ cluster, stars }) {
                       style={{
                         fontWeight: 'bold',
                         width: '250px',
-                        backgroundColor: clusterBG[1],
+                        backgroundColor: CLUSTER_BACKGROUND[1],
                       }}
                     >
                       3 Star Pricing Up
@@ -388,7 +389,7 @@ export default function ClusterBucket({ cluster, stars }) {
                       style={{
                         fontWeight: 'bold',
                         width: '250px',
-                        backgroundColor: clusterBG[1],
+                        backgroundColor: CLUSTER_BACKGROUND[1],
                       }}
                     >
                       3 Star Pricing Down
@@ -413,7 +414,7 @@ export default function ClusterBucket({ cluster, stars }) {
                       style={{
                         fontWeight: 'bold',
                         width: '250px',
-                        backgroundColor: clusterBG[0],
+                        backgroundColor: CLUSTER_BACKGROUND[0],
                       }}
                     >
                       2 Star Pricing Up
