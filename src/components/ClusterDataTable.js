@@ -223,7 +223,7 @@ export default function ClusterDataTable({ cluster, stars }) {
                     className="d-flex"
                     style={{ fontWeight: 'bold', width: '250px' }}
                   >
-                    &emsp;&emsp;Average of the Highest Rate
+                    &emsp;&emsp;Average of Highest Rates
                   </StyledTableCell>
                   <StyledTableCell size="small">{stars}</StyledTableCell>
                   {cluster.map((e, index) => (
@@ -244,7 +244,7 @@ export default function ClusterDataTable({ cluster, stars }) {
                     className="d-flex"
                     style={{ fontWeight: 'bold', width: '250px' }}
                   >
-                    &emsp;&emsp;Average of the Middle Rate
+                    &emsp;&emsp;Average of Middle Rates
                   </StyledTableCell>
                   <StyledTableCell size="small">{stars}</StyledTableCell>
                   {cluster.map((e, index) => (
@@ -265,7 +265,7 @@ export default function ClusterDataTable({ cluster, stars }) {
                     className="d-flex"
                     style={{ fontWeight: 'bold', width: '250px' }}
                   >
-                    &emsp;&emsp;Average of the Lowest Rate
+                    &emsp;&emsp;Average of Lowest Rates
                   </StyledTableCell>
                   <StyledTableCell size="small">{stars}</StyledTableCell>
                   {cluster.map((e, index) => (
