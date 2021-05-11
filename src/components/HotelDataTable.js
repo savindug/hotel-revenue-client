@@ -48,6 +48,13 @@ const useStyles = makeStyles({
       borderLeft: '1px solid rgba(224, 224, 224, 1)',
     },
   },
+  sticky: {
+    position: 'sticky',
+    left: 0,
+    background: 'white',
+    boxShadow: '2px 2px 2px grey',
+    display: 'flex',
+  },
 });
 
 export default function HotelDataTable({ selectedDate }) {
@@ -139,13 +146,12 @@ export default function HotelDataTable({ selectedDate }) {
                 className={classes.table}
                 size="medium"
                 aria-label="customized table"
-                stickyHeader
                 bodyStyle={{ overflow: 'visible' }}
               >
                 <TableHead>
                   <StyledTableCell size="small">#</StyledTableCell>
                   <StyledTableCell
-                    className="d-flex"
+                    className={classes.sticky}
                     style={{ fontWeight: 'bold', width: '250px' }}
                   >
                     Hotels
@@ -188,7 +194,7 @@ export default function HotelDataTable({ selectedDate }) {
                         size="medium"
                         component="th"
                         scope="col"
-                        className="d-flex"
+                        className={classes.sticky}
                         style={{ fontWeight: 'bold', width: '250px' }}
                       >
                         {_hotel.hotelName}

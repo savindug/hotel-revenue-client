@@ -252,7 +252,6 @@ export default function ClusterBucket({ cluster, stars }) {
                 className={classes.table}
                 size="medium"
                 aria-label="customized table"
-                stickyHeader
                 bodyStyle={{ overflow: 'visible' }}
               >
                 <TableHead>
