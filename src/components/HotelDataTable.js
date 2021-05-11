@@ -60,9 +60,9 @@ const useStyles = makeStyles({
 export default function HotelDataTable({ selectedDate }) {
   const classes = useStyles();
   const [dates, setDates] = useState([]);
-  const [sortDir, setSortDir] = useState('asc');
+  const [sortDir, setSortDir] = useState();
 
-  const [sortBy, setSortBy] = useState(0);
+  const [sortBy, setSortBy] = useState();
 
   // const [hotelsList, setHotelsList] = useState([]);
   const getClusterDataSet = useSelector((state) => state.clusterDataSet);
