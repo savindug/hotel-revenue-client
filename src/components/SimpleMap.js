@@ -15,14 +15,15 @@ import {
   greatPlaceStyleHover,
   K_SIZE,
 } from '../styles/mapStyles';
+import { GOOGLE_MAP_KEY } from '../env';
 
 const hotelIconDim = {
-  width: '25px',
-  height: '30px',
+  width: '30px',
+  height: '40px',
 };
 
 const AnyReactComponent = ({ text, lat, long, stars }) => (
-  <div style={greatPlaceStyle}>
+  <div>
     <Tooltip title={text} arrow>
       <img
         src={
@@ -67,35 +68,33 @@ const SimpleMap = () => {
   return (
     <div className="mt-5" style={{ height: '100vh', width: '100%' }}>
       {hotels.length > 0 ? (
-        <>
-          <GoogleMapReact
-            bootstrapURLKeys={{
-              key: 'AIzaSyCzDd8gDOD8VTT40i6J8wl543L6sxLv8L8',
-            }}
-            defaultCenter={defaultProps.center}
-            defaultZoom={defaultProps.zoom}
-            options={{
-              styles: [
-                {
-                  stylers: [
-                    { saturation: 20 },
-                    { gamma: 0.7 },
-                    { backgroundColor: '#2e2e2e' },
-                  ],
-                },
-              ],
-            }}
-          >
-            {hotels.map((_hotel, index) => (
-              <AnyReactComponent
-                lat={_hotel.location.lat}
-                lng={_hotel.location.lng}
-                stars={Math.floor(_hotel.stars)}
-                text={_hotel.hotelName}
-              />
-            ))}
-          </GoogleMapReact>
-        </>
+        <GoogleMapReact
+          bootstrapURLKeys={{
+            key: GOOGLE_MAP_KEY,
+          }}
+          defaultCenter={defaultProps.center}
+          defaultZoom={defaultProps.zoom}
+          options={{
+            styles: [
+              {
+                stylers: [
+                  { saturation: 20 },
+                  { gamma: 0.7 },
+                  { backgroundColor: '#2e2e2e' },
+                ],
+              },
+            ],
+          }}
+        >
+          {hotels.map((_hotel, index) => (
+            <AnyReactComponent
+              lat={_hotel.location.lat}
+              lng={_hotel.location.lng}
+              stars={Math.floor(_hotel.stars)}
+              text={_hotel.hotelName}
+            />
+          ))}
+        </GoogleMapReact>
       ) : (
         <></>
       )}
