@@ -35,6 +35,13 @@ const useStyles = makeStyles({
       borderLeft: '1px solid rgba(224, 224, 224, 1)',
     },
   },
+  sticky: {
+    position: 'sticky',
+    left: 0,
+    background: 'white',
+    boxShadow: '2px 2px 2px grey',
+    display: 'flex',
+  },
 });
 
 export default function ClusterBucket({ cluster, stars }) {
@@ -62,12 +69,11 @@ export default function ClusterBucket({ cluster, stars }) {
                 className={classes.table}
                 size="medium"
                 aria-label="customized table"
-                stickyHeader
                 bodyStyle={{ overflow: 'visible' }}
               >
                 <TableHead>
                   <StyledTableCell
-                    className="d-flex"
+                    className={classes.sticky}
                     style={{ fontWeight: 'bold', width: '250px' }}
                   >
                     Your Property
@@ -103,7 +109,7 @@ export default function ClusterBucket({ cluster, stars }) {
                       size="medium"
                       component="th"
                       scope="col"
-                      className="d-flex"
+                      className={classes.sticky}
                       style={{ fontWeight: 'bold', width: '250px' }}
                     >
                       {(() => {
@@ -145,7 +151,7 @@ export default function ClusterBucket({ cluster, stars }) {
                       size="small"
                       component="th"
                       scope="row"
-                      className="d-flex"
+                      className={classes.sticky}
                       style={{ fontWeight: 'bold', width: '250px' }}
                     >
                       Current Clustered Bucket
@@ -174,7 +180,7 @@ export default function ClusterBucket({ cluster, stars }) {
                       size="small"
                       component="th"
                       scope="row"
-                      className="d-flex"
+                      className={classes.sticky}
                       style={{ fontWeight: 'bold', width: '250px' }}
                     >
                       Clustered Rate Bucket Position
@@ -207,7 +213,7 @@ export default function ClusterBucket({ cluster, stars }) {
                       size="small"
                       component="th"
                       scope="row"
-                      className="d-flex"
+                      className={classes.sticky}
                       style={{ fontWeight: 'bold', width: '250px' }}
                     >
                       Clustered Rate Bucket Rank (Highest to Lowest)
@@ -251,7 +257,7 @@ export default function ClusterBucket({ cluster, stars }) {
               >
                 <TableHead>
                   <StyledTableCell
-                    className="d-flex"
+                    className={classes.sticky}
                     style={{ fontWeight: 'bold', width: '250px' }}
                   >
                     Bucket Movements
@@ -285,7 +291,7 @@ export default function ClusterBucket({ cluster, stars }) {
                       size="small"
                       component="th"
                       scope="row"
-                      className="d-flex"
+                      className={classes.sticky}
                       style={{
                         fontWeight: 'bold',
                         width: '250px',
@@ -310,7 +316,7 @@ export default function ClusterBucket({ cluster, stars }) {
                       size="small"
                       component="th"
                       scope="row"
-                      className="d-flex"
+                      className={classes.sticky}
                       style={{
                         fontWeight: 'bold',
                         width: '250px',
@@ -335,7 +341,7 @@ export default function ClusterBucket({ cluster, stars }) {
                       size="small"
                       component="th"
                       scope="row"
-                      className="d-flex"
+                      className={classes.sticky}
                       style={{
                         fontWeight: 'bold',
                         width: '250px',
@@ -360,7 +366,7 @@ export default function ClusterBucket({ cluster, stars }) {
                       size="small"
                       component="th"
                       scope="row"
-                      className="d-flex"
+                      className={classes.sticky}
                       style={{
                         fontWeight: 'bold',
                         width: '250px',
@@ -385,7 +391,7 @@ export default function ClusterBucket({ cluster, stars }) {
                       size="small"
                       component="th"
                       scope="row"
-                      className="d-flex"
+                      className={classes.sticky}
                       style={{
                         fontWeight: 'bold',
                         width: '250px',
@@ -410,7 +416,7 @@ export default function ClusterBucket({ cluster, stars }) {
                       size="small"
                       component="th"
                       scope="row"
-                      className="d-flex"
+                      className={classes.sticky}
                       style={{
                         fontWeight: 'bold',
                         width: '250px',

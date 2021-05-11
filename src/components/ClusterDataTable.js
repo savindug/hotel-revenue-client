@@ -12,6 +12,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableHead from '@material-ui/core/TableHead';
 import Paper from '@material-ui/core/Paper';
 import moment from 'moment';
+import { CLUSTER_BACKGROUND } from '../utils/const';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -36,6 +37,13 @@ const useStyles = makeStyles({
     '& .MuiTableCell-root': {
       borderLeft: '1px solid rgba(224, 224, 224, 1)',
     },
+  },
+  sticky: {
+    position: 'sticky',
+    left: 0,
+    background: 'white',
+    boxShadow: '2px 2px 2px grey',
+    display: 'flex',
   },
 });
 
@@ -66,20 +74,13 @@ export default function ClusterDataTable({ cluster, stars }) {
               className={classes.table}
               size="medium"
               aria-label="customized table"
-              stickyHeader
               bodyStyle={{ overflow: 'visible' }}
             >
               <TableHead>
                 <StyledTableCell
-                  className="d-flex"
+                  className={classes.sticky}
                   style={{
-                    fontWeight: 'bold',
-                    width: '250px',
-                    position: '-webkit-sticky',
-                    position: 'sticky',
-                    background: '#fff',
-                    left: 0,
-                    zIndex: 1,
+                    backgroundColor: CLUSTER_BACKGROUND[stars - 2],
                   }}
                 >
                   {`${stars} Star Cluster Matrix`}
@@ -110,10 +111,10 @@ export default function ClusterDataTable({ cluster, stars }) {
               <TableBody>
                 <StyledTableRow Key={stars}>
                   <StyledTableCell
+                    className={classes.sticky}
                     size="medium"
                     component="th"
                     scope="col"
-                    className="d-flex"
                     style={{ fontWeight: 'bold', width: '250px' }}
                   >
                     Number of Hotels
@@ -134,7 +135,7 @@ export default function ClusterDataTable({ cluster, stars }) {
                     size="small"
                     component="th"
                     scope="row"
-                    className="d-flex"
+                    className={classes.sticky}
                     style={{ fontWeight: 'bold', width: '250px' }}
                   >
                     Average Rate
@@ -156,7 +157,7 @@ export default function ClusterDataTable({ cluster, stars }) {
                     size="small"
                     component="th"
                     scope="row"
-                    className="d-flex"
+                    className={classes.sticky}
                     style={{ fontWeight: 'bold', width: '250px' }}
                   >
                     Most Repeated rate (mode)
@@ -178,7 +179,7 @@ export default function ClusterDataTable({ cluster, stars }) {
                     size="small"
                     component="th"
                     scope="row"
-                    className="d-flex"
+                    className={classes.sticky}
                     style={{ fontWeight: 'bold', width: '250px' }}
                   >
                     Middle Rate
@@ -199,7 +200,7 @@ export default function ClusterDataTable({ cluster, stars }) {
                     size="small"
                     component="th"
                     scope="row"
-                    className="d-flex"
+                    className={classes.sticky}
                     style={{ fontWeight: 'bold', width: '250px' }}
                   >
                     &emsp;Highest Rate
@@ -220,7 +221,7 @@ export default function ClusterDataTable({ cluster, stars }) {
                     size="small"
                     component="th"
                     scope="row"
-                    className="d-flex"
+                    className={classes.sticky}
                     style={{ fontWeight: 'bold', width: '250px' }}
                   >
                     &emsp;&emsp;Average of Highest Rates
@@ -241,7 +242,7 @@ export default function ClusterDataTable({ cluster, stars }) {
                     size="small"
                     component="th"
                     scope="row"
-                    className="d-flex"
+                    className={classes.sticky}
                     style={{ fontWeight: 'bold', width: '250px' }}
                   >
                     &emsp;&emsp;Average of Middle Rates
@@ -262,7 +263,7 @@ export default function ClusterDataTable({ cluster, stars }) {
                     size="small"
                     component="th"
                     scope="row"
-                    className="d-flex"
+                    className={classes.sticky}
                     style={{ fontWeight: 'bold', width: '250px' }}
                   >
                     &emsp;&emsp;Average of Lowest Rates
@@ -283,7 +284,7 @@ export default function ClusterDataTable({ cluster, stars }) {
                     size="small"
                     component="th"
                     scope="row"
-                    className="d-flex"
+                    className={classes.sticky}
                     style={{ fontWeight: 'bold', width: '250px' }}
                   >
                     &emsp;Lowest Rate

@@ -1,7 +1,7 @@
 import React, { Component, useEffect, useState } from 'react';
 import GoogleMapReact from 'google-map-react';
 import RoomIcon from '@material-ui/icons/Room';
-import { Popover, Tooltip, Typography } from '@material-ui/core';
+import { Popover, Typography } from '@material-ui/core';
 import { useSelector } from 'react-redux';
 import { CLUSTER_BACKGROUND } from '../utils/const';
 
@@ -16,15 +16,26 @@ import {
   K_SIZE,
 } from '../styles/mapStyles';
 import { GOOGLE_MAP_KEY } from '../env';
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 const hotelIconDim = {
   width: '30px',
   height: '40px',
 };
 
+const placement = 'top';
+
 const AnyReactComponent = ({ text, lat, long, stars }) => (
-  <div>
-    <Tooltip title={text} arrow>
+  <>
+    <OverlayTrigger
+      key={placement}
+      placement={placement}
+      overlay={
+        <Tooltip id={`tooltip-${placement}`}>
+          <strong>{text}</strong>
+        </Tooltip>
+      }
+    >
       <img
         src={
           stars === 2
@@ -40,8 +51,11 @@ const AnyReactComponent = ({ text, lat, long, stars }) => (
         width={hotelIconDim.width}
         height={hotelIconDim.height}
       />
-    </Tooltip>
-  </div>
+    </OverlayTrigger>
+
+    {/* {text} */}
+    {/* </Tooltip> */}
+  </>
 );
 
 const SimpleMap = () => {
