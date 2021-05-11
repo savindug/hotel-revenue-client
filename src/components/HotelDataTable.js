@@ -60,10 +60,9 @@ const useStyles = makeStyles({
 export default function HotelDataTable({ selectedDate }) {
   const classes = useStyles();
   const [dates, setDates] = useState([]);
-  const [sortBy, setSortBy] = useState({
-    col: 0,
-    dir: 0,
-  });
+  const [sortDir, setSortDir] = useState('asc');
+
+  const [sortBy, setSortBy] = useState(0);
 
   // const [hotelsList, setHotelsList] = useState([]);
   const getClusterDataSet = useSelector((state) => state.clusterDataSet);
@@ -104,29 +103,30 @@ export default function HotelDataTable({ selectedDate }) {
     }
   };
 
-  // useEffect(() => {
-  //   if (hotels.length > 0) {
-  //     if (sortBy.col === 0 && sortBy.dir === 0) {
-  //       hotels.sort((a, b) => a.stars - b.stars);
-  //     }
-  //     if (sortBy.col === 0 && sortBy.dir === 1) {
-  //       hotels.sort((a, b) => b.name - a.name);
-  //     }
+  const sortData = (sortBy, sortOrder) => {
+    // alert(`sortData (${sortBy}, ${sortOrder})`);
+    if (sortBy === 0) {
+      if (sortOrder === 'asc') {
+        hotels.sort((a, b) => a.hotelName.localeCompare(b.hotelName));
+      } else {
+        hotels.sort((a, b) => b.hotelName.localeCompare(a.hotelName));
+      }
+    }
 
-  //     if (sortBy.col === 1 && sortBy.dir === 0) {
-  //       hotels.sort((a, b) => a.stars - b.stars);
-  //     }
-  //     if (sortBy.col === 1 && sortBy.dir === 1) {
-  //       hotels.sort((a, b) => b.stars - a.stars);
-  //     }
-  //   }
-  // }, [sortBy, hotels]);
+    if (sortBy === 1) {
+      if (sortOrder === 'asc') {
+        hotels.sort((a, b) => a.stars - b.stars);
+      } else {
+        hotels.sort((a, b) => b.stars - a.stars);
+      }
+    }
+  };
 
-  const handleSort = (col) => {
-    setSortBy({
-      col: col,
-      dir: sortBy.dir === 0 ? 1 : 0,
-    });
+  const handleSort = async (sb, sd) => {
+    setSortBy(sb);
+    setSortDir(sd);
+
+    await sortData(sb, sd);
   };
 
   return (
@@ -146,18 +146,37 @@ export default function HotelDataTable({ selectedDate }) {
                 className={classes.table}
                 size="medium"
                 aria-label="customized table"
+                stickyHeader
                 bodyStyle={{ overflow: 'visible' }}
               >
                 <TableHead>
                   <StyledTableCell size="small">#</StyledTableCell>
                   <StyledTableCell
                     className={classes.sticky}
-                    style={{ fontWeight: 'bold', width: '250px' }}
+                    style={{ fontWeight: 'bold', width: '250px', zIndex: 100 }}
                   >
-                    Hotels
+                    <TableSortLabel
+                      active={sortBy === 0}
+                      direction={sortDir}
+                      onClick={() => {
+                        handleSort(0, sortDir === 'asc' ? 'desc' : 'asc');
+                      }}
+                    >
+                      Hotels
+                    </TableSortLabel>
                     {/* <TableSortLabel onClick={handleSort(0)}></TableSortLabel> */}
                   </StyledTableCell>
-                  <StyledTableCell size="small">Stars</StyledTableCell>
+                  <StyledTableCell size="small">
+                    <TableSortLabel
+                      active={sortBy === 1}
+                      direction={sortDir}
+                      onClick={() => {
+                        handleSort(1, sortDir === 'asc' ? 'desc' : 'asc');
+                      }}
+                    >
+                      Stars
+                    </TableSortLabel>
+                  </StyledTableCell>
                   {hotels[0].prices.map((d, i) =>
                     (() => {
                       let date = moment(selectedDate)
@@ -171,8 +190,8 @@ export default function HotelDataTable({ selectedDate }) {
                           key={i}
                           className={
                             day === 'Sat' || day === 'Fri'
-                              ? 'bg-secondary text-light text-center'
-                              : 'text-center'
+                              ? 'bg-secondary text-light text-center '
+                              : 'text-center '
                           }
                           style={{ fontSize: '12px' }}
                         >
