@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     color: 'f4f4f4',
   },
   appBar: {
-    backgroundColor: '#2e2e2e',
+    backgroundColor: '#516B8F',
     color: '#f4f4f4',
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(['width', 'margin'], {
@@ -65,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
     color: '#f4f4f4',
   },
   drawerOpen: {
-    backgroundColor: '#2e2e2e',
+    backgroundColor: '#516B8F',
     color: '#f4f4f4',
     width: drawerWidth,
     transition: theme.transitions.create('width', {
@@ -74,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
     }),
   },
   drawerClose: {
-    backgroundColor: '#2e2e2e',
+    backgroundColor: '#516B8F',
     color: '#f4f4f4',
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
@@ -160,18 +160,23 @@ export default function MiniDrawer(props) {
           </Navbar.Brand>
           <Navbar.Toggle />
           <Navbar.Collapse className="justify-content-end">
-            <Navbar.Text className="text-light mx-5">
-              Signed in as:&nbsp;{' '}
-              {isLoggedIn ? <a className="text-light">{user.name}</a> : <></>}
-            </Navbar.Text>
-            <Button
-              variant="outline-light"
-              onClick={() => {
-                handleLogOut();
-              }}
-            >
-              Logout
-            </Button>
+            {isLoggedIn ? (
+              <>
+                <Navbar.Text className="text-light mx-5">
+                  Signed in as:&nbsp; <a className="text-light">{user.name}</a>
+                </Navbar.Text>
+                <Button
+                  variant="outline-light"
+                  onClick={() => {
+                    handleLogOut();
+                  }}
+                >
+                  Logout
+                </Button>
+              </>
+            ) : (
+              <></>
+            )}
           </Navbar.Collapse>
         </Navbar>
       </AppBar>
