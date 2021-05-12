@@ -37,6 +37,9 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
     minWidth: 120,
   },
+  tabularNavStyle: {
+    backgroundColor: '#516B8F',
+  },
 }));
 
 export const ClusteredData = () => {
@@ -64,7 +67,8 @@ export const ClusteredData = () => {
     markets,
   } = getClusterDataSet;
 
-  const clusterBG = ['#E6B8B8', '#CCC0DA', '#C4D79B', '#DCE6F1'];
+  const auth = useSelector((state) => state.auth);
+  const { user, auth_loading, auth_err, isLoggedIn } = auth;
 
   const handdleDatePicker = (date) => {
     setSelectedDate(moment(date).format('YYYY-MM-DD'));
@@ -119,7 +123,7 @@ export const ClusteredData = () => {
 
   const TabularNav = () => {
     const [tabularNavCls] = useState(
-      'bg-secondary text-light border-bottom-0 border-secondary'
+      'text-light border-bottom-0 border-secondary ' + classes.tabularNavStyle
     );
     return (
       <Nav variant="tabs">
@@ -184,17 +188,34 @@ export const ClusteredData = () => {
                 value={selectedMarket}
               >
                 <option value={-100}>Destinations</option>
-                {markets.length > 0 ? (
-                  markets.map((d, index) => {
-                    return (
-                      <option value={d.id} key={index}>
-                        {d.id} | {d.name}
-                      </option>
-                    );
-                  })
-                ) : (
-                  <></>
-                )}
+                {(() => {
+                  if (markets.length > 0) {
+                    if (user.role === 'admin' || user.role === 'manager') {
+                      return markets.map((d, index) => (
+                        <option value={d.id} key={index}>
+                          {d.id} | {d.name}
+                        </option>
+                      ));
+                    } else {
+                      if (user.application.destinations.length > 0) {
+                        const allowedMatrkets =
+                          user.application.destinations.filter(({ id: id1 }) =>
+                            markets.some(({ id: id2 }) => id2 === id1)
+                          );
+                        console.log('allowedMatrkets => ' + allowedMatrkets);
+                        return allowedMatrkets.length > 0 ? (
+                          allowedMatrkets.map((d, index) => (
+                            <option value={d.id} key={index}>
+                              {d.id} | {d.name}
+                            </option>
+                          ))
+                        ) : (
+                          <></>
+                        );
+                      }
+                    }
+                  }
+                })()}
               </Select>
             </FormControl>
             <FormControl className={classes.formControl}>
@@ -218,17 +239,34 @@ export const ClusteredData = () => {
                   <></>
                 )} */}
                 <option value={-100}>Properties</option>
-                {hotelList.length > 0 ? (
-                  hotelList.map((h, index) => {
-                    return (
-                      <option value={h.id} key={index}>
-                        {h.name}
-                      </option>
-                    );
-                  })
-                ) : (
-                  <></>
-                )}
+                {(() => {
+                  if (hotelList.length > 0) {
+                    if (user.role === 'admin' || user.role === 'manager') {
+                      return hotelList.map((d, index) => (
+                        <option value={d.id} key={index}>
+                          {d.id} | {d.name}
+                        </option>
+                      ));
+                    } else {
+                      if (user.application.properties.length > 0) {
+                        const allowedProperties =
+                          user.application.properties.filter(({ id: id1 }) =>
+                            hotelList.some(({ id: id2 }) => id2 === id1)
+                          );
+                        console.log('allowedMatrkets => ' + allowedProperties);
+                        return allowedProperties.length > 0 ? (
+                          allowedProperties.map((d, index) => (
+                            <option value={d.id} key={index}>
+                              {d.id} | {d.name}
+                            </option>
+                          ))
+                        ) : (
+                          <></>
+                        );
+                      }
+                    }
+                  }
+                })()}
               </Select>
             </FormControl>
             <FormControl className={classes.formControl}>

@@ -147,3 +147,12 @@ export const configUser = (user, properties, markets) => async (dispatch) => {
       // });
     });
 };
+
+export const logOut = () => async (dispatch) => {
+  await localStorage.removeItem(AUTHORIZATION_KEY);
+  await localStorage.removeItem(REFRESH_KEY);
+  dispatch({
+    type: ACTION_TYPES.ISLOGGEDIN_FALSE,
+    payload: null,
+  });
+};

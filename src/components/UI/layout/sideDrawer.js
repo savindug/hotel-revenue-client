@@ -22,7 +22,11 @@ import {
   MultilineChartOutlined,
   TableChartOutlined,
 } from '@material-ui/icons';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
+import { Navbar, Button } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { logOut } from '../../../redux/actions/auth.actions';
 
 const drawerWidth = 240;
 
@@ -97,10 +101,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function MiniDrawer() {
+export default function MiniDrawer(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const auth = useSelector((state) => state.auth);
+  const { user, auth_loading, auth_err, isLoggedIn } = auth;
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -110,6 +118,10 @@ export default function MiniDrawer() {
     setOpen(false);
   };
 
+  const handleLogOut = async () => {
+    await dispatch(logOut());
+    history.push('/');
+  };
   return (
     <div>
       <CssBaseline />
@@ -118,7 +130,7 @@ export default function MiniDrawer() {
           [classes.appBarShift]: open,
         })}
       >
-        <Toolbar>
+        {/* <Toolbar>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -141,7 +153,27 @@ export default function MiniDrawer() {
               Rate Buckets{' '}
             </Link>
           </Typography>
-        </Toolbar>
+        </Toolbar> */}
+        <Navbar className="navbar navbar-expand-lg navbar-inverse">
+          <Navbar.Brand href="/" className="text-light">
+            Rate Buckets
+          </Navbar.Brand>
+          <Navbar.Toggle />
+          <Navbar.Collapse className="justify-content-end">
+            <Navbar.Text className="text-light mx-5">
+              Signed in as:&nbsp;{' '}
+              {isLoggedIn ? <a className="text-light">{user.name}</a> : <></>}
+            </Navbar.Text>
+            <Button
+              variant="outline-light"
+              onClick={() => {
+                handleLogOut();
+              }}
+            >
+              Logout
+            </Button>
+          </Navbar.Collapse>
+        </Navbar>
       </AppBar>
       {/* <Drawer
         variant="permanent"
