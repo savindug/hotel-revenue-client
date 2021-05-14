@@ -85,7 +85,6 @@ export default function ClusterDataTable({ cluster, stars }) {
                 >
                   {`${stars} Star Cluster Matrix`}
                 </StyledTableCell>
-                <StyledTableCell size="small">Stars</StyledTableCell>
                 {cluster.map((e, index) =>
                   (() => {
                     let date = moment(e.date).format('dddd').substring(0, 3);
@@ -119,7 +118,7 @@ export default function ClusterDataTable({ cluster, stars }) {
                   >
                     Number of Hotels
                   </StyledTableCell>
-                  <StyledTableCell size="small">{stars}</StyledTableCell>
+
                   {cluster.map((e, index) => (
                     <StyledTableCell size="small" key={index}>
                       {e.items !== 'NaN' && e.items >= 3
@@ -140,7 +139,7 @@ export default function ClusterDataTable({ cluster, stars }) {
                   >
                     Average Rate
                   </StyledTableCell>
-                  <StyledTableCell size="small">{stars}</StyledTableCell>
+
                   {cluster.map((e, index) => (
                     <StyledTableCell size="small" key={index}>
                       {e.mean !== 'NaN' && e.items >= 3
@@ -162,7 +161,7 @@ export default function ClusterDataTable({ cluster, stars }) {
                   >
                     Most Repeated rate (mode)
                   </StyledTableCell>
-                  <StyledTableCell size="small">{stars}</StyledTableCell>
+
                   {cluster.map((e, index) => (
                     <StyledTableCell size="small" key={index}>
                       {e.mod !== 'NaN' && e.items >= 3
@@ -184,7 +183,7 @@ export default function ClusterDataTable({ cluster, stars }) {
                   >
                     Middle Rate
                   </StyledTableCell>
-                  <StyledTableCell size="small">{stars}</StyledTableCell>
+
                   {cluster.map((e, index) => (
                     <StyledTableCell size="small" key={index}>
                       {e.median !== 'NaN' && e.items >= 3
@@ -205,7 +204,7 @@ export default function ClusterDataTable({ cluster, stars }) {
                   >
                     &emsp;Highest Rate
                   </StyledTableCell>
-                  <StyledTableCell size="small">{stars}</StyledTableCell>
+
                   {cluster.map((e, index) => (
                     <StyledTableCell size="small" key={index}>
                       {e.max !== 'NaN' && e.items >= 3
@@ -226,7 +225,7 @@ export default function ClusterDataTable({ cluster, stars }) {
                   >
                     &emsp;&emsp;Average of Highest Rates
                   </StyledTableCell>
-                  <StyledTableCell size="small">{stars}</StyledTableCell>
+
                   {cluster.map((e, index) => (
                     <StyledTableCell size="small" key={index}>
                       {e.highAVG !== 'NaN' && e.items >= 3
@@ -247,7 +246,7 @@ export default function ClusterDataTable({ cluster, stars }) {
                   >
                     &emsp;&emsp;Average of Middle Rates
                   </StyledTableCell>
-                  <StyledTableCell size="small">{stars}</StyledTableCell>
+
                   {cluster.map((e, index) => (
                     <StyledTableCell size="small" key={index}>
                       {e.midAVG !== 'NaN' && e.items >= 3
@@ -268,7 +267,7 @@ export default function ClusterDataTable({ cluster, stars }) {
                   >
                     &emsp;&emsp;Average of Lowest Rates
                   </StyledTableCell>
-                  <StyledTableCell size="small">{stars}</StyledTableCell>
+
                   {cluster.map((e, index) => (
                     <StyledTableCell size="small" key={index}>
                       {e.lowAVG !== 'NaN' && e.items >= 3
@@ -289,7 +288,7 @@ export default function ClusterDataTable({ cluster, stars }) {
                   >
                     &emsp;Lowest Rate
                   </StyledTableCell>
-                  <StyledTableCell size="small">{stars}</StyledTableCell>
+
                   {cluster.map((e, index) => (
                     <StyledTableCell size="small" key={index}>
                       {e.min !== 'NaN' && e.items >= 3

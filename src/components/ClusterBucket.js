@@ -261,7 +261,7 @@ export default function ClusterBucket({ cluster, stars }) {
                   >
                     Bucket Movements
                   </StyledTableCell>
-                  <StyledTableCell size="small">Stars</StyledTableCell>
+                  {/* <StyledTableCell size="small">Stars</StyledTableCell> */}
                   {cluster1.map((e, index) =>
                     (() => {
                       let date = moment(e.date).format('dddd').substring(0, 3);
@@ -299,7 +299,7 @@ export default function ClusterBucket({ cluster, stars }) {
                     >
                       5 Star Pricing Down
                     </StyledTableCell>
-                    <StyledTableCell size="small"></StyledTableCell>
+                    {/* <StyledTableCell size="small"></StyledTableCell> */}
                     {cluster3.map((day, index) => (
                       <StyledTableCell
                         size="small"
@@ -324,7 +324,7 @@ export default function ClusterBucket({ cluster, stars }) {
                     >
                       4 Star Pricing Up
                     </StyledTableCell>
-                    <StyledTableCell size="small"></StyledTableCell>
+                    {/* <StyledTableCell size="small"></StyledTableCell> */}
                     {cluster4.map((day, index) => (
                       <StyledTableCell
                         size="small"
@@ -349,7 +349,7 @@ export default function ClusterBucket({ cluster, stars }) {
                     >
                       4 Star Pricing Down
                     </StyledTableCell>
-                    <StyledTableCell size="small"></StyledTableCell>
+                    {/* <StyledTableCell size="small"></StyledTableCell> */}
                     {cluster2.map((day, index) => (
                       <StyledTableCell
                         size="small"
@@ -374,7 +374,7 @@ export default function ClusterBucket({ cluster, stars }) {
                     >
                       3 Star Pricing Up
                     </StyledTableCell>
-                    <StyledTableCell size="small"></StyledTableCell>
+                    {/* <StyledTableCell size="small"></StyledTableCell> */}
                     {cluster3.map((day, index) => (
                       <StyledTableCell
                         size="small"
@@ -399,7 +399,7 @@ export default function ClusterBucket({ cluster, stars }) {
                     >
                       3 Star Pricing Down
                     </StyledTableCell>
-                    <StyledTableCell size="small"></StyledTableCell>
+                    {/* <StyledTableCell size="small"></StyledTableCell> */}
                     {cluster1.map((day, index) => (
                       <StyledTableCell
                         size="small"
@@ -424,7 +424,7 @@ export default function ClusterBucket({ cluster, stars }) {
                     >
                       2 Star Pricing Up
                     </StyledTableCell>
-                    <StyledTableCell size="small"></StyledTableCell>
+                    {/* <StyledTableCell size="small"></StyledTableCell> */}
                     {cluster2.map((day, index) => (
                       <StyledTableCell
                         size="small"

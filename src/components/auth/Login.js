@@ -27,7 +27,7 @@ export const Login = (props) => {
     try {
       if (userData.email && userData.password) {
         const result = await dispatch(login(userData));
-        console.log(result);
+        //console.log(result);
         // if (result) {
         //   props.history.push('/');
         // }

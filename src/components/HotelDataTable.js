@@ -66,39 +66,32 @@ export default function HotelDataTable({ selectedDate }) {
 
   // const [hotelsList, setHotelsList] = useState([]);
   const getClusterDataSet = useSelector((state) => state.clusterDataSet);
-  const {
-    loading,
-    err,
-    cluster1,
-    cluster2,
-    cluster3,
-    cluster4,
-    hotels,
-  } = getClusterDataSet;
+  const { loading, err, cluster1, cluster2, cluster3, cluster4, hotels } =
+    getClusterDataSet;
 
   const getClusterByPrice = (rate, ix) => {
     if (rate >= cluster1[ix].min && rate <= cluster1[ix].max) {
-      console.log(
-        `${ix} => ${cluster1[ix].min} < ${rate} > ${cluster1[ix].max} `
-      );
+      // console.log(
+      //   `${ix} => ${cluster1[ix].min} < ${rate} > ${cluster1[ix].max} `
+      // );
       return 0;
     }
     if (rate >= cluster2[ix].min && rate <= cluster2[ix].max) {
-      console.log(
-        `${ix} =>${cluster2[ix].min} < ${rate} > ${cluster2[ix].max} `
-      );
+      // console.log(
+      //   `${ix} =>${cluster2[ix].min} < ${rate} > ${cluster2[ix].max} `
+      // );
       return 1;
     }
     if (rate >= cluster3[ix].min && rate <= cluster3[ix].max) {
-      console.log(
-        `${ix} =>${cluster3[ix].min} < ${rate} > ${cluster3[ix].max} `
-      );
+      // console.log(
+      //   `${ix} =>${cluster3[ix].min} < ${rate} > ${cluster3[ix].max} `
+      // );
       return 2;
     }
     if (rate >= cluster4[ix].min && rate <= cluster4[ix].max) {
-      console.log(
-        `${ix} =>${cluster4[ix].min} < ${rate} > ${cluster4[ix].max} `
-      );
+      // console.log(
+      //   `${ix} =>${cluster4[ix].min} < ${rate} > ${cluster4[ix].max} `
+      // );
       return 3;
     }
   };

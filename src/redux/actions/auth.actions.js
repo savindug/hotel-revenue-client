@@ -25,10 +25,10 @@ export const register = (user) => async (dispatch) => {
         type: ACTION_TYPES.REGISTER_USER,
         payload: data.user,
       });
-      console.log(res);
+      //console.log(res);
     })
     .catch((err) => {
-      console.log(err);
+      // console.log(err);
       dispatch({
         type: ACTION_TYPES.REGISTER_FAILED,
         payload: err,
@@ -59,7 +59,7 @@ export const login = (user) => async (dispatch) => {
         type: ACTION_TYPES.LOGIN_USER,
         payload: res.data.user,
       });
-      console.log(res);
+      //console.log(res);
       if (res.results === true) {
         storeAuthTokens(AUTHORIZATION_KEY, res.data.token);
         storeAuthTokens(REFRESH_KEY, res.data.user.tokens.refresh);
@@ -75,7 +75,7 @@ export const login = (user) => async (dispatch) => {
       }
     })
     .catch((err) => {
-      console.log(err);
+      // console.log(err);
       dispatch({
         type: ACTION_TYPES.LOGIN_FAILED,
         payload: err,
@@ -99,7 +99,7 @@ export const refresh = () => async (dispatch) => {
         type: ACTION_TYPES.LOGIN_USER,
         payload: res.data.user,
       });
-      console.log(res);
+      //console.log(res);
       if (res.results === true) {
         storeAuthTokens(AUTHORIZATION_KEY, res.data.token);
         storeAuthTokens(REFRESH_KEY, res.data.user.tokens.refresh);
@@ -115,7 +115,7 @@ export const refresh = () => async (dispatch) => {
       }
     })
     .catch((err) => {
-      console.log(err);
+      // console.log(err);
       dispatch({
         type: ACTION_TYPES.LOGIN_FAILED,
         payload: err,
@@ -137,7 +137,7 @@ export const configUser = (user, properties, markets) => async (dispatch) => {
       //   payload: res,
       // });
       dispatch({ type: ACTION_TYPES.ISLOGGEDIN_FALSE });
-      console.log(res);
+      //console.log(res);
     })
     .catch((err) => {
       console.log(err);

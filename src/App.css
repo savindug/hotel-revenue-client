@@ -36,3 +36,22 @@
     transform: rotate(360deg);
   }
 }
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.main-header {
+  background-color: #f4f4f4;
+  z-index: 10;
+  box-shadow: '5px 5px 5px grey';
+  /* height: 60px;
+  line-height: 20px;
+  font-size: 40px;
+  color: #ffd36b;
+  font-family: "Patrick Hand", cursive; */
+}
+.sticky-header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+}

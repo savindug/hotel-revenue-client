@@ -155,7 +155,7 @@ export default function MiniDrawer(props) {
           </Typography>
         </Toolbar> */}
         <Navbar className="navbar navbar-expand-lg navbar-inverse">
-          <Navbar.Brand href="/" className="text-light">
+          <Navbar.Brand href="/" className="text-light mx-auto">
             Rate Buckets
           </Navbar.Brand>
           <Navbar.Toggle />

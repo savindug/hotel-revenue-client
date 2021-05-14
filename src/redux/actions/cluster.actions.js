@@ -4,107 +4,103 @@ import { getReqHeaders } from '../../services/auth.service';
 import { AUTHORIZATION_KEY, REFRESH_KEY } from '../../utils/const';
 import * as ACTION_TYPES from './types';
 
-export const fetchClusterData = (destID, date, range, property) => async (
-  dispatch
-) => {
-  dispatch({ type: ACTION_TYPES.GET_CLUSTER_PROGRESS });
-  let cl1 = [];
-  let cl2 = [];
-  let cl3 = [];
-  let cl4 = [];
+export const fetchClusterData =
+  (destID, date, range, property, refreshDate) => async (dispatch) => {
+    dispatch({ type: ACTION_TYPES.GET_CLUSTER_PROGRESS });
+    let cl1 = [];
+    let cl2 = [];
+    let cl3 = [];
+    let cl4 = [];
 
-  await axios(
-    `${apiURI}app/cluster/report/${property}/${destID}/${date}?range=${range}`,
-    {
-      headers: await getReqHeaders(),
-    }
-  )
-    .then((res) => {
-      let clusterData = res.data.data;
-      let reqHotelData = res.data.reqHotelData;
-      dispatch({
-        type: ACTION_TYPES.SET_QUARY,
-        payload: res.data.quary,
-      });
-      dispatch({
-        type: ACTION_TYPES.SET_REQ_HOTEL,
-        payload: reqHotelData,
-      });
-      clusterData.map((day, index) => {
-        day.map((cl, el) => {
-          if (el === 0) {
-            cl1.push(cl);
-          }
-          if (el === 1) {
-            cl2.push(cl);
-          }
-          if (el === 2) {
-            cl3.push(cl);
-          }
-          if (el === 3) {
-            cl4.push(cl);
-          }
+    await axios(
+      `${apiURI}app/cluster/report/${property}/${destID}/${date}/${refreshDate}?range=${range}`,
+      {
+        headers: await getReqHeaders(),
+      }
+    )
+      .then((res) => {
+        let clusterData = res.data.data;
+        let reqHotelData = res.data.reqHotelData;
+        dispatch({
+          type: ACTION_TYPES.SET_QUARY,
+          payload: res.data.quary,
+        });
+        dispatch({
+          type: ACTION_TYPES.SET_REQ_HOTEL,
+          payload: reqHotelData,
+        });
+        clusterData.map((day, index) => {
+          day.map((cl, el) => {
+            if (el === 0) {
+              cl1.push(cl);
+            }
+            if (el === 1) {
+              cl2.push(cl);
+            }
+            if (el === 2) {
+              cl3.push(cl);
+            }
+            if (el === 3) {
+              cl4.push(cl);
+            }
+          });
+        });
+        dispatch({
+          type: ACTION_TYPES.GET_CLUSTER,
+          payload: clusterData,
+        });
+        dispatch({
+          type: ACTION_TYPES.SET_CLUSTER_1,
+          payload: setOutliers(cl1, 2),
+        });
+        dispatch({
+          type: ACTION_TYPES.SET_CLUSTER_2,
+          payload: setOutliers(cl2, 3),
+        });
+        dispatch({
+          type: ACTION_TYPES.SET_CLUSTER_3,
+          payload: setOutliers(cl3, 4),
+        });
+        dispatch({
+          type: ACTION_TYPES.SET_CLUSTER_4,
+          payload: setOutliers(cl4, 5),
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: ACTION_TYPES.GET_CLUSTER_FAILED,
+          payload: err,
         });
       });
-      dispatch({
-        type: ACTION_TYPES.GET_CLUSTER,
-        payload: clusterData,
-      });
-      dispatch({
-        type: ACTION_TYPES.SET_CLUSTER_1,
-        payload: setOutliers(cl1, 2),
-      });
-      dispatch({
-        type: ACTION_TYPES.SET_CLUSTER_2,
-        payload: setOutliers(cl2, 3),
-      });
-      dispatch({
-        type: ACTION_TYPES.SET_CLUSTER_3,
-        payload: setOutliers(cl3, 4),
-      });
-      dispatch({
-        type: ACTION_TYPES.SET_CLUSTER_4,
-        payload: setOutliers(cl4, 5),
-      });
-    })
-    .catch((err) => {
-      console.log(err);
-      dispatch({
-        type: ACTION_TYPES.GET_CLUSTER_FAILED,
-        payload: err,
-      });
-    });
-};
+  };
 
-export const fetchHotelData = (destID, date, range, property) => async (
-  dispatch
-) => {
-  dispatch({ type: ACTION_TYPES.GET_HOTELS_PROGRESS });
+export const fetchHotelData =
+  (destID, date, range, property, refreshDate) => async (dispatch) => {
+    dispatch({ type: ACTION_TYPES.GET_HOTELS_PROGRESS });
 
-  await axios(
-    `${apiURI}app/hotels/report/${property}/${destID}/${date}?range=${range}`,
-    {
-      headers: await getReqHeaders(),
-    }
-  )
-    // await axios(
-    //   `http://localhost:5000/api/hotels/report/106399/1447930/2021-04-19?range=90`
-    // )
-    .then((res) => {
-      //let hotelDataSet = res.data.data;
-      dispatch({
-        type: ACTION_TYPES.GET_HOTELS,
-        payload: res.data.data,
+    await axios(
+      `${apiURI}app/hotels/report/${property}/${destID}/${date}/${refreshDate}?range=${range}`,
+      {
+        headers: await getReqHeaders(),
+      }
+    )
+      // await axios(
+      //   `http://localhost:5000/api/hotels/report/106399/1447930/2021-04-19?range=90`
+      // )
+      .then((res) => {
+        //let hotelDataSet = res.data.data;
+        dispatch({
+          type: ACTION_TYPES.GET_HOTELS,
+          payload: res.data.data,
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: ACTION_TYPES.GET_HOTELS_FAILED,
+          payload: err,
+        });
       });
-    })
-    .catch((err) => {
-      console.log(err);
-      dispatch({
-        type: ACTION_TYPES.GET_HOTELS_FAILED,
-        payload: err,
-      });
-    });
-};
+  };
 
 export const fetchHotelsList = (destID) => async (dispatch) => {
   dispatch({ type: ACTION_TYPES.GET_HOTELSLIST_PROGRESS });
@@ -120,7 +116,6 @@ export const fetchHotelsList = (destID) => async (dispatch) => {
       });
     })
     .catch((err) => {
-      console.log(err);
       dispatch({
         type: ACTION_TYPES.GET_HOTELSLIST_FAILED,
         payload: err,
@@ -142,9 +137,29 @@ export const fetchMarkets = () => async (dispatch) => {
       });
     })
     .catch((err) => {
-      console.log(err);
       dispatch({
         type: ACTION_TYPES.GET_MARKETS_FAILED,
+        payload: err,
+      });
+    });
+};
+
+export const fetchRefreshDates = (destID) => async (dispatch) => {
+  dispatch({ type: ACTION_TYPES.GET_REFRESH_DATES_PROGRESS });
+
+  await axios
+    .get(`${apiURI}app/refresh-dates/${destID}`, {
+      headers: await getReqHeaders(),
+    })
+    .then((res) => {
+      dispatch({
+        type: ACTION_TYPES.GET_REFRESH_DATES,
+        payload: res.data.data,
+      });
+    })
+    .catch((err) => {
+      dispatch({
+        type: ACTION_TYPES.GET_REFRESH_DATES_FAILED,
         payload: err,
       });
     });

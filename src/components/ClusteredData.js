@@ -46,9 +46,7 @@ export const ClusteredData = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [tab, setTab] = useState(3);
-  const [selectedDate, setSelectedDate] = useState(
-    moment().format('YYYY-MM-DD')
-  );
+
   const [selectedProperty, setSelectedProperty] = useState(0);
 
   const [selectedMarket, setSelectedMarket] = useState(0);
@@ -65,10 +63,15 @@ export const ClusteredData = () => {
     hotels,
     hotelList,
     markets,
+    refreshDates,
   } = getClusterDataSet;
 
   const auth = useSelector((state) => state.auth);
   const { user, auth_loading, auth_err, isLoggedIn } = auth;
+
+  const [selectedDate, setSelectedDate] = useState(
+    moment(refreshDates.dates[0]).format('YYYY-MM-DD')
+  );
 
   const handdleDatePicker = (date) => {
     setSelectedDate(moment(date).format('YYYY-MM-DD'));
@@ -94,24 +97,35 @@ export const ClusteredData = () => {
     }
   };
 
-  useEffect(() => {
-    async function getMarkets() {
-      await dispatch(fetchMarkets());
-    }
-    getMarkets();
-    console.log('selected market => ' + selectedMarket);
-  }, [dispatch]);
+  // useEffect(() => {
+  //   async function getMarkets() {
+  //     await dispatch(fetchMarkets());
+  //   }
+  //   getMarkets();
+  // }, [dispatch]);
 
   useEffect(() => {
     async function getClusters() {
       await dispatch(
-        fetchClusterData(selectedMarket, selectedDate, 90, selectedProperty)
+        fetchClusterData(
+          selectedMarket,
+          moment().format('YYYY-MM-DD'),
+          90,
+          selectedProperty,
+          selectedDate
+        )
       );
     }
 
     async function getHotels() {
       await dispatch(
-        fetchHotelData(selectedMarket, selectedDate, 90, selectedProperty)
+        fetchHotelData(
+          selectedMarket,
+          moment().format('YYYY-MM-DD'),
+          90,
+          selectedProperty,
+          selectedDate
+        )
       );
     }
 
@@ -120,6 +134,43 @@ export const ClusteredData = () => {
       getHotels();
     }
   }, [selectedDate, dispatch, selectedProperty]);
+
+  const scroll = (to) => {
+    const section = document.querySelector(to);
+    if (section !== undefined && section != null) {
+      section.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  };
+
+  const disabledDates = (date) => {
+    const refresh = refreshDates.dates.find(
+      (element) =>
+        moment(date).format('YYYY-MM-DD') ===
+        moment(element).format('YYYY-MM-DD')
+    );
+
+    if (refresh !== undefined || refresh != null) {
+      // console.log(refresh);
+      return false;
+    } else {
+      return true;
+    }
+  };
+
+  // useEffect(() => {
+  //   const header = document.getElementById('main-header');
+  //   const sticky = header.offsetTop;
+  //   const scrollCallBack = window.addEventListener('scroll', () => {
+  //     if (window.pageYOffset > sticky) {
+  //       header.classList.add('sticky-header');
+  //     } else {
+  //       header.classList.remove('sticky-header');
+  //     }
+  //   });
+  //   return () => {
+  //     window.removeEventListener('scroll', scrollCallBack);
+  //   };
+  // }, []);
 
   const TabularNav = () => {
     const [tabularNavCls] = useState(
@@ -173,7 +224,7 @@ export const ClusteredData = () => {
 
   return (
     <div>
-      <Grid className="position-relative">
+      <Grid>
         <MuiPickersUtilsProvider utils={MomentUtils}>
           <Grid container justify="space-around" className="mb-3">
             <FormControl className={classes.formControl}>
@@ -187,13 +238,13 @@ export const ClusteredData = () => {
                 onChange={handleMarketChange}
                 value={selectedMarket}
               >
-                <option value={-100}>Destinations</option>
+                <option value={-100}>&nbsp;Destinations&nbsp;</option>
                 {(() => {
                   if (markets.length > 0) {
                     if (user.role === 'admin' || user.role === 'manager') {
                       return markets.map((d, index) => (
                         <option value={d.id} key={index}>
-                          {d.id} | {d.name}
+                          &nbsp;{d.name}&nbsp;
                         </option>
                       ));
                     } else {
@@ -202,11 +253,10 @@ export const ClusteredData = () => {
                           user.application.destinations.filter(({ id: id1 }) =>
                             markets.some(({ id: id2 }) => id2 === id1)
                           );
-                        console.log('allowedMatrkets => ' + allowedMatrkets);
                         return allowedMatrkets.length > 0 ? (
                           allowedMatrkets.map((d, index) => (
                             <option value={d.id} key={index}>
-                              {d.id} | {d.name}
+                              &nbsp;{d.name}&nbsp;
                             </option>
                           ))
                         ) : (
@@ -229,22 +279,13 @@ export const ClusteredData = () => {
                 onChange={handlePropertyChange}
                 value={selectedProperty}
               >
-                {/* {selectedMarket === 1447930 ? (
-                  <option value={106399}>The Palms Hotel & Spa</option>
-                ) : selectedMarket === 1535616 ? (
-                  <option value={454244}>
-                    Hilton Garden Inn New York-Times Square Central
-                  </option>
-                ) : (
-                  <></>
-                )} */}
-                <option value={-100}>Properties</option>
+                <option value={-100}>&nbsp;Properties&nbsp;</option>
                 {(() => {
                   if (hotelList.length > 0) {
                     if (user.role === 'admin' || user.role === 'manager') {
                       return hotelList.map((d, index) => (
                         <option value={d.id} key={index}>
-                          {d.id} | {d.name}
+                          &nbsp;{d.name}&nbsp;
                         </option>
                       ));
                     } else {
@@ -253,11 +294,10 @@ export const ClusteredData = () => {
                           user.application.properties.filter(({ id: id1 }) =>
                             hotelList.some(({ id: id2 }) => id2 === id1)
                           );
-                        console.log('allowedMatrkets => ' + allowedProperties);
                         return allowedProperties.length > 0 ? (
                           allowedProperties.map((d, index) => (
                             <option value={d.id} key={index}>
-                              {d.id} | {d.name}
+                              &nbsp;{d.name}&nbsp;
                             </option>
                           ))
                         ) : (
@@ -275,14 +315,15 @@ export const ClusteredData = () => {
                 variant="inline"
                 format="YYYY-MM-DD"
                 id="date-picker-inline"
-                label="Select the Date"
+                label="Refresh Date"
                 value={selectedDate}
+                shouldDisableDate={disabledDates}
                 onChange={(date) => handdleDatePicker(date)}
                 KeyboardButtonProps={{
                   'aria-label': 'change date',
                 }}
                 autoOk={true}
-                disabled
+                //disabled
               />
             </FormControl>
             {/* 
@@ -296,26 +337,30 @@ export const ClusteredData = () => {
             {/* <img src={img_star_bucktet} /> */}
             <div>
               <Badge
-                className="p-2"
+                className="p-2 cursor-pointer"
                 style={{ backgroundColor: CLUSTER_BACKGROUND[3] }}
+                onClick={() => scroll('#stars5')}
               >
                 5 Star Cluster
               </Badge>{' '}
               <Badge
-                className="p-2"
+                className="p-2 cursor-pointer"
                 style={{ backgroundColor: CLUSTER_BACKGROUND[2] }}
+                onClick={() => scroll('#stars4')}
               >
                 4 Star Cluster
               </Badge>{' '}
               <Badge
-                className="p-2"
+                className="p-2 cursor-pointer"
                 style={{ backgroundColor: CLUSTER_BACKGROUND[1] }}
+                onClick={() => scroll('#stars3')}
               >
                 3 Star Cluster
               </Badge>{' '}
               <Badge
-                className="p-2"
+                className="p-2 cursor-pointer"
                 style={{ backgroundColor: CLUSTER_BACKGROUND[0] }}
+                onClick={() => scroll('#stars2')}
               >
                 2 Star Cluster
               </Badge>{' '}
@@ -332,15 +377,23 @@ export const ClusteredData = () => {
       ) : clusterData.length > 0 && tab === 0 ? (
         <>
           <ClusterBucket />
-          <ClusterDataTable cluster={cluster4} stars={5} />
-          <ClusterDataTable cluster={cluster3} stars={4} />
-          <ClusterDataTable cluster={cluster2} stars={3} />
-          <ClusterDataTable cluster={cluster1} stars={2} />
+          <div id="stars5" className="my-5">
+            <ClusterDataTable cluster={cluster4} stars={5} />
+          </div>
+          <div id="stars4" className="my-5">
+            <ClusterDataTable cluster={cluster3} stars={4} />
+          </div>
+          <div id="stars3" className="my-5">
+            <ClusterDataTable cluster={cluster2} stars={3} />
+          </div>
+          <div id="stars2" className="my-5">
+            <ClusterDataTable cluster={cluster1} stars={2} />
+          </div>
         </>
       ) : clusterData.length > 0 && tab === 1 ? (
         <Graphs />
       ) : hotels.length > 0 && tab === 2 ? (
-        <HotelDataTable selectedDate={selectedDate} />
+        <HotelDataTable selectedDate={moment().format('YYYY-MM-DD')} />
       ) : hotels.length > 0 && tab === 3 ? (
         <SimpleMap />
       ) : (

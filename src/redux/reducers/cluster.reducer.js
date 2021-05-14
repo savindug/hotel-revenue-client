@@ -13,6 +13,10 @@ const initialState = {
   reqHotel: [],
   hotelList: [],
   markets: [],
+  refreshDates: {
+    destinationId: null,
+    dates: [],
+  },
 };
 
 const clusterDataReducer = (state = initialState, action) => {
@@ -129,6 +133,26 @@ const clusterDataReducer = (state = initialState, action) => {
       };
 
     case ACTION_TYPES.GET_HOTELSLIST_FAILED:
+      return {
+        ...state,
+        loading: false,
+        err: action.payload,
+      };
+
+    case ACTION_TYPES.GET_REFRESH_DATES:
+      return {
+        ...state,
+        refreshDates: action.payload,
+        loading: false,
+      };
+
+    case ACTION_TYPES.GET_REFRESH_DATES_PROGRESS:
+      return {
+        ...state,
+        loading: true,
+      };
+
+    case ACTION_TYPES.GET_REFRESH_DATES_FAILED:
       return {
         ...state,
         loading: false,
