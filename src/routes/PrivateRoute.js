@@ -20,8 +20,10 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
     async function getMarkets() {
       await dispatch(fetchMarkets());
     }
-    getMarkets();
-  }, [dispatch]);
+    if (isLoggedIn) {
+      getMarkets();
+    }
+  }, [dispatch, isLoggedIn]);
 
   useEffect(() => {
     const getUserData = async () => {
