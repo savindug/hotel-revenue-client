@@ -25,6 +25,12 @@ const hotelIconDim = {
 
 const placement = 'top';
 
+const getStars = (stars) => {
+  const stArr = [stars];
+
+  return stArr.map((i) => <>&#10032;</>);
+};
+
 const AnyReactComponent = ({ text, lat, long, stars }) => (
   <>
     <OverlayTrigger
@@ -61,15 +67,8 @@ const AnyReactComponent = ({ text, lat, long, stars }) => (
 const SimpleMap = () => {
   // const [hotelsList, setHotelsList] = useState([]);
   const getClusterDataSet = useSelector((state) => state.clusterDataSet);
-  const {
-    loading,
-    err,
-    cluster1,
-    cluster2,
-    cluster3,
-    cluster4,
-    hotels,
-  } = getClusterDataSet;
+  const { loading, err, cluster1, cluster2, cluster3, cluster4, hotels } =
+    getClusterDataSet;
 
   const [defaultProps] = useState({
     center: {
@@ -91,11 +90,7 @@ const SimpleMap = () => {
           options={{
             styles: [
               {
-                stylers: [
-                  { saturation: 20 },
-                  { gamma: 0.7 },
-                  { backgroundColor: '#2e2e2e' },
-                ],
+                stylers: [{ saturation: 20 }, { gamma: 0.7 }],
               },
             ],
           }}
