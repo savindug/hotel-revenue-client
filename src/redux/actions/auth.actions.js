@@ -5,14 +5,7 @@ import { AUTHORIZATION_KEY, REFRESH_KEY } from '../../utils/const';
 import { getReqHeaders } from '../../services/auth.service';
 
 const storeAuthTokens = async (key, token) => {
-  let identifier = null;
-  if (key === AUTHORIZATION_KEY) {
-    identifier = 'Bearer ';
-  }
-  if (key === REFRESH_KEY) {
-    identifier = 'refresh ';
-  }
-  await localStorage.setItem(key, identifier + token);
+  await localStorage.setItem(key, token);
 };
 
 export const register = (user) => async (dispatch) => {

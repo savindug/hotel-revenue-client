@@ -14,7 +14,7 @@ export const checkAuthTokens = async () => {
 export const getReqHeaders = async () => {
   return {
     'content-type': 'application/json',
-    Authorization: await localStorage.getItem(AUTHORIZATION_KEY),
-    refresh: await localStorage.getItem(REFRESH_KEY),
+    Authorization: `Bearer ${await localStorage.getItem(AUTHORIZATION_KEY)}`,
+    refresh: `refresh ${await localStorage.getItem(REFRESH_KEY)}`,
   };
 };
