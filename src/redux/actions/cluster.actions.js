@@ -88,10 +88,13 @@ export const fetchHotelData =
       //   `http://localhost:5000/api/hotels/report/106399/1447930/2021-04-19?range=90`
       // )
       .then((res) => {
-        //let hotelDataSet = res.data.data;
+        let hotelDataSet = res.data.data;
         dispatch({
           type: ACTION_TYPES.GET_HOTELS,
-          payload: res.data.data,
+          payload: hotelDataSet.sort(
+            (a, b) =>
+              b.stars - a.stars || a.hotelName.localeCompare(b.hotelName)
+          ),
         });
       })
       .catch((err) => {
@@ -167,12 +170,12 @@ export const fetchRefreshDates = (destID) => async (dispatch) => {
 
 const setOutliers = (cluster, star) => {
   cluster.map((day, index) => {
-    day.stars2 = day.unwanted.filter((e) => e.stars === 2);
-    day.stars3 = day.unwanted.filter((e) => e.stars === 3);
-    day.stars4 = day.unwanted.filter((e) => e.stars === 4);
-    day.stars5 = day.unwanted.filter((e) => e.stars === 5);
-    day.outliers_up = day.unwanted.filter((e) => e.stars > star);
-    day.outliers_down = day.unwanted.filter((e) => e.stars < star);
+    day.stars2 = day.unwanted.filter((e) => Math.floor(e.stars) === 2);
+    day.stars3 = day.unwanted.filter((e) => Math.floor(e.stars) === 3);
+    day.stars4 = day.unwanted.filter((e) => Math.floor(e.stars) === 4);
+    day.stars5 = day.unwanted.filter((e) => Math.floor(e.stars) === 5);
+    day.outliers_up = day.unwanted.filter((e) => Math.floor(e.stars) > star);
+    day.outliers_down = day.unwanted.filter((e) => Math.floor(e.stars) < star);
     // console.log(` ${star} outlier Up => ${day.unwanted.filter(e => e.stars < star).length}`)
     // console.log(` ${star} outlier Down => ${day.unwanted.filter(e => e.stars > star).length}`)
   });

@@ -19,7 +19,7 @@ import { GOOGLE_MAP_KEY } from '../env';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 const hotelIconDim = {
-  width: '30px',
+  width: '40px',
   height: '40px',
 };
 
@@ -119,7 +119,7 @@ const SimpleMap = () => {
           options={{
             styles: [
               {
-                stylers: [{ saturation: 20 }, { gamma: 0.7 }],
+                stylers: [{ saturation: 25 }, { gamma: 0.7 }],
               },
               {
                 featureType: 'poi',

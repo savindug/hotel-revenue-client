@@ -60,9 +60,9 @@ const useStyles = makeStyles({
 export default function HotelDataTable({ selectedDate }) {
   const classes = useStyles();
   const [dates, setDates] = useState([]);
-  const [sortDir, setSortDir] = useState();
+  const [sortDir, setSortDir] = useState('desc');
 
-  const [sortBy, setSortBy] = useState();
+  const [sortBy, setSortBy] = useState(1);
 
   // const [hotelsList, setHotelsList] = useState([]);
   const getClusterDataSet = useSelector((state) => state.clusterDataSet);
@@ -100,17 +100,25 @@ export default function HotelDataTable({ selectedDate }) {
     // alert(`sortData (${sortBy}, ${sortOrder})`);
     if (sortBy === 0) {
       if (sortOrder === 'asc') {
-        hotels.sort((a, b) => a.hotelName.localeCompare(b.hotelName));
+        hotels.sort(
+          (a, b) => a.hotelName.localeCompare(b.hotelName) || b.stars - a.stars
+        );
       } else {
-        hotels.sort((a, b) => b.hotelName.localeCompare(a.hotelName));
+        hotels.sort(
+          (a, b) => b.hotelName.localeCompare(a.hotelName) || b.stars - a.stars
+        );
       }
     }
 
     if (sortBy === 1) {
       if (sortOrder === 'asc') {
-        hotels.sort((a, b) => a.stars - b.stars);
+        hotels.sort(
+          (a, b) => a.stars - b.stars || a.hotelName.localeCompare(b.hotelName)
+        );
       } else {
-        hotels.sort((a, b) => b.stars - a.stars);
+        hotels.sort(
+          (a, b) => b.stars - a.stars || a.hotelName.localeCompare(b.hotelName)
+        );
       }
     }
   };
