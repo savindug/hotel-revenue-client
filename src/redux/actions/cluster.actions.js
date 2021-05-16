@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { apiURI } from '../../env';
 import { getReqHeaders } from '../../services/auth.service';
-import { AUTHORIZATION_KEY, REFRESH_KEY } from '../../utils/const';
 import * as ACTION_TYPES from './types';
 
 export const fetchClusterData =
