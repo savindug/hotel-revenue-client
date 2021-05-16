@@ -1,5 +1,3 @@
-import { CLUSTER_BACKGROUND } from '../utils/const';
-
 const K_SIZE = 40;
 
 const greatPlaceStyle = {
