@@ -16,8 +16,8 @@ import {
   K_SIZE,
 } from '../styles/mapStyles';
 import { GOOGLE_MAP_KEY } from '../env';
-import { OverlayTrigger, Tooltip } from 'react-bootstrap';
-
+import { ListGroup, OverlayTrigger, Toast, Tooltip } from 'react-bootstrap';
+import LocationCityOutlinedIcon from '@material-ui/icons/LocationCityOutlined';
 const hotelIconDim = {
   width: '40px',
   height: '40px',
@@ -59,17 +59,39 @@ const apiIsLoaded = (map, maps, places) => {
   bindResizeListener(map, maps, bounds);
 };
 
-const AnyReactComponent = ({ text, lat, long, stars }) => (
-  <>
-    <OverlayTrigger
-      key={placement}
-      placement={placement}
-      overlay={
-        <Tooltip id={`tooltip-${placement}`}>
-          <strong>{text}</strong>
-        </Tooltip>
-      }
-    >
+const SimpleMap = () => {
+  // const [hotelsList, setHotelsList] = useState([]);
+  const getClusterDataSet = useSelector((state) => state.clusterDataSet);
+  const { loading, err, cluster1, cluster2, cluster3, cluster4, hotels } =
+    getClusterDataSet;
+
+  const [defaultProps] = useState({
+    center: {
+      lat: Number(hotels[0].location.lat),
+      lng: Number(hotels[0].location.lng),
+    },
+    zoom: 15,
+  });
+
+  const [infoWindow, setInfoWindow] = useState(false);
+  const [infoWindowID, setInfoWindowID] = useState();
+
+  const handleInfoOpen = (key) => {
+    setInfoWindow(true);
+    setInfoWindowID(key);
+  };
+
+  const handleInfoClose = () => {
+    setInfoWindow(false);
+  };
+
+  const AnyReactComponent = ({ id, text, stars, prices }) => (
+    <div key={id} style={{ cursor: 'pointer' }}>
+      {/* <OverlayTrigger
+        key={placement}
+        placement={placement}
+        overlay=
+      > */}
       <img
         src={
           stars === 2
@@ -84,27 +106,44 @@ const AnyReactComponent = ({ text, lat, long, stars }) => (
         }
         width={hotelIconDim.width}
         height={hotelIconDim.height}
+        onClick={() => handleInfoOpen(id)}
       />
-    </OverlayTrigger>
+      {infoWindow && infoWindowID === id ? (
+        <div>
+          <Toast
+            className="bg-dark text-light"
+            onClick={handleInfoClose}
+            style={{
+              position: 'absolute',
+              top: 0,
+              zIndex: 10,
+              minWidth: '200px',
+              minHeight: '100px',
+            }}
+            autohide
+          >
+            <Toast.Header className="bg-dark text-light">
+              <h6>
+                <span>{`${text}`}</span>
+              </h6>
 
-    {/* {text} */}
-    {/* </Tooltip> */}
-  </>
-);
-
-const SimpleMap = () => {
-  // const [hotelsList, setHotelsList] = useState([]);
-  const getClusterDataSet = useSelector((state) => state.clusterDataSet);
-  const { loading, err, cluster1, cluster2, cluster3, cluster4, hotels } =
-    getClusterDataSet;
-
-  const [defaultProps] = useState({
-    center: {
-      lat: Number(hotels[0].location.lat),
-      lng: Number(hotels[0].location.lng),
-    },
-    zoom: 15,
-  });
+              <strong className="mr-auto text-light"></strong>
+            </Toast.Header>
+            <Toast.Body className="bg-dark">
+              <span>{`Rate`}</span>
+              {/* <ul>
+                <li className="bg-dark">Stars {stars}</li>
+                <li className="bg-dark"> Date</li>
+                <li className="bg-dark">Rate</li>
+              </ul> */}
+            </Toast.Body>
+          </Toast>
+        </div>
+      ) : (
+        <></>
+      )}
+    </div>
+  );
 
   return (
     <div className="mt-5" style={{ height: '100vh', width: '100%' }}>
@@ -136,10 +175,12 @@ const SimpleMap = () => {
         >
           {hotels.map((_hotel, index) => (
             <AnyReactComponent
+              id={_hotel.hotelID}
               lat={_hotel.location.lat}
               lng={_hotel.location.lng}
               stars={Math.floor(_hotel.stars)}
               text={_hotel.hotelName}
+              prices={_hotel.prices}
             />
           ))}
         </GoogleMapReact>

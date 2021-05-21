@@ -6,6 +6,7 @@ import {
   fetchHotelData,
   fetchHotelsList,
   fetchMarkets,
+  fetchRefreshDates,
 } from '../redux/actions/cluster.actions';
 import { LoadingOverlay } from './UI/LoadingOverlay';
 import MomentUtils from '@date-io/moment';
@@ -93,8 +94,14 @@ export const ClusteredData = () => {
     if (option != -100) {
       setSelectedMarket(option);
 
+      await getRefreshDates(option);
+
       await getHotelList(option);
     }
+  };
+
+  const getRefreshDates = async (value) => {
+    await dispatch(fetchRefreshDates(value));
   };
 
   // useEffect(() => {
@@ -103,6 +110,12 @@ export const ClusteredData = () => {
   //   }
   //   getMarkets();
   // }, [dispatch]);
+
+  useEffect(() => {
+    if (refreshDates.dates.length > 0) {
+      setSelectedDate(moment(refreshDates.dates[0]).format('YYYY-MM-DD'));
+    }
+  }, [dispatch, refreshDates]);
 
   useEffect(() => {
     async function getClusters() {
@@ -195,7 +208,7 @@ export const ClusteredData = () => {
             disabled={loading}
             onClick={() => setTab(0)}
           >
-            Clustered Matrix
+            Clustered Buckets
           </Nav.Link>
         </Nav.Item>{' '}
         <Nav.Item>
