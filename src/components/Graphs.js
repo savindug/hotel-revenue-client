@@ -21,15 +21,8 @@ export const Graphs = () => {
   const classes = useStyles();
   const [matrix, setMatrix] = useState('avg');
   const getClusterDataSet = useSelector((state) => state.clusterDataSet);
-  const {
-    loading,
-    err,
-    clusterData,
-    cluster1,
-    cluster2,
-    cluster3,
-    cluster4,
-  } = getClusterDataSet;
+  const { loading, err, clusterData, cluster1, cluster2, cluster3, cluster4 } =
+    getClusterDataSet;
 
   const [dateRange, setDateRange] = useState([
     [0, 30],
@@ -54,7 +47,7 @@ export const Graphs = () => {
         hoverBorderColor: CLUSTER_BACKGROUND[0],
         data: cluster1
           .slice(dateRange[datePage][0], dateRange[datePage][1])
-          .map((a) => (a.items >= 3 ? a.mean : 'NED')),
+          .map((a) => (a.items > 0 ? a.mean : 'NED')),
       },
 
       {
@@ -67,7 +60,7 @@ export const Graphs = () => {
         hoverBorderColor: CLUSTER_BACKGROUND[1],
         data: cluster2
           .slice(dateRange[datePage][0], dateRange[datePage][1])
-          .map((a) => (a.items >= 3 ? a.mean : 'NED')),
+          .map((a) => (a.items > 0 ? a.mean : 'NED')),
       },
       {
         label: 'Stars 4',
@@ -79,7 +72,7 @@ export const Graphs = () => {
         hoverBorderColor: CLUSTER_BACKGROUND[2],
         data: cluster3
           .slice(dateRange[datePage][0], dateRange[datePage][1])
-          .map((a) => (a.items >= 3 ? a.mean : 'NED')),
+          .map((a) => (a.items > 0 ? a.mean : 'NED')),
       },
       {
         label: 'Stars 5',
@@ -91,7 +84,7 @@ export const Graphs = () => {
         hoverBorderColor: CLUSTER_BACKGROUND[3],
         data: cluster4
           .slice(dateRange[datePage][0], dateRange[datePage][1])
-          .map((a) => (a.items >= 3 ? a.mean : 'NED')),
+          .map((a) => (a.items > 0 ? a.mean : 'NED')),
       },
     ],
   });
@@ -107,7 +100,7 @@ export const Graphs = () => {
         borderWidth: 2,
         data: cluster1
           .slice(dateRange[datePage][0], dateRange[datePage][1])
-          .map((a) => (a.items >= 3 ? a.mean : 'NED')),
+          .map((a) => (a.items > 0 ? a.mean : 'NED')),
       },
 
       {
@@ -117,7 +110,7 @@ export const Graphs = () => {
         borderWidth: 2,
         data: cluster2
           .slice(dateRange[datePage][0], dateRange[datePage][1])
-          .map((a) => (a.items >= 3 ? a.mean : 'NED')),
+          .map((a) => (a.items > 0 ? a.mean : 'NED')),
       },
       {
         label: '4 Star Cluster',
@@ -126,7 +119,7 @@ export const Graphs = () => {
         borderWidth: 2,
         data: cluster3
           .slice(dateRange[datePage][0], dateRange[datePage][1])
-          .map((a) => (a.items >= 3 ? a.mean : 'NED')),
+          .map((a) => (a.items > 0 ? a.mean : 'NED')),
       },
       {
         label: '5 Star Cluster',
@@ -136,7 +129,7 @@ export const Graphs = () => {
         borderWidth: 2,
         data: cluster4
           .slice(dateRange[datePage][0], dateRange[datePage][1])
-          .map((a) => (a.items >= 3 ? a.mean : 'NED')),
+          .map((a) => (a.items > 0 ? a.mean : 'NED')),
       },
     ],
   });
@@ -201,37 +194,37 @@ export const Graphs = () => {
         if (ix === 0)
           set.data = cluster1
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items >= 3 ? a.mean : 'NED'));
+            .map((a) => (a.items > 0 ? a.mean : 'NED'));
         if (ix === 1)
           set.data = cluster2
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items >= 3 ? a.mean : 'NED'));
+            .map((a) => (a.items > 0 ? a.mean : 'NED'));
         if (ix === 2)
           set.data = cluster3
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items >= 3 ? a.mean : 'NED'));
+            .map((a) => (a.items > 0 ? a.mean : 'NED'));
         if (ix === 3)
           set.data = cluster4
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items >= 3 ? a.mean : 'NED'));
+            .map((a) => (a.items > 0 ? a.mean : 'NED'));
       });
       lineData.datasets.map((set, ix) => {
         if (ix === 0)
           set.data = cluster1
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items >= 3 ? a.mean : 'NED'));
+            .map((a) => (a.items > 0 ? a.mean : 'NED'));
         if (ix === 1)
           set.data = cluster2
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items >= 3 ? a.mean : 'NED'));
+            .map((a) => (a.items > 0 ? a.mean : 'NED'));
         if (ix === 2)
           set.data = cluster3
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items >= 3 ? a.mean : 'NED'));
+            .map((a) => (a.items > 0 ? a.mean : 'NED'));
         if (ix === 3)
           set.data = cluster4
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items >= 3 ? a.mean : 'NED'));
+            .map((a) => (a.items > 0 ? a.mean : 'NED'));
       });
     }
     if (matrix === 'max') {
@@ -239,37 +232,37 @@ export const Graphs = () => {
         if (ix === 0)
           set.data = cluster1
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items >= 3 ? a.max : 'NED'));
+            .map((a) => (a.items > 0 ? a.max : 'NED'));
         if (ix === 1)
           set.data = cluster2
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items >= 3 ? a.max : 'NED'));
+            .map((a) => (a.items > 0 ? a.max : 'NED'));
         if (ix === 2)
           set.data = cluster3
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items >= 3 ? a.max : 'NED'));
+            .map((a) => (a.items > 0 ? a.max : 'NED'));
         if (ix === 3)
           set.data = cluster4
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items >= 3 ? a.max : 'NED'));
+            .map((a) => (a.items > 0 ? a.max : 'NED'));
       });
       lineData.datasets.map((set, ix) => {
         if (ix === 0)
           set.data = cluster1
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items >= 3 ? a.max : 'NED'));
+            .map((a) => (a.items > 0 ? a.max : 'NED'));
         if (ix === 1)
           set.data = cluster2
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items >= 3 ? a.max : 'NED'));
+            .map((a) => (a.items > 0 ? a.max : 'NED'));
         if (ix === 2)
           set.data = cluster3
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items >= 3 ? a.max : 'NED'));
+            .map((a) => (a.items > 0 ? a.max : 'NED'));
         if (ix === 3)
           set.data = cluster4
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items >= 3 ? a.max : 'NED'));
+            .map((a) => (a.items > 0 ? a.max : 'NED'));
       });
     }
     if (matrix === 'min') {
@@ -277,37 +270,37 @@ export const Graphs = () => {
         if (ix === 0)
           set.data = cluster1
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items >= 3 ? a.min : 'NED'));
+            .map((a) => (a.items > 0 ? a.min : 'NED'));
         if (ix === 1)
           set.data = cluster2
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items >= 3 ? a.min : 'NED'));
+            .map((a) => (a.items > 0 ? a.min : 'NED'));
         if (ix === 2)
           set.data = cluster3
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items >= 3 ? a.min : 'NED'));
+            .map((a) => (a.items > 0 ? a.min : 'NED'));
         if (ix === 3)
           set.data = cluster4
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items >= 3 ? a.min : 'NED'));
+            .map((a) => (a.items > 0 ? a.min : 'NED'));
       });
       lineData.datasets.map((set, ix) => {
         if (ix === 0)
           set.data = cluster1
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items >= 3 ? a.min : 'NED'));
+            .map((a) => (a.items > 0 ? a.min : 'NED'));
         if (ix === 1)
           set.data = cluster2
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items >= 3 ? a.min : 'NED'));
+            .map((a) => (a.items > 0 ? a.min : 'NED'));
         if (ix === 2)
           set.data = cluster3
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items >= 3 ? a.min : 'NED'));
+            .map((a) => (a.items > 0 ? a.min : 'NED'));
         if (ix === 3)
           set.data = cluster4
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items >= 3 ? a.min : 'NED'));
+            .map((a) => (a.items > 0 ? a.min : 'NED'));
       });
     }
     if (matrix === 'mod') {
@@ -315,37 +308,37 @@ export const Graphs = () => {
         if (ix === 0)
           set.data = cluster1
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items >= 3 ? a.mod : 'NED'));
+            .map((a) => (a.items > 0 ? a.mod : 'NED'));
         if (ix === 1)
           set.data = cluster2
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items >= 3 ? a.mod : 'NED'));
+            .map((a) => (a.items > 0 ? a.mod : 'NED'));
         if (ix === 2)
           set.data = cluster3
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items >= 3 ? a.mod : 'NED'));
+            .map((a) => (a.items > 0 ? a.mod : 'NED'));
         if (ix === 3)
           set.data = cluster4
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items >= 3 ? a.mod : 'NED'));
+            .map((a) => (a.items > 0 ? a.mod : 'NED'));
       });
       lineData.datasets.map((set, ix) => {
         if (ix === 0)
           set.data = cluster1
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items >= 3 ? a.mod : 'NED'));
+            .map((a) => (a.items > 0 ? a.mod : 'NED'));
         if (ix === 1)
           set.data = cluster2
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items >= 3 ? a.mod : 'NED'));
+            .map((a) => (a.items > 0 ? a.mod : 'NED'));
         if (ix === 2)
           set.data = cluster3
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items >= 3 ? a.mod : 'NED'));
+            .map((a) => (a.items > 0 ? a.mod : 'NED'));
         if (ix === 3)
           set.data = cluster4
             .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items >= 3 ? a.mod : 'NED'));
+            .map((a) => (a.items > 0 ? a.mod : 'NED'));
       });
     }
   };
@@ -373,7 +366,7 @@ export const Graphs = () => {
       cluster1
         .slice(dateRange[datePage][0], dateRange[datePage][1])
         .map((cl) => {
-          if (cl.items >= 3) {
+          if (cl.items > 0) {
             setScatterData2avg((state) => [...state, cl.mean]);
             setScatterData2high((state) => [...state, cl.max]);
             setScatterData2low((state) => [...state, cl.min]);
@@ -386,7 +379,7 @@ export const Graphs = () => {
       cluster2
         .slice(dateRange[datePage][0], dateRange[datePage][1])
         .map((cl) => {
-          if (cl.items >= 3) {
+          if (cl.items > 0) {
             setScatterData3avg((state) => [...state, cl.mean]);
             setScatterData3high((state) => [...state, cl.max]);
             setScatterData3low((state) => [...state, cl.min]);
@@ -399,7 +392,7 @@ export const Graphs = () => {
       cluster3
         .slice(dateRange[datePage][0], dateRange[datePage][1])
         .map((cl) => {
-          if (cl.items >= 3) {
+          if (cl.items > 0) {
             setScatterData4avg((state) => [...state, cl.mean]);
             setScatterData4high((state) => [...state, cl.max]);
             setScatterData4low((state) => [...state, cl.min]);
@@ -412,7 +405,7 @@ export const Graphs = () => {
       cluster4
         .slice(dateRange[datePage][0], dateRange[datePage][1])
         .map((cl) => {
-          if (cl.items >= 3) {
+          if (cl.items > 0) {
             setScatterData5avg((state) => [...state, cl.mean]);
             setScatterData5high((state) => [...state, cl.max]);
             setScatterData5low((state) => [...state, cl.min]);

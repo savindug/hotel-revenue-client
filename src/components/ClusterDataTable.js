@@ -13,6 +13,7 @@ import TableHead from '@material-ui/core/TableHead';
 import Paper from '@material-ui/core/Paper';
 import moment from 'moment';
 import { CLUSTER_BACKGROUND } from '../utils/const';
+import { LoadingOverlay } from './UI/LoadingOverlay';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -54,15 +55,9 @@ export default function ClusterDataTable({ cluster, stars }) {
 
   useEffect(() => {
     //setStars((cluster.index += 2));
-
     setLoad(true);
-
-    const setClusterAtributes = () => {};
-
-    setClusterAtributes();
-    setLoad(false);
-
     //console.log(`no of Hotels length : ${noOfHotels.length} => ${noOfHotels}`);
+    setLoad(false);
   }, []);
 
   return (
@@ -121,9 +116,9 @@ export default function ClusterDataTable({ cluster, stars }) {
 
                   {cluster.map((e, index) => (
                     <StyledTableCell size="small" key={index}>
-                      {e.items !== 'NaN' && e.items >= 3
+                      {e.items !== 'NaN' && e.items > 0
                         ? Math.round(e.items)
-                        : e.items !== 'NaN' && e.items < 3
+                        : e.items !== 'NaN' && e.items < 0
                         ? 'NED'
                         : 'N/A'}
                     </StyledTableCell>
@@ -142,9 +137,9 @@ export default function ClusterDataTable({ cluster, stars }) {
 
                   {cluster.map((e, index) => (
                     <StyledTableCell size="small" key={index}>
-                      {e.mean !== 'NaN' && e.items >= 3
+                      {e.mean !== 'NaN' && e.items > 0
                         ? Math.round(e.mean)
-                        : e.mean !== 'NaN' && e.items < 3
+                        : e.mean !== 'NaN' && e.items < 0
                         ? 'NED'
                         : 'N/A'}
                     </StyledTableCell>
@@ -164,9 +159,9 @@ export default function ClusterDataTable({ cluster, stars }) {
 
                   {cluster.map((e, index) => (
                     <StyledTableCell size="small" key={index}>
-                      {e.mod !== 'NaN' && e.items >= 3
+                      {e.mod !== 'NaN' && e.items > 0
                         ? Math.round(e.mod)
-                        : e.mod !== 'NaN' && e.items < 3
+                        : e.mod !== 'NaN' && e.items < 0
                         ? 'NED'
                         : 'N/A'}
                     </StyledTableCell>
@@ -186,9 +181,9 @@ export default function ClusterDataTable({ cluster, stars }) {
 
                   {cluster.map((e, index) => (
                     <StyledTableCell size="small" key={index}>
-                      {e.median !== 'NaN' && e.items >= 3
+                      {e.median !== 'NaN' && e.items > 0
                         ? Math.round(e.median)
-                        : e.median !== 'NaN' && e.items < 3
+                        : e.median !== 'NaN' && e.items < 0
                         ? 'NED'
                         : 'N/A'}
                     </StyledTableCell>
@@ -207,9 +202,9 @@ export default function ClusterDataTable({ cluster, stars }) {
 
                   {cluster.map((e, index) => (
                     <StyledTableCell size="small" key={index}>
-                      {e.max !== 'NaN' && e.items >= 3
+                      {e.max !== 'NaN' && e.items > 0
                         ? Math.round(e.max)
-                        : e.max !== 'NaN' && e.items < 3
+                        : e.max !== 'NaN' && e.items < 0
                         ? 'NED'
                         : 'N/A'}
                     </StyledTableCell>
@@ -228,9 +223,9 @@ export default function ClusterDataTable({ cluster, stars }) {
 
                   {cluster.map((e, index) => (
                     <StyledTableCell size="small" key={index}>
-                      {e.highAVG !== 'NaN' && e.items >= 3
+                      {e.highAVG !== 'NaN' && e.items > 0
                         ? Math.round(e.highAVG)
-                        : e.highAVG !== 'NaN' && e.items < 3
+                        : e.highAVG !== 'NaN' && e.items < 0
                         ? 'NED'
                         : 'N/A'}
                     </StyledTableCell>
@@ -249,9 +244,9 @@ export default function ClusterDataTable({ cluster, stars }) {
 
                   {cluster.map((e, index) => (
                     <StyledTableCell size="small" key={index}>
-                      {e.midAVG !== 'NaN' && e.items >= 3
+                      {e.midAVG !== 'NaN' && e.items > 0
                         ? Math.round(e.midAVG)
-                        : e.midAVG !== 'NaN' && e.items < 3
+                        : e.midAVG !== 'NaN' && e.items < 0
                         ? 'NED'
                         : 'N/A'}
                     </StyledTableCell>
@@ -270,9 +265,9 @@ export default function ClusterDataTable({ cluster, stars }) {
 
                   {cluster.map((e, index) => (
                     <StyledTableCell size="small" key={index}>
-                      {e.lowAVG !== 'NaN' && e.items >= 3
+                      {e.lowAVG !== 'NaN' && e.items > 0
                         ? Math.round(e.lowAVG)
-                        : e.lowAVG !== 'NaN' && e.items < 3
+                        : e.lowAVG !== 'NaN' && e.items < 0
                         ? 'NED'
                         : 'N/A'}
                     </StyledTableCell>
@@ -291,9 +286,9 @@ export default function ClusterDataTable({ cluster, stars }) {
 
                   {cluster.map((e, index) => (
                     <StyledTableCell size="small" key={index}>
-                      {e.min !== 'NaN' && e.items >= 3
+                      {e.min !== 'NaN' && e.items > 0
                         ? Math.round(e.min)
-                        : e.min !== 'NaN' && e.items < 3
+                        : e.min !== 'NaN' && e.items < 0
                         ? 'NED'
                         : 'N/A'}
                     </StyledTableCell>
@@ -305,7 +300,7 @@ export default function ClusterDataTable({ cluster, stars }) {
           </Box>
         </TableContainer>
       ) : (
-        <></>
+        <LoadingOverlay show={load} />
       )}
     </>
   );
