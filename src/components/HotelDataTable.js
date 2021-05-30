@@ -1,24 +1,20 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import {
   Box,
   makeStyles,
   TableCell,
   TableContainer,
-  TablePagination,
   TableRow,
   TableSortLabel,
   withStyles,
 } from '@material-ui/core';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableHead from '@material-ui/core/TableHead';
 import Paper from '@material-ui/core/Paper';
-import { Alert } from 'bootstrap';
 import moment from 'moment';
-import { LoadingOverlay } from './UI/LoadingOverlay';
-import { AssignmentReturn, DirectionsBike } from '@material-ui/icons';
 import { CLUSTER_BACKGROUND } from '../utils/const';
 
 const StyledTableCell = withStyles((theme) => ({

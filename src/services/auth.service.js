@@ -38,18 +38,12 @@ export const getResetUserData = async (userD) => {
 };
 
 export const setUserpassword = async (userD) => {
-  let userData = null;
+  let response = false;
   await axios.post(`${apiURI}auth/set-password`, userD).then((result) => {
     const res = result.data;
-    if (res.results) {
-      userData = {
-        name: res.data.name,
-        email: res.data.email,
-      };
-    }
+    response = res.results;
   });
-
-  return userData;
+  return response;
 };
 
 export const sendResetEmail = async (email) => {

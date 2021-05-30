@@ -1,8 +1,8 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Alert, Container } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import style from '../../styles/login.module.css';
 import {
   getResetUserData,
@@ -28,9 +28,12 @@ export const ResetPassword = (props) => {
     e.preventDefault();
     if (userData.password.length >= 6) {
       if (userData.password === c_pwd) {
-        await setUserpassword(userData);
-        await forceLogOut();
-        props.history.push('/');
+        await setUserpassword(userData).then((res) => {
+          if (res) {
+            forceLogOut();
+            props.history.push('/');
+          }
+        });
       } else {
         setformError('*Password Confirmation Failed');
       }
@@ -55,6 +58,7 @@ export const ResetPassword = (props) => {
       const token = params.get('token');
       const _id = params.get('_id');
       setResetLink(params.get('token'));
+
       await getResetUserData({
         _id: _id,
         reset_link: token,
@@ -64,7 +68,7 @@ export const ResetPassword = (props) => {
             setUserD(res);
             setUserData({
               _id: res._id,
-              reset_link: resetLink,
+              reset_link: token,
             });
           }
         })
@@ -125,7 +129,7 @@ export const ResetPassword = (props) => {
           </Form>
         </div>
       ) : (
-        <Redirect to="/login" />
+        <></>
       )}
     </Container>
   );

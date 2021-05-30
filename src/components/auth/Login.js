@@ -1,20 +1,16 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Alert, Container } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { Link } from 'react-router-dom';
 import style from '../../styles/login.module.css';
-import { firebaseAuth } from '../../providers/AuthProvider';
 import { useDispatch, useSelector } from 'react-redux';
-import { customLogin, login, refresh } from '../../redux/actions/auth.actions';
+import { login, refresh } from '../../redux/actions/auth.actions';
 import logo from '../../assets/imgs/logo/logo.jpg';
 import { LoadingOverlay } from '../UI/LoadingOverlay';
 import { checkAuthTokens } from '../../services/auth.service';
 
 export const Login = (props) => {
-  const USERNAME = 'ratebuckets';
-  const PASSWORD = 'b0EPPj@N&j9b';
-
   const auth = useSelector((state) => state.auth);
   const { user, auth_loading, auth_err, isLoggedIn } = auth;
 
