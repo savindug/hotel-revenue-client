@@ -10,7 +10,7 @@ import {
   forceLogOut,
 } from '../../services/auth.service';
 
-export const ResetPassword = ({ props }) => {
+export const ResetPassword = (props) => {
   const [userD, setUserD] = useState({
     _id: null,
     name: null,
@@ -28,7 +28,6 @@ export const ResetPassword = ({ props }) => {
     e.preventDefault();
     if (userData.password.length >= 6) {
       if (userData.password === c_pwd) {
-        console.log('userData', userData);
         await setUserpassword(userData);
         await forceLogOut();
         props.history.push('/');
@@ -56,14 +55,12 @@ export const ResetPassword = ({ props }) => {
       const token = params.get('token');
       const _id = params.get('_id');
       setResetLink(params.get('token'));
-      console.log(resetLink);
       await getResetUserData({
         _id: _id,
         reset_link: token,
       })
         .then((res) => {
           if (res != null) {
-            console.log(res);
             setUserD(res);
             setUserData({
               _id: res._id,
