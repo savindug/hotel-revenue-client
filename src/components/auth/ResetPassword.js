@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { Alert, Container } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import style from '../../styles/login.module.css';
 import {
   getResetUserData,
@@ -125,7 +125,7 @@ export const ResetPassword = (props) => {
           </Form>
         </div>
       ) : (
-        <></>
+        <Redirect to="/login" />
       )}
     </Container>
   );
