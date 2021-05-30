@@ -1,3 +1,5 @@
+import axios from 'axios';
+import { apiURI } from '../env';
 import { AUTHORIZATION_KEY, REFRESH_KEY } from '../utils/const';
 
 export const checkAuthTokens = async () => {
@@ -17,4 +19,60 @@ export const getReqHeaders = async () => {
     Authorization: `Bearer ${await localStorage.getItem(AUTHORIZATION_KEY)}`,
     refresh: `refresh ${await localStorage.getItem(REFRESH_KEY)}`,
   };
+};
+
+export const getResetUserData = async (userD) => {
+  let userData = null;
+  await axios.post(`${apiURI}auth/reset-password`, userD).then((result) => {
+    const res = result.data;
+    if (res.results) {
+      userData = {
+        _id: res.data._id,
+        name: res.data.name,
+        email: res.data.email,
+      };
+    }
+  });
+
+  return userData;
+};
+
+export const setUserpassword = async (userD) => {
+  let userData = null;
+  await axios.post(`${apiURI}auth/set-password`, userD).then((result) => {
+    const res = result.data;
+    if (res.results) {
+      userData = {
+        name: res.data.name,
+        email: res.data.email,
+      };
+    }
+  });
+
+  return userData;
+};
+
+export const sendResetEmail = async (email) => {
+  let userData = null;
+  await axios
+    .post(`${apiURI}auth/forgot-password`, {
+      email: email,
+    })
+    .then((result) => {
+      const res = result.data;
+      if (res.results) {
+        userData = {
+          name: res.data.reset.name,
+          email: res.data.reset.email,
+        };
+        console.log(userData);
+      }
+    });
+
+  return userData;
+};
+
+export const forceLogOut = async () => {
+  await localStorage.removeItem(AUTHORIZATION_KEY);
+  await localStorage.removeItem(REFRESH_KEY);
 };

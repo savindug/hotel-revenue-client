@@ -104,6 +104,12 @@ export const Login = (props) => {
               />
             </Form.Group>
 
+            <Form.Group className="mt-3 text-right">
+              <Link className="text-decoration-none" to={'/forgot-password'}>
+                Forgot Password?
+              </Link>
+            </Form.Group>
+
             <Button
               variant="primary"
               type="submit"
@@ -112,12 +118,6 @@ export const Login = (props) => {
             >
               Login
             </Button>
-
-            {/* <Form.Group className="mt-3 text-center">
-          <Link className="text-decoration-none" to="/register">
-            A New User?
-          </Link>
-        </Form.Group> */}
           </Form>
         </div>
       )}

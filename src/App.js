@@ -9,6 +9,8 @@ import { Graphs } from './components/Graphs';
 import { Login } from './components/auth/Login';
 import { Register } from './components/auth/Register';
 import PrivateRoute from './routes/PrivateRoute';
+import { ResetPassword } from './components/auth/ResetPassword';
+import { ForgotPassword } from './components/auth/ForgotPassword';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,7 +44,8 @@ function App() {
           <Switch>
             <PrivateRoute exact path="/" component={ClusteredData} />
             <Route path="/login" component={Login} />
-            {/* <Route path="/clusters" component={ClusteredData} /> */}
+            <Route path="/reset-password" component={ResetPassword} />
+            <Route path="/forgot-password" component={ForgotPassword} />
             {/* <Route path="/register" component={Register} /> */}
             {/*  <Route path="/hotels" component={HotelDataset} />
             <Route path="/graphs" component={Graphs} /> */}
