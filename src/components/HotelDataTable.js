@@ -149,7 +149,6 @@ export default function HotelDataTable({ selectedDate }) {
                 <TableHead>
                   <StyledTableCell size="small">#</StyledTableCell>
                   <StyledTableCell
-                    className={classes.sticky}
                     style={{ fontWeight: 'bold', width: '250px', zIndex: 100 }}
                   >
                     <TableSortLabel
@@ -159,7 +158,7 @@ export default function HotelDataTable({ selectedDate }) {
                         handleSort(0, sortDir === 'asc' ? 'desc' : 'asc');
                       }}
                     >
-                      Hotels
+                      Hotel Name
                     </TableSortLabel>
                     {/* <TableSortLabel onClick={handleSort(0)}></TableSortLabel> */}
                   </StyledTableCell>

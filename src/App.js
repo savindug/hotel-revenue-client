@@ -7,6 +7,7 @@ import { Login } from './components/auth/Login';
 import PrivateRoute from './routes/PrivateRoute';
 import { ResetPassword } from './components/auth/ResetPassword';
 import { ForgotPassword } from './components/auth/ForgotPassword';
+import { UserProfile } from './components/auth/UserProfile';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,6 +40,7 @@ function App() {
           <div className={classes.toolbar} />
           <Switch>
             <PrivateRoute exact path="/" component={ClusteredData} />
+            <PrivateRoute path="/profile" component={UserProfile} />
             <Route path="/login" component={Login} />
             <Route path="/reset-password" component={ResetPassword} />
             <Route path="/forgot-password" component={ForgotPassword} />

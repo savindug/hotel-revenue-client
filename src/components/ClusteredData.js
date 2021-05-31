@@ -25,10 +25,8 @@ import {
 import moment from 'moment';
 import HotelDataTable from './HotelDataTable';
 import { Badge, Nav } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
 import ClusterBucket from './ClusterBucket';
 import { Graphs } from './Graphs';
-import img_star_bucktet from '../assets/imgs/star-buckets.png';
 import SimpleMap from './SimpleMap';
 import ClusterDataTable from './ClusterDataTable';
 import { CLUSTER_BACKGROUND } from '../utils/const';
@@ -236,7 +234,7 @@ export const ClusteredData = () => {
   };
 
   return (
-    <div>
+    <div style={{ backgroundColor: 'transparent' }}>
       <Grid>
         <MuiPickersUtilsProvider utils={MomentUtils}>
           <Grid container justify="space-around" className="mb-3">

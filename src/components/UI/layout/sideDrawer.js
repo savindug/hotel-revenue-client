@@ -5,7 +5,7 @@ import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { Navbar, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { logOut } from '../../../redux/actions/auth.actions';
 
 const drawerWidth = 240;
@@ -143,7 +143,10 @@ export default function MiniDrawer(props) {
             {isLoggedIn ? (
               <>
                 <Navbar.Text className="text-light mx-5">
-                  Signed in as:&nbsp; <a className="text-light">{user.name}</a>
+                  Signed in as:&nbsp;{' '}
+                  <Link className="text-light" to="/profile">
+                    {user.name}
+                  </Link>
                 </Navbar.Text>
                 <Button
                   variant="outline-light"
