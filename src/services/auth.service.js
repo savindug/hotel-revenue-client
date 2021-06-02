@@ -59,11 +59,28 @@ export const sendResetEmail = async (email) => {
           name: res.data.reset.name,
           email: res.data.reset.email,
         };
-        console.log(userData);
       }
     });
 
   return userData;
+};
+
+export const configUser = async (user, filter) => {
+  await axios
+    .post(
+      `${apiURI}dashboard/user/hotel-filter`,
+      { user, filter },
+      {
+        headers: await getReqHeaders(),
+      }
+    )
+    .then((res) => {
+      console.log(res);
+      return res.data;
+    })
+    .catch((err) => {
+      //console.log(err);
+    });
 };
 
 export const forceLogOut = async () => {

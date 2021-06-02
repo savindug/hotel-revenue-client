@@ -2,7 +2,11 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import {
   Box,
+  FormGroup,
+  Grid,
+  InputLabel,
   makeStyles,
+  Select,
   TableCell,
   TableContainer,
   TableRow,
@@ -35,7 +39,7 @@ const StyledTableRow = withStyles((theme) => ({
     },
   },
 }))(TableRow);
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   container: {
     maxHeight: window.innerHeight - 275,
   },
@@ -51,7 +55,11 @@ const useStyles = makeStyles({
     boxShadow: '2px 2px 2px grey',
     display: 'flex',
   },
-});
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  },
+}));
 
 export default function HotelDataTable({ selectedDate }) {
   const classes = useStyles();
@@ -64,6 +72,9 @@ export default function HotelDataTable({ selectedDate }) {
   const getClusterDataSet = useSelector((state) => state.clusterDataSet);
   const { loading, err, cluster1, cluster2, cluster3, cluster4, hotels } =
     getClusterDataSet;
+
+  const auth = useSelector((state) => state.auth);
+  const { user } = auth;
 
   const getClusterByPrice = (rate, ix) => {
     if (rate >= cluster1[ix].min && rate <= cluster1[ix].max) {
@@ -126,6 +137,24 @@ export default function HotelDataTable({ selectedDate }) {
     await sortData(sb, sd);
   };
 
+  const [hotelsList, setHotelsList] = useState(hotels);
+
+  const handleHotelsFilter = async (event) => {
+    if (event.target.value == 0) {
+      const selectedHotels = [];
+      user.application.candidate_properties.map((_filterHotel) =>
+        hotels.some((hotel) => {
+          if (hotel.hotelID === _filterHotel.id) {
+            selectedHotels.push(hotel);
+          }
+        })
+      );
+      setHotelsList(selectedHotels);
+    } else {
+      setHotelsList(hotels);
+    }
+  };
+
   return (
     <>
       {hotels.length > 0 &&
@@ -134,6 +163,22 @@ export default function HotelDataTable({ selectedDate }) {
       cluster3.length > 0 &&
       cluster4.length > 0 ? (
         <>
+          <Grid container justify="space-around" className="my-3">
+            <FormGroup className={classes.formControl}>
+              <InputLabel htmlFor="grouped-native-select">
+                Hotels Filter
+              </InputLabel>
+              <Select
+                native
+                id="grouped-native-select"
+                onChange={handleHotelsFilter}
+              >
+                <option value={1}>All Hotels</option>
+                <option value={0}>Selected Hotels</option>
+              </Select>
+            </FormGroup>
+          </Grid>
+
           <TableContainer
             component={Paper}
             className={classes.container + ' mt-3'}
@@ -200,7 +245,7 @@ export default function HotelDataTable({ selectedDate }) {
                   )}
                 </TableHead>
                 <TableBody>
-                  {hotels.map((_hotel, index) => (
+                  {hotelsList.map((_hotel, index) => (
                     <StyledTableRow>
                       <StyledTableCell size="small">
                         {index + 1}

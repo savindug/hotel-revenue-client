@@ -6,12 +6,11 @@ import {
   TableRow,
   withStyles,
 } from '@material-ui/core';
-import React, { useEffect, useState } from 'react';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableHead from '@material-ui/core/TableHead';
 import Paper from '@material-ui/core/Paper';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import moment from 'moment';
 import { CLUSTER_BACKGROUND } from '../utils/const';
 
@@ -48,16 +47,8 @@ export default function ClusterBucket({ cluster, stars }) {
   const classes = useStyles();
 
   const getClusterDataSet = useSelector((state) => state.clusterDataSet);
-  const {
-    loading,
-    err,
-    reqHotel,
-    cluster1,
-    cluster2,
-    cluster3,
-    cluster4,
-    hotels,
-  } = getClusterDataSet;
+  const { loading, reqHotel, cluster1, cluster2, cluster3, cluster4 } =
+    getClusterDataSet;
 
   return (
     <>

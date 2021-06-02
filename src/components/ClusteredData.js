@@ -5,7 +5,6 @@ import {
   fetchClusterData,
   fetchHotelData,
   fetchHotelsList,
-  fetchMarkets,
   fetchRefreshDates,
 } from '../redux/actions/cluster.actions';
 import { LoadingOverlay } from './UI/LoadingOverlay';
@@ -15,7 +14,6 @@ import {
   MuiPickersUtilsProvider,
 } from '@material-ui/pickers';
 import {
-  Button,
   FormControl,
   Grid,
   InputLabel,
@@ -30,6 +28,7 @@ import { Graphs } from './Graphs';
 import SimpleMap from './SimpleMap';
 import ClusterDataTable from './ClusterDataTable';
 import { CLUSTER_BACKGROUND } from '../utils/const';
+import { useHistory } from 'react-router';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -66,7 +65,9 @@ export const ClusteredData = () => {
   } = getClusterDataSet;
 
   const auth = useSelector((state) => state.auth);
-  const { user, auth_loading, auth_err, isLoggedIn } = auth;
+  const { user } = auth;
+
+  const history = useHistory();
 
   const [selectedDate, setSelectedDate] = useState(
     moment(refreshDates.dates[0]).format('YYYY-MM-DD')
@@ -101,13 +102,6 @@ export const ClusteredData = () => {
   const getRefreshDates = async (value) => {
     await dispatch(fetchRefreshDates(value));
   };
-
-  // useEffect(() => {
-  //   async function getMarkets() {
-  //     await dispatch(fetchMarkets());
-  //   }
-  //   getMarkets();
-  // }, [dispatch]);
 
   useEffect(() => {
     if (refreshDates.dates.length > 0) {
@@ -244,7 +238,6 @@ export const ClusteredData = () => {
               </InputLabel>
               <Select
                 native
-                defaultValue=""
                 id="grouped-native-select"
                 onChange={handleMarketChange}
                 value={selectedMarket}
@@ -285,7 +278,6 @@ export const ClusteredData = () => {
               </InputLabel>
               <Select
                 native
-                defaultValue=""
                 id="grouped-native-select"
                 onChange={handlePropertyChange}
                 value={selectedProperty}

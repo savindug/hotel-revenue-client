@@ -120,27 +120,6 @@ export const refresh = () => async (dispatch) => {
     });
 };
 
-export const configUser = (user, properties, markets) => async (dispatch) => {
-  dispatch({ type: ACTION_TYPES.ISLOADING_TRUE });
-  await axios
-    .post(`${apiURI}dashboard/users/config`, { user, properties, markets })
-    .then((res) => {
-      // dispatch({
-      //   type: ACTION_TYPES.LOGIN_USER,
-      //   payload: res,
-      // });
-      dispatch({ type: ACTION_TYPES.ISLOGGEDIN_FALSE });
-      //console.log(res);
-    })
-    .catch((err) => {
-      console.log(err);
-      // dispatch({
-      //   type: ACTION_TYPES.LOGIN_FAILED,
-      //   payload: err,
-      // });
-    });
-};
-
 export const logOut = () => async (dispatch) => {
   await localStorage.removeItem(AUTHORIZATION_KEY);
   await localStorage.removeItem(REFRESH_KEY);

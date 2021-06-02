@@ -1,10 +1,156 @@
-import React from 'react';
+import { capitalize } from '@material-ui/core';
+import moment from 'moment';
+import React, { useState } from 'react';
+import { Alert } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router';
+import { sendResetEmail } from '../../services/auth.service';
+import { AlertModel } from '../UI/models/AlertModel';
+import { UserCrud } from './UserCrud';
 
 export const UserProfile = () => {
+  const auth = useSelector((state) => state.auth);
+  const { user } = auth;
+  const [formNotification, setformNotification] = useState({
+    text: null,
+    varient: null,
+  });
+  const [formEditale, setFormEditale] = useState(false);
+
+  const history = useHistory();
+  const UserDetailsForm = () => {
+    return (
+      <form role="form">
+        <div class="form-group row">
+          <label class="col-3 col-form-label form-control-label">Name</label>
+          <div class="col-9">
+            <input
+              class="form-control"
+              type="text"
+              value={user.name}
+              disabled={formEditale ? false : true}
+            />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-3 col-form-label form-control-label">Email</label>
+          <div class="col-9">
+            <input
+              class="form-control"
+              type="email"
+              value={user.email}
+              disabled={formEditale ? false : true}
+            />
+          </div>
+        </div>
+        {/* <div class="form-group row">
+          <label class="col-3 col-form-label form-control-label">
+            Address
+          </label>
+          <div class="col-9">
+            <input
+              class="form-control"
+              type="text"
+              value=""
+              placeholder="Street"
+            />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-3 col-form-label form-control-label"></label>
+          <div class="col-6">
+            <input
+              class="form-control"
+              type="text"
+              value=""
+              placeholder="City"
+            />
+          </div>
+          <div class="col-3">
+            <input
+              class="form-control"
+              type="text"
+              value=""
+              placeholder="State"
+            />
+          </div>
+        </div> */}
+        <div class="form-group row">
+          <label class="col-3 col-form-label form-control-label">
+            Time Zone
+          </label>
+          <div class="col-9">
+            <select class="form-control" size="0" disabled={true}>
+              <option value={Intl.DateTimeFormat().resolvedOptions().timeZone}>
+                {Intl.DateTimeFormat().resolvedOptions().timeZone}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-3 col-form-label form-control-label">
+            Account Type
+          </label>
+          <div class="col-9">
+            <input
+              class="form-control"
+              style={{ textTransform: 'capitalize' }}
+              type="text"
+              value={user.role}
+              disabled={true}
+            />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-3 col-form-label form-control-label">
+            Member Since
+          </label>
+          <div class="col-9">
+            <input
+              class="form-control"
+              style={{ textTransform: 'capitalize' }}
+              type="text"
+              value={moment(user.date).format('YYYY-MM-DD')}
+              disabled={true}
+            />
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-3 col-form-label form-control-label">
+            Password
+          </label>
+          <div class="col-6">
+            <input
+              class="form-control"
+              type="password"
+              value="11111122333"
+              disabled={true}
+            />
+          </div>
+          <div class="col-3">
+            <input
+              type="button"
+              class="btn  btn-outline-warning"
+              value="Reset"
+              onClick={async () => {
+                await sendResetEmail(user.email).then((res) => {
+                  setformNotification({
+                    text: `Your password reset link has sent to the ${res.email}.\nPlease follow the link to reset password.`,
+                    varient: 'success',
+                  });
+                });
+              }}
+            />
+          </div>
+        </div>
+      </form>
+    );
+  };
+
   return (
     <div class="container">
       <div class="row my-2">
-        <div class="col-lg-8 order-lg-2">
+        <div class="col-8 order-lg-2">
           <ul class="nav nav-tabs">
             <li class="nav-item">
               <a
@@ -23,105 +169,28 @@ export const UserProfile = () => {
                 data-toggle="tab"
                 class="nav-link"
               >
-                Messages
+                Notification Center
               </a>
             </li>
             <li class="nav-item">
               <a href="" data-target="#edit" data-toggle="tab" class="nav-link">
-                Edit
+                Manage RADAR
               </a>
             </li>
           </ul>
           <div class="tab-content py-4">
+            {formNotification.text !== null &&
+            formNotification.varient !== null ? (
+              <AlertModel
+                text={formNotification.text}
+                varient={formNotification.varient}
+              />
+            ) : (
+              <></>
+            )}
             <div class="tab-pane active" id="profile">
-              <h5 class="mb-3">User Profile</h5>
-              <div class="row">
-                <div class="col-md-6">
-                  <h6>About</h6>
-                  <p>Web Designer, UI/UX Engineer</p>
-                  <h6>Hobbies</h6>
-                  <p>
-                    Indie music, skiing and hiking. I love the great outdoors.
-                  </p>
-                </div>
-                <div class="col-md-6">
-                  <h6>Recent badges</h6>
-                  <a href="#" class="badge badge-dark badge-pill">
-                    html5
-                  </a>
-                  <a href="#" class="badge badge-dark badge-pill">
-                    react
-                  </a>
-                  <a href="#" class="badge badge-dark badge-pill">
-                    codeply
-                  </a>
-                  <a href="#" class="badge badge-dark badge-pill">
-                    angularjs
-                  </a>
-                  <a href="#" class="badge badge-dark badge-pill">
-                    css3
-                  </a>
-                  <a href="#" class="badge badge-dark badge-pill">
-                    jquery
-                  </a>
-                  <a href="#" class="badge badge-dark badge-pill">
-                    bootstrap
-                  </a>
-                  <a href="#" class="badge badge-dark badge-pill">
-                    responsive-design
-                  </a>
-                  <hr />
-                  <span class="badge badge-primary">
-                    <i class="fa fa-user"></i> 900 Followers
-                  </span>
-                  <span class="badge badge-success">
-                    <i class="fa fa-cog"></i> 43 Forks
-                  </span>
-                  <span class="badge badge-danger">
-                    <i class="fa fa-eye"></i> 245 Views
-                  </span>
-                </div>
-                <div class="col-md-12">
-                  <h5 class="mt-2">
-                    <span class="fa fa-clock-o ion-clock float-right"></span>{' '}
-                    Recent Activity
-                  </h5>
-                  <table class="table table-sm table-hover table-striped">
-                    <tbody>
-                      <tr>
-                        <td>
-                          <strong>Abby</strong> joined ACME Project Team in{' '}
-                          <strong>`Collaboration`</strong>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <strong>Gary</strong> deleted My Board1 in{' '}
-                          <strong>`Discussions`</strong>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <strong>Kensington</strong> deleted MyBoard3 in{' '}
-                          <strong>`Discussions`</strong>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <strong>John</strong> deleted My Board1 in{' '}
-                          <strong>`Discussions`</strong>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <strong>Skell</strong> deleted his post Look at Why
-                          this is.. in <strong>`Discussions`</strong>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
+              <h5 class="mb-3 text-center">User Profile</h5>
+              <UserDetailsForm />
             </div>
             <div class="tab-pane" id="messages">
               <div class="alert alert-info alert-dismissable">
@@ -174,175 +243,19 @@ export const UserProfile = () => {
               </table>
             </div>
             <div class="tab-pane" id="edit">
-              <form role="form">
-                <div class="form-group row">
-                  <label class="col-lg-3 col-form-label form-control-label">
-                    First name
-                  </label>
-                  <div class="col-lg-9">
-                    <input class="form-control" type="text" value="Jane" />
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label class="col-lg-3 col-form-label form-control-label">
-                    Last name
-                  </label>
-                  <div class="col-lg-9">
-                    <input class="form-control" type="text" value="Bishop" />
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label class="col-lg-3 col-form-label form-control-label">
-                    Email
-                  </label>
-                  <div class="col-lg-9">
-                    <input
-                      class="form-control"
-                      type="email"
-                      value="email@gmail.com"
-                    />
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label class="col-lg-3 col-form-label form-control-label">
-                    Company
-                  </label>
-                  <div class="col-lg-9">
-                    <input class="form-control" type="text" value="" />
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label class="col-lg-3 col-form-label form-control-label">
-                    Website
-                  </label>
-                  <div class="col-lg-9">
-                    <input class="form-control" type="url" value="" />
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label class="col-lg-3 col-form-label form-control-label">
-                    Address
-                  </label>
-                  <div class="col-lg-9">
-                    <input
-                      class="form-control"
-                      type="text"
-                      value=""
-                      placeholder="Street"
-                    />
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label class="col-lg-3 col-form-label form-control-label"></label>
-                  <div class="col-lg-6">
-                    <input
-                      class="form-control"
-                      type="text"
-                      value=""
-                      placeholder="City"
-                    />
-                  </div>
-                  <div class="col-lg-3">
-                    <input
-                      class="form-control"
-                      type="text"
-                      value=""
-                      placeholder="State"
-                    />
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label class="col-lg-3 col-form-label form-control-label">
-                    Time Zone
-                  </label>
-                  <div class="col-lg-9">
-                    <select id="user_time_zone" class="form-control" size="0">
-                      <option value="Hawaii">(GMT-10:00) Hawaii</option>
-                      <option value="Alaska">(GMT-09:00) Alaska</option>
-                      <option value="Pacific Time (US &amp; Canada)">
-                        (GMT-08:00) Pacific Time (US &amp; Canada)
-                      </option>
-                      <option value="Arizona">(GMT-07:00) Arizona</option>
-                      <option value="Mountain Time (US &amp; Canada)">
-                        (GMT-07:00) Mountain Time (US &amp; Canada)
-                      </option>
-                      <option
-                        value="Central Time (US &amp; Canada)"
-                        selected="selected"
-                      >
-                        (GMT-06:00) Central Time (US &amp; Canada)
-                      </option>
-                      <option value="Eastern Time (US &amp; Canada)">
-                        (GMT-05:00) Eastern Time (US &amp; Canada)
-                      </option>
-                      <option value="Indiana (East)">
-                        (GMT-05:00) Indiana (East)
-                      </option>
-                    </select>
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label class="col-lg-3 col-form-label form-control-label">
-                    Username
-                  </label>
-                  <div class="col-lg-9">
-                    <input class="form-control" type="text" value="janeuser" />
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label class="col-lg-3 col-form-label form-control-label">
-                    Password
-                  </label>
-                  <div class="col-lg-9">
-                    <input
-                      class="form-control"
-                      type="password"
-                      value="11111122333"
-                    />
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label class="col-lg-3 col-form-label form-control-label">
-                    Confirm password
-                  </label>
-                  <div class="col-lg-9">
-                    <input
-                      class="form-control"
-                      type="password"
-                      value="11111122333"
-                    />
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label class="col-lg-3 col-form-label form-control-label"></label>
-                  <div class="col-lg-9">
-                    <input
-                      type="reset"
-                      class="btn btn-secondary"
-                      value="Cancel"
-                    />
-                    <input
-                      type="button"
-                      class="btn btn-primary"
-                      value="Save Changes"
-                    />
-                  </div>
-                </div>
-              </form>
+              <h5 class="mb-3 text-center">Hotels Filter</h5>
+              <UserCrud setformNotification={setformNotification} />
             </div>
           </div>
         </div>
-        <div class="col-lg-4 order-lg-1 text-center">
+        <div class="col-4 order-lg-1 text-center">
           <img
-            src="//placehold.it/150"
+            src="https://res.cloudinary.com/ratebuckets/image/upload/v1622671593/2750635_gray-circle-login-user-icon-png-transparent-png_l21kly.jpg"
             class="mx-auto img-fluid img-circle d-block"
             alt="avatar"
+            width="150px"
+            height="150px"
           />
-          <h6 class="mt-2">Upload a different photo</h6>
-          <label class="custom-file">
-            <input type="file" id="file" class="custom-file-input" />
-            <span class="custom-file-control">Choose file</span>
-          </label>
         </div>
       </div>
     </div>

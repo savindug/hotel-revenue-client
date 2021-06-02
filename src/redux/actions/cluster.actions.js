@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { apiURI } from '../../env';
 import { getReqHeaders } from '../../services/auth.service';
+import { refresh } from './auth.actions';
 import * as ACTION_TYPES from './types';
 
 export const fetchClusterData =
@@ -65,11 +66,8 @@ export const fetchClusterData =
           payload: setOutliers(cl4, 5),
         });
       })
-      .catch((err) => {
-        dispatch({
-          type: ACTION_TYPES.GET_CLUSTER_FAILED,
-          payload: err,
-        });
+      .catch(async (err) => {
+        dispatch(handleErr(err));
       });
   };
 
@@ -83,9 +81,6 @@ export const fetchHotelData =
         headers: await getReqHeaders(),
       }
     )
-      // await axios(
-      //   `http://localhost:5000/api/hotels/report/106399/1447930/2021-04-19?range=90`
-      // )
       .then((res) => {
         let hotelDataSet = res.data.data;
         dispatch({
@@ -96,11 +91,8 @@ export const fetchHotelData =
           ),
         });
       })
-      .catch((err) => {
-        dispatch({
-          type: ACTION_TYPES.GET_HOTELS_FAILED,
-          payload: err,
-        });
+      .catch(async (err) => {
+        dispatch(handleErr(err));
       });
   };
 
@@ -117,11 +109,8 @@ export const fetchHotelsList = (destID) => async (dispatch) => {
         payload: res.data.data,
       });
     })
-    .catch((err) => {
-      dispatch({
-        type: ACTION_TYPES.GET_HOTELSLIST_FAILED,
-        payload: err,
-      });
+    .catch(async (err) => {
+      dispatch(handleErr(err));
     });
 };
 
@@ -138,11 +127,8 @@ export const fetchMarkets = () => async (dispatch) => {
         payload: res.data.data,
       });
     })
-    .catch((err) => {
-      dispatch({
-        type: ACTION_TYPES.GET_MARKETS_FAILED,
-        payload: err,
-      });
+    .catch(async (err) => {
+      dispatch(handleErr(err));
     });
 };
 
@@ -159,12 +145,23 @@ export const fetchRefreshDates = (destID) => async (dispatch) => {
         payload: res.data.data,
       });
     })
-    .catch((err) => {
+    .catch(async (err) => {
+      dispatch(handleErr(err));
+    });
+};
+
+export const handleErr = (err) => async (dispatch) => {
+  if (err.message !== undefined) {
+    if (err.message == 'Request failed with status code 401') {
+      dispatch({ type: ACTION_TYPES.ISLOGGEDIN_FALSE });
+      await refresh();
+    } else {
       dispatch({
         type: ACTION_TYPES.GET_REFRESH_DATES_FAILED,
         payload: err,
       });
-    });
+    }
+  }
 };
 
 const setOutliers = (cluster, star) => {

@@ -416,19 +416,11 @@ export const Graphs = () => {
           }
         });
     }
-  }, [
-    cluster1,
-    cluster2,
-    cluster3,
-    cluster4,
-    scatterPlot,
-    datePage,
-    dateRange,
-  ]);
+  }, [datePage]);
   return (
-    <div style={{ backgroundColor: 'transparent' }}>
+    <div>
       {bind ? (
-        <div>
+        <>
           <Grid className="my-5" container justify="space-around">
             <h1>Scatter Plot</h1>
             <FormControl className={classes.formControl}>
@@ -472,6 +464,7 @@ export const Graphs = () => {
                   {
                     label: 'HIGH',
                     showLine: false,
+                    backgroundColor: '#f4f4f4',
                     borderColor: '#3F51B5',
                     hoverBackgroundColor: '#3F51B5',
                     hoverBorderColor: '#f4f4f4',
@@ -481,6 +474,7 @@ export const Graphs = () => {
                   {
                     label: 'AVG',
                     showLine: false,
+                    backgroundColor: '#f4f4f4',
                     borderColor: '#00BCD4',
                     hoverBackgroundColor: '#00BCD4',
                     hoverBorderColor: '#f4f4f4',
@@ -490,6 +484,7 @@ export const Graphs = () => {
                   {
                     label: 'LOW',
                     showLine: false,
+                    backgroundColor: '#f4f4f4',
                     borderColor: '#E91E63',
                     hoverBackgroundColor: '#E91E63',
                     hoverBorderColor: '#f4f4f4',
@@ -508,6 +503,7 @@ export const Graphs = () => {
                   {
                     label: 'HIGH',
                     showLine: false,
+                    backgroundColor: '#f4f4f4',
                     borderColor: '#3F51B5',
                     hoverBackgroundColor: '#3F51B5',
                     hoverBorderColor: '#f4f4f4',
@@ -517,6 +513,7 @@ export const Graphs = () => {
                   {
                     label: 'AVG',
                     showLine: false,
+                    backgroundColor: '#f4f4f4',
                     borderColor: '#00BCD4',
                     hoverBackgroundColor: '#00BCD4',
                     hoverBorderColor: '#f4f4f4',
@@ -526,6 +523,7 @@ export const Graphs = () => {
                   {
                     label: 'LOW',
                     showLine: false,
+                    backgroundColor: '#f4f4f4',
                     borderColor: '#E91E63',
                     hoverBackgroundColor: '#E91E63',
                     hoverBorderColor: '#f4f4f4',
@@ -544,6 +542,7 @@ export const Graphs = () => {
                   {
                     label: 'HIGH',
                     showLine: false,
+                    backgroundColor: '#f4f4f4',
                     borderColor: '#3F51B5',
                     hoverBackgroundColor: '#3F51B5',
                     hoverBorderColor: '#f4f4f4',
@@ -553,6 +552,7 @@ export const Graphs = () => {
                   {
                     label: 'AVG',
                     showLine: false,
+                    backgroundColor: '#f4f4f4',
                     borderColor: '#00BCD4',
                     hoverBackgroundColor: '#00BCD4',
                     hoverBorderColor: '#f4f4f4',
@@ -562,6 +562,7 @@ export const Graphs = () => {
                   {
                     label: 'LOW',
                     showLine: false,
+                    backgroundColor: '#f4f4f4',
                     borderColor: '#E91E63',
                     hoverBackgroundColor: '#E91E63',
                     hoverBorderColor: '#f4f4f4',
@@ -580,6 +581,7 @@ export const Graphs = () => {
                   {
                     label: 'HIGH',
                     showLine: false,
+                    backgroundColor: '#f4f4f4',
                     borderColor: '#3F51B5',
                     hoverBackgroundColor: '#3F51B5',
                     hoverBorderColor: '#f4f4f4',
@@ -589,6 +591,7 @@ export const Graphs = () => {
                   {
                     label: 'AVG',
                     showLine: false,
+                    backgroundColor: '#f4f4f4',
                     borderColor: '#00BCD4',
                     hoverBackgroundColor: '#00BCD4',
                     hoverBorderColor: '#f4f4f4',
@@ -598,6 +601,7 @@ export const Graphs = () => {
                   {
                     label: 'LOW',
                     showLine: false,
+                    backgroundColor: '#f4f4f4',
                     borderColor: '#E91E63',
                     hoverBackgroundColor: '#E91E63',
                     hoverBorderColor: '#f4f4f4',
@@ -652,7 +656,7 @@ export const Graphs = () => {
           </Box>
           <hr className="my-5"></hr>
           <Line data={lineData} height={100} />
-        </div>
+        </>
       ) : (
         <>Binding Data...</>
       )}
