@@ -85,10 +85,7 @@ export const fetchHotelData =
         let hotelDataSet = res.data.data;
         dispatch({
           type: ACTION_TYPES.GET_HOTELS,
-          payload: hotelDataSet.sort(
-            (a, b) =>
-              b.stars - a.stars || a.hotelName.localeCompare(b.hotelName)
-          ),
+          payload: hotelDataSet,
         });
       })
       .catch(async (err) => {

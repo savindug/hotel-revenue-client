@@ -69,7 +69,9 @@ export const Login = (props) => {
         <div className={style.form_signin}>
           <img
             className="mb-4 mx-auto d-block"
-            src={logo}
+            src={
+              'https://res.cloudinary.com/ratebuckets/image/upload/v1622351600/logo_ibwvbs.jpg'
+            }
             alt=""
             width="72"
             height="57"

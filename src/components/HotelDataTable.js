@@ -76,6 +76,12 @@ export default function HotelDataTable({ selectedDate }) {
   const auth = useSelector((state) => state.auth);
   const { user } = auth;
 
+  const [hotelsList, setHotelsList] = useState(
+    hotels.sort(
+      (a, b) => b.stars - a.stars || a.hotelName.localeCompare(b.hotelName)
+    )
+  );
+
   const getClusterByPrice = (rate, ix) => {
     if (rate >= cluster1[ix].min && rate <= cluster1[ix].max) {
       // console.log(
@@ -107,11 +113,11 @@ export default function HotelDataTable({ selectedDate }) {
     // alert(`sortData (${sortBy}, ${sortOrder})`);
     if (sortBy === 0) {
       if (sortOrder === 'asc') {
-        hotels.sort(
+        hotelsList.sort(
           (a, b) => a.hotelName.localeCompare(b.hotelName) || b.stars - a.stars
         );
       } else {
-        hotels.sort(
+        hotelsList.sort(
           (a, b) => b.hotelName.localeCompare(a.hotelName) || b.stars - a.stars
         );
       }
@@ -119,11 +125,11 @@ export default function HotelDataTable({ selectedDate }) {
 
     if (sortBy === 1) {
       if (sortOrder === 'asc') {
-        hotels.sort(
+        hotelsList.sort(
           (a, b) => a.stars - b.stars || a.hotelName.localeCompare(b.hotelName)
         );
       } else {
-        hotels.sort(
+        hotelsList.sort(
           (a, b) => b.stars - a.stars || a.hotelName.localeCompare(b.hotelName)
         );
       }
@@ -137,11 +143,9 @@ export default function HotelDataTable({ selectedDate }) {
     await sortData(sb, sd);
   };
 
-  const [hotelsList, setHotelsList] = useState(hotels);
-
   const handleHotelsFilter = async (event) => {
     if (event.target.value == 0) {
-      const selectedHotels = [];
+      const selectedHotels = [hotels[0]];
       user.application.candidate_properties.map((_filterHotel) =>
         hotels.some((hotel) => {
           if (hotel.hotelID === _filterHotel.id) {

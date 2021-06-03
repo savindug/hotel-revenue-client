@@ -1,12 +1,21 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { Navbar, Button } from 'react-bootstrap';
+import {
+  Navbar,
+  Button,
+  OverlayTrigger,
+  Overlay,
+  Popover,
+  Col,
+} from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import { logOut } from '../../../redux/actions/auth.actions';
+import { createImageFromInitials } from '../../../services/auth.service';
+import { Grid } from '@material-ui/core';
 
 const drawerWidth = 240;
 
@@ -89,6 +98,9 @@ export default function MiniDrawer(props) {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
   const { user, auth_loading, auth_err, isLoggedIn } = auth;
+  const [show, setShow] = useState(false);
+  const [target, setTarget] = useState(null);
+  const ref = useRef(null);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -96,6 +108,11 @@ export default function MiniDrawer(props) {
 
   const handleDrawerClose = () => {
     setOpen(false);
+  };
+
+  const handleClick = (event) => {
+    setShow(!show);
+    setTarget(event.target);
   };
 
   const handleLogOut = async () => {
@@ -142,20 +159,53 @@ export default function MiniDrawer(props) {
           <Navbar.Collapse className="justify-content-end">
             {isLoggedIn ? (
               <>
-                <Navbar.Text className="text-light mx-5">
+                {/* <Navbar.Text className="text-light mx-1">
                   Signed in as:&nbsp;{' '}
                   <Link className="text-light" to="/profile">
                     {user.name}
                   </Link>
-                </Navbar.Text>
-                <Button
+                </Navbar.Text> */}
+                {/* <Button
                   variant="outline-light"
                   onClick={() => {
                     handleLogOut();
                   }}
                 >
                   Logout
-                </Button>
+                </Button> */}
+
+                <img
+                  class="rounded-circle img-fluid img-circle d-block"
+                  src={createImageFromInitials(50, user.name, '#1A237E')}
+                  alt="avatar"
+                  onClick={handleClick}
+                />
+                <Overlay
+                  show={show}
+                  target={target}
+                  placement="bottom"
+                  container={ref.current}
+                  containerPadding={20}
+                >
+                  <Popover id="popover-contained">
+                    <Popover.Title as="h3" className="text-capitalize">
+                      Hello {user.name}
+                    </Popover.Title>
+                    <Popover.Content>
+                      <Link className="text-light mx-auto" to="/profile">
+                        <Button variant="outline-primary">View Profile</Button>
+                      </Link>{' '}
+                      <Button
+                        variant="outline-danger"
+                        onClick={() => {
+                          handleLogOut();
+                        }}
+                      >
+                        Logout
+                      </Button>
+                    </Popover.Content>
+                  </Popover>
+                </Overlay>
               </>
             ) : (
               <></>

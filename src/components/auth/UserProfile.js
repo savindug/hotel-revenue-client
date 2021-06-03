@@ -4,7 +4,11 @@ import React, { useState } from 'react';
 import { Alert } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
-import { sendResetEmail } from '../../services/auth.service';
+import {
+  createImageFromInitials,
+  sendResetEmail,
+  getRandomColor,
+} from '../../services/auth.service';
 import { AlertModel } from '../UI/models/AlertModel';
 import { UserCrud } from './UserCrud';
 
@@ -250,11 +254,9 @@ export const UserProfile = () => {
         </div>
         <div class="col-4 order-lg-1 text-center">
           <img
-            src="https://res.cloudinary.com/ratebuckets/image/upload/v1622671593/2750635_gray-circle-login-user-icon-png-transparent-png_l21kly.jpg"
-            class="mx-auto img-fluid img-circle d-block"
+            class="profileImage mx-auto img-fluid img-circle d-block"
+            src={createImageFromInitials(500, user.name, '#1A237E')}
             alt="avatar"
-            width="150px"
-            height="150px"
           />
         </div>
       </div>
