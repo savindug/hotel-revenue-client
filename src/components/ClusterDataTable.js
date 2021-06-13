@@ -12,17 +12,17 @@ import TableBody from '@material-ui/core/TableBody';
 import TableHead from '@material-ui/core/TableHead';
 import Paper from '@material-ui/core/Paper';
 import moment from 'moment';
-import { CLUSTER_BACKGROUND } from '../utils/const';
+import { CLUSTER_BACKGROUND, FONT_FAMILY } from '../utils/const';
 import { LoadingOverlay } from './UI/LoadingOverlay';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
     backgroundColor: theme.palette.common.white,
     color: theme.palette.common.black,
-    fontWeight: 'bold',
+    fontWeight: 'bolder',
   },
   body: {
-    fontSize: 14,
+    fontSize: 15,
   },
 }))(TableCell);
 
@@ -45,6 +45,9 @@ const useStyles = makeStyles({
     background: 'white',
     boxShadow: '2px 2px 2px grey',
     display: 'flex',
+  },
+  rates: {
+    fontFamily: FONT_FAMILY,
   },
 });
 
@@ -115,7 +118,11 @@ export default function ClusterDataTable({ cluster, stars }) {
                   </StyledTableCell>
 
                   {cluster.map((e, index) => (
-                    <StyledTableCell size="small" key={index}>
+                    <StyledTableCell
+                      size="small"
+                      key={index}
+                      className={classes.rates}
+                    >
                       {e.items !== 'NaN' && e.items > 0
                         ? Math.round(e.items)
                         : e.items !== 'NaN' && e.items < 0
@@ -136,7 +143,11 @@ export default function ClusterDataTable({ cluster, stars }) {
                   </StyledTableCell>
 
                   {cluster.map((e, index) => (
-                    <StyledTableCell size="small" key={index}>
+                    <StyledTableCell
+                      size="small"
+                      key={index}
+                      className={classes.rates}
+                    >
                       {e.mean !== 'NaN' && e.items > 0
                         ? Math.round(e.mean)
                         : e.mean !== 'NaN' && e.items < 0
@@ -158,7 +169,11 @@ export default function ClusterDataTable({ cluster, stars }) {
                   </StyledTableCell>
 
                   {cluster.map((e, index) => (
-                    <StyledTableCell size="small" key={index}>
+                    <StyledTableCell
+                      size="small"
+                      key={index}
+                      className={classes.rates}
+                    >
                       {e.mod !== 'NaN' && e.items > 0
                         ? Math.round(e.mod)
                         : e.mod !== 'NaN' && e.items < 0
@@ -180,7 +195,11 @@ export default function ClusterDataTable({ cluster, stars }) {
                   </StyledTableCell>
 
                   {cluster.map((e, index) => (
-                    <StyledTableCell size="small" key={index}>
+                    <StyledTableCell
+                      size="small"
+                      key={index}
+                      className={classes.rates}
+                    >
                       {e.median !== 'NaN' && e.items > 0
                         ? Math.round(e.median)
                         : e.median !== 'NaN' && e.items < 0
@@ -201,7 +220,11 @@ export default function ClusterDataTable({ cluster, stars }) {
                   </StyledTableCell>
 
                   {cluster.map((e, index) => (
-                    <StyledTableCell size="small" key={index}>
+                    <StyledTableCell
+                      size="small"
+                      key={index}
+                      className={classes.rates}
+                    >
                       {e.max !== 'NaN' && e.items > 0
                         ? Math.round(e.max)
                         : e.max !== 'NaN' && e.items < 0
@@ -222,7 +245,11 @@ export default function ClusterDataTable({ cluster, stars }) {
                   </StyledTableCell>
 
                   {cluster.map((e, index) => (
-                    <StyledTableCell size="small" key={index}>
+                    <StyledTableCell
+                      size="small"
+                      key={index}
+                      className={classes.rates}
+                    >
                       {e.highAVG !== 'NaN' && e.items > 0
                         ? Math.round(e.highAVG)
                         : e.highAVG !== 'NaN' && e.items < 0
@@ -243,7 +270,11 @@ export default function ClusterDataTable({ cluster, stars }) {
                   </StyledTableCell>
 
                   {cluster.map((e, index) => (
-                    <StyledTableCell size="small" key={index}>
+                    <StyledTableCell
+                      size="small"
+                      key={index}
+                      className={classes.rates}
+                    >
                       {e.midAVG !== 'NaN' && e.items > 0
                         ? Math.round(e.midAVG)
                         : e.midAVG !== 'NaN' && e.items < 0
@@ -264,7 +295,11 @@ export default function ClusterDataTable({ cluster, stars }) {
                   </StyledTableCell>
 
                   {cluster.map((e, index) => (
-                    <StyledTableCell size="small" key={index}>
+                    <StyledTableCell
+                      size="small"
+                      key={index}
+                      className={classes.rates}
+                    >
                       {e.lowAVG !== 'NaN' && e.items > 0
                         ? Math.round(e.lowAVG)
                         : e.lowAVG !== 'NaN' && e.items < 0
@@ -285,7 +320,11 @@ export default function ClusterDataTable({ cluster, stars }) {
                   </StyledTableCell>
 
                   {cluster.map((e, index) => (
-                    <StyledTableCell size="small" key={index}>
+                    <StyledTableCell
+                      size="small"
+                      key={index}
+                      className={classes.rates}
+                    >
                       {e.min !== 'NaN' && e.items > 0
                         ? Math.round(e.min)
                         : e.min !== 'NaN' && e.items < 0

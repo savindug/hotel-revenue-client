@@ -19,7 +19,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableHead from '@material-ui/core/TableHead';
 import Paper from '@material-ui/core/Paper';
 import moment from 'moment';
-import { CLUSTER_BACKGROUND } from '../utils/const';
+import { CLUSTER_BACKGROUND, FONT_FAMILY } from '../utils/const';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -58,6 +58,9 @@ const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
     minWidth: 120,
+  },
+  rates: {
+    fontFamily: FONT_FAMILY,
   },
 }));
 
@@ -175,13 +178,17 @@ export default function HotelDataTable({ selectedDate }) {
         <>
           <Grid container justify="space-around" className="my-3">
             <FormGroup className={classes.formControl}>
-              <InputLabel htmlFor="grouped-native-select">
+              <InputLabel
+                htmlFor="grouped-native-select"
+                style={{ backgroundColor: 'white', fontFamily: FONT_FAMILY }}
+              >
                 Hotels Filter
               </InputLabel>
               <Select
                 native
                 id="grouped-native-select"
                 onChange={handleHotelsFilter}
+                style={{ backgroundColor: 'white', fontFamily: FONT_FAMILY }}
               >
                 <option value={1}>All Hotels</option>
                 <option value={0}>Selected Hotels</option>
@@ -189,11 +196,17 @@ export default function HotelDataTable({ selectedDate }) {
             </FormGroup>
 
             <FormGroup className={classes.formControl}>
-              <InputLabel htmlFor="grouped-native-select">Nights</InputLabel>
+              <InputLabel
+                htmlFor="grouped-native-select"
+                style={{ backgroundColor: 'white', fontFamily: FONT_FAMILY }}
+              >
+                Nights
+              </InputLabel>
               <Select
                 native
                 id="grouped-native-select"
                 onChange={handleNightsFilter}
+                style={{ backgroundColor: 'white', fontFamily: FONT_FAMILY }}
               >
                 <option value={0}>1</option>
                 <option value={1}>2</option>
@@ -278,17 +291,18 @@ export default function HotelDataTable({ selectedDate }) {
                         component="th"
                         scope="col"
                         className={classes.sticky}
-                        style={{ fontWeight: 'bold', width: '250px' }}
+                        style={{ fontWeight: 'bold', width: '300px' }}
                       >
                         {_hotel.hotelName}
                       </StyledTableCell>
-                      <StyledTableCell size="small">
+                      <StyledTableCell size="small" className={classes.rates}>
                         {_hotel.stars}
                       </StyledTableCell>
                       {_hotel.prices.map((dt, ix) => {
                         return dt !== null ? (
                           <StyledTableCell
                             size="small"
+                            className={classes.rates}
                             style={{
                               backgroundColor:
                                 CLUSTER_BACKGROUND[
@@ -299,7 +313,12 @@ export default function HotelDataTable({ selectedDate }) {
                             {dt.price[nights] > 0 ? dt.price[nights] : 'N/A'}
                           </StyledTableCell>
                         ) : (
-                          <StyledTableCell size="small">N/A</StyledTableCell>
+                          <StyledTableCell
+                            size="small"
+                            className={classes.rates}
+                          >
+                            N/A
+                          </StyledTableCell>
                         );
                       })}
                     </StyledTableRow>

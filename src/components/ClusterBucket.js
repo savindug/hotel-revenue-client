@@ -12,7 +12,7 @@ import TableHead from '@material-ui/core/TableHead';
 import Paper from '@material-ui/core/Paper';
 import { useSelector } from 'react-redux';
 import moment from 'moment';
-import { CLUSTER_BACKGROUND } from '../utils/const';
+import { CLUSTER_BACKGROUND, FONT_FAMILY } from '../utils/const';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -40,6 +40,9 @@ const useStyles = makeStyles({
     background: 'white',
     boxShadow: '2px 2px 2px grey',
     display: 'flex',
+  },
+  rates: {
+    fontFamily: FONT_FAMILY,
   },
 });
 
@@ -114,7 +117,7 @@ export default function ClusterBucket({ cluster, stars }) {
                       })()}
                     </StyledTableCell>
 
-                    <StyledTableCell size="small">
+                    <StyledTableCell size="small" className={classes.rates}>
                       {(() => {
                         let stars = null;
                         reqHotel.map((e, index) => {
@@ -132,6 +135,7 @@ export default function ClusterBucket({ cluster, stars }) {
                         style={{
                           backgroundColor: CLUSTER_BACKGROUND[e.cluster - 2],
                         }}
+                        className={classes.rates}
                       >
                         {e.rate}
                       </StyledTableCell>
@@ -148,7 +152,7 @@ export default function ClusterBucket({ cluster, stars }) {
                       Current Clustered Bucket
                     </StyledTableCell>
 
-                    <StyledTableCell size="small">
+                    <StyledTableCell size="small" className={classes.rates}>
                       {(() => {
                         let stars = null;
                         reqHotel.map((e, index) => {
@@ -160,7 +164,11 @@ export default function ClusterBucket({ cluster, stars }) {
                       })()}
                     </StyledTableCell>
                     {reqHotel.map((e, index) => (
-                      <StyledTableCell size="small" key={index}>
+                      <StyledTableCell
+                        size="small"
+                        key={index}
+                        className={classes.rates}
+                      >
                         {e.cluster}
                       </StyledTableCell>
                     ))}
@@ -177,7 +185,7 @@ export default function ClusterBucket({ cluster, stars }) {
                       Clustered Rate Bucket Position
                     </StyledTableCell>
 
-                    <StyledTableCell size="small">
+                    <StyledTableCell size="small" className={classes.rates}>
                       {(() => {
                         let stars = null;
                         reqHotel.map((e, index) => {
@@ -193,6 +201,7 @@ export default function ClusterBucket({ cluster, stars }) {
                         size="small"
                         key={index}
                         style={{ fontWeight: 'bold', fontSize: '12px' }}
+                        className={classes.rates}
                       >
                         {e.pos}
                       </StyledTableCell>
@@ -210,7 +219,7 @@ export default function ClusterBucket({ cluster, stars }) {
                       Clustered Rate Bucket Rank (Highest to Lowest)
                     </StyledTableCell>
 
-                    <StyledTableCell size="small">
+                    <StyledTableCell size="small" className={classes.rates}>
                       {(() => {
                         let stars = null;
                         reqHotel.map((e, index) => {
@@ -226,8 +235,10 @@ export default function ClusterBucket({ cluster, stars }) {
                         size="small"
                         key={index}
                         style={{ fontSize: '14px' }}
+                        className={classes.rates}
                       >
-                        {e.rank}
+                        <sup>{e.rank.split('/')[0]}</sup>&frasl;
+                        <sub>{e.rank.split('/')[1]}</sub>
                       </StyledTableCell>
                     ))}
                   </StyledTableRow>
@@ -296,6 +307,7 @@ export default function ClusterBucket({ cluster, stars }) {
                         size="small"
                         key={index}
                         style={{ fontSize: '14px' }}
+                        className={classes.rates}
                       >
                         {day.stars5.length}
                       </StyledTableCell>
@@ -321,6 +333,7 @@ export default function ClusterBucket({ cluster, stars }) {
                         size="small"
                         key={index}
                         style={{ fontSize: '14px' }}
+                        className={classes.rates}
                       >
                         {day.stars4.length}
                       </StyledTableCell>
@@ -346,6 +359,7 @@ export default function ClusterBucket({ cluster, stars }) {
                         size="small"
                         key={index}
                         style={{ fontSize: '14px' }}
+                        className={classes.rates}
                       >
                         {day.stars4.length}
                       </StyledTableCell>
@@ -371,6 +385,7 @@ export default function ClusterBucket({ cluster, stars }) {
                         size="small"
                         key={index}
                         style={{ fontSize: '14px' }}
+                        className={classes.rates}
                       >
                         {day.stars3.length}
                       </StyledTableCell>
@@ -396,6 +411,7 @@ export default function ClusterBucket({ cluster, stars }) {
                         size="small"
                         key={index}
                         style={{ fontSize: '14px' }}
+                        className={classes.rates}
                       >
                         {day.stars3.length}
                       </StyledTableCell>
@@ -421,6 +437,7 @@ export default function ClusterBucket({ cluster, stars }) {
                         size="small"
                         key={index}
                         style={{ fontSize: '14px' }}
+                        className={classes.rates}
                       >
                         {day.stars2.length}
                       </StyledTableCell>

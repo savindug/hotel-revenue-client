@@ -27,7 +27,7 @@ import ClusterBucket from './ClusterBucket';
 import { Graphs } from './Graphs';
 import SimpleMap from './SimpleMap';
 import ClusterDataTable from './ClusterDataTable';
-import { CLUSTER_BACKGROUND } from '../utils/const';
+import { CLUSTER_BACKGROUND, FONT_FAMILY } from '../utils/const';
 import { useHistory } from 'react-router';
 
 const useStyles = makeStyles((theme) => ({
@@ -228,7 +228,7 @@ export const ClusteredData = () => {
   };
 
   return (
-    <div style={{ backgroundColor: 'transparent' }}>
+    <div style={{ backgroundColor: 'white', fontFamily: 'Calibri' }}>
       <Grid>
         <MuiPickersUtilsProvider utils={MomentUtils}>
           <Grid container justify="space-around" className="mb-3">
@@ -241,6 +241,7 @@ export const ClusteredData = () => {
                 id="grouped-native-select"
                 onChange={handleMarketChange}
                 value={selectedMarket}
+                style={{ backgroundColor: 'white', fontFamily: FONT_FAMILY }}
               >
                 <option value={-100}>&nbsp;Destinations&nbsp;</option>
                 {(() => {
@@ -281,6 +282,7 @@ export const ClusteredData = () => {
                 id="grouped-native-select"
                 onChange={handlePropertyChange}
                 value={selectedProperty}
+                style={{ backgroundColor: 'white', fontFamily: FONT_FAMILY }}
               >
                 <option value={-100}>&nbsp;Properties&nbsp;</option>
                 {(() => {
@@ -326,6 +328,12 @@ export const ClusteredData = () => {
                   'aria-label': 'change date',
                 }}
                 autoOk={true}
+                style={{ fontFamily: FONT_FAMILY }}
+                InputProps={{
+                  style: {
+                    fontFamily: FONT_FAMILY,
+                  },
+                }}
                 //disabled
               />
             </FormControl>

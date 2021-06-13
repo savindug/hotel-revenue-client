@@ -13,6 +13,8 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     color: 'f4f4f4',
+    background: 'white',
+    fontFamily: 'Calibri',
   },
   toolbar: {
     color: '#f4f4f4',
@@ -26,6 +28,8 @@ const useStyles = makeStyles((theme) => ({
   content: {
     flexGrow: 1,
     padding: theme.spacing(3),
+    background: 'white',
+    fontFamily: 'Calibri',
   },
 }));
 

@@ -1,5 +1,12 @@
+@font-face {
+  font-family: 'Calibri';
+  src: local('Calibri'),
+    url(./assets/fonts/Calibri/Calibri.ttf) format('opentype');
+}
+
 .App {
   text-align: center;
+  font-family: Calibri;
 }
 
 .App-logo {
@@ -41,7 +48,7 @@
 }
 
 .main-header {
-  background-color: #f4f4f4;
+  background-color: 'white';
   z-index: 10;
   box-shadow: '5px 5px 5px grey';
   /* height: 60px;
@@ -57,11 +64,11 @@
 }
 
 body {
-  background-color: #fff;
+  background-color: #ffffff;
 }
 
 canvas {
-  background-color: #fff;
+  background-color: #ffffff;
 }
 
 .profileImage {
@@ -71,7 +78,7 @@ canvas {
   border-radius: 50%;
   background: #61dafb;
   font-size: 3.5rem;
-  color: #fff;
+  color: #ffffff;
   text-align: center;
   line-height: 10rem;
   margin: 2rem 0;
