@@ -1,4 +1,4 @@
 export const AUTHORIZATION_KEY = 'AUTHORIZATION';
 export const REFRESH_KEY = 'REFRESH_KEY';
 
-export const CLUSTER_BACKGROUND = ['#d89bd6', '#ee6e69', '#5497e6', '#a2e281'];
+export const CLUSTER_BACKGROUND = ['#A358DF', '#FB275D', '#009AFF', '#00CC6F'];
