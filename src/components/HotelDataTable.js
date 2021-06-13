@@ -82,6 +82,8 @@ export default function HotelDataTable({ selectedDate }) {
     )
   );
 
+  const [nights, setNights] = useState(0);
+
   const getClusterByPrice = (rate, ix) => {
     if (rate >= cluster1[ix].min && rate <= cluster1[ix].max) {
       // console.log(
@@ -159,6 +161,10 @@ export default function HotelDataTable({ selectedDate }) {
     }
   };
 
+  const handleNightsFilter = async (event) => {
+    setNights(event.target.value);
+  };
+
   return (
     <>
       {hotels.length > 0 &&
@@ -179,6 +185,19 @@ export default function HotelDataTable({ selectedDate }) {
               >
                 <option value={1}>All Hotels</option>
                 <option value={0}>Selected Hotels</option>
+              </Select>
+            </FormGroup>
+
+            <FormGroup className={classes.formControl}>
+              <InputLabel htmlFor="grouped-native-select">Nights</InputLabel>
+              <Select
+                native
+                id="grouped-native-select"
+                onChange={handleNightsFilter}
+              >
+                <option value={0}>1</option>
+                <option value={1}>2</option>
+                <option value={2}>3</option>
               </Select>
             </FormGroup>
           </Grid>
@@ -273,11 +292,11 @@ export default function HotelDataTable({ selectedDate }) {
                             style={{
                               backgroundColor:
                                 CLUSTER_BACKGROUND[
-                                  getClusterByPrice(dt.price, ix)
+                                  getClusterByPrice(dt.price[nights], ix)
                                 ],
                             }}
                           >
-                            {dt.price}
+                            {dt.price[nights] > 0 ? dt.price[nights] : 'N/A'}
                           </StyledTableCell>
                         ) : (
                           <StyledTableCell size="small">N/A</StyledTableCell>
