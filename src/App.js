@@ -8,13 +8,14 @@ import PrivateRoute from './routes/PrivateRoute';
 import { ResetPassword } from './components/auth/ResetPassword';
 import { ForgotPassword } from './components/auth/ForgotPassword';
 import { UserProfile } from './components/auth/UserProfile';
+import { FONT_FAMILY } from './utils/const';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     color: 'f4f4f4',
     background: 'white',
-    fontFamily: 'Calibri',
+    fontFamily: FONT_FAMILY,
   },
   toolbar: {
     color: '#f4f4f4',

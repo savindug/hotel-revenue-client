@@ -88,19 +88,19 @@ export default function HotelDataTable({ selectedDate }) {
   const [nights, setNights] = useState(0);
 
   const getClusterByPrice = (rate, ix) => {
-    if (rate >= cluster1[ix].min && rate <= cluster1[ix].max) {
+    if (rate >= cluster1[ix].min && rate <= cluster2[ix].min) {
       // console.log(
       //   `${ix} => ${cluster1[ix].min} < ${rate} > ${cluster1[ix].max} `
       // );
       return 0;
     }
-    if (rate >= cluster2[ix].min && rate <= cluster2[ix].max) {
+    if (rate >= cluster2[ix].min && rate <= cluster3[ix].min) {
       // console.log(
       //   `${ix} =>${cluster2[ix].min} < ${rate} > ${cluster2[ix].max} `
       // );
       return 1;
     }
-    if (rate >= cluster3[ix].min && rate <= cluster3[ix].max) {
+    if (rate >= cluster3[ix].min && rate <= cluster4[ix].min) {
       // console.log(
       //   `${ix} =>${cluster3[ix].min} < ${rate} > ${cluster3[ix].max} `
       // );
@@ -168,6 +168,11 @@ export default function HotelDataTable({ selectedDate }) {
     setNights(event.target.value);
   };
 
+  const getPrice = (arr) => {
+    const price = arr.findIndex((e) => e > 0);
+    return price;
+  };
+
   return (
     <>
       {hotels.length > 0 &&
@@ -195,7 +200,7 @@ export default function HotelDataTable({ selectedDate }) {
               </Select>
             </FormGroup>
 
-            <FormGroup className={classes.formControl}>
+            {/* <FormGroup className={classes.formControl}>
               <InputLabel
                 htmlFor="grouped-native-select"
                 style={{ backgroundColor: 'white', fontFamily: FONT_FAMILY }}
@@ -212,7 +217,7 @@ export default function HotelDataTable({ selectedDate }) {
                 <option value={1}>2</option>
                 <option value={2}>3</option>
               </Select>
-            </FormGroup>
+            </FormGroup> */}
           </Grid>
 
           <TableContainer
@@ -306,11 +311,21 @@ export default function HotelDataTable({ selectedDate }) {
                             style={{
                               backgroundColor:
                                 CLUSTER_BACKGROUND[
-                                  getClusterByPrice(dt.price[nights], ix)
+                                  getClusterByPrice(
+                                    dt.price[getPrice(dt.price)],
+                                    ix
+                                  )
                                 ],
                             }}
                           >
-                            {dt.price[nights] > 0 ? dt.price[nights] : 'N/A'}
+                            <p>
+                              <var className="font-weight-bold">
+                                {dt.price[getPrice(dt.price)]}&nbsp;
+                                <sup className="text-light font-weight-bold">
+                                  {getPrice(dt.price) + 1}
+                                </sup>
+                              </var>
+                            </p>
                           </StyledTableCell>
                         ) : (
                           <StyledTableCell

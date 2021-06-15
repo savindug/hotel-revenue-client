@@ -37,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
   },
   tabularNavStyle: {
     backgroundColor: '#516B8F',
+    fontFamily: FONT_FAMILY,
   },
 }));
 
@@ -228,7 +229,7 @@ export const ClusteredData = () => {
   };
 
   return (
-    <div style={{ backgroundColor: 'white', fontFamily: 'Calibri' }}>
+    <div style={{ backgroundColor: 'white', fontFamily: FONT_FAMILY }}>
       <Grid>
         <MuiPickersUtilsProvider utils={MomentUtils}>
           <Grid container justify="space-around" className="mb-3">

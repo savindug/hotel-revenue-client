@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { apiURI } from '../env';
-import { AUTHORIZATION_KEY, REFRESH_KEY } from '../utils/const';
+import { AUTHORIZATION_KEY, FONT_FAMILY, REFRESH_KEY } from '../utils/const';
 
 export const checkAuthTokens = async () => {
   if (
@@ -119,7 +119,7 @@ export const createImageFromInitials = (size, name, color) => {
   context.fillStyle = color;
   context.textBaseline = 'middle';
   context.textAlign = 'center';
-  context.font = `${size / 2}px Roboto`;
+  context.font = `${size / 2}px ${FONT_FAMILY}`;
   context.fillText(name, size / 2, size / 2);
 
   return canvas.toDataURL();

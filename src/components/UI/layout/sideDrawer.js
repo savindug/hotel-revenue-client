@@ -176,7 +176,7 @@ export default function MiniDrawer(props) {
 
                 <img
                   class="rounded-circle img-fluid img-circle d-block"
-                  src={createImageFromInitials(50, user.name, '#1A237E')}
+                  src={createImageFromInitials(40, user.name, '#1A237E')}
                   alt="avatar"
                   onClick={handleClick}
                 />

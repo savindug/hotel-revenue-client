@@ -109,7 +109,7 @@ export default function ClusterDataTable({ cluster, stars }) {
                 <StyledTableRow Key={stars}>
                   <StyledTableCell
                     className={classes.sticky}
-                    size="medium"
+                    size="small"
                     component="th"
                     scope="col"
                     style={{ fontWeight: 'bold', width: '250px' }}
