@@ -319,12 +319,12 @@ export default function HotelDataTable({ selectedDate }) {
                             }}
                           >
                             <p>
-                              <var className="font-weight-bold">
+                              <span className="font-weight-bold">
                                 {dt.price[getPrice(dt.price)]}&nbsp;
                                 <sup className="text-light font-weight-bold">
                                   {getPrice(dt.price) + 1}
                                 </sup>
-                              </var>
+                              </span>
                             </p>
                           </StyledTableCell>
                         ) : (
