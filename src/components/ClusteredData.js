@@ -186,7 +186,7 @@ export const ClusteredData = () => {
       <Nav variant="tabs">
         <Nav.Item>
           <Nav.Link
-            className={tab === 3 ? tabularNavCls : 'text-dark'}
+            className={tab === 3 ? tabularNavCls : 'text-dark font-weight-bold'}
             eventKey="link-1"
             disabled={loading}
             onClick={() => setTab(3)}
@@ -196,7 +196,7 @@ export const ClusteredData = () => {
         </Nav.Item>
         <Nav.Item>
           <Nav.Link
-            className={tab === 0 ? tabularNavCls : 'text-dark'}
+            className={tab === 0 ? tabularNavCls : 'text-dark font-weight-bold'}
             eventKey="link-0"
             disabled={loading}
             onClick={() => setTab(0)}
@@ -206,7 +206,7 @@ export const ClusteredData = () => {
         </Nav.Item>{' '}
         <Nav.Item>
           <Nav.Link
-            className={tab === 1 ? tabularNavCls : 'text-dark'}
+            className={tab === 1 ? tabularNavCls : 'text-dark font-weight-bold'}
             eventKey="link-1"
             disabled={loading}
             onClick={() => setTab(1)}
@@ -216,7 +216,7 @@ export const ClusteredData = () => {
         </Nav.Item>{' '}
         <Nav.Item>
           <Nav.Link
-            className={tab === 2 ? tabularNavCls : 'text-dark'}
+            className={tab === 2 ? tabularNavCls : 'text-dark font-weight-bold'}
             eventKey="link-1"
             disabled={loading}
             onClick={() => setTab(2)}
@@ -344,6 +344,18 @@ export const ClusteredData = () => {
               Fetch
             </Button>
           </FormControl> */}
+            <FormControl className={classes.formControl}>
+              <InputLabel htmlFor="grouped-native-select">Currency</InputLabel>
+              <Select
+                native
+                id="grouped-native-select"
+                onChange={handlePropertyChange}
+                style={{ backgroundColor: 'white', fontFamily: FONT_FAMILY }}
+                disabled
+              >
+                <option>&nbsp;USD&nbsp;</option>
+              </Select>
+            </FormControl>
           </Grid>
           <Grid container justify="space-around" className="mb-3">
             {/* <img src={img_star_bucktet} /> */}

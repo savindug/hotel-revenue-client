@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import {
   Box,
@@ -79,28 +79,24 @@ export default function HotelDataTable({ selectedDate }) {
   const auth = useSelector((state) => state.auth);
   const { user } = auth;
 
-  const [hotelsList, setHotelsList] = useState(
-    hotels.sort(
-      (a, b) => b.stars - a.stars || a.hotelName.localeCompare(b.hotelName)
-    )
-  );
+  const [hotelsList, setHotelsList] = useState([]);
 
   const [nights, setNights] = useState(0);
 
   const getClusterByPrice = (rate, ix) => {
-    if (rate >= cluster1[ix].min && rate <= cluster2[ix].min) {
+    if (rate >= cluster1[ix].min && rate <= cluster1[ix].max) {
       // console.log(
       //   `${ix} => ${cluster1[ix].min} < ${rate} > ${cluster1[ix].max} `
       // );
       return 0;
     }
-    if (rate >= cluster2[ix].min && rate <= cluster3[ix].min) {
+    if (rate >= cluster2[ix].min && rate <= cluster2[ix].max) {
       // console.log(
       //   `${ix} =>${cluster2[ix].min} < ${rate} > ${cluster2[ix].max} `
       // );
       return 1;
     }
-    if (rate >= cluster3[ix].min && rate <= cluster4[ix].min) {
+    if (rate >= cluster3[ix].min && rate <= cluster3[ix].max) {
       // console.log(
       //   `${ix} =>${cluster3[ix].min} < ${rate} > ${cluster3[ix].max} `
       // );
@@ -141,11 +137,21 @@ export default function HotelDataTable({ selectedDate }) {
     }
   };
 
+  useEffect(() => {
+    setHotelsList(
+      hotels.sort(
+        (a, b) => b.stars - a.stars || a.hotelName.localeCompare(b.hotelName)
+      )
+    );
+  }, []);
+
   const handleSort = async (sb, sd) => {
     setSortBy(sb);
     setSortDir(sd);
 
     await sortData(sb, sd);
+
+    //console.log('hotelList ', hotelsList);
   };
 
   const handleHotelsFilter = async (event) => {
@@ -176,6 +182,7 @@ export default function HotelDataTable({ selectedDate }) {
   return (
     <>
       {hotels.length > 0 &&
+      hotelsList.length > 0 &&
       cluster1.length > 0 &&
       cluster2.length > 0 &&
       cluster3.length > 0 &&
@@ -230,12 +237,17 @@ export default function HotelDataTable({ selectedDate }) {
                 size="medium"
                 aria-label="customized table"
                 stickyHeader
-                bodyStyle={{ overflow: 'visible' }}
+                bodystyle={{ overflow: 'visible' }}
               >
                 <TableHead>
                   <StyledTableCell size="small">#</StyledTableCell>
                   <StyledTableCell
-                    style={{ fontWeight: 'bold', width: '250px', zIndex: 100 }}
+                    style={{
+                      fontWeight: 'bold',
+                      width: '250px',
+                      zIndex: 100,
+                      fontFamily: FONT_FAMILY,
+                    }}
                   >
                     <TableSortLabel
                       active={sortBy === 0}
@@ -259,7 +271,7 @@ export default function HotelDataTable({ selectedDate }) {
                       Stars
                     </TableSortLabel>
                   </StyledTableCell>
-                  {hotels[0].prices.map((d, i) =>
+                  {hotelsList[0].prices.map((d, i) =>
                     (() => {
                       let date = moment(selectedDate)
                         .add(i, 'd')
@@ -318,14 +330,12 @@ export default function HotelDataTable({ selectedDate }) {
                                 ],
                             }}
                           >
-                            <p>
-                              <span className="font-weight-bold">
-                                {dt.price[getPrice(dt.price)]}&nbsp;
-                                <sup className="text-light font-weight-bold">
-                                  {getPrice(dt.price) + 1}
-                                </sup>
-                              </span>
-                            </p>
+                            <span className="font-weight-bold">
+                              {dt.price[getPrice(dt.price)]}&nbsp;
+                              <sup className="text-light font-weight-bold">
+                                {getPrice(dt.price) + 1}
+                              </sup>
+                            </span>
                           </StyledTableCell>
                         ) : (
                           <StyledTableCell
