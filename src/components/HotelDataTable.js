@@ -84,29 +84,47 @@ export default function HotelDataTable({ selectedDate }) {
   const [nights, setNights] = useState(0);
 
   const getClusterByPrice = (rate, ix) => {
-    if (rate >= cluster1[ix].min && rate <= cluster1[ix].max) {
-      // console.log(
-      //   `${ix} => ${cluster1[ix].min} < ${rate} > ${cluster1[ix].max} `
-      // );
-      return 0;
+    if (
+      (cluster1[ix].min != undefined || cluster1[ix].min != null) &&
+      (cluster2[ix].min != undefined || cluster2[ix].min != null)
+    ) {
+      if (rate >= cluster1[ix].min && rate < cluster2[ix].min) {
+        // console.log(
+        //   `${ix} => ${cluster1[ix].min} < ${rate} > ${cluster1[ix].max} `
+        // );
+        return 0;
+      }
     }
-    if (rate >= cluster2[ix].min && rate <= cluster2[ix].max) {
-      // console.log(
-      //   `${ix} =>${cluster2[ix].min} < ${rate} > ${cluster2[ix].max} `
-      // );
-      return 1;
+    if (
+      (cluster3[ix].min != undefined || cluster3[ix].min != null) &&
+      (cluster2[ix].min != undefined || cluster2[ix].min != null)
+    ) {
+      if (rate >= cluster2[ix].min && rate < cluster3[ix].min) {
+        // console.log(
+        //   `${ix} =>${cluster2[ix].min} < ${rate} > ${cluster2[ix].max} `
+        // );
+        return 1;
+      }
     }
-    if (rate >= cluster3[ix].min && rate <= cluster3[ix].max) {
-      // console.log(
-      //   `${ix} =>${cluster3[ix].min} < ${rate} > ${cluster3[ix].max} `
-      // );
-      return 2;
+
+    if (
+      (cluster3[ix].min != undefined || cluster3[ix].min != null) &&
+      (cluster4[ix].min != undefined || cluster4[ix].min != null)
+    ) {
+      if (rate >= cluster3[ix].min && rate < cluster4[ix].min) {
+        // console.log(
+        //   `${ix} =>${cluster3[ix].min} < ${rate} > ${cluster3[ix].max} `
+        // );
+        return 2;
+      }
     }
-    if (rate >= cluster4[ix].min && rate <= cluster4[ix].max) {
-      // console.log(
-      //   `${ix} =>${cluster4[ix].min} < ${rate} > ${cluster4[ix].max} `
-      // );
-      return 3;
+    if (cluster4[ix].min != undefined || cluster4[ix].min != null) {
+      if (rate >= cluster4[ix].min) {
+        // console.log(
+        //   `${ix} =>${cluster4[ix].min} < ${rate} > ${cluster4[ix].max} `
+        // );
+        return 3;
+      }
     }
   };
 

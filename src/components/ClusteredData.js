@@ -338,12 +338,7 @@ export const ClusteredData = () => {
                 //disabled
               />
             </FormControl>
-            {/* 
-          <FormControl className={classes.formControl}>
-            <Button variant="outlined" size="small" color="dark">
-              Fetch
-            </Button>
-          </FormControl> */}
+
             <FormControl className={classes.formControl}>
               <InputLabel htmlFor="grouped-native-select">Currency</InputLabel>
               <Select
@@ -356,6 +351,12 @@ export const ClusteredData = () => {
                 <option>&nbsp;USD&nbsp;</option>
               </Select>
             </FormControl>
+            {/* 
+          <FormControl className={classes.formControl}>
+            <Button variant="outlined" size="small" color="dark">
+              Fetch
+            </Button>
+          </FormControl> */}
           </Grid>
           <Grid container justify="space-around" className="mb-3">
             {/* <img src={img_star_bucktet} /> */}
