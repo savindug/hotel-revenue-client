@@ -19,8 +19,8 @@ export const fetchClusterData =
       }
     )
       .then((res) => {
-        let clusterData = res.data.data;
-        let reqHotelData = res.data.reqHotelData;
+        let clusterData = res.data.data.cluster_report;
+        let reqHotelData = res.data.data.property_report;
         dispatch({
           type: ACTION_TYPES.SET_QUARY,
           payload: res.data.quary,
@@ -82,7 +82,7 @@ export const fetchHotelData =
       }
     )
       .then((res) => {
-        let hotelDataSet = res.data.data;
+        let hotelDataSet = res.data.data.hotels_report;
         dispatch({
           type: ACTION_TYPES.GET_HOTELS,
           payload: hotelDataSet,
