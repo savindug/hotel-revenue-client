@@ -401,7 +401,7 @@ export const ClusteredData = () => {
         <Alert severity="error">{err}</Alert>
       ) : clusterData.length > 0 && tab === 0 ? (
         <>
-          <ClusterBucket />
+          <ClusterBucket selectedDate={selectedDate} />
           <div id="stars5" className="my-5">
             <ClusterDataTable cluster={cluster4} stars={5} />
           </div>
@@ -418,7 +418,7 @@ export const ClusteredData = () => {
       ) : clusterData.length > 0 && tab === 1 ? (
         <Graphs />
       ) : hotels.length > 0 && tab === 2 ? (
-        <HotelDataTable selectedDate={moment().format('YYYY-MM-DD')} />
+        <HotelDataTable selectedDate={selectedDate} />
       ) : hotels.length > 0 && tab === 3 ? (
         <SimpleMap />
       ) : (

@@ -46,7 +46,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function ClusterBucket({ cluster, stars }) {
+export default function ClusterBucket({ selectedDate }) {
   const classes = useStyles();
 
   const getClusterDataSet = useSelector((state) => state.clusterDataSet);
@@ -264,9 +264,12 @@ export default function ClusterBucket({ cluster, stars }) {
                     Bucket Movements
                   </StyledTableCell>
                   {/* <StyledTableCell size="small">Stars</StyledTableCell> */}
-                  {cluster1.map((e, index) =>
+                  {[...Array(90).keys()].map((e, index) =>
                     (() => {
-                      let date = moment(e.date).format('dddd').substring(0, 3);
+                      let day = moment(selectedDate)
+                        .add(index, 'd')
+                        .format('YYYY-MM-DD');
+                      let date = moment(day).format('dddd').substring(0, 3);
                       return (
                         <StyledTableCell
                           size="small"
@@ -278,7 +281,7 @@ export default function ClusterBucket({ cluster, stars }) {
                           }
                           style={{ fontSize: '12px' }}
                         >
-                          {`${date.toUpperCase()}\n${moment(e.date).format(
+                          {`${date.toUpperCase()}\n${moment(day).format(
                             'MM/DD'
                           )}`}
                         </StyledTableCell>

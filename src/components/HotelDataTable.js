@@ -156,6 +156,7 @@ export default function HotelDataTable({ selectedDate }) {
   };
 
   useEffect(() => {
+    console.log(`selectedDate: ${selectedDate}`);
     setHotelsList(
       hotels.sort(
         (a, b) => b.stars - a.stars || a.hotelName.localeCompare(b.hotelName)
@@ -289,7 +290,7 @@ export default function HotelDataTable({ selectedDate }) {
                       Stars
                     </TableSortLabel>
                   </StyledTableCell>
-                  {hotelsList[0].prices.map((d, i) =>
+                  {[...Array(90).keys()].map((d, i) =>
                     (() => {
                       let date = moment(selectedDate)
                         .add(i, 'd')
