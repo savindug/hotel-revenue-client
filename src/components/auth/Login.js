@@ -118,7 +118,7 @@ export const Login = (props) => {
           </Form>
           <Form.Group className="mt-3 text-center">
             <Link className="text-decoration-none" to={'/register'}>
-              Already a member?
+              A New User?
             </Link>
           </Form.Group>
         </div>

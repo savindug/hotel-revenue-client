@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import style from '../styles/stripeCheckout.module.css';
 import { useHistory } from 'react-router';
-import { configUser } from '../redux/actions/auth.actions';
+import { configUser, setAuthLoading } from '../redux/actions/auth.actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { apiURI } from '../env';
 import { ButtonBase, Card, CardContent, TextField } from '@material-ui/core';
@@ -74,6 +74,7 @@ export default function CheckoutForm({
 
   const handleSubmitSub = async (event) => {
     event.preventDefault();
+
     if (!stripe || !elements) {
       // Stripe.js has not yet loaded.
       // Make sure to disable form submission until Stripe.js has loaded.
@@ -99,8 +100,8 @@ export default function CheckoutForm({
       // eslint-disable-next-line camelcase
       const { client_secret, customer_id, status } = res.data;
 
-      console.log('client_secret: ' + client_secret);
-      console.log('customer_id: ' + customer_id);
+      // console.log('client_secret: ' + client_secret);
+      // console.log('customer_id: ' + customer_id);
 
       if (status === 'requires_action') {
         stripe.confirmCardPayment(client_secret).then(async function (result) {

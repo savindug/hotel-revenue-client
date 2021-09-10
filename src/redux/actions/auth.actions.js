@@ -179,6 +179,14 @@ export const setSelectedUser = (user) => async (dispatch) => {
   });
 };
 
+export const setAuthLoading = (state) => async (dispatch) => {
+  if (state) {
+    dispatch({ type: ACTION_TYPES.ISLOADING_TRUE });
+  } else {
+    dispatch({ type: ACTION_TYPES.ISLOADING_FALSE });
+  }
+};
+
 export const logOut = () => async (dispatch) => {
   await localStorage.removeItem(AUTHORIZATION_KEY);
   await localStorage.removeItem(REFRESH_KEY);

@@ -258,6 +258,11 @@ export const Register = (props) => {
           >
             Register
           </Button>
+          <Form.Group className="mt-3 text-center">
+            <Link className="text-decoration-none" to={'/login'}>
+              Already a member?
+            </Link>
+          </Form.Group>
         </Form>
       </div>
     );
