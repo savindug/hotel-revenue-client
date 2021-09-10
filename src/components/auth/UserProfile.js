@@ -197,7 +197,7 @@ export const UserProfile = () => {
               <UserDetailsForm />
             </div>
             <div class="tab-pane" id="messages">
-              <div class="alert alert-info alert-dismissable">
+              {/* <div class="alert alert-info alert-dismissable">
                 <a class="panel-close close" data-dismiss="alert">
                   ×
                 </a>{' '}
@@ -244,7 +244,7 @@ export const UserProfile = () => {
                     </td>
                   </tr>
                 </tbody>
-              </table>
+              </table> */}
             </div>
             <div class="tab-pane" id="edit">
               <h5 class="mb-3 text-center">Hotels Filter</h5>

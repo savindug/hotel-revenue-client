@@ -21,7 +21,7 @@ export const register = (user) => async (dispatch) => {
       //console.log(res);
     })
     .catch((err) => {
-      // console.log(err);
+      //console.log(err);
       dispatch({
         type: ACTION_TYPES.REGISTER_FAILED,
         payload: err,
@@ -52,7 +52,7 @@ export const login = (user) => async (dispatch) => {
         type: ACTION_TYPES.LOGIN_USER,
         payload: res.data.user,
       });
-      //console.log(res);
+      // console.log(res);
       if (res.results === true) {
         storeAuthTokens(AUTHORIZATION_KEY, res.data.token);
         storeAuthTokens(REFRESH_KEY, res.data.user.tokens.refresh);
@@ -68,7 +68,7 @@ export const login = (user) => async (dispatch) => {
       }
     })
     .catch((err) => {
-      // console.log(err);
+      console.log(err);
       dispatch({
         type: ACTION_TYPES.LOGIN_FAILED,
         payload: err,
@@ -92,7 +92,7 @@ export const refresh = () => async (dispatch) => {
         type: ACTION_TYPES.LOGIN_USER,
         payload: res.data.user,
       });
-      //console.log(res);
+      // console.log(res);
       if (res.results === true) {
         storeAuthTokens(AUTHORIZATION_KEY, res.data.token);
         storeAuthTokens(REFRESH_KEY, res.data.user.tokens.refresh);
@@ -108,7 +108,7 @@ export const refresh = () => async (dispatch) => {
       }
     })
     .catch((err) => {
-      // console.log(err);
+      //console.log(err);
       dispatch({
         type: ACTION_TYPES.LOGIN_FAILED,
         payload: err,
@@ -118,6 +118,65 @@ export const refresh = () => async (dispatch) => {
         payload: err,
       });
     });
+};
+
+export const configUser = (user, properties, markets) => async (dispatch) => {
+  await axios
+    .post(
+      `${apiURI}dashboard/users/config`,
+      { user, properties, markets },
+      {
+        headers: await getReqHeaders(),
+      }
+    )
+    .then((res) => {
+      //console.log(res);
+      dispatch({
+        type: ACTION_TYPES.REGISTER_USER,
+        payload: null,
+      });
+    })
+    .catch((err) => {
+      //console.log(err);
+    });
+};
+
+export const fetchUserList = () => async (dispatch) => {
+  dispatch({ type: ACTION_TYPES.GET_USERS_LIST_PROGRESS });
+
+  await axios
+    .get(`${apiURI}dashboard/users`, {
+      headers: await getReqHeaders(),
+    })
+    .then((result) => {
+      const res = result.data;
+
+      if (res.results) {
+        dispatch({
+          type: ACTION_TYPES.GET_USERS_LIST,
+          payload: res.data,
+        });
+      } else {
+        dispatch({
+          type: ACTION_TYPES.GET_USERS_LIST_FAILED,
+          payload: res.data,
+        });
+      }
+    })
+    .catch((err) => {
+      //console.log(err);
+      // dispatch({
+      //   type: ACTION_TYPES.LOGIN_FAILED,
+      //   payload: err,
+      // });
+    });
+};
+
+export const setSelectedUser = (user) => async (dispatch) => {
+  dispatch({
+    type: ACTION_TYPES.REGISTER_USER,
+    payload: user,
+  });
 };
 
 export const logOut = () => async (dispatch) => {

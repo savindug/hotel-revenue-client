@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom';
 import style from '../../styles/login.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { login, refresh } from '../../redux/actions/auth.actions';
-import logo from '../../assets/imgs/logo/logo.jpg';
 import { LoadingOverlay } from '../UI/LoadingOverlay';
 import { checkAuthTokens } from '../../services/auth.service';
 
@@ -117,6 +116,11 @@ export const Login = (props) => {
               Login
             </Button>
           </Form>
+          <Form.Group className="mt-3 text-center">
+            <Link className="text-decoration-none" to={'/register'}>
+              Already a member?
+            </Link>
+          </Form.Group>
         </div>
       )}
     </Container>

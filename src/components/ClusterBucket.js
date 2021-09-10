@@ -100,6 +100,34 @@ export default function ClusterBucket({ selectedDate }) {
                 <TableBody>
                   <StyledTableRow>
                     <StyledTableCell
+                      size="small"
+                      component="th"
+                      scope="col"
+                      className={classes.sticky}
+                      style={{ fontWeight: 'bold', width: '250px' }}
+                    >
+                      Days Out
+                    </StyledTableCell>
+
+                    <StyledTableCell size="small" className={classes.rates}>
+                      {(() => {
+                        let stars = null;
+                        reqHotel.map((e, index) => {
+                          if (e.name !== null) {
+                            stars = e.stars;
+                          }
+                        });
+                        return stars;
+                      })()}
+                    </StyledTableCell>
+                    {reqHotel.map((e, index) => (
+                      <StyledTableCell size="small" key={index}>
+                        {index}
+                      </StyledTableCell>
+                    ))}
+                  </StyledTableRow>
+                  <StyledTableRow>
+                    <StyledTableCell
                       size="medium"
                       component="th"
                       scope="col"

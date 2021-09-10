@@ -9,6 +9,7 @@ import { ResetPassword } from './components/auth/ResetPassword';
 import { ForgotPassword } from './components/auth/ForgotPassword';
 import { UserProfile } from './components/auth/UserProfile';
 import { FONT_FAMILY } from './utils/const';
+import { Register } from './components/auth/Register';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -49,7 +50,7 @@ function App() {
             <Route path="/login" component={Login} />
             <Route path="/reset-password" component={ResetPassword} />
             <Route path="/forgot-password" component={ForgotPassword} />
-            {/* <Route path="/register" component={Register} /> */}
+            <Route path="/register" component={Register} />
             {/*  <Route path="/hotels" component={HotelDataset} />
             <Route path="/graphs" component={Graphs} /> */}
           </Switch>
