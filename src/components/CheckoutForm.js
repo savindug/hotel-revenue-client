@@ -106,12 +106,12 @@ export default function CheckoutForm({
       if (status === 'requires_action') {
         stripe.confirmCardPayment(client_secret).then(async function (result) {
           if (result.error) {
-            console.log('There was an issue!');
-            console.log(result.error);
+            // console.log('There was an issue!');
+            // console.log(result.error);
             // Display error message in your UI.
             // The card was declined (i.e. insufficient funds, card has expired, etc)
           } else {
-            console.log('You got the money! ' + JSON.stringify(result));
+            // console.log('You got the money! ' + JSON.stringify(result));
             // Show a success message to your customer
             await dispatch(
               configUser(selectedUser._id, selectedProperty, selectedMarkets)
