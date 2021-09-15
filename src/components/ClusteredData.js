@@ -201,7 +201,7 @@ export const ClusteredData = () => {
             disabled={loading}
             onClick={() => setTab(0)}
           >
-            Clustered Buckets
+            Rate Buckets
           </Nav.Link>
         </Nav.Item>{' '}
         <Nav.Item>
@@ -221,7 +221,7 @@ export const ClusteredData = () => {
             disabled={loading}
             onClick={() => setTab(2)}
           >
-            Hotels Rates
+            Hotel RADAR
           </Nav.Link>
         </Nav.Item>{' '}
       </Nav>
