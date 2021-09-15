@@ -317,6 +317,24 @@ export default function HotelDataTable({ selectedDate }) {
                   )}
                 </TableHead>
                 <TableBody>
+                  {
+                    <StyledTableRow>
+                      <StyledTableCell size="small">0</StyledTableCell>
+                      <StyledTableCell
+                        size="small"
+                        component="th"
+                        scope="col"
+                        className={classes.sticky}
+                        style={{ fontWeight: 'bold', width: '300px' }}
+                      >
+                        Days Out
+                      </StyledTableCell>
+                      <StyledTableCell size="small"></StyledTableCell>
+                      {[...Array(90).keys()].map((e, index) => (
+                        <StyledTableCell size="small">{index}</StyledTableCell>
+                      ))}
+                    </StyledTableRow>
+                  }
                   {hotelsList.map((_hotel, index) => (
                     <StyledTableRow>
                       <StyledTableCell size="small">
