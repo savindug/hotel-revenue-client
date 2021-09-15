@@ -278,17 +278,8 @@ export default function HotelDataTable({ selectedDate }) {
                       >
                         Hotel Name
                       </TableSortLabel>
-                      <br />
                       <hr />
-                      <TableSortLabel
-                        active={sortBy === 0}
-                        direction={sortDir}
-                        onClick={() => {
-                          handleSort(0, sortDir === 'asc' ? 'desc' : 'asc');
-                        }}
-                      >
-                        Days Out
-                      </TableSortLabel>
+                      <TableSortLabel disabled>Days Out</TableSortLabel>
                       {/* <TableSortLabel onClick={handleSort(0)}></TableSortLabel> */}
                     </StyledTableCell>
                     <StyledTableCell size="small">
@@ -323,7 +314,6 @@ export default function HotelDataTable({ selectedDate }) {
                             {`${day.toUpperCase()}\n${moment(date).format(
                               'MM/DD'
                             )}`}{' '}
-                            <br />
                             <hr />
                             {i}
                           </StyledTableCell>
