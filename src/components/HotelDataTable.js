@@ -259,82 +259,97 @@ export default function HotelDataTable({ selectedDate }) {
                 bodystyle={{ overflow: 'visible' }}
               >
                 <TableHead>
-                  <StyledTableCell size="small">#</StyledTableCell>
-                  <StyledTableCell
-                    style={{
-                      fontWeight: 'bold',
-                      width: '250px',
-                      zIndex: 100,
-                      fontFamily: FONT_FAMILY,
-                    }}
-                  >
-                    <TableSortLabel
-                      active={sortBy === 0}
-                      direction={sortDir}
-                      onClick={() => {
-                        handleSort(0, sortDir === 'asc' ? 'desc' : 'asc');
+                  <StyledTableRow>
+                    <StyledTableCell size="small">#</StyledTableCell>
+                    <StyledTableCell
+                      style={{
+                        fontWeight: 'bold',
+                        width: '250px',
+                        zIndex: 100,
+                        fontFamily: FONT_FAMILY,
                       }}
                     >
-                      Hotel Name
-                    </TableSortLabel>
-                    {/* <TableSortLabel onClick={handleSort(0)}></TableSortLabel> */}
-                  </StyledTableCell>
-                  <StyledTableCell size="small">
-                    <TableSortLabel
-                      active={sortBy === 1}
-                      direction={sortDir}
-                      onClick={() => {
-                        handleSort(1, sortDir === 'asc' ? 'desc' : 'asc');
-                      }}
-                    >
-                      Stars
-                    </TableSortLabel>
-                  </StyledTableCell>
-                  {[...Array(90).keys()].map((d, i) =>
-                    (() => {
-                      let date = moment(selectedDate)
-                        .add(i, 'd')
-                        .format('YYYY-MM-DD');
-                      let day = moment(date).format('dddd').substring(0, 3);
-                      // console.log('selectedDate+: ' + date + ', day: ' + day);
-                      return (
-                        <StyledTableCell
-                          size="small"
-                          key={i}
-                          className={
-                            day === 'Sat' || day === 'Fri'
-                              ? 'bg-secondary text-light text-center '
-                              : 'text-center '
-                          }
-                          style={{ fontSize: '12px' }}
-                        >
-                          {`${day.toUpperCase()}\n${moment(date).format(
-                            'MM/DD'
-                          )}`}
-                        </StyledTableCell>
-                      );
-                    })()
-                  )}
-                </TableHead>
-                <TableBody>
-                  {
-                    <StyledTableRow>
-                      <StyledTableCell size="small">0</StyledTableCell>
-                      <StyledTableCell
-                        size="small"
-                        component="th"
-                        scope="col"
-                        className={classes.sticky}
-                        style={{ fontWeight: 'bold', width: '300px' }}
+                      <TableSortLabel
+                        active={sortBy === 0}
+                        direction={sortDir}
+                        onClick={() => {
+                          handleSort(0, sortDir === 'asc' ? 'desc' : 'asc');
+                        }}
+                      >
+                        Hotel Name
+                      </TableSortLabel>
+                      <br />
+                      <hr />
+                      <TableSortLabel
+                        active={sortBy === 0}
+                        direction={sortDir}
+                        onClick={() => {
+                          handleSort(0, sortDir === 'asc' ? 'desc' : 'asc');
+                        }}
                       >
                         Days Out
-                      </StyledTableCell>
-                      <StyledTableCell size="small"></StyledTableCell>
-                      {[...Array(90).keys()].map((e, index) => (
-                        <StyledTableCell size="small">{index}</StyledTableCell>
-                      ))}
-                    </StyledTableRow>
-                  }
+                      </TableSortLabel>
+                      {/* <TableSortLabel onClick={handleSort(0)}></TableSortLabel> */}
+                    </StyledTableCell>
+                    <StyledTableCell size="small">
+                      <TableSortLabel
+                        active={sortBy === 1}
+                        direction={sortDir}
+                        onClick={() => {
+                          handleSort(1, sortDir === 'asc' ? 'desc' : 'asc');
+                        }}
+                      >
+                        Stars
+                      </TableSortLabel>
+                    </StyledTableCell>
+                    {[...Array(90).keys()].map((d, i) =>
+                      (() => {
+                        let date = moment(selectedDate)
+                          .add(i, 'd')
+                          .format('YYYY-MM-DD');
+                        let day = moment(date).format('dddd').substring(0, 3);
+                        // console.log('selectedDate+: ' + date + ', day: ' + day);
+                        return (
+                          <StyledTableCell
+                            size="small"
+                            key={i}
+                            className={
+                              day === 'Sat' || day === 'Fri'
+                                ? 'bg-secondary text-light text-center '
+                                : 'text-center '
+                            }
+                            style={{ fontSize: '12px' }}
+                          >
+                            {`${day.toUpperCase()}\n${moment(date).format(
+                              'MM/DD'
+                            )}`}{' '}
+                            <br />
+                            <hr />
+                            {i}
+                          </StyledTableCell>
+                        );
+                      })()
+                    )}
+                  </StyledTableRow>
+                  {/* <StyledTableRow>
+                    <StyledTableCell size="small">0</StyledTableCell>
+                    <StyledTableCell
+                      style={{
+                        fontWeight: 'bold',
+                        width: '250px',
+                        fontFamily: FONT_FAMILY,
+                      }}
+                    >
+                      Days Out
+                    </StyledTableCell>
+                    <StyledTableCell size="small"></StyledTableCell>
+                    {[...Array(90).keys()].map((e, index) => (
+                      <StyledTableCell size="small">{index}</StyledTableCell>
+                    ))}
+                  </StyledTableRow> */}
+                </TableHead>
+
+                <TableBody>
                   {hotelsList.map((_hotel, index) => (
                     <StyledTableRow>
                       <StyledTableCell size="small">
