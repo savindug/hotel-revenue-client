@@ -4,6 +4,7 @@ import {
   TableCell,
   TableContainer,
   TableRow,
+  TableSortLabel,
   withStyles,
 } from '@material-ui/core';
 import Table from '@material-ui/core/Table';
@@ -39,7 +40,7 @@ const useStyles = makeStyles({
     left: 0,
     background: 'white',
     boxShadow: '2px 2px 2px grey',
-    display: 'flex',
+    display: 'block',
   },
   rates: {
     fontFamily: FONT_FAMILY,
@@ -67,10 +68,12 @@ export default function ClusterBucket({ selectedDate }) {
               >
                 <TableHead>
                   <StyledTableCell
-                    className={classes.sticky}
                     style={{ fontWeight: 'bold', width: '250px' }}
+                    className={classes.sticky}
                   >
                     Your Property
+                    <hr />
+                    Days Out
                   </StyledTableCell>
                   <StyledTableCell size="small">Stars</StyledTableCell>
                   {reqHotel.map((e, index) =>
@@ -92,40 +95,14 @@ export default function ClusterBucket({ selectedDate }) {
                           {`${date.toUpperCase()}\n${moment(e.checkIn).format(
                             'MM/DD'
                           )}`}
+                          <hr />
+                          {index}
                         </StyledTableCell>
                       );
                     })()
                   )}
                 </TableHead>
                 <TableBody>
-                  <StyledTableRow>
-                    <StyledTableCell
-                      size="small"
-                      component="th"
-                      scope="col"
-                      className={classes.sticky}
-                      style={{ fontWeight: 'bold', width: '250px' }}
-                    >
-                      Days Out
-                    </StyledTableCell>
-
-                    <StyledTableCell size="small" className={classes.rates}>
-                      {(() => {
-                        let stars = null;
-                        reqHotel.map((e, index) => {
-                          if (e.name !== null) {
-                            stars = e.stars;
-                          }
-                        });
-                        return stars;
-                      })()}
-                    </StyledTableCell>
-                    {reqHotel.map((e, index) => (
-                      <StyledTableCell size="small" key={index}>
-                        {index}
-                      </StyledTableCell>
-                    ))}
-                  </StyledTableRow>
                   <StyledTableRow>
                     <StyledTableCell
                       size="medium"
@@ -286,10 +263,11 @@ export default function ClusterBucket({ selectedDate }) {
               >
                 <TableHead>
                   <StyledTableCell
-                    className={classes.sticky}
                     style={{ fontWeight: 'bold', width: '250px' }}
+                    className={classes.sticky}
                   >
-                    Bucket Movements
+                    Bucket Movements <hr />
+                    Days Out
                   </StyledTableCell>
                   {/* <StyledTableCell size="small">Stars</StyledTableCell> */}
                   {[...Array(90).keys()].map((e, index) =>
@@ -312,6 +290,8 @@ export default function ClusterBucket({ selectedDate }) {
                           {`${date.toUpperCase()}\n${moment(day).format(
                             'MM/DD'
                           )}`}
+                          <hr />
+                          {index}
                         </StyledTableCell>
                       );
                     })()

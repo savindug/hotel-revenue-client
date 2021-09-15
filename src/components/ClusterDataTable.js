@@ -4,6 +4,7 @@ import {
   TableCell,
   TableContainer,
   TableRow,
+  TableSortLabel,
   withStyles,
 } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
@@ -44,7 +45,7 @@ const useStyles = makeStyles({
     left: 0,
     background: 'white',
     boxShadow: '2px 2px 2px grey',
-    display: 'flex',
+    display: 'block',
   },
   rates: {
     fontFamily: FONT_FAMILY,
@@ -76,12 +77,17 @@ export default function ClusterDataTable({ cluster, stars }) {
             >
               <TableHead>
                 <StyledTableCell
-                  className={classes.sticky}
                   style={{
                     backgroundColor: CLUSTER_BACKGROUND[stars - 2],
                   }}
+                  className={classes.sticky}
                 >
-                  {`${stars} Star Cluster Matrix`}
+                  <TableSortLabel disabled>
+                    {' '}
+                    {`${stars} Star Cluster Matrix`}
+                  </TableSortLabel>{' '}
+                  <hr />
+                  <TableSortLabel disabled> Days Out</TableSortLabel>
                 </StyledTableCell>
                 {cluster.map((e, index) =>
                   (() => {
@@ -99,7 +105,9 @@ export default function ClusterDataTable({ cluster, stars }) {
                       >
                         {`${date.toUpperCase()}\n${moment(e.date).format(
                           'MM/DD'
-                        )}`}
+                        )}`}{' '}
+                        <hr />
+                        {index}
                       </StyledTableCell>
                     );
                   })()
@@ -239,7 +247,11 @@ export default function ClusterDataTable({ cluster, stars }) {
                     component="th"
                     scope="row"
                     className={classes.sticky}
-                    style={{ fontWeight: 'bold', width: '250px' }}
+                    style={{
+                      fontWeight: 'bold',
+                      width: '250px',
+                      borderTop: '3px solid grey',
+                    }}
                   >
                     &emsp;&emsp;Average of Highest Rates
                   </StyledTableCell>
@@ -289,7 +301,11 @@ export default function ClusterDataTable({ cluster, stars }) {
                     component="th"
                     scope="row"
                     className={classes.sticky}
-                    style={{ fontWeight: 'bold', width: '250px' }}
+                    style={{
+                      fontWeight: 'bold',
+                      width: '250px',
+                      borderBottom: '3px solid grey',
+                    }}
                   >
                     &emsp;&emsp;Average of Lowest Rates
                   </StyledTableCell>

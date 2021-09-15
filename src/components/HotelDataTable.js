@@ -374,9 +374,13 @@ export default function HotelDataTable({ selectedDate }) {
                           >
                             <span className="font-weight-bold">
                               {dt.price[getPrice(dt.price)]}&nbsp;
-                              <sup className="text-light font-weight-bold">
-                                {getPrice(dt.price) + 1}
-                              </sup>
+                              {getPrice(dt.price) > 0 ? (
+                                <sup className="text-light font-weight-bold">
+                                  {getPrice(dt.price) + 1}
+                                </sup>
+                              ) : (
+                                <></>
+                              )}
                             </span>
                           </StyledTableCell>
                         ) : (
