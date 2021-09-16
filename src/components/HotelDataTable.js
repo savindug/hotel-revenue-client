@@ -20,6 +20,7 @@ import TableHead from '@material-ui/core/TableHead';
 import Paper from '@material-ui/core/Paper';
 import moment from 'moment';
 import { CLUSTER_BACKGROUND, FONT_FAMILY } from '../utils/const';
+import SearchBar from 'material-ui-search-bar';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -81,7 +82,34 @@ export default function HotelDataTable({ selectedDate }) {
 
   const [hotelsList, setHotelsList] = useState([]);
 
+  const [originalRows, setOriginalRows] = useState([]);
+
   const [nights, setNights] = useState(0);
+
+  const [searched, setSearched] = useState('');
+
+  const requestSearch = (searchedVal) => {
+    setSearched(searchedVal);
+    const filteredRows = originalRows.filter((row) => {
+      return row.hotelName.toLowerCase().includes(searchedVal.toLowerCase());
+    });
+    setHotelsList(filteredRows);
+  };
+
+  const cancelSearch = () => {
+    setSearched('');
+    requestSearch(searched);
+  };
+
+  useEffect(() => {
+    // console.log(`selectedDate: ${selectedDate}`);
+    setOriginalRows(
+      hotels.sort(
+        (a, b) => b.stars - a.stars || a.hotelName.localeCompare(b.hotelName)
+      )
+    );
+    setHotelsList(originalRows);
+  }, []);
 
   const getClusterByPrice = (rate, ix) => {
     if (
@@ -155,15 +183,6 @@ export default function HotelDataTable({ selectedDate }) {
     }
   };
 
-  useEffect(() => {
-    console.log(`selectedDate: ${selectedDate}`);
-    setHotelsList(
-      hotels.sort(
-        (a, b) => b.stars - a.stars || a.hotelName.localeCompare(b.hotelName)
-      )
-    );
-  }, []);
-
   const handleSort = async (sb, sd) => {
     setSortBy(sb);
     setSortDir(sd);
@@ -201,13 +220,20 @@ export default function HotelDataTable({ selectedDate }) {
   return (
     <>
       {hotels.length > 0 &&
-      hotelsList.length > 0 &&
+      originalRows.length > 0 &&
       cluster1.length > 0 &&
       cluster2.length > 0 &&
       cluster3.length > 0 &&
       cluster4.length > 0 ? (
         <>
-          <Grid container justify="space-around" className="my-3">
+          <Grid container justify="space-evenly" className="my-3">
+            <FormGroup className={classes.formControl}>
+              <SearchBar
+                value={searched}
+                onChange={(searchVal) => requestSearch(searchVal)}
+                onCancelSearch={() => cancelSearch()}
+              />
+            </FormGroup>
             <FormGroup className={classes.formControl}>
               <InputLabel
                 htmlFor="grouped-native-select"
@@ -388,7 +414,7 @@ export default function HotelDataTable({ selectedDate }) {
                             size="small"
                             className={classes.rates}
                           >
-                            N/A
+                            --
                           </StyledTableCell>
                         );
                       })}

@@ -250,7 +250,7 @@ export default function ClusterDataTable({ cluster, stars }) {
                     style={{
                       fontWeight: 'bold',
                       width: '250px',
-                      borderTop: '3px solid grey',
+                      borderTop: '2px solid grey',
                     }}
                   >
                     &emsp;&emsp;Average of Highest Rates
@@ -261,6 +261,9 @@ export default function ClusterDataTable({ cluster, stars }) {
                       size="small"
                       key={index}
                       className={classes.rates}
+                      style={{
+                        borderTop: '3px solid grey',
+                      }}
                     >
                       {e.highAVG !== 'NaN' && e.items > 0
                         ? Math.round(e.highAVG)
@@ -315,6 +318,9 @@ export default function ClusterDataTable({ cluster, stars }) {
                       size="small"
                       key={index}
                       className={classes.rates}
+                      style={{
+                        borderBottom: '3px solid grey',
+                      }}
                     >
                       {e.lowAVG !== 'NaN' && e.items > 0
                         ? Math.round(e.lowAVG)
