@@ -108,7 +108,11 @@ export default function HotelDataTable({ selectedDate }) {
         (a, b) => b.stars - a.stars || a.hotelName.localeCompare(b.hotelName)
       )
     );
-    setHotelsList(originalRows);
+    setHotelsList(
+      hotels.sort(
+        (a, b) => b.stars - a.stars || a.hotelName.localeCompare(b.hotelName)
+      )
+    );
   }, []);
 
   const getClusterByPrice = (rate, ix) => {
