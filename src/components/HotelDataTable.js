@@ -89,7 +89,7 @@ export default function HotelDataTable({ selectedDate }) {
   const [searched, setSearched] = useState('');
 
   const requestSearch = (searchedVal) => {
-    setSearched(searchedVal);
+    // setSearched(searchedVal);
     const filteredRows = originalRows.filter((row) => {
       return row.hotelName.toLowerCase().includes(searchedVal.toLowerCase());
     });
@@ -100,6 +100,10 @@ export default function HotelDataTable({ selectedDate }) {
     setSearched('');
     requestSearch(searched);
   };
+
+  useEffect(() => {
+    requestSearch(searched);
+  }, [searched]);
 
   useEffect(() => {
     // console.log(`selectedDate: ${selectedDate}`);
@@ -234,7 +238,7 @@ export default function HotelDataTable({ selectedDate }) {
             <FormGroup className={classes.formControl}>
               <SearchBar
                 value={searched}
-                onChange={(searchVal) => requestSearch(searchVal)}
+                onChange={(searchVal) => setSearched(searchVal)}
                 onCancelSearch={() => cancelSearch()}
               />
             </FormGroup>

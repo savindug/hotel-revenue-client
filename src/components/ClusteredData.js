@@ -1,4 +1,4 @@
-import { Alert } from '@material-ui/lab';
+import { Alert, Autocomplete } from '@material-ui/lab';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -19,6 +19,7 @@ import {
   InputLabel,
   makeStyles,
   Select,
+  TextField,
 } from '@material-ui/core';
 import moment from 'moment';
 import HotelDataTable from './HotelDataTable';
@@ -29,6 +30,7 @@ import SimpleMap from './SimpleMap';
 import ClusterDataTable from './ClusterDataTable';
 import { CLUSTER_BACKGROUND, FONT_FAMILY } from '../utils/const';
 import { useHistory } from 'react-router';
+import BucketMovements from './BucketMovements';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -38,17 +40,20 @@ const useStyles = makeStyles((theme) => ({
   tabularNavStyle: {
     backgroundColor: '#516B8F',
     fontFamily: FONT_FAMILY,
+    fontWeight: 'bold',
   },
 }));
 
 export const ClusteredData = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const [tab, setTab] = useState(3);
+  const [tab, setTab] = useState(-1);
 
   const [selectedProperty, setSelectedProperty] = useState(0);
 
   const [selectedMarket, setSelectedMarket] = useState(0);
+
+  const [marketOptions, setMarketOptions] = useState([]);
 
   const getClusterDataSet = useSelector((state) => state.clusterDataSet);
   const {
@@ -111,6 +116,36 @@ export const ClusteredData = () => {
   }, [dispatch, refreshDates]);
 
   useEffect(() => {
+    if (clusterData.length > 0) {
+      setTab(4);
+    }
+  }, [dispatch, clusterData]);
+
+  // useEffect(() => {
+  //   const setMarketOptionsHook = async () => {
+  //     if (markets.length > 0) {
+  //       if (user.role === 'admin' || user.role === 'manager') {
+  //         markets.map((d, index) => {
+  //           setMarketOptions((oldArray) => [...oldArray, d]);
+  //         });
+  //       } else {
+  //         if (user.application.destinations.length > 0) {
+  //           const allowedMatrkets = user.application.destinations.filter(
+  //             ({ id: id1 }) => markets.some(({ id: id2 }) => id2 === id1)
+  //           );
+  //           if (allowedMatrkets.length > 0) {
+  //             allowedMatrkets.map((d, index) => {
+  //               setMarketOptions((oldArray) => [...oldArray, d]);
+  //             });
+  //           }
+  //         }
+  //       }
+  //     }
+  //   };
+  //   setMarketOptionsHook();
+  // }, [markets]);
+
+  useEffect(() => {
     async function getClusters() {
       await dispatch(
         fetchClusterData(
@@ -163,33 +198,18 @@ export const ClusteredData = () => {
     }
   };
 
-  // useEffect(() => {
-  //   const header = document.getElementById('main-header');
-  //   const sticky = header.offsetTop;
-  //   const scrollCallBack = window.addEventListener('scroll', () => {
-  //     if (window.pageYOffset > sticky) {
-  //       header.classList.add('sticky-header');
-  //     } else {
-  //       header.classList.remove('sticky-header');
-  //     }
-  //   });
-  //   return () => {
-  //     window.removeEventListener('scroll', scrollCallBack);
-  //   };
-  // }, []);
-
   const TabularNav = () => {
     const [tabularNavCls] = useState(
       'text-light border-bottom-0 border-secondary ' + classes.tabularNavStyle
     );
     return (
-      <Nav variant="tabs">
+      <Nav variant="tabs" justify="space-around">
         <Nav.Item>
           <Nav.Link
-            className={tab === 3 ? tabularNavCls : 'text-dark font-weight-bold'}
+            className={tab === 4 ? tabularNavCls : 'text-dark font-weight-bold'}
             eventKey="link-1"
             disabled={loading}
-            onClick={() => setTab(3)}
+            onClick={() => setTab(4)}
           >
             Hotels Map
           </Nav.Link>{' '}
@@ -207,11 +227,11 @@ export const ClusteredData = () => {
         <Nav.Item>
           <Nav.Link
             className={tab === 1 ? tabularNavCls : 'text-dark font-weight-bold'}
-            eventKey="link-1"
+            eventKey="link-0"
             disabled={loading}
             onClick={() => setTab(1)}
           >
-            Clustered Graphs
+            Bucket Movements
           </Nav.Link>
         </Nav.Item>{' '}
         <Nav.Item>
@@ -220,6 +240,16 @@ export const ClusteredData = () => {
             eventKey="link-1"
             disabled={loading}
             onClick={() => setTab(2)}
+          >
+            Clustered Graphs
+          </Nav.Link>
+        </Nav.Item>{' '}
+        <Nav.Item>
+          <Nav.Link
+            className={tab === 3 ? tabularNavCls : 'text-dark font-weight-bold'}
+            eventKey="link-1"
+            disabled={loading}
+            onClick={() => setTab(3)}
           >
             Hotel RADAR
           </Nav.Link>
@@ -249,6 +279,7 @@ export const ClusteredData = () => {
                   if (markets.length > 0) {
                     if (user.role === 'admin' || user.role === 'manager') {
                       return markets.map((d, index) => (
+                        // setMarketOptions([...marketOptions, d.name]),
                         <option value={d.id} key={index}>
                           &nbsp;{d.name}&nbsp;
                         </option>
@@ -261,6 +292,7 @@ export const ClusteredData = () => {
                           );
                         return allowedMatrkets.length > 0 ? (
                           allowedMatrkets.map((d, index) => (
+                            // setMarketOptions([...marketOptions, d.name]),
                             <option value={d.id} key={index}>
                               &nbsp;{d.name}&nbsp;
                             </option>
@@ -273,6 +305,15 @@ export const ClusteredData = () => {
                   }
                 })()}
               </Select>
+              {/* <Autocomplete
+                value={selectedMarket}
+                onChange={(event, newValue) => handleMarketChange(newValue)}
+                id="controllable-states-demo"
+                options={marketOptions}
+                renderInput={(params) => (
+                  <TextField {...params} label="Controllable" />
+                )}
+              /> */}
             </FormControl>
             <FormControl className={classes.formControl}>
               <InputLabel htmlFor="grouped-native-select">
@@ -393,7 +434,7 @@ export const ClusteredData = () => {
           </Grid>
         </MuiPickersUtilsProvider>
 
-        <TabularNav className="my-5" />
+        <TabularNav />
       </Grid>
       {loading ? (
         <LoadingOverlay show={loading} />
@@ -416,10 +457,12 @@ export const ClusteredData = () => {
           </div>
         </>
       ) : clusterData.length > 0 && tab === 1 ? (
+        <BucketMovements selectedDate={selectedDate} />
+      ) : clusterData.length > 0 && tab === 2 ? (
         <Graphs />
-      ) : hotels.length > 0 && tab === 2 ? (
-        <HotelDataTable selectedDate={selectedDate} />
       ) : hotels.length > 0 && tab === 3 ? (
+        <HotelDataTable selectedDate={selectedDate} />
+      ) : hotels.length > 0 && tab === 4 ? (
         <SimpleMap />
       ) : (
         <></>
