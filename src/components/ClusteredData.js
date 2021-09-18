@@ -148,6 +148,8 @@ export const ClusteredData = () => {
       );
     }
     if (reports.length > 0) {
+      setSelectedMarket(reports[0].destination);
+      setSelectedProperty(reports[0].property);
       getClusters(
         reports[0].destination,
         reports[0].property,

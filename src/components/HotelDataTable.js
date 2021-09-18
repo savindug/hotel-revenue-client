@@ -225,6 +225,15 @@ export default function HotelDataTable({ selectedDate }) {
     return price;
   };
 
+  const mode = (arr) => {
+    return arr
+      .sort(
+        (a, b) =>
+          arr.filter((v) => v === a).length - arr.filter((v) => v === b).length
+      )
+      .pop();
+  };
+
   return (
     <>
       {hotels.length > 0 &&
@@ -327,6 +336,7 @@ export default function HotelDataTable({ selectedDate }) {
                         Stars
                       </TableSortLabel>
                     </StyledTableCell>
+                    <StyledTableCell>Rate Bucket</StyledTableCell>
                     {[...Array(90).keys()].map((d, i) =>
                       (() => {
                         let date = moment(selectedDate)
@@ -391,6 +401,26 @@ export default function HotelDataTable({ selectedDate }) {
                       <StyledTableCell size="small" className={classes.rates}>
                         {_hotel.stars}
                       </StyledTableCell>
+                      {(() => {
+                        let cluster_arr = [];
+                        _hotel.prices.map((dt, ix) => {
+                          if (dt !== null) {
+                            cluster_arr.push(
+                              getClusterByPrice(
+                                dt.price[getPrice(dt.price)],
+                                ix
+                              ) + 2
+                            );
+                          }
+                        });
+
+                        return (
+                          <StyledTableCell className={classes.rates}>
+                            {mode(cluster_arr)}
+                          </StyledTableCell>
+                        );
+                      })()}
+
                       {_hotel.prices.map((dt, ix) => {
                         return dt !== null ? (
                           <StyledTableCell
