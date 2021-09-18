@@ -117,6 +117,7 @@ export default function MiniDrawer(props) {
 
   const handleLogOut = async () => {
     await dispatch(logOut());
+    setShow(!show);
     history.push('/');
   };
   return (
@@ -192,7 +193,11 @@ export default function MiniDrawer(props) {
                       Hello {user.name}
                     </Popover.Title>
                     <Popover.Content>
-                      <Link className="text-light mx-auto" to="/profile">
+                      <Link
+                        className="text-light mx-auto"
+                        to="/profile"
+                        onClick={() => setShow(!show)}
+                      >
                         <Button variant="outline-primary">View Profile</Button>
                       </Link>{' '}
                       <Button

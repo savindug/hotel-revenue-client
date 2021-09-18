@@ -6,6 +6,7 @@ const initialState = {
   auth_loading: true,
   auth_err: null,
   isLoggedIn: false,
+  reports: [],
 };
 
 const AuthReducer = (state = initialState, action) => {
@@ -86,6 +87,11 @@ const AuthReducer = (state = initialState, action) => {
       return {
         ...state,
         auth_loading: false,
+      };
+    case ACTION_TYPES.GET_USER_REPORTS:
+      return {
+        ...state,
+        reports: action.payload,
       };
     default:
       return state;

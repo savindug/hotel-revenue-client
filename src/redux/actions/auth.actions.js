@@ -46,12 +46,23 @@ export const login = (user) => async (dispatch) => {
   dispatch({ type: ACTION_TYPES.LOGIN_PROGRESS });
   await axios
     .post(`${apiURI}auth/login`, user)
-    .then((result) => {
+    .then(async (result) => {
       const res = result.data;
       dispatch({
         type: ACTION_TYPES.LOGIN_USER,
         payload: res.data.user,
       });
+
+      await dispatch(
+        getUserReports({
+          _id: res.data.user._id,
+          name: res.data.user.name,
+          email: res.data.user.email,
+          application: res.data.user.application,
+          role: res.data.user.role,
+        })
+      );
+
       // console.log(res);
       if (res.results === true) {
         storeAuthTokens(AUTHORIZATION_KEY, res.data.token);
@@ -86,12 +97,23 @@ export const refresh = () => async (dispatch) => {
     .get(`${apiURI}auth/refresh`, {
       headers: await getReqHeaders(),
     })
-    .then((result) => {
+    .then(async (result) => {
       const res = result.data;
       dispatch({
         type: ACTION_TYPES.LOGIN_USER,
         payload: res.data.user,
       });
+
+      await dispatch(
+        getUserReports({
+          _id: res.data.user._id,
+          name: res.data.user.name,
+          email: res.data.user.email,
+          application: res.data.user.application,
+          role: res.data.user.role,
+        })
+      );
+
       // console.log(res);
       if (res.results === true) {
         storeAuthTokens(AUTHORIZATION_KEY, res.data.token);
@@ -169,6 +191,34 @@ export const fetchUserList = () => async (dispatch) => {
       //   type: ACTION_TYPES.LOGIN_FAILED,
       //   payload: err,
       // });
+    });
+};
+
+export const getUserReports = (user) => async (dispatch) => {
+  dispatch({
+    type: ACTION_TYPES.GET_USER_REPORTS_PROGRESS,
+    payload: null,
+  });
+  await axios
+    .post(
+      `${apiURI}auth/reports_by_user`,
+      { user },
+      {
+        headers: await getReqHeaders(),
+      }
+    )
+    .then((result) => {
+      const res = result.data;
+      dispatch({
+        type: ACTION_TYPES.GET_USER_REPORTS,
+        payload: res.data,
+      });
+    })
+    .catch((err) => {
+      dispatch({
+        type: ACTION_TYPES.GET_USER_REPORTS_FAILED,
+        payload: err,
+      });
     });
 };
 

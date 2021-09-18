@@ -10,7 +10,7 @@ import {
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
   const auth = useSelector((state) => state.auth);
-  const { user, auth_loading, isLoggedIn } = auth;
+  const { user, auth_loading, isLoggedIn, reports } = auth;
   const dispatch = useDispatch();
 
   const getClusterDataSet = useSelector((state) => state.clusterDataSet);
@@ -50,7 +50,8 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
           } else if (
             isLoggedIn &&
             markets.length > 0 &&
-            refreshDates.dates.length > 0
+            refreshDates.dates.length > 0 &&
+            reports.length > 0
           ) {
             return <Component {...props} />;
           }

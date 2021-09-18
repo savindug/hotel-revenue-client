@@ -55,6 +55,8 @@ export const ClusteredData = () => {
 
   const [marketOptions, setMarketOptions] = useState([]);
 
+  const [propertyOptions, setPropertyOptions] = useState([]);
+
   const getClusterDataSet = useSelector((state) => state.clusterDataSet);
   const {
     clusterData,
@@ -71,7 +73,7 @@ export const ClusteredData = () => {
   } = getClusterDataSet;
 
   const auth = useSelector((state) => state.auth);
-  const { user } = auth;
+  const { user, reports } = auth;
 
   const history = useHistory();
 
@@ -121,29 +123,81 @@ export const ClusteredData = () => {
     }
   }, [dispatch, clusterData]);
 
-  // useEffect(() => {
-  //   const setMarketOptionsHook = async () => {
-  //     if (markets.length > 0) {
-  //       if (user.role === 'admin' || user.role === 'manager') {
-  //         markets.map((d, index) => {
-  //           setMarketOptions((oldArray) => [...oldArray, d]);
-  //         });
-  //       } else {
-  //         if (user.application.destinations.length > 0) {
-  //           const allowedMatrkets = user.application.destinations.filter(
-  //             ({ id: id1 }) => markets.some(({ id: id2 }) => id2 === id1)
-  //           );
-  //           if (allowedMatrkets.length > 0) {
-  //             allowedMatrkets.map((d, index) => {
-  //               setMarketOptions((oldArray) => [...oldArray, d]);
-  //             });
-  //           }
-  //         }
-  //       }
-  //     }
-  //   };
-  //   setMarketOptionsHook();
-  // }, [markets]);
+  useEffect(() => {
+    async function getClusters(market_id, property_id, report_date) {
+      await dispatch(
+        fetchClusterData(
+          market_id,
+          moment().format('YYYY-MM-DD'),
+          90,
+          property_id,
+          report_date
+        )
+      );
+    }
+
+    async function getHotels(market_id, property_id, report_date) {
+      await dispatch(
+        fetchHotelData(
+          market_id,
+          moment().format('YYYY-MM-DD'),
+          90,
+          property_id,
+          report_date
+        )
+      );
+    }
+    if (reports.length > 0) {
+      getClusters(
+        reports[0].destination,
+        reports[0].property,
+        reports[0].report_date
+      );
+      getHotels(
+        reports[0].destination,
+        reports[0].property,
+        reports[0].report_date
+      );
+    }
+  }, []);
+
+  const get_market_by_id = (id) => {
+    const market = markets.find((m) => m.id == id);
+    return market;
+  };
+
+  useEffect(() => {
+    const setMarketOptionsHook = async () => {
+      // console.log(user, reports);
+      if (reports.length > 0) {
+        const reports_temp = [];
+        reports.map(async (rp) => {
+          // console.log(`market found: ${get_market_by_id(rp.destination)}`);
+          reports_temp.push(get_market_by_id(rp.destination));
+        });
+
+        const market_opts = [...new Set(reports_temp)];
+
+        setMarketOptions(market_opts);
+        // console.log('marketOptions: ' + JSON.stringify(reports_temp));
+      }
+    };
+
+    const setPropertyOptionsHook = async () => {
+      // console.log(user, reports);
+      if (reports.length > 0) {
+        const property_arr = [];
+        const reports_temp = reports.map(async (rp) => {
+          property_arr.push(rp.property);
+        });
+        setPropertyOptions([...new Set(property_arr)]);
+        // console.log('PropertiesOptions: ' + propertyOptions);
+      }
+    };
+
+    setMarketOptionsHook();
+    setPropertyOptionsHook();
+  }, []);
 
   useEffect(() => {
     async function getClusters() {
@@ -276,42 +330,46 @@ export const ClusteredData = () => {
               >
                 <option value={-100}>&nbsp;Destinations&nbsp;</option>
                 {(() => {
-                  if (markets.length > 0) {
-                    if (user.role === 'admin' || user.role === 'manager') {
-                      return markets.map((d, index) => (
-                        // setMarketOptions([...marketOptions, d.name]),
-                        <option value={d.id} key={index}>
-                          &nbsp;{d.name}&nbsp;
-                        </option>
-                      ));
-                    } else {
-                      if (user.application.destinations.length > 0) {
-                        const allowedMatrkets =
-                          user.application.destinations.filter(({ id: id1 }) =>
-                            markets.some(({ id: id2 }) => id2 === id1)
-                          );
-                        return allowedMatrkets.length > 0 ? (
-                          allowedMatrkets.map((d, index) => (
-                            // setMarketOptions([...marketOptions, d.name]),
-                            <option value={d.id} key={index}>
-                              &nbsp;{d.name}&nbsp;
-                            </option>
-                          ))
-                        ) : (
-                          <></>
-                        );
-                      }
-                    }
+                  if (marketOptions.length > 0) {
+                    // if (user.role === 'admin' || user.role === 'manager') {
+                    return marketOptions.map((d, index) => (
+                      // setMarketOptions([...marketOptions, d.name]),
+                      <option value={d.id} key={index}>
+                        &nbsp;{d.name}&nbsp;
+                      </option>
+                    ));
                   }
+                  //  else {
+                  //   if (user.application.destinations.length > 0) {
+                  //     const allowedMatrkets =
+                  //       user.application.destinations.filter(({ id: id1 }) =>
+                  //         markets.some(({ id: id2 }) => id2 === id1)
+                  //       );
+                  //     return allowedMatrkets.length > 0 ? (
+                  //       allowedMatrkets.map((d, index) => (
+                  //         // setMarketOptions([...marketOptions, d.name]),
+                  //         <option value={d.id} key={index}>
+                  //           &nbsp;{d.name}&nbsp;
+                  //         </option>
+                  //       ))
+                  //     ) : (
+                  //       <></>
+                  //     );
+                  //   }
+                  // }
+                  // }
                 })()}
               </Select>
               {/* <Autocomplete
+                sx={{ width: 300 }}
                 value={selectedMarket}
-                onChange={(event, newValue) => handleMarketChange(newValue)}
+                disableClearable
+                getOptionLabel={(option) => option.name}
+                onChange={(event, newValue) => handleMarketChange(newValue.id)}
                 id="controllable-states-demo"
                 options={marketOptions}
                 renderInput={(params) => (
-                  <TextField {...params} label="Controllable" />
+                  <TextField {...params} label="Destination" />
                 )}
               /> */}
             </FormControl>
@@ -329,29 +387,32 @@ export const ClusteredData = () => {
                 <option value={-100}>&nbsp;Properties&nbsp;</option>
                 {(() => {
                   if (hotelList.length > 0) {
-                    if (user.role === 'admin' || user.role === 'manager') {
-                      return hotelList.map((d, index) => (
-                        <option value={d.id} key={index}>
-                          &nbsp;{d.name}&nbsp;
-                        </option>
-                      ));
-                    } else {
-                      if (user.application.properties.length > 0) {
-                        const allowedProperties =
-                          user.application.properties.filter(({ id: id1 }) =>
-                            hotelList.some(({ id: id2 }) => id2 === id1)
-                          );
-                        return allowedProperties.length > 0 ? (
-                          allowedProperties.map((d, index) => (
-                            <option value={d.id} key={index}>
-                              &nbsp;{d.name}&nbsp;
-                            </option>
-                          ))
-                        ) : (
-                          <></>
-                        );
-                      }
+                    // if (user.role === 'admin' || user.role === 'manager') {
+                    //   return hotelList.map((d, index) => (
+                    //     <option value={d.id} key={index}>
+                    //       &nbsp;{d.name}&nbsp;
+                    //     </option>
+                    //   ));
+                    // } else {
+                    if (propertyOptions.length > 0) {
+                      console.log(`propertyOptions: ${propertyOptions}`);
+                      // const allowedProperties = propertyOptions.filter((op) =>
+                      //   hotelList.some(({ id: id2 }) => id2 === op)
+                      // );
+                      const allowedProperties = hotelList.filter((o1) =>
+                        propertyOptions.some((o2) => o1.id === o2)
+                      );
+                      return allowedProperties.length > 0 ? (
+                        allowedProperties.map((d, index) => (
+                          <option value={d.id} key={index}>
+                            &nbsp;{d.name}&nbsp;
+                          </option>
+                        ))
+                      ) : (
+                        <></>
+                      );
                     }
+                    // }
                   }
                 })()}
               </Select>
