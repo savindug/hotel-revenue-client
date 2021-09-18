@@ -31,6 +31,7 @@ import ClusterDataTable from './ClusterDataTable';
 import { CLUSTER_BACKGROUND, FONT_FAMILY } from '../utils/const';
 import { useHistory } from 'react-router';
 import BucketMovements from './BucketMovements';
+import { CompareArrowsOutlined } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -147,9 +148,16 @@ export const ClusteredData = () => {
         )
       );
     }
+
+    async function autoFetchproperties(mrkt) {
+      // console.log(`selectedMarket: ${mrkt}`);
+      await dispatch(fetchHotelsList(mrkt));
+    }
+
     if (reports.length > 0) {
       setSelectedMarket(reports[0].destination);
       setSelectedProperty(reports[0].property);
+
       getClusters(
         reports[0].destination,
         reports[0].property,
@@ -160,6 +168,8 @@ export const ClusteredData = () => {
         reports[0].property,
         reports[0].report_date
       );
+
+      autoFetchproperties(reports[0].destination);
     }
   }, []);
 
@@ -397,7 +407,6 @@ export const ClusteredData = () => {
                     //   ));
                     // } else {
                     if (propertyOptions.length > 0) {
-                      console.log(`propertyOptions: ${propertyOptions}`);
                       // const allowedProperties = propertyOptions.filter((op) =>
                       //   hotelList.some(({ id: id2 }) => id2 === op)
                       // );

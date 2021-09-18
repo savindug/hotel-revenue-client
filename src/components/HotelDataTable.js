@@ -336,7 +336,9 @@ export default function HotelDataTable({ selectedDate }) {
                         Stars
                       </TableSortLabel>
                     </StyledTableCell>
-                    <StyledTableCell>Rate Bucket</StyledTableCell>
+                    <StyledTableCell className="text-center">
+                      Most Freq Bucket
+                    </StyledTableCell>
                     {[...Array(90).keys()].map((d, i) =>
                       (() => {
                         let date = moment(selectedDate)
