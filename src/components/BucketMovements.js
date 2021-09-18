@@ -71,7 +71,7 @@ export default function BucketMovements({ selectedDate }) {
                     style={{ fontWeight: 'bold', width: '250px' }}
                     className={classes.sticky}
                   >
-                    Bucket Movements <hr />
+                    Net Bucket Movements <hr />
                     Days Out
                   </StyledTableCell>
                   {/* <StyledTableCell size="small">Stars</StyledTableCell> */}
@@ -348,7 +348,7 @@ export default function BucketMovements({ selectedDate }) {
                         </p>
                         <hr />
                         {day.stars5.length} <hr /> {day.stars4.length} <hr />{' '}
-                        {day.stars3.length} <hr /> {day.stars2.length}{' '}
+                        {day.stars3.length} <hr /> {day.stars2.length}
                       </StyledTableCell>
                     ))}
                   </StyledTableRow>
@@ -392,7 +392,7 @@ export default function BucketMovements({ selectedDate }) {
                         </p>
                         <hr />
                         {day.stars5.length} <hr /> {day.stars4.length} <hr />{' '}
-                        {day.stars3.length} <hr /> {day.stars2.length}{' '}
+                        {day.stars3.length} <hr /> {day.stars2.length}
                       </StyledTableCell>
                     ))}
                   </StyledTableRow>
@@ -437,7 +437,7 @@ export default function BucketMovements({ selectedDate }) {
                         </p>
                         <hr />
                         {day.stars5.length} <hr /> {day.stars4.length} <hr />{' '}
-                        {day.stars3.length} <hr /> {day.stars2.length}{' '}
+                        {day.stars3.length} <hr /> {day.stars2.length}
                       </StyledTableCell>
                     ))}
                   </StyledTableRow>
@@ -481,8 +481,8 @@ export default function BucketMovements({ selectedDate }) {
                             day.stars5.length}
                         </p>
                         <hr />
-                        {day.stars2.length} <hr /> {day.stars3.length} <hr />{' '}
-                        {day.stars4.length} <hr /> {day.stars5.length}
+                        {day.stars5.length} <hr /> {day.stars4.length} <hr />{' '}
+                        {day.stars3.length} <hr /> {day.stars2.length}
                       </StyledTableCell>
                     ))}
                   </StyledTableRow>

@@ -116,31 +116,6 @@ export default function ClusterDataTable({ cluster, stars }) {
               <TableBody>
                 <StyledTableRow Key={stars}>
                   <StyledTableCell
-                    className={classes.sticky}
-                    size="small"
-                    component="th"
-                    scope="col"
-                    style={{ fontWeight: 'bold', width: '250px' }}
-                  >
-                    Number of Hotels
-                  </StyledTableCell>
-
-                  {cluster.map((e, index) => (
-                    <StyledTableCell
-                      size="small"
-                      key={index}
-                      className={classes.rates}
-                    >
-                      {e.items !== 'NaN' && e.items > 0
-                        ? Math.round(e.items)
-                        : e.items !== 'NaN' && e.items < 0
-                        ? 'NED'
-                        : 'N/A'}
-                    </StyledTableCell>
-                  ))}
-                </StyledTableRow>
-                <StyledTableRow Key={stars}>
-                  <StyledTableCell
                     size="small"
                     component="th"
                     scope="row"
@@ -173,7 +148,7 @@ export default function ClusterDataTable({ cluster, stars }) {
                     className={classes.sticky}
                     style={{ fontWeight: 'bold', width: '250px' }}
                   >
-                    Most Repeated rate (mode)
+                    Most Repeated rate
                   </StyledTableCell>
 
                   {cluster.map((e, index) => (
