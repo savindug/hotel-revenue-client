@@ -14,6 +14,7 @@ import Paper from '@material-ui/core/Paper';
 import { useSelector } from 'react-redux';
 import moment from 'moment';
 import { CLUSTER_BACKGROUND, FONT_FAMILY } from '../utils/const';
+import { useEffect, useState } from 'react';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -51,8 +52,17 @@ export default function BucketMovements({ selectedDate }) {
   const classes = useStyles();
 
   const getClusterDataSet = useSelector((state) => state.clusterDataSet);
-  const { loading, reqHotel, cluster1, cluster2, cluster3, cluster4 } =
+  const { loading, reqHotel, cluster1, cluster2, cluster3, cluster4, hotels } =
     getClusterDataSet;
+
+  const getFilterHotels = (arr) => {
+    if (hotels.length > 0) {
+      const allowedMatrkets = arr.filter(({ id: id1 }) =>
+        hotels.some(({ hotelID: id2 }) => id2 === id1)
+      );
+      return allowedMatrkets;
+    }
+  };
 
   return (
     <>
@@ -341,14 +351,16 @@ export default function BucketMovements({ selectedDate }) {
                         className={classes.rates}
                       >
                         <p className="font-weight-bold">
-                          {day.stars2.length +
-                            day.stars3.length +
-                            day.stars4.length +
-                            day.stars5.length}
+                          {getFilterHotels(day.stars2).length +
+                            getFilterHotels(day.stars3).length +
+                            getFilterHotels(day.stars4).length +
+                            getFilterHotels(day.stars5).length}
                         </p>
                         <hr />
-                        {day.stars5.length} <hr /> {day.stars4.length} <hr />{' '}
-                        {day.stars3.length} <hr /> {day.stars2.length}
+                        {getFilterHotels(day.stars5).length} <hr />{' '}
+                        {getFilterHotels(day.stars4).length} <hr />{' '}
+                        {getFilterHotels(day.stars3).length} <hr />{' '}
+                        {getFilterHotels(day.stars2).length}
                       </StyledTableCell>
                     ))}
                   </StyledTableRow>
@@ -385,14 +397,16 @@ export default function BucketMovements({ selectedDate }) {
                         className={classes.rates}
                       >
                         <p className="font-weight-bold">
-                          {day.stars2.length +
-                            day.stars3.length +
-                            day.stars4.length +
-                            day.stars5.length}
+                          {getFilterHotels(day.stars2).length +
+                            getFilterHotels(day.stars3).length +
+                            getFilterHotels(day.stars4).length +
+                            getFilterHotels(day.stars5).length}
                         </p>
                         <hr />
-                        {day.stars5.length} <hr /> {day.stars4.length} <hr />{' '}
-                        {day.stars3.length} <hr /> {day.stars2.length}
+                        {getFilterHotels(day.stars5).length} <hr />{' '}
+                        {getFilterHotels(day.stars4).length} <hr />{' '}
+                        {getFilterHotels(day.stars3).length} <hr />{' '}
+                        {getFilterHotels(day.stars2).length}
                       </StyledTableCell>
                     ))}
                   </StyledTableRow>
@@ -430,14 +444,16 @@ export default function BucketMovements({ selectedDate }) {
                         className={classes.rates}
                       >
                         <p className="font-weight-bold">
-                          {day.stars2.length +
-                            day.stars3.length +
-                            day.stars4.length +
-                            day.stars5.length}
+                          {getFilterHotels(day.stars2).length +
+                            getFilterHotels(day.stars3).length +
+                            getFilterHotels(day.stars4).length +
+                            getFilterHotels(day.stars5).length}
                         </p>
                         <hr />
-                        {day.stars5.length} <hr /> {day.stars4.length} <hr />{' '}
-                        {day.stars3.length} <hr /> {day.stars2.length}
+                        {getFilterHotels(day.stars5).length} <hr />{' '}
+                        {getFilterHotels(day.stars4).length} <hr />{' '}
+                        {getFilterHotels(day.stars3).length} <hr />{' '}
+                        {getFilterHotels(day.stars2).length}
                       </StyledTableCell>
                     ))}
                   </StyledTableRow>
@@ -475,14 +491,16 @@ export default function BucketMovements({ selectedDate }) {
                         className={classes.rates}
                       >
                         <p className="font-weight-bold">
-                          {day.stars2.length +
-                            day.stars3.length +
-                            day.stars4.length +
-                            day.stars5.length}
+                          {getFilterHotels(day.stars2).length +
+                            getFilterHotels(day.stars3).length +
+                            getFilterHotels(day.stars4).length +
+                            getFilterHotels(day.stars5).length}
                         </p>
                         <hr />
-                        {day.stars5.length} <hr /> {day.stars4.length} <hr />{' '}
-                        {day.stars3.length} <hr /> {day.stars2.length}
+                        {getFilterHotels(day.stars5).length} <hr />{' '}
+                        {getFilterHotels(day.stars4).length} <hr />{' '}
+                        {getFilterHotels(day.stars3).length} <hr />{' '}
+                        {getFilterHotels(day.stars2).length}
                       </StyledTableCell>
                     ))}
                   </StyledTableRow>
