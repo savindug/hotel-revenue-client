@@ -407,7 +407,7 @@ export default function BucketMovements({ selectedDate }) {
                           fontSize: '14px',
                           borderTop: '2px solid grey',
                         }}
-                        className={classes.rates}
+                        className={classes.rates + ' text-center'}
                       >
                         <p className="font-weight-bold">
                           {getFilterHotels(day.stars2).length +
@@ -453,7 +453,7 @@ export default function BucketMovements({ selectedDate }) {
                           fontSize: '14px',
                           borderTop: '2px solid grey',
                         }}
-                        className={classes.rates}
+                        className={classes.rates + ' text-center'}
                       >
                         <p className="font-weight-bold">
                           {getFilterHotels(day.stars2).length +
@@ -500,7 +500,7 @@ export default function BucketMovements({ selectedDate }) {
                           fontSize: '14px',
                           borderTop: '2px solid grey',
                         }}
-                        className={classes.rates}
+                        className={classes.rates + ' text-center'}
                       >
                         <p className="font-weight-bold">
                           {getFilterHotels(day.stars2).length +
@@ -547,7 +547,7 @@ export default function BucketMovements({ selectedDate }) {
                           fontSize: '14px',
                           borderTop: '2px solid grey',
                         }}
-                        className={classes.rates}
+                        className={classes.rates + ' text-center'}
                       >
                         <p className="font-weight-bold">
                           {getFilterHotels(day.stars2).length +
