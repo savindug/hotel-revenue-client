@@ -10,6 +10,7 @@ import {
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableHead from '@material-ui/core/TableHead';
+import Divider from '@material-ui/core/Divider';
 import Paper from '@material-ui/core/Paper';
 import { useSelector } from 'react-redux';
 import moment from 'moment';
@@ -388,11 +389,11 @@ export default function BucketMovements({ selectedDate }) {
                         borderTop: '2px solid grey',
                       }}
                     >
-                      5 Star Cluster Hotels
+                      <p className="font-weight-bold">5 Star Cluster Hotels</p>
                       <div className="text-center">
-                        <hr />
-                        5-stars <hr /> 4-stars <hr /> 3-stars
-                        <hr />
+                        <Divider />
+                        5-stars <Divider /> 4-stars <Divider /> 3-stars
+                        <Divider />
                         2-stars{' '}
                       </div>
                     </StyledTableCell>
@@ -414,10 +415,10 @@ export default function BucketMovements({ selectedDate }) {
                             getFilterHotels(day.stars4).length +
                             getFilterHotels(day.stars5).length}
                         </p>
-                        <hr />
-                        {getFilterHotels(day.stars5).length} <hr />{' '}
-                        {getFilterHotels(day.stars4).length} <hr />{' '}
-                        {getFilterHotels(day.stars3).length} <hr />{' '}
+                        <Divider />
+                        {getFilterHotels(day.stars5).length} <Divider />{' '}
+                        {getFilterHotels(day.stars4).length} <Divider />{' '}
+                        {getFilterHotels(day.stars3).length} <Divider />{' '}
                         {getFilterHotels(day.stars2).length}
                       </StyledTableCell>
                     ))}
@@ -434,11 +435,11 @@ export default function BucketMovements({ selectedDate }) {
                         borderTop: '2px solid grey',
                       }}
                     >
-                      4 Star Cluster Hotels
+                      <p className="font-weight-bold">4 Star Cluster Hotels</p>
                       <div className="text-center">
-                        <hr />
-                        5-stars <hr /> 4-stars <hr /> 3-stars
-                        <hr />
+                        <Divider />
+                        5-stars <Divider /> 4-stars <Divider /> 3-stars
+                        <Divider />
                         2-stars{' '}
                       </div>
                     </StyledTableCell>
@@ -460,10 +461,10 @@ export default function BucketMovements({ selectedDate }) {
                             getFilterHotels(day.stars4).length +
                             getFilterHotels(day.stars5).length}
                         </p>
-                        <hr />
-                        {getFilterHotels(day.stars5).length} <hr />{' '}
-                        {getFilterHotels(day.stars4).length} <hr />{' '}
-                        {getFilterHotels(day.stars3).length} <hr />{' '}
+                        <Divider />
+                        {getFilterHotels(day.stars5).length} <Divider />{' '}
+                        {getFilterHotels(day.stars4).length} <Divider />{' '}
+                        {getFilterHotels(day.stars3).length} <Divider />{' '}
                         {getFilterHotels(day.stars2).length}
                       </StyledTableCell>
                     ))}
@@ -481,11 +482,11 @@ export default function BucketMovements({ selectedDate }) {
                         borderTop: '2px solid grey',
                       }}
                     >
-                      3 Star Cluster hotels
+                      <p className="font-weight-bold">3 Star Cluster hotels</p>
                       <div className="text-center">
-                        <hr />
-                        5-stars <hr /> 4-stars <hr /> 3-stars
-                        <hr />
+                        <Divider />
+                        5-stars <Divider /> 4-stars <Divider /> 3-stars
+                        <Divider />
                         2-stars{' '}
                       </div>
                     </StyledTableCell>
@@ -507,10 +508,10 @@ export default function BucketMovements({ selectedDate }) {
                             getFilterHotels(day.stars4).length +
                             getFilterHotels(day.stars5).length}
                         </p>
-                        <hr />
-                        {getFilterHotels(day.stars5).length} <hr />{' '}
-                        {getFilterHotels(day.stars4).length} <hr />{' '}
-                        {getFilterHotels(day.stars3).length} <hr />{' '}
+                        <Divider />
+                        {getFilterHotels(day.stars5).length} <Divider />{' '}
+                        {getFilterHotels(day.stars4).length} <Divider />{' '}
+                        {getFilterHotels(day.stars3).length} <Divider />{' '}
                         {getFilterHotels(day.stars2).length}
                       </StyledTableCell>
                     ))}
@@ -528,11 +529,11 @@ export default function BucketMovements({ selectedDate }) {
                         borderTop: '2px solid grey',
                       }}
                     >
-                      2 Star Cluster Hotels
+                      <p className="font-weight-bold">2 Star Cluster Hotels</p>
                       <div className="text-center">
-                        <hr />
-                        5-stars <hr /> 4-stars <hr /> 3-stars
-                        <hr />
+                        <Divider />
+                        5-stars <Divider /> 4-stars <Divider /> 3-stars
+                        <Divider />
                         2-stars{' '}
                       </div>
                     </StyledTableCell>
@@ -554,11 +555,11 @@ export default function BucketMovements({ selectedDate }) {
                             getFilterHotels(day.stars4).length +
                             getFilterHotels(day.stars5).length}
                         </p>
-                        <hr />
-                        {getFilterHotels(day.stars5).length} <hr />{' '}
-                        {getFilterHotels(day.stars4).length} <hr />{' '}
-                        {getFilterHotels(day.stars3).length} <hr />{' '}
-                        {getFilterHotels(day.stars2).length}
+                        <Divider />
+                        {getFilterHotels(day.stars5).length}
+                        <Divider /> {getFilterHotels(day.stars4).length}{' '}
+                        <Divider /> {getFilterHotels(day.stars3).length}{' '}
+                        <Divider /> {getFilterHotels(day.stars2).length}
                       </StyledTableCell>
                     ))}
                   </StyledTableRow>
