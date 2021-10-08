@@ -64,6 +64,10 @@ export default function BucketMovements({ selectedDate }) {
     }
   };
 
+  const getPricingUps = (stars) => {
+    [...Array(90).keys()].map((day) => {});
+  };
+
   return (
     <>
       {!loading ? (
@@ -128,16 +132,27 @@ export default function BucketMovements({ selectedDate }) {
                       5 Star Pricing Down
                     </StyledTableCell>
                     {/* <StyledTableCell size="small"></StyledTableCell> */}
-                    {cluster3.map((day, index) => (
-                      <StyledTableCell
-                        size="small"
-                        key={index}
-                        style={{ fontSize: '14px' }}
-                        className={classes.rates}
-                      >
-                        {day.stars5.length}
-                      </StyledTableCell>
-                    ))}
+                    {[...Array(90).keys()].map((e, index) =>
+                      (() => {
+                        let hotel_count = 0;
+                        hotel_count =
+                          hotel_count + cluster2[index].stars5.length;
+                        hotel_count =
+                          hotel_count + cluster1[index].stars5.length;
+                        hotel_count =
+                          hotel_count + cluster3[index].stars5.length;
+                        return (
+                          <StyledTableCell
+                            size="small"
+                            key={index}
+                            style={{ fontSize: '14px' }}
+                            className={classes.rates}
+                          >
+                            {hotel_count}
+                          </StyledTableCell>
+                        );
+                      })()
+                    )}
                   </StyledTableRow>
                   <StyledTableRow>
                     <StyledTableCell
@@ -154,16 +169,23 @@ export default function BucketMovements({ selectedDate }) {
                       4 Star Pricing Up
                     </StyledTableCell>
                     {/* <StyledTableCell size="small"></StyledTableCell> */}
-                    {cluster4.map((day, index) => (
-                      <StyledTableCell
-                        size="small"
-                        key={index}
-                        style={{ fontSize: '14px' }}
-                        className={classes.rates}
-                      >
-                        {day.stars4.length}
-                      </StyledTableCell>
-                    ))}
+                    {[...Array(90).keys()].map((e, index) =>
+                      (() => {
+                        let hotel_count = 0;
+                        hotel_count =
+                          hotel_count + cluster4[index].stars4.length;
+                        return (
+                          <StyledTableCell
+                            size="small"
+                            key={index}
+                            style={{ fontSize: '14px' }}
+                            className={classes.rates}
+                          >
+                            {hotel_count}
+                          </StyledTableCell>
+                        );
+                      })()
+                    )}
                   </StyledTableRow>
                   <StyledTableRow>
                     <StyledTableCell
@@ -180,16 +202,25 @@ export default function BucketMovements({ selectedDate }) {
                       4 Star Pricing Down
                     </StyledTableCell>
                     {/* <StyledTableCell size="small"></StyledTableCell> */}
-                    {cluster2.map((day, index) => (
-                      <StyledTableCell
-                        size="small"
-                        key={index}
-                        style={{ fontSize: '14px' }}
-                        className={classes.rates}
-                      >
-                        {day.stars4.length}
-                      </StyledTableCell>
-                    ))}
+                    {[...Array(90).keys()].map((e, index) =>
+                      (() => {
+                        let hotel_count = 0;
+                        hotel_count =
+                          hotel_count + cluster2[index].stars4.length;
+                        hotel_count =
+                          hotel_count + cluster1[index].stars4.length;
+                        return (
+                          <StyledTableCell
+                            size="small"
+                            key={index}
+                            style={{ fontSize: '14px' }}
+                            className={classes.rates}
+                          >
+                            {hotel_count}
+                          </StyledTableCell>
+                        );
+                      })()
+                    )}
                   </StyledTableRow>
                   <StyledTableRow>
                     <StyledTableCell
@@ -206,16 +237,25 @@ export default function BucketMovements({ selectedDate }) {
                       3 Star Pricing Up
                     </StyledTableCell>
                     {/* <StyledTableCell size="small"></StyledTableCell> */}
-                    {cluster3.map((day, index) => (
-                      <StyledTableCell
-                        size="small"
-                        key={index}
-                        style={{ fontSize: '14px' }}
-                        className={classes.rates}
-                      >
-                        {day.stars3.length}
-                      </StyledTableCell>
-                    ))}
+                    {[...Array(90).keys()].map((e, index) =>
+                      (() => {
+                        let hotel_count = 0;
+                        hotel_count =
+                          hotel_count + cluster3[index].stars3.length;
+                        hotel_count =
+                          hotel_count + cluster4[index].stars3.length;
+                        return (
+                          <StyledTableCell
+                            size="small"
+                            key={index}
+                            style={{ fontSize: '14px' }}
+                            className={classes.rates}
+                          >
+                            {hotel_count}
+                          </StyledTableCell>
+                        );
+                      })()
+                    )}
                   </StyledTableRow>
                   <StyledTableRow>
                     <StyledTableCell
@@ -232,16 +272,23 @@ export default function BucketMovements({ selectedDate }) {
                       3 Star Pricing Down
                     </StyledTableCell>
                     {/* <StyledTableCell size="small"></StyledTableCell> */}
-                    {cluster1.map((day, index) => (
-                      <StyledTableCell
-                        size="small"
-                        key={index}
-                        style={{ fontSize: '14px' }}
-                        className={classes.rates}
-                      >
-                        {day.stars3.length}
-                      </StyledTableCell>
-                    ))}
+                    {[...Array(90).keys()].map((e, index) =>
+                      (() => {
+                        let hotel_count = 0;
+                        hotel_count =
+                          hotel_count + cluster1[index].stars3.length;
+                        return (
+                          <StyledTableCell
+                            size="small"
+                            key={index}
+                            style={{ fontSize: '14px' }}
+                            className={classes.rates}
+                          >
+                            {hotel_count}
+                          </StyledTableCell>
+                        );
+                      })()
+                    )}
                   </StyledTableRow>
                   <StyledTableRow>
                     <StyledTableCell
@@ -258,16 +305,27 @@ export default function BucketMovements({ selectedDate }) {
                       2 Star Pricing Up
                     </StyledTableCell>
                     {/* <StyledTableCell size="small"></StyledTableCell> */}
-                    {cluster2.map((day, index) => (
-                      <StyledTableCell
-                        size="small"
-                        key={index}
-                        style={{ fontSize: '14px' }}
-                        className={classes.rates}
-                      >
-                        {day.stars2.length}
-                      </StyledTableCell>
-                    ))}
+                    {[...Array(90).keys()].map((e, index) =>
+                      (() => {
+                        let hotel_count = 0;
+                        hotel_count =
+                          hotel_count + cluster2[index].stars2.length;
+                        hotel_count =
+                          hotel_count + cluster3[index].stars2.length;
+                        hotel_count =
+                          hotel_count + cluster4[index].stars2.length;
+                        return (
+                          <StyledTableCell
+                            size="small"
+                            key={index}
+                            style={{ fontSize: '14px' }}
+                            className={classes.rates}
+                          >
+                            {hotel_count}
+                          </StyledTableCell>
+                        );
+                      })()
+                    )}
                   </StyledTableRow>
                 </TableBody>
               </Table>
