@@ -47,13 +47,14 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
         } else {
           if (!isLoggedIn) {
             return <Redirect to="/login" />;
-          } else if (
-            isLoggedIn &&
-            markets.length > 0 &&
-            refreshDates.dates.length > 0 &&
-            reports.length > 0
-          ) {
-            return <Component {...props} />;
+          } else if (isLoggedIn) {
+            if (
+              markets.length > 0 &&
+              refreshDates.dates.length > 0 &&
+              reports.length > 0
+            ) {
+              return <Component {...props} />;
+            }
           }
         }
       }}
