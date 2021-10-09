@@ -234,6 +234,23 @@ export default function HotelDataTable({ selectedDate }) {
       .pop();
   };
 
+  const checkHotelAvailability = (id, day) => {
+    const hotels_arr = Array.prototype.concat(
+      cluster1[day].unwanted,
+      cluster2[day].unwanted,
+      cluster3[day].unwanted,
+      cluster4[day].unwanted
+    );
+
+    const exists = hotels_arr.some((obj) => obj.id == id);
+
+    if (exists) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   return (
     <>
       {hotels.length > 0 &&
@@ -424,7 +441,8 @@ export default function HotelDataTable({ selectedDate }) {
                       })()}
 
                       {_hotel.prices.map((dt, ix) => {
-                        return dt !== null ? (
+                        return dt !== null &&
+                          checkHotelAvailability(_hotel.hotelID, ix) ? (
                           <StyledTableCell
                             size="small"
                             className={classes.rates}
