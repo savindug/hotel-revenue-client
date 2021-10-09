@@ -307,7 +307,7 @@ export const ClusteredData = () => {
             disabled={loading}
             onClick={() => setTab(2)}
           >
-            Clustered Graphs
+            Visuals
           </Nav.Link>
         </Nav.Item>{' '}
         <Nav.Item>

@@ -563,6 +563,81 @@ export default function BucketMovements({ selectedDate }) {
                       </StyledTableCell>
                     ))}
                   </StyledTableRow>
+
+                  <StyledTableRow>
+                    <StyledTableCell
+                      component="th"
+                      scope="row"
+                      className={classes.sticky}
+                      style={{
+                        fontWeight: 'bold',
+                        width: '250px',
+                        borderTop: '2px solid grey',
+                      }}
+                    >
+                      <p className="font-weight-bold">Total Hotels Count</p>
+                      <div className="text-center">
+                        <Divider />
+                        5-stars <Divider /> 4-stars <Divider /> 3-stars
+                        <Divider />
+                        2-stars{' '}
+                      </div>
+                    </StyledTableCell>
+                    {/* <StyledTableCell size="small"></StyledTableCell> */}
+
+                    {[...Array(90).keys()].map((e, index) =>
+                      (() => {
+                        let hotel_count = 0;
+
+                        hotel_count =
+                          cluster1[index].unwanted.length +
+                          cluster2[index].unwanted.length +
+                          cluster3[index].unwanted.length +
+                          cluster4[index].unwanted.length;
+
+                        let hotel_count_2 =
+                          cluster1[index].stars2.length +
+                          cluster2[index].stars2.length +
+                          cluster3[index].stars2.length +
+                          cluster4[index].stars2.length;
+                        let hotel_count_3 =
+                          cluster1[index].stars3.length +
+                          cluster2[index].stars3.length +
+                          cluster3[index].stars3.length +
+                          cluster4[index].stars3.length;
+                        let hotel_count_4 =
+                          cluster1[index].stars4.length +
+                          cluster2[index].stars4.length +
+                          cluster3[index].stars4.length +
+                          cluster4[index].stars4.length;
+                        let hotel_count_5 =
+                          cluster1[index].stars5.length +
+                          cluster2[index].stars5.length +
+                          cluster3[index].stars5.length +
+                          cluster4[index].stars5.length;
+                        return (
+                          <StyledTableCell
+                            component="th"
+                            scope="row"
+                            style={{
+                              fontSize: '14px',
+                              borderTop: '2px solid grey',
+                            }}
+                            className={classes.rates + ' text-center'}
+                          >
+                            <p className="font-weight-bold">{hotel_count}</p>
+                            <>
+                              <Divider />
+                              {hotel_count_5}
+                              <Divider /> {hotel_count_4}
+                              <Divider /> {hotel_count_3} <Divider />{' '}
+                              {hotel_count_2}
+                            </>
+                          </StyledTableCell>
+                        );
+                      })()
+                    )}
+                  </StyledTableRow>
                 </TableBody>
               </Table>
             </Box>
