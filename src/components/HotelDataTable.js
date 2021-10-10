@@ -441,20 +441,23 @@ export default function HotelDataTable({ selectedDate }) {
                       })()}
 
                       {_hotel.prices.map((dt, ix) => {
-                        return dt !== null &&
-                          checkHotelAvailability(_hotel.hotelID, ix) ? (
+                        return dt !== null ? (
                           <StyledTableCell
                             size="small"
                             className={classes.rates}
-                            style={{
-                              backgroundColor:
-                                CLUSTER_BACKGROUND[
-                                  getClusterByPrice(
-                                    dt.price[getPrice(dt.price)],
-                                    ix
-                                  )
-                                ],
-                            }}
+                            style={
+                              checkHotelAvailability(_hotel.hotelID, ix)
+                                ? {
+                                    backgroundColor:
+                                      CLUSTER_BACKGROUND[
+                                        getClusterByPrice(
+                                          dt.price[getPrice(dt.price)],
+                                          ix
+                                        )
+                                      ],
+                                  }
+                                : { backgroundColor: '#616161' }
+                            }
                           >
                             <span className="font-weight-bold">
                               {dt.price[getPrice(dt.price)]}&nbsp;
