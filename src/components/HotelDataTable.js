@@ -122,9 +122,9 @@ export default function HotelDataTable({ selectedDate }) {
   const getClusterByPrice = (rate, ix) => {
     if (
       (cluster1[ix].min != undefined || cluster1[ix].min != null) &&
-      (cluster2[ix].min != undefined || cluster2[ix].min != null)
+      (cluster1[ix].max != undefined || cluster1[ix].max != null)
     ) {
-      if (rate >= cluster1[ix].min && rate < cluster2[ix].min) {
+      if (rate >= cluster1[ix].min && rate < cluster1[ix].max) {
         // console.log(
         //   `${ix} => ${cluster1[ix].min} < ${rate} > ${cluster1[ix].max} `
         // );
@@ -132,10 +132,10 @@ export default function HotelDataTable({ selectedDate }) {
       }
     }
     if (
-      (cluster3[ix].min != undefined || cluster3[ix].min != null) &&
-      (cluster2[ix].min != undefined || cluster2[ix].min != null)
+      (cluster2[ix].min != undefined || cluster2[ix].min != null) &&
+      (cluster2[ix].max != undefined || cluster2[ix].max != null)
     ) {
-      if (rate >= cluster2[ix].min && rate < cluster3[ix].min) {
+      if (rate >= cluster2[ix].min && rate < cluster2[ix].max) {
         // console.log(
         //   `${ix} =>${cluster2[ix].min} < ${rate} > ${cluster2[ix].max} `
         // );
@@ -145,17 +145,20 @@ export default function HotelDataTable({ selectedDate }) {
 
     if (
       (cluster3[ix].min != undefined || cluster3[ix].min != null) &&
-      (cluster4[ix].min != undefined || cluster4[ix].min != null)
+      (cluster3[ix].max != undefined || cluster3[ix].max != null)
     ) {
-      if (rate >= cluster3[ix].min && rate < cluster4[ix].min) {
+      if (rate >= cluster3[ix].min && rate < cluster3[ix].max) {
         // console.log(
         //   `${ix} =>${cluster3[ix].min} < ${rate} > ${cluster3[ix].max} `
         // );
         return 2;
       }
     }
-    if (cluster4[ix].min != undefined || cluster4[ix].min != null) {
-      if (rate >= cluster4[ix].min) {
+    if (
+      (cluster4[ix].min != undefined || cluster4[ix].min != null) &&
+      (cluster4[ix].max != undefined || cluster4[ix].max != null)
+    ) {
+      if (rate >= cluster4[ix].min && rate < cluster4[ix].max) {
         // console.log(
         //   `${ix} =>${cluster4[ix].min} < ${rate} > ${cluster4[ix].max} `
         // );
@@ -456,7 +459,7 @@ export default function HotelDataTable({ selectedDate }) {
                                         )
                                       ],
                                   }
-                                : { backgroundColor: '#616161' }
+                                : { backgroundColor: '#9E9E9E' }
                             }
                           >
                             <span className="font-weight-bold">
