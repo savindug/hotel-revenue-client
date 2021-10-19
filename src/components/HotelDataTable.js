@@ -124,7 +124,7 @@ export default function HotelDataTable({ selectedDate }) {
       (cluster1[ix].min != undefined || cluster1[ix].min != null) &&
       (cluster1[ix].max != undefined || cluster1[ix].max != null)
     ) {
-      if (rate >= cluster1[ix].min && rate < cluster1[ix].max) {
+      if (rate >= cluster1[ix].min && rate <= cluster1[ix].max) {
         // console.log(
         //   `${ix} => ${cluster1[ix].min} < ${rate} > ${cluster1[ix].max} `
         // );
@@ -135,7 +135,7 @@ export default function HotelDataTable({ selectedDate }) {
       (cluster2[ix].min != undefined || cluster2[ix].min != null) &&
       (cluster2[ix].max != undefined || cluster2[ix].max != null)
     ) {
-      if (rate >= cluster2[ix].min && rate < cluster2[ix].max) {
+      if (rate >= cluster2[ix].min && rate <= cluster2[ix].max) {
         // console.log(
         //   `${ix} =>${cluster2[ix].min} < ${rate} > ${cluster2[ix].max} `
         // );
@@ -147,7 +147,7 @@ export default function HotelDataTable({ selectedDate }) {
       (cluster3[ix].min != undefined || cluster3[ix].min != null) &&
       (cluster3[ix].max != undefined || cluster3[ix].max != null)
     ) {
-      if (rate >= cluster3[ix].min && rate < cluster3[ix].max) {
+      if (rate >= cluster3[ix].min && rate <= cluster3[ix].max) {
         // console.log(
         //   `${ix} =>${cluster3[ix].min} < ${rate} > ${cluster3[ix].max} `
         // );
@@ -158,7 +158,7 @@ export default function HotelDataTable({ selectedDate }) {
       (cluster4[ix].min != undefined || cluster4[ix].min != null) &&
       (cluster4[ix].max != undefined || cluster4[ix].max != null)
     ) {
-      if (rate >= cluster4[ix].min && rate < cluster4[ix].max) {
+      if (rate >= cluster4[ix].min && rate <= cluster4[ix].max) {
         // console.log(
         //   `${ix} =>${cluster4[ix].min} < ${rate} > ${cluster4[ix].max} `
         // );

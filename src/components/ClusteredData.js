@@ -32,6 +32,7 @@ import { CLUSTER_BACKGROUND, FONT_FAMILY } from '../utils/const';
 import { useHistory } from 'react-router';
 import BucketMovements from './BucketMovements';
 import { CompareArrowsOutlined } from '@material-ui/icons';
+import SimilarityScore from './SimilarityScore';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -320,6 +321,16 @@ export const ClusteredData = () => {
             Hotel RADAR
           </Nav.Link>
         </Nav.Item>{' '}
+        {/* <Nav.Item>
+          <Nav.Link
+            className={tab === 5 ? tabularNavCls : 'text-dark font-weight-bold'}
+            eventKey="link-1"
+            disabled={loading}
+            onClick={() => setTab(5)}
+          >
+            Similarity Score
+          </Nav.Link>
+        </Nav.Item> */}
       </Nav>
     );
   };
@@ -537,6 +548,9 @@ export const ClusteredData = () => {
       ) : hotels.length > 0 && tab === 4 ? (
         <SimpleMap />
       ) : (
+        // : hotels.length > 0 && tab === 5 ? (
+        //   <SimilarityScore selectedDate={selectedDate} />
+        // )
         <></>
       )}
     </div>
