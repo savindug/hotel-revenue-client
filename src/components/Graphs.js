@@ -6,6 +6,7 @@ import {
   makeStyles,
   Select,
 } from '@material-ui/core';
+import { get } from 'jquery';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { Bar, Line, Scatter } from 'react-chartjs-2';
@@ -21,8 +22,16 @@ export const Graphs = () => {
   const classes = useStyles();
   const [matrix, setMatrix] = useState('avg');
   const getClusterDataSet = useSelector((state) => state.clusterDataSet);
-  const { loading, err, clusterData, cluster1, cluster2, cluster3, cluster4 } =
-    getClusterDataSet;
+  const {
+    loading,
+    err,
+    clusterData,
+    cluster1,
+    cluster2,
+    cluster3,
+    cluster4,
+    hotels,
+  } = getClusterDataSet;
 
   const [dateRange, setDateRange] = useState([
     [0, 30],
@@ -162,6 +171,74 @@ export const Graphs = () => {
     },
   });
 
+  const [_hotelData, set_HotelData] = useState({
+    labels: cluster1
+      .slice(dateRange[datePage][0], dateRange[datePage][1])
+      .map((a) => moment(a.date).format('MM/DD')),
+    datasets: [
+      {
+        label: 'No Rates',
+        backgroundColor: '#B0BEC5',
+        borderColor: '#B0BEC5',
+        borderWidth: 1,
+        //stack: 1,
+        hoverBackgroundColor: '#B0BEC5',
+        hoverBorderColor: '#B0BEC5',
+        data: [],
+      },
+      {
+        label: 'Outliers',
+        backgroundColor: '#9E9E9E',
+        borderColor: '#9E9E9E',
+        borderWidth: 1,
+        //stack: 1,
+        hoverBackgroundColor: '#9E9E9E',
+        hoverBorderColor: '#9E9E9E',
+        data: [],
+      },
+      {
+        label: 'Stars 2',
+        backgroundColor: CLUSTER_BACKGROUND[0],
+        borderColor: CLUSTER_BACKGROUND[0],
+        borderWidth: 1,
+        //stack: 1,
+        hoverBackgroundColor: CLUSTER_BACKGROUND[0],
+        hoverBorderColor: CLUSTER_BACKGROUND[0],
+        data: [],
+      },
+      {
+        label: 'Stars 3',
+        backgroundColor: CLUSTER_BACKGROUND[1],
+        borderColor: CLUSTER_BACKGROUND[1],
+        borderWidth: 1,
+        //stack: 1,
+        hoverBackgroundColor: CLUSTER_BACKGROUND[1],
+        hoverBorderColor: CLUSTER_BACKGROUND[1],
+        data: [],
+      },
+      {
+        label: 'Stars 4',
+        backgroundColor: CLUSTER_BACKGROUND[2],
+        borderColor: CLUSTER_BACKGROUND[2],
+        borderWidth: 1,
+        //stack: 1,
+        hoverBackgroundColor: CLUSTER_BACKGROUND[2],
+        hoverBorderColor: CLUSTER_BACKGROUND[2],
+        data: [],
+      },
+      {
+        label: 'Stars 5',
+        backgroundColor: CLUSTER_BACKGROUND[3],
+        borderColor: CLUSTER_BACKGROUND[3],
+        borderWidth: 1,
+        // stack: 1,
+        hoverBackgroundColor: CLUSTER_BACKGROUND[3],
+        hoverBorderColor: CLUSTER_BACKGROUND[3],
+        data: [],
+      },
+    ],
+  });
+
   const [scatterData2avg, setScatterData2avg] = useState([]);
   const [scatterData2high, setScatterData2high] = useState([]);
   const [scatterData2low, setScatterData2low] = useState([]);
@@ -178,6 +255,8 @@ export const Graphs = () => {
   const [scatterData5high, setScatterData5high] = useState([]);
   const [scatterData5low, setScatterData5low] = useState([]);
 
+  const [_hotelsCountDataset, set_hotelsCountDataset] = useState([]);
+
   const [scatterPlot, setScatterPlot] = useState(2);
 
   const [scatterPlotLabels, setScatterPlotLabels] = useState(
@@ -186,7 +265,7 @@ export const Graphs = () => {
       .map((a) => moment(a.date).format('MM/DD'))
   );
 
-  const [bind, setBind] = useState(true);
+  const [bind, setBind] = useState(false);
 
   const hanndleMatrixChange = (m) => {
     setMatrix(m);
@@ -200,6 +279,28 @@ export const Graphs = () => {
     lineData.labels = cluster1
       .slice(dateRange[datePage][0], dateRange[datePage][1])
       .map((a) => moment(a.date).format('MM/DD'));
+    _hotelData.labels = cluster1
+      .slice(dateRange[datePage][0], dateRange[datePage][1])
+      .map((a) => moment(a.date).format('MM/DD'));
+
+    _hotelData.datasets[0].data = _hotelsCountDataset
+      .map((x) => x.noRateHotels)
+      .slice(dateRange[datePage][0], dateRange[datePage][1]);
+    _hotelData.datasets[1].data = _hotelsCountDataset
+      .map((x) => x.outliers)
+      .slice(dateRange[datePage][0], dateRange[datePage][1]);
+    _hotelData.datasets[2].data = _hotelsCountDataset
+      .map((x) => x.cls2h)
+      .slice(dateRange[datePage][0], dateRange[datePage][1]);
+    _hotelData.datasets[3].data = _hotelsCountDataset
+      .map((x) => x.cls3h)
+      .slice(dateRange[datePage][0], dateRange[datePage][1]);
+    _hotelData.datasets[4].data = _hotelsCountDataset
+      .map((x) => x.cls4h)
+      .slice(dateRange[datePage][0], dateRange[datePage][1]);
+    _hotelData.datasets[5].data = _hotelsCountDataset
+      .map((x) => x.cls5h)
+      .slice(dateRange[datePage][0], dateRange[datePage][1]);
 
     if (matrix === 'avg') {
       chartData.datasets.map((set, ix) => {
@@ -359,6 +460,54 @@ export const Graphs = () => {
     setScatterPlot(e);
   };
 
+  const getClusterByPrice = (rate, ix) => {
+    if (
+      (cluster1[ix].min != undefined || cluster1[ix].min != null) &&
+      (cluster1[ix].max != undefined || cluster1[ix].max != null)
+    ) {
+      if (rate >= cluster1[ix].min && rate <= cluster1[ix].max) {
+        // console.log(
+        //   `${ix} => ${cluster1[ix].min} < ${rate} > ${cluster1[ix].max} `
+        // );
+        return 0;
+      }
+    }
+    if (
+      (cluster2[ix].min != undefined || cluster2[ix].min != null) &&
+      (cluster2[ix].max != undefined || cluster2[ix].max != null)
+    ) {
+      if (rate >= cluster2[ix].min && rate <= cluster2[ix].max) {
+        // console.log(
+        //   `${ix} =>${cluster2[ix].min} < ${rate} > ${cluster2[ix].max} `
+        // );
+        return 1;
+      }
+    }
+
+    if (
+      (cluster3[ix].min != undefined || cluster3[ix].min != null) &&
+      (cluster3[ix].max != undefined || cluster3[ix].max != null)
+    ) {
+      if (rate >= cluster3[ix].min && rate <= cluster3[ix].max) {
+        // console.log(
+        //   `${ix} =>${cluster3[ix].min} < ${rate} > ${cluster3[ix].max} `
+        // );
+        return 2;
+      }
+    }
+    if (
+      (cluster4[ix].min != undefined || cluster4[ix].min != null) &&
+      (cluster4[ix].max != undefined || cluster4[ix].max != null)
+    ) {
+      if (rate >= cluster4[ix].min && rate <= cluster4[ix].max) {
+        // console.log(
+        //   `${ix} =>${cluster4[ix].min} < ${rate} > ${cluster4[ix].max} `
+        // );
+        return 3;
+      }
+    }
+  };
+
   const handleDatePage = (e) => {
     setDatePage(e);
     setChartDataset(e, matrix);
@@ -367,6 +516,92 @@ export const Graphs = () => {
     //   dateRange[datePage][1]
     // );
   };
+
+  const getPrice = (arr) => {
+    const price = arr.findIndex((e) => e > 0);
+    return price;
+  };
+
+  const checkHotelAvailability = (id, day) => {
+    const hotels_arr = Array.prototype.concat(
+      cluster1[day].unwanted,
+      cluster2[day].unwanted,
+      cluster3[day].unwanted,
+      cluster4[day].unwanted
+    );
+
+    const exists = hotels_arr.some((obj) => obj.id == id);
+
+    if (exists) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  useEffect(() => {
+    const buildHotelsDataSet = async () => {
+      let datebyhotelcount = [];
+
+      await [...Array(90).keys()].map((e, ix) => {
+        let cls5h = [];
+        let cls4h = [];
+        let cls3h = [];
+        let cls2h = [];
+        let outliers = [];
+        let noRateHotels = [];
+        hotels.map((_hotel, index) => {
+          if (_hotel.prices[ix] !== null) {
+            if (checkHotelAvailability(_hotel.hotelID, ix)) {
+              let clstr =
+                getClusterByPrice(
+                  _hotel.prices[ix].price[getPrice(_hotel.prices[ix].price)],
+                  ix
+                ) + 2;
+              clstr == 5
+                ? cls5h.push(_hotel)
+                : clstr == 4
+                ? cls4h.push(_hotel)
+                : clstr == 3
+                ? cls3h.push(_hotel)
+                : clstr == 2
+                ? cls2h.push(_hotel)
+                : outliers.push(_hotel);
+            } else {
+              outliers.push(_hotel);
+            }
+          } else {
+            noRateHotels.push(_hotel);
+          }
+        });
+        const day = {
+          date: hotels[0].prices[ix].date,
+          cls5h: cls5h.length,
+          cls4h: cls4h.length,
+          cls3h: cls3h.length,
+          cls2h: cls2h.length,
+          outliers: outliers.length,
+          noRateHotels: noRateHotels.length,
+        };
+        datebyhotelcount.push(day);
+        console.log(
+          `date: ${hotels[0].prices[ix].date}, cls5h: ${cls5h.length}, cls4h: ${cls4h.length}, cls3h: ${cls3h.length}, cls2h: ${cls2h.length}, outliers: ${outliers.length}, noRateHotels: ${noRateHotels.length}`
+        );
+      });
+
+      _hotelData.datasets[0].data = datebyhotelcount.map((x) => x.noRateHotels);
+      _hotelData.datasets[1].data = datebyhotelcount.map((x) => x.outliers);
+      _hotelData.datasets[2].data = datebyhotelcount.map((x) => x.cls2h);
+      _hotelData.datasets[3].data = datebyhotelcount.map((x) => x.cls3h);
+      _hotelData.datasets[4].data = datebyhotelcount.map((x) => x.cls4h);
+      _hotelData.datasets[5].data = datebyhotelcount.map((x) => x.cls5h);
+
+      set_hotelsCountDataset(datebyhotelcount);
+      setBind(true);
+    };
+
+    buildHotelsDataSet();
+  }, []);
 
   useEffect(() => {
     if (clusterData.length > 0) {
@@ -434,8 +669,8 @@ export const Graphs = () => {
       {bind ? (
         <>
           <Grid className="my-5" container justify="space-around">
-            <h1>Scatter Plot</h1>
-            <FormControl className={classes.formControl}>
+            <h1>Hotels Count</h1>
+            {/* <FormControl className={classes.formControl}>
               <InputLabel htmlFor="grouped-native-select">
                 Scatter Plot for
               </InputLabel>
@@ -450,7 +685,7 @@ export const Graphs = () => {
                 <option value="4">4 Star Cluster</option>
                 <option value="5">5 Star Cluster</option>
               </Select>
-            </FormControl>
+            </FormControl> */}
             <FormControl className={classes.formControl}>
               <InputLabel htmlFor="grouped-native-select">
                 Date Range
@@ -467,7 +702,17 @@ export const Graphs = () => {
               </Select>
             </FormControl>
           </Grid>
-          {scatterData2avg.length > 0 && scatterPlot == 2 ? (
+          <Box className="my-5">
+            <Bar
+              height={400}
+              width={100}
+              data={_hotelData}
+              options={stackedOptions}
+            />
+          </Box>
+
+          <hr className="my-5"></hr>
+          {/* {scatterData2avg.length > 0 && scatterPlot == 2 ? (
             //(console.log('scatterData => ' + JSON.stringify(scatterData)),
             <Line
               data={{
@@ -625,7 +870,7 @@ export const Graphs = () => {
             />
           ) : (
             <></>
-          )}
+          )} */}
           <hr className="my-5"></hr>
           <Grid container justify="space-around" className="my-5">
             <h1>Analytic Graphs</h1>
@@ -667,15 +912,7 @@ export const Graphs = () => {
             <Bar height={400} width={100} data={chartData} options={options} />
           </Box>
           <hr className="my-5"></hr>
-          <Box className="my-5">
-            <Bar
-              height={400}
-              width={100}
-              data={chartData}
-              options={stackedOptions}
-            />
-          </Box>
-          <hr className="my-5"></hr>
+
           <Line data={lineData} height={100} />
         </>
       ) : (
