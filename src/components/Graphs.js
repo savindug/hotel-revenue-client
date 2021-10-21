@@ -140,14 +140,26 @@ export const Graphs = () => {
       display: false,
     },
     type: 'bar',
-    //   scales: {
-    //     xAxes: [{
-    //         stacked: true
-    //     }],
-    //     yAxes: [{
-    //         stacked: true
-    //     }]
-    // }
+  });
+  const [stackedOptions, setStackedOptions] = useState({
+    responsive: true,
+    maintainAspectRatio: false,
+    legend: {
+      display: false,
+    },
+    type: 'bar',
+    scales: {
+      xAxes: [
+        {
+          stacked: true,
+        },
+      ],
+      yAxes: [
+        {
+          stacked: true,
+        },
+      ],
+    },
   });
 
   const [scatterData2avg, setScatterData2avg] = useState([]);
@@ -653,6 +665,15 @@ export const Graphs = () => {
 
           <Box className="my-5">
             <Bar height={400} width={100} data={chartData} options={options} />
+          </Box>
+          <hr className="my-5"></hr>
+          <Box className="my-5">
+            <Bar
+              height={400}
+              width={100}
+              data={chartData}
+              options={stackedOptions}
+            />
           </Box>
           <hr className="my-5"></hr>
           <Line data={lineData} height={100} />
