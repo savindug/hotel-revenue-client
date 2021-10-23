@@ -321,7 +321,7 @@ export const ClusteredData = () => {
             Hotel RADAR
           </Nav.Link>
         </Nav.Item>{' '}
-        {/* <Nav.Item>
+        <Nav.Item>
           <Nav.Link
             className={tab === 5 ? tabularNavCls : 'text-dark font-weight-bold'}
             eventKey="link-1"
@@ -330,7 +330,7 @@ export const ClusteredData = () => {
           >
             Similarity Score
           </Nav.Link>
-        </Nav.Item> */}
+        </Nav.Item>
       </Nav>
     );
   };
@@ -547,10 +547,9 @@ export const ClusteredData = () => {
         <HotelDataTable selectedDate={selectedDate} />
       ) : hotels.length > 0 && tab === 4 ? (
         <SimpleMap />
+      ) : hotels.length > 0 && tab === 5 ? (
+        <SimilarityScore selectedDate={selectedDate} />
       ) : (
-        // : hotels.length > 0 && tab === 5 ? (
-        //   <SimilarityScore selectedDate={selectedDate} />
-        // )
         <></>
       )}
     </div>

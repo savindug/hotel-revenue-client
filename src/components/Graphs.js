@@ -584,9 +584,9 @@ export const Graphs = () => {
           noRateHotels: noRateHotels.length,
         };
         datebyhotelcount.push(day);
-        console.log(
-          `date: ${hotels[0].prices[ix].date}, cls5h: ${cls5h.length}, cls4h: ${cls4h.length}, cls3h: ${cls3h.length}, cls2h: ${cls2h.length}, outliers: ${outliers.length}, noRateHotels: ${noRateHotels.length}`
-        );
+        // console.log(
+        //   `date: ${hotels[0].prices[ix].date}, cls5h: ${cls5h.length}, cls4h: ${cls4h.length}, cls3h: ${cls3h.length}, cls2h: ${cls2h.length}, outliers: ${outliers.length}, noRateHotels: ${noRateHotels.length}`
+        // );
       });
 
       _hotelData.datasets[0].data = datebyhotelcount.map((x) => x.noRateHotels);

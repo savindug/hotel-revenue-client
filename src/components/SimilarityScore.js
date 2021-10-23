@@ -93,6 +93,8 @@ export default function SimilarityScore({ selectedDate }) {
 
   const [nights, setNights] = useState(0);
 
+  const [binding, setBinding] = useState(true);
+
   const [searched, setSearched] = useState('');
 
   const requestSearch = (searchedVal) => {
@@ -112,40 +114,81 @@ export default function SimilarityScore({ selectedDate }) {
     requestSearch(searched);
   }, [searched]);
 
-  useEffect(() => {
-    // console.log(`selectedDate: ${selectedDate}`);
+  const getSimilarityRank = (arr) => {
+    var sorted = arr.slice().sort(function (a, b) {
+      return a.similiarity_score - b.similiarity_score;
+    });
 
+    var rank = 1;
+    for (var i = 0; i < sorted.length; i++) {
+      // increase rank only if current score less than previous
+      if (
+        i > 0 &&
+        sorted[i].similiarity_score > sorted[i - 1].similiarity_score
+      ) {
+        rank++;
+      }
+      sorted[i].similarityRank = rank;
+    }
+
+    // console.log(sorted);
+    return sorted;
+  };
+
+  useEffect(() => {
     const similarityScoreRateings = () => {
+      setBinding(true);
+      [...Array(90).keys()].map((d, i) => {
+        hotels.map((_hotel, id) => {
+          if (_hotel.prices[i] != null) {
+            // _hotel.score = `${reqHotel[i].rate} - ${
+            //   _hotel.prices[i].price[getPrice(_hotel.prices[i].price)]
+            // }`;
+            _hotel.prices[i].score = Math.abs(
+              reqHotel[i].rate -
+                _hotel.prices[i].price[getPrice(_hotel.prices[i].price)]
+            );
+          }
+        });
+      });
       [...Array(90).keys()].map((d, i) => {
         let score_arr = [];
         hotels.map((_hotel, id) => {
           if (_hotel.prices[i] != null) {
-            _hotel.score = `${reqHotel[i].rate} - ${
-              _hotel.prices[i].price[getPrice(_hotel.prices[i].price)]
-            }`;
-            // Math.abs(
-            //   reqHotel[i].rate - getPrice(_hotel.prices[i].price)
-            // );
+            let n_hotel = {
+              checkIn: _hotel.checkIn,
+              hotelID: _hotel.hotelID,
+              hotelName: _hotel.hotelName,
+              price: _hotel.prices[i].price[getPrice(_hotel.prices[i].price)],
+              similiarity_score: _hotel.prices[i].score,
+            };
+            score_arr.push(n_hotel);
           }
-          score_arr.push(_hotel);
         });
 
-        score_arr.sort((a, b) => b.score - a.score);
-        console.log(score_arr);
+        const ranks_arr = getSimilarityRank(score_arr);
+        hotels.map((_hotel, id) => {
+          if (_hotel.prices[i] != null) {
+            _hotel.prices[i].similarityRank = ranks_arr.find(
+              (x) => x.hotelID == _hotel.hotelID
+            ).similarityRank;
+          }
+        });
       });
+      hotels.map((_hotel, id) => {
+        _hotel.similarityScore = _hotel.prices
+          .map((item) => (item !== null ? item.similarityRank : null))
+          .reduce((a, b) => a + b, 0);
+      });
+      setBinding(false);
+      // console.log(hotels.sort((a, b) => a.similarityScore - b.similarityScore));
     };
 
     similarityScoreRateings();
     setOriginalRows(
-      hotels.sort(
-        (a, b) => b.stars - a.stars || a.hotelName.localeCompare(b.hotelName)
-      )
+      hotels.sort((a, b) => a.similarityScore - b.similarityScore)
     );
-    setHotelsList(
-      hotels.sort(
-        (a, b) => b.stars - a.stars || a.hotelName.localeCompare(b.hotelName)
-      )
-    );
+    setHotelsList(hotels.sort((a, b) => a.similarityScore - b.similarityScore));
   }, []);
 
   const getClusterByPrice = (rate, ix) => {
@@ -290,6 +333,7 @@ export default function SimilarityScore({ selectedDate }) {
       cluster1.length > 0 &&
       cluster2.length > 0 &&
       cluster3.length > 0 &&
+      !binding &&
       cluster4.length > 0 ? (
         <>
           <Grid container justify="space-evenly" className="my-3">
@@ -458,13 +502,16 @@ export default function SimilarityScore({ selectedDate }) {
                           >
                             <span className="font-weight-bold">
                               {dt.price[getPrice(dt.price)]}&nbsp;
-                              {getPrice(dt.price) > 0 ? (
+                              <sup className="text-light font-weight-bold">
+                                {dt.similarityRank}
+                              </sup>
+                              {/* {getPrice(dt.price) > 0 ? (
                                 <sup className="text-light font-weight-bold">
                                   {getPrice(dt.price) + 1}
                                 </sup>
                               ) : (
                                 <></>
-                              )}
+                              )} */}
                             </span>
                           </StyledTableCell>
                         ) : (
