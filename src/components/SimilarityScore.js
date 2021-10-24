@@ -176,9 +176,13 @@ export default function SimilarityScore({ selectedDate }) {
         });
       });
       hotels.map((_hotel, id) => {
-        _hotel.similarityScore = _hotel.prices
-          .map((item) => (item !== null ? item.similarityRank : null))
-          .reduce((a, b) => a + b, 0);
+        const rate_arr = _hotel.prices.map((item) =>
+          item !== null ? item.similarityRank : null
+        );
+        const rate_arr_len = rate_arr.filter((x) => x !== null).length;
+
+        _hotel.similarityScore =
+          rate_arr.reduce((a, b) => a + b, 0) / rate_arr_len;
       });
       setBinding(false);
       // console.log(hotels.sort((a, b) => a.similarityScore - b.similarityScore));
@@ -411,7 +415,7 @@ export default function SimilarityScore({ selectedDate }) {
                       </TableSortLabel>
                     </StyledTableCell>
                     <StyledTableCell className="text-center">
-                      Most Freq Bucket
+                      Freq Bucket
                     </StyledTableCell>
                     {[...Array(90).keys()].map((d, i) =>
                       (() => {
