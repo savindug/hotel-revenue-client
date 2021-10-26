@@ -243,57 +243,21 @@ export default function SimilarityScore({ selectedDate }) {
     }
   };
 
-  const sortData = (sortBy, sortOrder) => {
-    // alert(`sortData (${sortBy}, ${sortOrder})`);
-    if (sortBy === 0) {
-      if (sortOrder === 'asc') {
-        hotelsList.sort(
-          (a, b) => a.hotelName.localeCompare(b.hotelName) || b.stars - a.stars
-        );
-      } else {
-        hotelsList.sort(
-          (a, b) => b.hotelName.localeCompare(a.hotelName) || b.stars - a.stars
-        );
-      }
-    }
-
-    if (sortBy === 1) {
-      if (sortOrder === 'asc') {
-        hotelsList.sort(
-          (a, b) => a.stars - b.stars || a.hotelName.localeCompare(b.hotelName)
-        );
-      } else {
-        hotelsList.sort(
-          (a, b) => b.stars - a.stars || a.hotelName.localeCompare(b.hotelName)
-        );
-      }
-    }
-  };
-
-  const handleSort = async (sb, sd) => {
-    setSortBy(sb);
-    setSortDir(sd);
-
-    await sortData(sb, sd);
-
-    //console.log('hotelList ', hotelsList);
-  };
-
-  const handleHotelsFilter = async (event) => {
-    if (event.target.value == 0) {
-      const selectedHotels = [hotels[0]];
-      user.application.candidate_properties.map((_filterHotel) =>
-        hotels.some((hotel) => {
-          if (hotel.hotelID === _filterHotel.id) {
-            selectedHotels.push(hotel);
-          }
-        })
-      );
-      setHotelsList(selectedHotels);
-    } else {
-      setHotelsList(hotels);
-    }
-  };
+  // const handleHotelsFilter = async (event) => {
+  //   if (event.target.value == 0) {
+  //     const selectedHotels = [hotels[0]];
+  //     user.application.candidate_properties.map((_filterHotel) =>
+  //       hotels.some((hotel) => {
+  //         if (hotel.hotelID === _filterHotel.id) {
+  //           selectedHotels.push(hotel);
+  //         }
+  //       })
+  //     );
+  //     setHotelsList(selectedHotels);
+  //   } else {
+  //     setHotelsList(hotels);
+  //   }
+  // };
 
   const handleNightsFilter = async (event) => {
     setNights(event.target.value);
@@ -348,7 +312,7 @@ export default function SimilarityScore({ selectedDate }) {
                 onCancelSearch={() => cancelSearch()}
               />
             </FormGroup>
-            <FormGroup className={classes.formControl}>
+            {/* <FormGroup className={classes.formControl}>
               <InputLabel
                 htmlFor="grouped-native-select"
                 style={{ backgroundColor: 'white', fontFamily: FONT_FAMILY }}
@@ -364,7 +328,7 @@ export default function SimilarityScore({ selectedDate }) {
                 <option value={1}>All Hotels</option>
                 <option value={0}>Selected Hotels</option>
               </Select>
-            </FormGroup>
+            </FormGroup> */}
           </Grid>
 
           <TableContainer
@@ -390,29 +354,29 @@ export default function SimilarityScore({ selectedDate }) {
                         fontFamily: FONT_FAMILY,
                       }}
                     >
-                      <TableSortLabel
+                      {/* <TableSortLabel
                         active={sortBy === 0}
                         direction={sortDir}
-                        onClick={() => {
-                          handleSort(0, sortDir === 'asc' ? 'desc' : 'asc');
-                        }}
-                      >
-                        Hotel Name
-                      </TableSortLabel>
+                        // onClick={() => {
+                        //   handleSort(0, sortDir === 'asc' ? 'desc' : 'asc');
+                        // }}
+                      > */}
+                      Hotel Name
+                      {/* </TableSortLabel> */}
                       <hr />
                       <TableSortLabel disabled>Days Out</TableSortLabel>
                       {/* <TableSortLabel onClick={handleSort(0)}></TableSortLabel> */}
                     </StyledTableCell>
                     <StyledTableCell size="small">
-                      <TableSortLabel
+                      {/* <TableSortLabel
                         active={sortBy === 1}
                         direction={sortDir}
                         onClick={() => {
                           handleSort(1, sortDir === 'asc' ? 'desc' : 'asc');
                         }}
-                      >
-                        Stars
-                      </TableSortLabel>
+                      > */}
+                      Stars
+                      {/* </TableSortLabel> */}
                     </StyledTableCell>
                     <StyledTableCell className="text-center">
                       Freq Bucket

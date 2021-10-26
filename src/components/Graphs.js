@@ -887,7 +887,7 @@ export const Graphs = () => {
                 <option value="avg">Average Rate</option>
                 <option value="max">Highest Rate</option>
                 <option value="min">Lowest Rate</option>
-                <option value="mod">Most Repeated rate (mode)</option>
+                <option value="mod">Most Repeated rate </option>
               </Select>
             </FormControl>
 
