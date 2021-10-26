@@ -423,6 +423,55 @@ export default function BucketMovements({ selectedDate }) {
                       </StyledTableCell>
                     ))}
                   </StyledTableRow>
+                </TableBody>
+              </Table>
+            </Box>
+          </TableContainer>
+
+          <TableContainer component={Paper} className="my-5">
+            <Box width={100}>
+              <Table
+                className={classes.table}
+                aria-label="customized table"
+                bodyStyle={{ overflow: 'visible' }}
+              >
+                <TableHead>
+                  <StyledTableCell
+                    style={{ fontWeight: 'bold', width: '250px' }}
+                    className={classes.sticky}
+                  >
+                    Hotels Count <hr />
+                    Days Out
+                  </StyledTableCell>
+                  {/* <StyledTableCell size="small">Stars</StyledTableCell> */}
+                  {[...Array(90).keys()].map((e, index) =>
+                    (() => {
+                      let day = moment(selectedDate)
+                        .add(index, 'd')
+                        .format('YYYY-MM-DD');
+                      let date = moment(day).format('dddd').substring(0, 3);
+                      return (
+                        <StyledTableCell
+                          size="small"
+                          key={index}
+                          className={
+                            date === 'Sat' || date === 'Fri'
+                              ? 'bg-secondary text-light text-center'
+                              : 'text-center'
+                          }
+                          style={{ fontSize: '12px' }}
+                        >
+                          {`${date.toUpperCase()}\n${moment(day).format(
+                            'MM/DD'
+                          )}`}
+                          <hr />
+                          {index}
+                        </StyledTableCell>
+                      );
+                    })()
+                  )}
+                </TableHead>
+                <TableBody>
                   <StyledTableRow>
                     <StyledTableCell
                       component="th"
@@ -469,7 +518,55 @@ export default function BucketMovements({ selectedDate }) {
                       </StyledTableCell>
                     ))}
                   </StyledTableRow>
+                </TableBody>
+              </Table>
+            </Box>
+          </TableContainer>
 
+          <TableContainer component={Paper} className="my-5">
+            <Box width={100}>
+              <Table
+                className={classes.table}
+                aria-label="customized table"
+                bodyStyle={{ overflow: 'visible' }}
+              >
+                <TableHead>
+                  <StyledTableCell
+                    style={{ fontWeight: 'bold', width: '250px' }}
+                    className={classes.sticky}
+                  >
+                    Hotels Count <hr />
+                    Days Out
+                  </StyledTableCell>
+                  {/* <StyledTableCell size="small">Stars</StyledTableCell> */}
+                  {[...Array(90).keys()].map((e, index) =>
+                    (() => {
+                      let day = moment(selectedDate)
+                        .add(index, 'd')
+                        .format('YYYY-MM-DD');
+                      let date = moment(day).format('dddd').substring(0, 3);
+                      return (
+                        <StyledTableCell
+                          size="small"
+                          key={index}
+                          className={
+                            date === 'Sat' || date === 'Fri'
+                              ? 'bg-secondary text-light text-center'
+                              : 'text-center'
+                          }
+                          style={{ fontSize: '12px' }}
+                        >
+                          {`${date.toUpperCase()}\n${moment(day).format(
+                            'MM/DD'
+                          )}`}
+                          <hr />
+                          {index}
+                        </StyledTableCell>
+                      );
+                    })()
+                  )}
+                </TableHead>
+                <TableBody>
                   <StyledTableRow>
                     <StyledTableCell
                       component="th"
@@ -516,7 +613,55 @@ export default function BucketMovements({ selectedDate }) {
                       </StyledTableCell>
                     ))}
                   </StyledTableRow>
+                </TableBody>
+              </Table>
+            </Box>
+          </TableContainer>
 
+          <TableContainer component={Paper} className="my-5">
+            <Box width={100}>
+              <Table
+                className={classes.table}
+                aria-label="customized table"
+                bodyStyle={{ overflow: 'visible' }}
+              >
+                <TableHead>
+                  <StyledTableCell
+                    style={{ fontWeight: 'bold', width: '250px' }}
+                    className={classes.sticky}
+                  >
+                    Hotels Count <hr />
+                    Days Out
+                  </StyledTableCell>
+                  {/* <StyledTableCell size="small">Stars</StyledTableCell> */}
+                  {[...Array(90).keys()].map((e, index) =>
+                    (() => {
+                      let day = moment(selectedDate)
+                        .add(index, 'd')
+                        .format('YYYY-MM-DD');
+                      let date = moment(day).format('dddd').substring(0, 3);
+                      return (
+                        <StyledTableCell
+                          size="small"
+                          key={index}
+                          className={
+                            date === 'Sat' || date === 'Fri'
+                              ? 'bg-secondary text-light text-center'
+                              : 'text-center'
+                          }
+                          style={{ fontSize: '12px' }}
+                        >
+                          {`${date.toUpperCase()}\n${moment(day).format(
+                            'MM/DD'
+                          )}`}
+                          <hr />
+                          {index}
+                        </StyledTableCell>
+                      );
+                    })()
+                  )}
+                </TableHead>
+                <TableBody>
                   <StyledTableRow>
                     <StyledTableCell
                       component="th"
@@ -563,7 +708,55 @@ export default function BucketMovements({ selectedDate }) {
                       </StyledTableCell>
                     ))}
                   </StyledTableRow>
+                </TableBody>
+              </Table>
+            </Box>
+          </TableContainer>
 
+          <TableContainer component={Paper} className="my-5">
+            <Box width={100}>
+              <Table
+                className={classes.table}
+                aria-label="customized table"
+                bodyStyle={{ overflow: 'visible' }}
+              >
+                <TableHead>
+                  <StyledTableCell
+                    style={{ fontWeight: 'bold', width: '250px' }}
+                    className={classes.sticky}
+                  >
+                    Hotels Count <hr />
+                    Days Out
+                  </StyledTableCell>
+                  {/* <StyledTableCell size="small">Stars</StyledTableCell> */}
+                  {[...Array(90).keys()].map((e, index) =>
+                    (() => {
+                      let day = moment(selectedDate)
+                        .add(index, 'd')
+                        .format('YYYY-MM-DD');
+                      let date = moment(day).format('dddd').substring(0, 3);
+                      return (
+                        <StyledTableCell
+                          size="small"
+                          key={index}
+                          className={
+                            date === 'Sat' || date === 'Fri'
+                              ? 'bg-secondary text-light text-center'
+                              : 'text-center'
+                          }
+                          style={{ fontSize: '12px' }}
+                        >
+                          {`${date.toUpperCase()}\n${moment(day).format(
+                            'MM/DD'
+                          )}`}
+                          <hr />
+                          {index}
+                        </StyledTableCell>
+                      );
+                    })()
+                  )}
+                </TableHead>
+                <TableBody>
                   <StyledTableRow>
                     <StyledTableCell
                       component="th"
