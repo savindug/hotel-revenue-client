@@ -18,6 +18,8 @@ import {
 import { GOOGLE_MAP_KEY } from '../env';
 import { ListGroup, OverlayTrigger, Toast, Tooltip } from 'react-bootstrap';
 import LocationCityOutlinedIcon from '@material-ui/icons/LocationCityOutlined';
+import moment from 'moment';
+
 const hotelIconDim = {
   width: '40px',
   height: '40px',
@@ -85,7 +87,69 @@ const SimpleMap = () => {
     setInfoWindow(false);
   };
 
-  const AnyReactComponent = ({ id, text, stars, prices }) => (
+  const getClusterByPrice = (rate, ix) => {
+    if (
+      (cluster1[ix].min != undefined || cluster1[ix].min != null) &&
+      (cluster1[ix].max != undefined || cluster1[ix].max != null)
+    ) {
+      if (rate >= cluster1[ix].min && rate <= cluster1[ix].max) {
+        // console.log(
+        //   `${ix} => ${cluster1[ix].min} < ${rate} > ${cluster1[ix].max} `
+        // );
+        return 0;
+      }
+    }
+    if (
+      (cluster2[ix].min != undefined || cluster2[ix].min != null) &&
+      (cluster2[ix].max != undefined || cluster2[ix].max != null)
+    ) {
+      if (rate >= cluster2[ix].min && rate <= cluster2[ix].max) {
+        // console.log(
+        //   `${ix} =>${cluster2[ix].min} < ${rate} > ${cluster2[ix].max} `
+        // );
+        return 1;
+      }
+    }
+
+    if (
+      (cluster3[ix].min != undefined || cluster3[ix].min != null) &&
+      (cluster3[ix].max != undefined || cluster3[ix].max != null)
+    ) {
+      if (rate >= cluster3[ix].min && rate <= cluster3[ix].max) {
+        // console.log(
+        //   `${ix} =>${cluster3[ix].min} < ${rate} > ${cluster3[ix].max} `
+        // );
+        return 2;
+      }
+    }
+    if (
+      (cluster4[ix].min != undefined || cluster4[ix].min != null) &&
+      (cluster4[ix].max != undefined || cluster4[ix].max != null)
+    ) {
+      if (rate >= cluster4[ix].min && rate <= cluster4[ix].max) {
+        // console.log(
+        //   `${ix} =>${cluster4[ix].min} < ${rate} > ${cluster4[ix].max} `
+        // );
+        return 3;
+      }
+    }
+  };
+
+  const getPrice = (arr) => {
+    const price = arr.findIndex((e) => e > 0);
+    return price;
+  };
+
+  const mode = (arr) => {
+    return arr
+      .sort(
+        (a, b) =>
+          arr.filter((v) => v === a).length - arr.filter((v) => v === b).length
+      )
+      .pop();
+  };
+
+  const AnyReactComponent = ({ id, text, stars, prices, mod_wd, mod_we }) => (
     <div key={id} style={{ cursor: 'pointer' }}>
       {/* <OverlayTrigger
         key={placement}
@@ -130,7 +194,8 @@ const SimpleMap = () => {
               <strong className="mr-auto text-light"></strong>
             </Toast.Header>
             <Toast.Body className="bg-dark">
-              <span>{`Rate`}</span>
+              <p>{`Weekday Freq Bucket: ${mod_wd}`}</p>
+              <p>{`Weekend Freq Bucket: ${mod_we}`}</p>
               {/* <ul>
                 <li className="bg-dark">Stars {stars}</li>
                 <li className="bg-dark"> Date</li>
@@ -147,7 +212,11 @@ const SimpleMap = () => {
 
   return (
     <div className="mt-5" style={{ height: '100vh', width: '100%' }}>
-      {hotels.length > 0 ? (
+      {hotels.length > 0 &&
+      cluster1.length > 0 &&
+      cluster2.length > 0 &&
+      cluster3.length > 0 &&
+      cluster4.length > 0 ? (
         <GoogleMapReact
           bootstrapURLKeys={{
             key: GOOGLE_MAP_KEY,
@@ -173,16 +242,38 @@ const SimpleMap = () => {
           }}
           onGoogleApiLoaded={({ map, maps }) => apiIsLoaded(map, maps, hotels)}
         >
-          {hotels.map((_hotel, index) => (
-            <AnyReactComponent
-              id={_hotel.hotelID}
-              lat={_hotel.location.lat}
-              lng={_hotel.location.lng}
-              stars={Math.floor(_hotel.stars)}
-              text={_hotel.hotelName}
-              prices={_hotel.prices}
-            />
-          ))}
+          {hotels.map((_hotel, index) =>
+            (() => {
+              let cluster_arr_wd = [];
+              let cluster_arr_we = [];
+              _hotel.prices.map((dt, ix) => {
+                if (dt !== null) {
+                  const day = moment(dt.date).format('dddd').substring(0, 3);
+                  if (day === 'Sat' || day === 'Fri') {
+                    cluster_arr_we.push(
+                      getClusterByPrice(dt.price[getPrice(dt.price)], ix) + 2
+                    );
+                  } else {
+                    cluster_arr_wd.push(
+                      getClusterByPrice(dt.price[getPrice(dt.price)], ix) + 2
+                    );
+                  }
+                }
+              });
+              return (
+                <AnyReactComponent
+                  id={_hotel.hotelID}
+                  lat={_hotel.location.lat}
+                  lng={_hotel.location.lng}
+                  stars={Math.floor(_hotel.stars)}
+                  text={_hotel.hotelName}
+                  prices={_hotel.prices}
+                  mod_wd={mode(cluster_arr_wd)}
+                  mod_we={mode(cluster_arr_we)}
+                />
+              );
+            })()
+          )}
         </GoogleMapReact>
       ) : (
         <></>
