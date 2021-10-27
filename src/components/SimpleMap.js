@@ -170,7 +170,8 @@ const SimpleMap = () => {
         }
         width={hotelIconDim.width}
         height={hotelIconDim.height}
-        onClick={() => handleInfoOpen(id)}
+        onMouseEnter={() => handleInfoOpen(id)}
+        onMouseLeave={handleInfoClose}
       />
       {infoWindow && infoWindowID === id ? (
         <div>
