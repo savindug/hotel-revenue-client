@@ -195,6 +195,7 @@ const SimpleMap = () => {
               <strong className="mr-auto text-light"></strong>
             </Toast.Header>
             <Toast.Body className="bg-dark">
+              <p>{`Stars: ${stars}`}</p>
               <p>{`Weekday Freq Bucket: ${mod_wd}`}</p>
               <p>{`Weekend Freq Bucket: ${mod_we}`}</p>
               {/* <ul>
