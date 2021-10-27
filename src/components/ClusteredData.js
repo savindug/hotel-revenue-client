@@ -103,6 +103,17 @@ export const ClusteredData = () => {
     if (option != -100) {
       setSelectedMarket(option);
 
+      if (reports.length > 0) {
+        let property_opts = [];
+        reports.map(async (rp) => {
+          if (rp.destination == option) {
+            property_opts.push(rp.property);
+            // console.log(`report found: ${JSON.stringify(rp)}`);
+          }
+        });
+        setSelectedProperty(property_opts[0]);
+      }
+
       await getRefreshDates(option);
 
       await getHotelList(option);
