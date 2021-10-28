@@ -483,7 +483,11 @@ export const ClusteredData = () => {
                 style={{ backgroundColor: 'white', fontFamily: FONT_FAMILY }}
                 disabled
               >
-                <option>&nbsp;USD&nbsp;</option>
+                {selectedMarket == 457987 ? (
+                  <option>&nbsp;EUR&nbsp;</option>
+                ) : (
+                  <option>&nbsp;USD&nbsp;</option>
+                )}
               </Select>
             </FormControl>
             {/* 
@@ -553,7 +557,7 @@ export const ClusteredData = () => {
       ) : clusterData.length > 0 && tab === 1 ? (
         <BucketMovements selectedDate={selectedDate} />
       ) : clusterData.length > 0 && tab === 2 ? (
-        <Graphs />
+        <Graphs selectedDate={selectedDate} />
       ) : hotels.length > 0 && tab === 3 ? (
         <HotelDataTable selectedDate={selectedDate} />
       ) : hotels.length > 0 && tab === 4 ? (

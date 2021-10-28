@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 120,
   },
 }));
-export const Graphs = () => {
+export const Graphs = ({ selectedDate }) => {
   const classes = useStyles();
   const [matrix, setMatrix] = useState('avg');
   const getClusterDataSet = useSelector((state) => state.clusterDataSet);
@@ -575,7 +575,10 @@ export const Graphs = () => {
           }
         });
         const day = {
-          date: hotels[0].prices[ix].date,
+          // date: hotels[0].prices[ix].date,
+          date: [...Array(90).keys()].map((ob, id) =>
+            moment(selectedDate).add(id, 'd').format('YYYY-MM-DD')
+          ),
           cls5h: cls5h.length,
           cls4h: cls4h.length,
           cls3h: cls3h.length,

@@ -56,6 +56,8 @@ export default function BucketMovements({ selectedDate }) {
   const { loading, reqHotel, cluster1, cluster2, cluster3, cluster4, hotels } =
     getClusterDataSet;
 
+  const [totalHotelCount, setTotalHotelCount] = useState(0);
+
   const getFilterHotels = (arr) => {
     if (hotels.length > 0) {
       const allowedMatrkets = arr.filter(({ id: id1 }) =>
@@ -65,13 +67,35 @@ export default function BucketMovements({ selectedDate }) {
     }
   };
 
+  const checkHotelAvailability = (id, day) => {
+    const hotels_arr = Array.prototype.concat(
+      cluster1[day].unwanted,
+      cluster2[day].unwanted,
+      cluster3[day].unwanted,
+      cluster4[day].unwanted
+    );
+
+    const exists = hotels_arr.some((obj) => obj.id == id);
+
+    if (exists) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   const getPricingUps = (stars) => {
     [...Array(90).keys()].map((day) => {});
   };
 
   return (
     <>
-      {!loading ? (
+      {!loading &&
+      hotels.length > 0 &&
+      cluster1.length > 0 &&
+      cluster2.length > 0 &&
+      cluster3.length > 0 &&
+      cluster4.length > 0 ? (
         <>
           <TableContainer component={Paper} className="my-5">
             <Box width={100}>
@@ -725,7 +749,7 @@ export default function BucketMovements({ selectedDate }) {
                     style={{ fontWeight: 'bold', width: '250px' }}
                     className={classes.sticky}
                   >
-                    Hotels Count <hr />
+                    Total Hotels Count &nbsp; ({hotels.length})<hr />
                     Days Out
                   </StyledTableCell>
                   {/* <StyledTableCell size="small">Stars</StyledTableCell> */}
@@ -768,12 +792,13 @@ export default function BucketMovements({ selectedDate }) {
                         borderTop: '2px solid grey',
                       }}
                     >
-                      <p className="font-weight-bold">Total Hotels Count</p>
+                      <p className="font-weight-bold">Hotels Showing Rates</p>
                       <div className="text-center">
                         <Divider />
                         5-stars <Divider /> 4-stars <Divider /> 3-stars
                         <Divider />
-                        2-stars{' '}
+                        2-stars <Divider /> Hotels with Outlier Rates
+                        <Divider /> Hotels not Showing Rates
                       </div>
                     </StyledTableCell>
                     {/* <StyledTableCell size="small"></StyledTableCell> */}
@@ -808,6 +833,22 @@ export default function BucketMovements({ selectedDate }) {
                           cluster2[index].stars5.length +
                           cluster3[index].stars5.length +
                           cluster4[index].stars5.length;
+
+                        let outliers = [];
+                        let noRateHotels = [];
+                        hotels.map((_hotel, id) => {
+                          if (_hotel.prices[index] !== null) {
+                            console.log(_hotel.prices[index]);
+                            if (
+                              !checkHotelAvailability(_hotel.hotelID, index)
+                            ) {
+                              outliers.push(_hotel);
+                            }
+                          } else {
+                            noRateHotels.push(_hotel);
+                          }
+                        });
+
                         return (
                           <StyledTableCell
                             component="th"
@@ -824,7 +865,8 @@ export default function BucketMovements({ selectedDate }) {
                               {hotel_count_5}
                               <Divider /> {hotel_count_4}
                               <Divider /> {hotel_count_3} <Divider />{' '}
-                              {hotel_count_2}
+                              {hotel_count_2} <Divider /> {outliers.length}{' '}
+                              <Divider /> {noRateHotels.length}
                             </>
                           </StyledTableCell>
                         );
