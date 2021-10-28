@@ -542,7 +542,9 @@ export const Graphs = ({ selectedDate }) => {
   useEffect(() => {
     const buildHotelsDataSet = async () => {
       let datebyhotelcount = [];
-
+      const dates_arr = [...Array(90).keys()].map((ob, id) =>
+        moment(selectedDate).add(id, 'd').format('YYYY-MM-DD')
+      );
       await [...Array(90).keys()].map((e, ix) => {
         let cls5h = [];
         let cls4h = [];
@@ -551,7 +553,7 @@ export const Graphs = ({ selectedDate }) => {
         let outliers = [];
         let noRateHotels = [];
         hotels.map((_hotel, index) => {
-          if (_hotel.prices[ix] !== null) {
+          if (_hotel.prices[ix] != null) {
             if (checkHotelAvailability(_hotel.hotelID, ix)) {
               let clstr =
                 getClusterByPrice(
@@ -574,11 +576,10 @@ export const Graphs = ({ selectedDate }) => {
             noRateHotels.push(_hotel);
           }
         });
+
         const day = {
           // date: hotels[0].prices[ix].date,
-          date: [...Array(90).keys()].map((ob, id) =>
-            moment(selectedDate).add(id, 'd').format('YYYY-MM-DD')
-          ),
+          date: dates_arr,
           cls5h: cls5h.length,
           cls4h: cls4h.length,
           cls3h: cls3h.length,

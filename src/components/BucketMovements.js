@@ -837,7 +837,7 @@ export default function BucketMovements({ selectedDate }) {
                         let outliers = [];
                         let noRateHotels = [];
                         hotels.map((_hotel, id) => {
-                          if (_hotel.prices[index] !== null) {
+                          if (_hotel.prices[index] != null) {
                             console.log(_hotel.prices[index]);
                             if (
                               !checkHotelAvailability(_hotel.hotelID, index)
