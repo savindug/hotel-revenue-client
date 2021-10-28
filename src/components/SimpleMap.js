@@ -320,6 +320,13 @@ const SimpleMap = () => {
                                     component="span"
                                     variant="body2"
                                   >
+                                    # Rooms: {_hotel.noOfRooms}
+                                  </Typography>
+                                  <Typography
+                                    sx={{ display: 'inline' }}
+                                    component="span"
+                                    variant="body2"
+                                  >
                                     Weekday Freq Bucket: {mode(cluster_arr_wd)}
                                   </Typography>
                                   <Typography
