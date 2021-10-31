@@ -176,13 +176,13 @@ export default function SimilarityScore({ selectedDate }) {
         });
       });
       hotels.map((_hotel, id) => {
-        const rate_arr = _hotel.prices.map((item) => {
+        const rate_arr = [];
+        _hotel.prices.map((item) => {
           if (item !== null) {
             const day = moment(item.date).format('dddd').substring(0, 3);
             if (day === 'Sat' || day === 'Fri') {
-              return null;
             } else {
-              return item.similarityRank;
+              rate_arr.push(item.similarityRank);
             }
           }
         });
