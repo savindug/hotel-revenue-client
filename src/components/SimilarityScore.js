@@ -396,24 +396,26 @@ export default function SimilarityScore({ selectedDate }) {
                           .format('YYYY-MM-DD');
                         let day = moment(date).format('dddd').substring(0, 3);
                         // console.log('selectedDate+: ' + date + ', day: ' + day);
-                        return (
-                          <StyledTableCell
-                            size="small"
-                            key={i}
-                            className={
-                              day === 'Sat' || day === 'Fri'
-                                ? 'bg-secondary text-light text-center '
-                                : 'text-center '
-                            }
-                            style={{ fontSize: '12px' }}
-                          >
-                            {`${day.toUpperCase()}\n${moment(date).format(
-                              'MM/DD'
-                            )}`}{' '}
-                            <hr />
-                            {i}
-                          </StyledTableCell>
-                        );
+                        if (!(day === 'Sat' || day === 'Fri')) {
+                          return (
+                            <StyledTableCell
+                              size="small"
+                              key={i}
+                              className={
+                                day === 'Sat' || day === 'Fri'
+                                  ? 'bg-secondary text-light text-center '
+                                  : 'text-center '
+                              }
+                              style={{ fontSize: '12px' }}
+                            >
+                              {`${day.toUpperCase()}\n${moment(date).format(
+                                'MM/DD'
+                              )}`}{' '}
+                              <hr />
+                              {i}
+                            </StyledTableCell>
+                          );
+                        }
                       })()
                     )}
                   </StyledTableRow>
@@ -456,49 +458,63 @@ export default function SimilarityScore({ selectedDate }) {
                           </StyledTableCell>
                         );
                       })()}
+                      {_hotel.prices.map((dt, ix) =>
+                        (() => {
+                          let day = moment(selectedDate)
+                            .add(ix, 'd')
+                            .format('YYYY-MM-DD');
+                          const date = moment(day)
+                            .format('dddd')
+                            .substring(0, 3);
 
-                      {_hotel.prices.map((dt, ix) => {
-                        return dt !== null ? (
-                          <StyledTableCell
-                            size="small"
-                            className={classes.rates}
-                            style={
-                              checkHotelAvailability(_hotel.hotelID, ix)
-                                ? {
-                                    backgroundColor:
-                                      CLUSTER_BACKGROUND[
-                                        getClusterByPrice(
-                                          dt.price[getPrice(dt.price)],
-                                          ix
-                                        )
-                                      ],
+                          if (!(date === 'Sat' || date === 'Fri')) {
+                            if (dt !== null) {
+                              return (
+                                <StyledTableCell
+                                  size="small"
+                                  className={classes.rates}
+                                  style={
+                                    checkHotelAvailability(_hotel.hotelID, ix)
+                                      ? {
+                                          backgroundColor:
+                                            CLUSTER_BACKGROUND[
+                                              getClusterByPrice(
+                                                dt.price[getPrice(dt.price)],
+                                                ix
+                                              )
+                                            ],
+                                        }
+                                      : { backgroundColor: '#9E9E9E' }
                                   }
-                                : { backgroundColor: '#9E9E9E' }
-                            }
-                          >
-                            <span className="font-weight-bold">
-                              {dt.price[getPrice(dt.price)]}&nbsp;
+                                >
+                                  <span className="font-weight-bold">
+                                    {dt.price[getPrice(dt.price)]}&nbsp;
+                                    <sup className="text-light font-weight-bold">
+                                      {dt.similarityRank}
+                                    </sup>
+                                    {/* {getPrice(dt.price) > 0 ? (
                               <sup className="text-light font-weight-bold">
-                                {dt.similarityRank}
+                                {getPrice(dt.price) + 1}
                               </sup>
-                              {/* {getPrice(dt.price) > 0 ? (
-                                <sup className="text-light font-weight-bold">
-                                  {getPrice(dt.price) + 1}
-                                </sup>
-                              ) : (
-                                <></>
-                              )} */}
-                            </span>
-                          </StyledTableCell>
-                        ) : (
-                          <StyledTableCell
-                            size="small"
-                            className={classes.rates}
-                          >
-                            --
-                          </StyledTableCell>
-                        );
-                      })}
+                            ) : (
+                              <></>
+                            )} */}
+                                  </span>
+                                </StyledTableCell>
+                              );
+                            } else {
+                              return (
+                                <StyledTableCell
+                                  size="small"
+                                  className={classes.rates}
+                                >
+                                  --
+                                </StyledTableCell>
+                              );
+                            }
+                          }
+                        })()
+                      )}
                     </StyledTableRow>
                   ))}
                 </TableBody>
