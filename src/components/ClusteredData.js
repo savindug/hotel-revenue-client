@@ -340,7 +340,7 @@ export const ClusteredData = () => {
             disabled={loading}
             onClick={() => setTab(5)}
           >
-            Similarity Score - Weekdays
+            Similarity - Weekdays
           </Nav.Link>
         </Nav.Item>{' '}
         <Nav.Item>
@@ -350,7 +350,7 @@ export const ClusteredData = () => {
             disabled={loading}
             onClick={() => setTab(6)}
           >
-            Similarity Score - Weekends
+            Similarity - Weekends
           </Nav.Link>
         </Nav.Item>
       </Nav>
