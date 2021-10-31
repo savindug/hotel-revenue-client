@@ -552,6 +552,7 @@ export const Graphs = ({ selectedDate }) => {
         let cls2h = [];
         let outliers = [];
         let noRateHotels = [];
+        let non = [];
         hotels.map((_hotel, index) => {
           if (_hotel.prices[ix] != null) {
             if (checkHotelAvailability(_hotel.hotelID, ix)) {
@@ -560,13 +561,13 @@ export const Graphs = ({ selectedDate }) => {
                   _hotel.prices[ix].price[getPrice(_hotel.prices[ix].price)],
                   ix
                 ) + 2;
-              clstr == 5
+              clstr === 5
                 ? cls5h.push(_hotel)
-                : clstr == 4
+                : clstr === 4
                 ? cls4h.push(_hotel)
-                : clstr == 3
+                : clstr === 3
                 ? cls3h.push(_hotel)
-                : clstr == 2
+                : clstr === 2
                 ? cls2h.push(_hotel)
                 : outliers.push(_hotel);
             } else {

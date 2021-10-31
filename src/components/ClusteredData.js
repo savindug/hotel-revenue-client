@@ -33,6 +33,7 @@ import { useHistory } from 'react-router';
 import BucketMovements from './BucketMovements';
 import { CompareArrowsOutlined } from '@material-ui/icons';
 import SimilarityScore from './SimilarityScore';
+import SimilarityScoreWe from './SimilarityScoreWe';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -339,7 +340,17 @@ export const ClusteredData = () => {
             disabled={loading}
             onClick={() => setTab(5)}
           >
-            Similarity Score
+            Similarity Score - Weekdays
+          </Nav.Link>
+        </Nav.Item>{' '}
+        <Nav.Item>
+          <Nav.Link
+            className={tab === 6 ? tabularNavCls : 'text-dark font-weight-bold'}
+            eventKey="link-1"
+            disabled={loading}
+            onClick={() => setTab(6)}
+          >
+            Similarity Score - Weekends
           </Nav.Link>
         </Nav.Item>
       </Nav>
@@ -564,6 +575,8 @@ export const ClusteredData = () => {
         <SimpleMap />
       ) : hotels.length > 0 && tab === 5 ? (
         <SimilarityScore selectedDate={selectedDate} />
+      ) : hotels.length > 0 && tab === 6 ? (
+        <SimilarityScoreWe selectedDate={selectedDate} />
       ) : (
         <></>
       )}

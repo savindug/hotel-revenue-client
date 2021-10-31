@@ -65,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SimilarityScore({ selectedDate }) {
+export default function SimilarityScoreWe({ selectedDate }) {
   const classes = useStyles();
   const [dates, setDates] = useState([]);
   const [sortDir, setSortDir] = useState('desc');
@@ -180,9 +180,9 @@ export default function SimilarityScore({ selectedDate }) {
           if (item !== null) {
             const day = moment(item.date).format('dddd').substring(0, 3);
             if (day === 'Sat' || day === 'Fri') {
-              return null;
-            } else {
               return item.similarityRank;
+            } else {
+              return null;
             }
           }
         });
