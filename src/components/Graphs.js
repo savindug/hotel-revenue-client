@@ -31,6 +31,7 @@ export const Graphs = ({ selectedDate }) => {
     cluster3,
     cluster4,
     hotels,
+    reqHotel,
   } = getClusterDataSet;
 
   const [dateRange, setDateRange] = useState([
@@ -95,6 +96,17 @@ export const Graphs = ({ selectedDate }) => {
           .slice(dateRange[datePage][0], dateRange[datePage][1])
           .map((a) => (a.items > 0 ? a.mean : 'NED')),
       },
+      {
+        label: 'Property',
+        //new option, type will default to bar as that what is used to create the scale
+        type: 'line',
+        fill: false,
+        borderColor: '#EC932F',
+        borderWidth: 2,
+        data: reqHotel
+          .slice(dateRange[datePage][0], dateRange[datePage][1])
+          .map((a) => a.rate),
+      },
     ],
   });
   const [lineData, setLineData] = useState({
@@ -133,12 +145,23 @@ export const Graphs = ({ selectedDate }) => {
       {
         label: '5 Star Cluster',
         fill: true,
-        backgroundColor: 'rgba(75,192,192,0.2)',
+        // backgroundColor: 'rgba(75,192,192,0.2)',
         borderColor: CLUSTER_BACKGROUND[3],
         borderWidth: 2,
         data: cluster4
           .slice(dateRange[datePage][0], dateRange[datePage][1])
           .map((a) => (a.items > 0 ? a.mean : 'NED')),
+      },
+      {
+        label: 'Property',
+        //new option, type will default to bar as that what is used to create the scale
+        type: 'line',
+        fill: false,
+        borderColor: '#EC932F',
+        borderWidth: 2,
+        data: reqHotel
+          .slice(dateRange[datePage][0], dateRange[datePage][1])
+          .map((a) => a.rate),
       },
     ],
   });
@@ -301,6 +324,13 @@ export const Graphs = ({ selectedDate }) => {
     _hotelData.datasets[5].data = _hotelsCountDataset
       .map((x) => x.cls5h)
       .slice(dateRange[datePage][0], dateRange[datePage][1]);
+
+    chartData.datasets[4].data = reqHotel
+      .slice(dateRange[datePage][0], dateRange[datePage][1])
+      .map((a) => a.rate);
+    lineData.datasets[4].data = reqHotel
+      .slice(dateRange[datePage][0], dateRange[datePage][1])
+      .map((a) => a.rate);
 
     if (matrix === 'avg') {
       chartData.datasets.map((set, ix) => {
