@@ -674,7 +674,7 @@ export const Graphs = ({ selectedDate }) => {
       {bind ? (
         <>
           <Grid className="my-5" container justify="space-around">
-            <h1>Hotels Count</h1>
+            <h3> Buckets Count</h3>
             {/* <FormControl className={classes.formControl}>
               <InputLabel htmlFor="grouped-native-select">
                 Scatter Plot for
@@ -716,7 +716,7 @@ export const Graphs = ({ selectedDate }) => {
             />
           </Box>
 
-          <hr className="my-5"></hr>
+          {/* <hr className="my-5"></hr> */}
           {/* {scatterData2avg.length > 0 && scatterPlot == 2 ? (
             //(console.log('scatterData => ' + JSON.stringify(scatterData)),
             <Line
@@ -878,7 +878,7 @@ export const Graphs = ({ selectedDate }) => {
           )} */}
           <hr className="my-5"></hr>
           <Grid container justify="space-around" className="my-5">
-            <h1>Analytic Graphs</h1>
+            <h3>Bucket Rates</h3>
             <FormControl className={classes.formControl}>
               <InputLabel htmlFor="grouped-native-select">
                 Generate Graphs By
