@@ -96,17 +96,6 @@ export const Graphs = ({ selectedDate }) => {
           .slice(dateRange[datePage][0], dateRange[datePage][1])
           .map((a) => (a.items > 0 ? a.mean : 'NED')),
       },
-      {
-        label: 'Property',
-        //new option, type will default to bar as that what is used to create the scale
-        type: 'line',
-        fill: false,
-        borderColor: '#EC932F',
-        borderWidth: 2,
-        data: reqHotel
-          .slice(dateRange[datePage][0], dateRange[datePage][1])
-          .map((a) => a.rate),
-      },
     ],
   });
   const [lineData, setLineData] = useState({
@@ -153,11 +142,11 @@ export const Graphs = ({ selectedDate }) => {
           .map((a) => (a.items > 0 ? a.mean : 'NED')),
       },
       {
-        label: 'Property',
+        label: reqHotel.find((el) => el.name != null).name,
         //new option, type will default to bar as that what is used to create the scale
         type: 'line',
         fill: false,
-        borderColor: '#EC932F',
+        borderColor: '#2e2e2e',
         borderWidth: 2,
         data: reqHotel
           .slice(dateRange[datePage][0], dateRange[datePage][1])
@@ -325,9 +314,6 @@ export const Graphs = ({ selectedDate }) => {
       .map((x) => x.cls5h)
       .slice(dateRange[datePage][0], dateRange[datePage][1]);
 
-    chartData.datasets[4].data = reqHotel
-      .slice(dateRange[datePage][0], dateRange[datePage][1])
-      .map((a) => a.rate);
     lineData.datasets[4].data = reqHotel
       .slice(dateRange[datePage][0], dateRange[datePage][1])
       .map((a) => a.rate);
