@@ -189,6 +189,15 @@ export const Graphs = ({ selectedDate }) => {
       .map((a) => moment(a.date).format('MM/DD')),
     datasets: [
       {
+        label: reqHotel.find((el) => el.name != null).name,
+        type: 'line',
+        fill: false,
+        showLine: false,
+        backgroundColor: '#2e2e2e',
+        borderColor: '#2e2e2e',
+        data: [],
+      },
+      {
         label: 'No Rates',
         backgroundColor: '#B0BEC5',
         borderColor: '#B0BEC5',
@@ -295,22 +304,26 @@ export const Graphs = ({ selectedDate }) => {
       .slice(dateRange[datePage][0], dateRange[datePage][1])
       .map((a) => moment(a.date).format('MM/DD'));
 
-    _hotelData.datasets[0].data = _hotelsCountDataset
+    _hotelData.datasets[0].data = reqHotel
+      .slice(dateRange[datePage][0], dateRange[datePage][1])
+      .map((a) => a.overallRank);
+
+    _hotelData.datasets[1].data = _hotelsCountDataset
       .map((x) => x.noRateHotels)
       .slice(dateRange[datePage][0], dateRange[datePage][1]);
-    _hotelData.datasets[1].data = _hotelsCountDataset
+    _hotelData.datasets[2].data = _hotelsCountDataset
       .map((x) => x.outliers)
       .slice(dateRange[datePage][0], dateRange[datePage][1]);
-    _hotelData.datasets[2].data = _hotelsCountDataset
+    _hotelData.datasets[3].data = _hotelsCountDataset
       .map((x) => x.cls2h)
       .slice(dateRange[datePage][0], dateRange[datePage][1]);
-    _hotelData.datasets[3].data = _hotelsCountDataset
+    _hotelData.datasets[4].data = _hotelsCountDataset
       .map((x) => x.cls3h)
       .slice(dateRange[datePage][0], dateRange[datePage][1]);
-    _hotelData.datasets[4].data = _hotelsCountDataset
+    _hotelData.datasets[5].data = _hotelsCountDataset
       .map((x) => x.cls4h)
       .slice(dateRange[datePage][0], dateRange[datePage][1]);
-    _hotelData.datasets[5].data = _hotelsCountDataset
+    _hotelData.datasets[6].data = _hotelsCountDataset
       .map((x) => x.cls5h)
       .slice(dateRange[datePage][0], dateRange[datePage][1]);
 
@@ -556,6 +569,40 @@ export const Graphs = ({ selectedDate }) => {
   };
 
   useEffect(() => {
+    const getPropertyRankInCluster = (day, others) => {
+      let rank = null;
+
+      if (reqHotel[day] != null) {
+        let pr_rnk =
+          parseInt(reqHotel[day].rank.split('/')[1]) -
+          parseInt(reqHotel[day].rank.split('/')[0]);
+
+        pr_rnk = pr_rnk + others;
+
+        if (reqHotel[day].cluster == 2) {
+          rank = pr_rnk;
+        }
+        if (reqHotel[day].cluster == 3) {
+          rank = cluster1[day].unwanted.length + pr_rnk;
+        }
+        if (reqHotel[day].cluster == 4) {
+          rank =
+            cluster1[day].unwanted.length +
+            cluster2[day].unwanted.length +
+            pr_rnk;
+        }
+        if (reqHotel[day].cluster == 5) {
+          rank =
+            cluster1[day].unwanted.length +
+            cluster2[day].unwanted.length +
+            cluster3[day].unwanted.length +
+            pr_rnk;
+        }
+      }
+
+      return rank;
+    };
+
     const buildHotelsDataSet = async () => {
       let datebyhotelcount = [];
       const dates_arr = [...Array(90).keys()].map((ob, id) =>
@@ -605,20 +652,30 @@ export const Graphs = ({ selectedDate }) => {
           noRateHotels: noRateHotels.length,
         };
         datebyhotelcount.push(day);
+
+        reqHotel[ix].overallRank = getPropertyRankInCluster(
+          ix,
+          noRateHotels.length + outliers.length
+        );
+
         // console.log(
         //   `date: ${hotels[0].prices[ix].date}, cls5h: ${cls5h.length}, cls4h: ${cls4h.length}, cls3h: ${cls3h.length}, cls2h: ${cls2h.length}, outliers: ${outliers.length}, noRateHotels: ${noRateHotels.length}`
         // );
       });
 
-      _hotelData.datasets[0].data = datebyhotelcount.map((x) => x.noRateHotels);
-      _hotelData.datasets[1].data = datebyhotelcount.map((x) => x.outliers);
-      _hotelData.datasets[2].data = datebyhotelcount.map((x) => x.cls2h);
-      _hotelData.datasets[3].data = datebyhotelcount.map((x) => x.cls3h);
-      _hotelData.datasets[4].data = datebyhotelcount.map((x) => x.cls4h);
-      _hotelData.datasets[5].data = datebyhotelcount.map((x) => x.cls5h);
+      _hotelData.datasets[1].data = datebyhotelcount.map((x) => x.noRateHotels);
+      _hotelData.datasets[2].data = datebyhotelcount.map((x) => x.outliers);
+      _hotelData.datasets[3].data = datebyhotelcount.map((x) => x.cls2h);
+      _hotelData.datasets[4].data = datebyhotelcount.map((x) => x.cls3h);
+      _hotelData.datasets[5].data = datebyhotelcount.map((x) => x.cls4h);
+      _hotelData.datasets[6].data = datebyhotelcount.map((x) => x.cls5h);
+      _hotelData.datasets[0].data = reqHotel
+        .slice(dateRange[datePage][0], dateRange[datePage][1])
+        .map((a) => a.overallRank);
 
       set_hotelsCountDataset(datebyhotelcount);
       setBind(true);
+      console.log(reqHotel);
     };
 
     buildHotelsDataSet();
@@ -685,6 +742,7 @@ export const Graphs = ({ selectedDate }) => {
         });
     }
   }, [datePage]);
+
   return (
     <div>
       {bind ? (
