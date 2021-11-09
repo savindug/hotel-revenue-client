@@ -285,7 +285,7 @@ export default function HotelDataTable({ selectedDate }) {
                 style={{ backgroundColor: 'white', fontFamily: FONT_FAMILY }}
               >
                 <option value={1}>All Hotels</option>
-                <option value={0}>Selected Hotels</option>
+                <option value={0}>Analysis Set</option>
               </Select>
             </FormGroup>
 
