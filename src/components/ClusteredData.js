@@ -34,6 +34,7 @@ import BucketMovements from './BucketMovements';
 import { CompareArrowsOutlined } from '@material-ui/icons';
 import SimilarityScore from './SimilarityScore';
 import SimilarityScoreWe from './SimilarityScoreWe';
+import UnClusteredMatrix from './UnClusteredMatrix';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -301,6 +302,16 @@ export const ClusteredData = () => {
             onClick={() => setTab(0)}
           >
             Rate Buckets
+          </Nav.Link>
+        </Nav.Item>{' '}
+        <Nav.Item>
+          <Nav.Link
+            className={tab === 7 ? tabularNavCls : 'text-dark font-weight-bold'}
+            eventKey="link-1"
+            disabled={loading}
+            onClick={() => setTab(7)}
+          >
+            Unclustered Matrix
           </Nav.Link>
         </Nav.Item>{' '}
         <Nav.Item>
@@ -575,6 +586,21 @@ export const ClusteredData = () => {
           </div>
           <div id="stars2" className="my-5">
             <ClusterDataTable cluster={cluster1} stars={2} />
+          </div>
+        </>
+      ) : clusterData.length > 0 && tab === 7 ? (
+        <>
+          <div id="stars5" className="my-5">
+            <UnClusteredMatrix cluster={cluster4} stars={5} />
+          </div>
+          <div id="stars4" className="my-5">
+            <UnClusteredMatrix cluster={cluster3} stars={4} />
+          </div>
+          <div id="stars3" className="my-5">
+            <UnClusteredMatrix cluster={cluster2} stars={3} />
+          </div>
+          <div id="stars2" className="my-5">
+            <UnClusteredMatrix cluster={cluster1} stars={2} />
           </div>
         </>
       ) : clusterData.length > 0 && tab === 1 ? (
