@@ -84,7 +84,7 @@ export default function ClusterDataTable({ cluster, stars }) {
                 >
                   <TableSortLabel disabled>
                     {' '}
-                    {`${stars} Star Cluster Matrix`}
+                    {`${stars} Star Bucket Matrix`}
                   </TableSortLabel>{' '}
                   <hr />
                   <TableSortLabel disabled> Days Out</TableSortLabel>

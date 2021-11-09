@@ -528,28 +528,28 @@ export const ClusteredData = () => {
                 style={{ backgroundColor: CLUSTER_BACKGROUND[3] }}
                 onClick={() => scroll('#stars5')}
               >
-                5 Star Cluster
+                5 Star Bucket
               </Badge>{' '}
               <Badge
                 className="p-2 cursor-pointer"
                 style={{ backgroundColor: CLUSTER_BACKGROUND[2] }}
                 onClick={() => scroll('#stars4')}
               >
-                4 Star Cluster
+                4 Star Bucket
               </Badge>{' '}
               <Badge
                 className="p-2 cursor-pointer"
                 style={{ backgroundColor: CLUSTER_BACKGROUND[1] }}
                 onClick={() => scroll('#stars3')}
               >
-                3 Star Cluster
+                3 Star Bucket
               </Badge>{' '}
               <Badge
                 className="p-2 cursor-pointer"
                 style={{ backgroundColor: CLUSTER_BACKGROUND[0] }}
                 onClick={() => scroll('#stars2')}
               >
-                2 Star Cluster
+                2 Star Bucket
               </Badge>{' '}
             </div>
           </Grid>

@@ -154,7 +154,7 @@ export default function ClusterBucket({ selectedDate }) {
                       className={classes.sticky}
                       style={{ fontWeight: 'bold', width: '250px' }}
                     >
-                      Current Clustered Bucket
+                      Current Rate Bucket
                     </StyledTableCell>
 
                     <StyledTableCell size="small" className={classes.rates}>
@@ -187,7 +187,7 @@ export default function ClusterBucket({ selectedDate }) {
                       className={classes.sticky}
                       style={{ fontWeight: 'bold', width: '250px' }}
                     >
-                      Clustered Rate Bucket Position
+                      Rate Bucket Position
                     </StyledTableCell>
 
                     <StyledTableCell size="small" className={classes.rates}>
@@ -221,7 +221,7 @@ export default function ClusterBucket({ selectedDate }) {
                       className={classes.sticky}
                       style={{ fontWeight: 'bold', width: '250px' }}
                     >
-                      Clustered Rate Bucket Rank (Highest to Lowest)
+                      Rate Bucket Rank (Highest to Lowest)
                     </StyledTableCell>
 
                     <StyledTableCell size="small" className={classes.rates}>
