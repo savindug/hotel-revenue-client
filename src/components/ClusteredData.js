@@ -304,7 +304,7 @@ export const ClusteredData = () => {
             Rate Buckets
           </Nav.Link>
         </Nav.Item>{' '}
-        <Nav.Item>
+        {/* <Nav.Item>
           <Nav.Link
             className={tab === 7 ? tabularNavCls : 'text-dark font-weight-bold'}
             eventKey="link-1"
@@ -313,7 +313,7 @@ export const ClusteredData = () => {
           >
             Unclustered Matrix
           </Nav.Link>
-        </Nav.Item>{' '}
+        </Nav.Item>{' '} */}
         <Nav.Item>
           <Nav.Link
             className={tab === 1 ? tabularNavCls : 'text-dark font-weight-bold'}
@@ -562,6 +562,13 @@ export const ClusteredData = () => {
               >
                 2 Star Bucket
               </Badge>{' '}
+              <Badge
+                className="p-2 cursor-pointer"
+                style={{ backgroundColor: '#9E9E9E' }}
+                // onClick={() => scroll('#stars2')}
+              >
+                Outliers
+              </Badge>
             </div>
           </Grid>
         </MuiPickersUtilsProvider>
@@ -588,22 +595,23 @@ export const ClusteredData = () => {
             <ClusterDataTable cluster={cluster1} stars={2} />
           </div>
         </>
-      ) : clusterData.length > 0 && tab === 7 ? (
-        <>
-          <div id="stars5" className="my-5">
-            <UnClusteredMatrix cluster={cluster4} stars={5} />
-          </div>
-          <div id="stars4" className="my-5">
-            <UnClusteredMatrix cluster={cluster3} stars={4} />
-          </div>
-          <div id="stars3" className="my-5">
-            <UnClusteredMatrix cluster={cluster2} stars={3} />
-          </div>
-          <div id="stars2" className="my-5">
-            <UnClusteredMatrix cluster={cluster1} stars={2} />
-          </div>
-        </>
-      ) : clusterData.length > 0 && tab === 1 ? (
+      ) : // : clusterData.length > 0 && tab === 7 ? (
+      //   <>
+      //     <div id="stars5" className="my-5">
+      //       <UnClusteredMatrix cluster={cluster4} stars={5} />
+      //     </div>
+      //     <div id="stars4" className="my-5">
+      //       <UnClusteredMatrix cluster={cluster3} stars={4} />
+      //     </div>
+      //     <div id="stars3" className="my-5">
+      //       <UnClusteredMatrix cluster={cluster2} stars={3} />
+      //     </div>
+      //     <div id="stars2" className="my-5">
+      //       <UnClusteredMatrix cluster={cluster1} stars={2} />
+      //     </div>
+      //   </>
+      // )
+      clusterData.length > 0 && tab === 1 ? (
         <BucketMovements selectedDate={selectedDate} />
       ) : clusterData.length > 0 && tab === 2 ? (
         <Graphs selectedDate={selectedDate} />

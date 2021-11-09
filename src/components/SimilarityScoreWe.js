@@ -301,6 +301,22 @@ export default function SimilarityScoreWe({ selectedDate }) {
     }
   };
 
+  const handleHotelsFilter = async (event) => {
+    if (event.target.value == 0) {
+      const selectedHotels = [hotels[0]];
+      user.application.candidate_properties.map((_filterHotel) =>
+        originalRows.some((hotel) => {
+          if (hotel.hotelID === _filterHotel.id) {
+            selectedHotels.push(hotel);
+          }
+        })
+      );
+      setHotelsList(selectedHotels);
+    } else {
+      setHotelsList(originalRows);
+    }
+  };
+
   return (
     <>
       {hotels.length > 0 &&
@@ -319,7 +335,7 @@ export default function SimilarityScoreWe({ selectedDate }) {
                 onCancelSearch={() => cancelSearch()}
               />
             </FormGroup>
-            {/* <FormGroup className={classes.formControl}>
+            <FormGroup className={classes.formControl}>
               <InputLabel
                 htmlFor="grouped-native-select"
                 style={{ backgroundColor: 'white', fontFamily: FONT_FAMILY }}
@@ -333,9 +349,9 @@ export default function SimilarityScoreWe({ selectedDate }) {
                 style={{ backgroundColor: 'white', fontFamily: FONT_FAMILY }}
               >
                 <option value={1}>All Hotels</option>
-                <option value={0}>Selected Hotels</option>
+                <option value={0}>Analysis Set</option>
               </Select>
-            </FormGroup> */}
+            </FormGroup>
           </Grid>
 
           <TableContainer
@@ -424,7 +440,9 @@ export default function SimilarityScoreWe({ selectedDate }) {
                   {hotelsList.map((_hotel, index) => (
                     <StyledTableRow>
                       <StyledTableCell size="small">
-                        {index + 1}
+                        {originalRows.findIndex(
+                          (obj) => obj.hotelID == _hotel.hotelID
+                        )}
                       </StyledTableCell>
                       <StyledTableCell
                         size="medium"
