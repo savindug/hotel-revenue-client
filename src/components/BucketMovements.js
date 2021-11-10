@@ -410,7 +410,6 @@ export default function BucketMovements({ selectedDate }) {
                       style={{
                         fontWeight: 'bold',
                         width: '250px',
-                        backgroundColor: CLUSTER_BACKGROUND[0],
                         borderTop: '2px solid grey',
                       }}
                     >
@@ -546,7 +545,6 @@ export default function BucketMovements({ selectedDate }) {
                       style={{
                         fontWeight: 'bold',
                         width: '250px',
-                        backgroundColor: CLUSTER_BACKGROUND[0],
                         borderTop: '2px solid grey',
                       }}
                     >
@@ -682,7 +680,6 @@ export default function BucketMovements({ selectedDate }) {
                       style={{
                         fontWeight: 'bold',
                         width: '250px',
-                        backgroundColor: CLUSTER_BACKGROUND[0],
                         borderTop: '2px solid grey',
                       }}
                     >
@@ -818,7 +815,6 @@ export default function BucketMovements({ selectedDate }) {
                       style={{
                         fontWeight: 'bold',
                         width: '250px',
-                        backgroundColor: CLUSTER_BACKGROUND[0],
                         borderTop: '2px solid grey',
                       }}
                     >
