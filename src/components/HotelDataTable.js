@@ -2,10 +2,15 @@ import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import {
   Box,
+  Checkbox,
+  FormControl,
   FormGroup,
   Grid,
   InputLabel,
+  ListItemIcon,
+  ListItemText,
   makeStyles,
+  MenuItem,
   Select,
   TableCell,
   TableContainer,
@@ -19,7 +24,12 @@ import TableBody from '@material-ui/core/TableBody';
 import TableHead from '@material-ui/core/TableHead';
 import Paper from '@material-ui/core/Paper';
 import moment from 'moment';
-import { CLUSTER_BACKGROUND, FONT_FAMILY } from '../utils/const';
+import {
+  CLUSTER_BACKGROUND,
+  FONT_FAMILY,
+  MenuProps,
+  multiSelectStyles,
+} from '../utils/const';
 import SearchBar from 'material-ui-search-bar';
 
 const StyledTableCell = withStyles((theme) => ({
@@ -40,6 +50,7 @@ const StyledTableRow = withStyles((theme) => ({
     },
   },
 }))(TableRow);
+
 const useStyles = makeStyles((theme) => ({
   container: {
     maxHeight: window.innerHeight - 275,
@@ -66,9 +77,22 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function HotelDataTable({ selectedDate }) {
+  const options = [2, 3, 4, 5];
+
   const classes = useStyles();
+  const multiSelectClasses = multiSelectStyles();
+
   const [dates, setDates] = useState([]);
   const [sortDir, setSortDir] = useState('desc');
+
+  const [selectedStars, setSelectedStars] = useState([]);
+  const [selectedBuckets, setSelectedBuckets] = useState([]);
+
+  const isAllSelectedStars =
+    options.length > 0 && selectedStars.length === options.length;
+
+  const isAllSelectedBuckets =
+    options.length > 0 && selectedBuckets.length === options.length;
 
   const [sortBy, setSortBy] = useState(1);
 
@@ -223,6 +247,70 @@ export default function HotelDataTable({ selectedDate }) {
     setNights(event.target.value);
   };
 
+  const handleBucketsChange = (event) => {
+    const value = event.target.value;
+    if (value[value.length - 1] === 'all') {
+      setSelectedBuckets(
+        selectedBuckets.length === options.length ? [] : options
+      );
+      return;
+    }
+    setSelectedBuckets(value);
+  };
+
+  const handleStarsChange = (event) => {
+    const value = event.target.value;
+    if (value[value.length - 1] === 'all') {
+      setSelectedStars(selectedStars.length === options.length ? [] : options);
+      return;
+    }
+    setSelectedStars(value);
+  };
+
+  useEffect(() => {
+    const handleStarsSelect = () => {
+      if (selectedStars.length > 0) {
+        const selectedHotels = [];
+        selectedStars.map((star) => {
+          originalRows.some((_filterHotel) => {
+            if (star === Math.floor(_filterHotel.stars)) {
+              selectedHotels.push(_filterHotel);
+            }
+          });
+        });
+        setHotelsList(
+          selectedHotels.sort(
+            (a, b) =>
+              b.stars - a.stars || a.hotelName.localeCompare(b.hotelName)
+          )
+        );
+      }
+    };
+    handleStarsSelect();
+  }, [selectedStars]);
+
+  useEffect(() => {
+    const handleStarsSelect = () => {
+      if (selectedBuckets.length > 0) {
+        const selectedHotels = [];
+        selectedBuckets.map((bucket) => {
+          hotelsList.some((_filterHotel) => {
+            if (bucket == _filterHotel.freq_bucket) {
+              selectedHotels.push(_filterHotel);
+            }
+          });
+        });
+        setHotelsList(
+          selectedHotels.sort(
+            (a, b) =>
+              b.stars - a.stars || a.hotelName.localeCompare(b.hotelName)
+          )
+        );
+      }
+    };
+    handleStarsSelect();
+  }, [selectedBuckets]);
+
   const getPrice = (arr) => {
     const price = arr.findIndex((e) => e > 0);
     return price;
@@ -289,24 +377,91 @@ export default function HotelDataTable({ selectedDate }) {
               </Select>
             </FormGroup>
 
-            {/* <FormGroup className={classes.formControl}>
-              <InputLabel
-                htmlFor="grouped-native-select"
-                style={{ backgroundColor: 'white', fontFamily: FONT_FAMILY }}
-              >
-                Nights
-              </InputLabel>
+            <FormControl className={classes.formControl}>
+              <InputLabel id="mutiple-select-label">Stars</InputLabel>
               <Select
-                native
-                id="grouped-native-select"
-                onChange={handleNightsFilter}
-                style={{ backgroundColor: 'white', fontFamily: FONT_FAMILY }}
+                labelId="mutiple-select-label"
+                multiple
+                value={selectedStars}
+                onChange={handleStarsChange}
+                renderValue={(selected) => selected.join(', ')}
+                MenuProps={MenuProps}
               >
-                <option value={0}>1</option>
-                <option value={1}>2</option>
-                <option value={2}>3</option>
+                <MenuItem
+                  value="all"
+                  classes={{
+                    root: isAllSelectedStars ? classes.selectedAll : '',
+                  }}
+                >
+                  <ListItemIcon>
+                    <Checkbox
+                      classes={{ indeterminate: classes.indeterminateColor }}
+                      checked={isAllSelectedStars}
+                      indeterminate={
+                        selectedStars.length > 0 &&
+                        selectedStars.length < options.length
+                      }
+                    />
+                  </ListItemIcon>
+                  <ListItemText
+                    classes={{ primary: classes.selectAllText }}
+                    primary="Select All"
+                  />
+                </MenuItem>
+                {options.map((option) => (
+                  <MenuItem key={option} value={option}>
+                    <ListItemIcon>
+                      <Checkbox checked={selectedStars.indexOf(option) > -1} />
+                    </ListItemIcon>
+                    <ListItemText primary={option} />
+                  </MenuItem>
+                ))}
               </Select>
-            </FormGroup> */}
+            </FormControl>
+
+            <FormControl className={classes.formControl}>
+              <InputLabel id="mutiple-select-label">Bucket</InputLabel>
+              <Select
+                labelId="mutiple-select-label"
+                multiple
+                value={selectedBuckets}
+                onChange={handleBucketsChange}
+                renderValue={(selected) => selected.join(', ')}
+                MenuProps={MenuProps}
+              >
+                <MenuItem
+                  value="all"
+                  classes={{
+                    root: isAllSelectedBuckets ? classes.selectedAll : '',
+                  }}
+                >
+                  <ListItemIcon>
+                    <Checkbox
+                      classes={{ indeterminate: classes.indeterminateColor }}
+                      checked={isAllSelectedBuckets}
+                      indeterminate={
+                        selectedBuckets.length > 0 &&
+                        selectedBuckets.length < options.length
+                      }
+                    />
+                  </ListItemIcon>
+                  <ListItemText
+                    classes={{ primary: classes.selectAllText }}
+                    primary="Select All"
+                  />
+                </MenuItem>
+                {options.map((option) => (
+                  <MenuItem key={option} value={option}>
+                    <ListItemIcon>
+                      <Checkbox
+                        checked={selectedBuckets.indexOf(option) > -1}
+                      />
+                    </ListItemIcon>
+                    <ListItemText primary={option} />
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </Grid>
 
           <TableContainer
@@ -435,10 +590,10 @@ export default function HotelDataTable({ selectedDate }) {
                             );
                           }
                         });
-
+                        _hotel.freq_bucket = mode(cluster_arr);
                         return (
                           <StyledTableCell className={classes.rates}>
-                            {mode(cluster_arr)}
+                            {_hotel.freq_bucket}
                           </StyledTableCell>
                         );
                       })()}
