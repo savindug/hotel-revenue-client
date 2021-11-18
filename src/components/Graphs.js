@@ -748,7 +748,8 @@ export const Graphs = ({ selectedDate }) => {
       {bind ? (
         <>
           <Grid className="my-5" container justify="space-around">
-            <h3> Buckets Count</h3>
+            {/* <h3> Buckets Count</h3> */}
+            <h3> Rate Position</h3>
             {/* <FormControl className={classes.formControl}>
               <InputLabel htmlFor="grouped-native-select">
                 Scatter Plot for
