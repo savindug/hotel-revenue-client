@@ -1,12 +1,13 @@
-@font-face {
+/* @font-face {
   font-family: 'Calibri';
   src: local('Calibri'),
     url(./assets/fonts/Calibri/Calibri.ttf) format('opentype');
-}
+} */
 
 .App {
   text-align: center;
-  font-family: Calibri;
+  /* font-family: Calibri; */
+  font-family: 'Inter', sans-serif;
   width: 100%;
 }
 
