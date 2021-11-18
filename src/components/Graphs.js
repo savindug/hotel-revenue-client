@@ -766,6 +766,7 @@ export const Graphs = ({ selectedDate }) => {
                 <option value="5">5 Star Cluster</option>
               </Select>
             </FormControl> */}
+            <FormControl className={classes.formControl}></FormControl>
             <FormControl className={classes.formControl}>
               <InputLabel htmlFor="grouped-native-select">
                 Date Range
