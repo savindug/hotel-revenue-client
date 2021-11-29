@@ -51,12 +51,299 @@ export default function ClusterBucket({ selectedDate }) {
   const classes = useStyles();
 
   const getClusterDataSet = useSelector((state) => state.clusterDataSet);
-  const { loading, reqHotel, cluster1, cluster2, cluster3, cluster4 } =
-    getClusterDataSet;
+  const {
+    loading,
+    reqHotel,
+    cluster1,
+    cluster2,
+    cluster3,
+    cluster4,
+    clusterData,
+  } = getClusterDataSet;
+
+  const RatePositionTable = ({ stars, cluster }) => {
+    return (
+      <TableContainer component={Paper} className="my-5">
+        <Box width={100}>
+          <Table
+            className={classes.table}
+            size="medium"
+            aria-label="customized table"
+            bodyStyle={{ overflow: 'visible' }}
+          >
+            <TableHead>
+              <StyledTableCell
+                style={{
+                  backgroundColor: CLUSTER_BACKGROUND[stars - 2],
+                }}
+                className={classes.sticky}
+              >
+                <TableSortLabel disabled>
+                  {' '}
+                  {`${stars} Star Bucket Matrix`}
+                </TableSortLabel>{' '}
+                <hr />
+                <TableSortLabel disabled> Days Out</TableSortLabel>
+              </StyledTableCell>
+              {cluster.map((e, index) =>
+                (() => {
+                  let date = moment(e.date).format('dddd').substring(0, 3);
+                  return (
+                    <StyledTableCell
+                      size="small"
+                      key={index}
+                      className={
+                        date === 'Sat' || date === 'Fri'
+                          ? 'bg-secondary text-light text-center'
+                          : 'text-center'
+                      }
+                      style={{ fontSize: '12px' }}
+                    >
+                      {`${date.toUpperCase()}\n${moment(e.date).format(
+                        'MM/DD'
+                      )}`}{' '}
+                      <hr />
+                      {index}
+                    </StyledTableCell>
+                  );
+                })()
+              )}
+            </TableHead>
+            <TableBody>
+              <StyledTableRow Key={stars}>
+                <StyledTableCell
+                  size="small"
+                  component="th"
+                  scope="row"
+                  className={classes.sticky}
+                  style={{ fontWeight: 'bold', width: '250px' }}
+                >
+                  Average Rate
+                </StyledTableCell>
+
+                {[...Array(90).keys()].map((e, index) => (
+                  <StyledTableCell
+                    size="small"
+                    key={index}
+                    className={classes.rates}
+                  >
+                    {cluster[index].mean !== 'NaN' && cluster[index].items > 0
+                      ? reqHotel[index].rate - Math.round(cluster[index].mean)
+                      : cluster[index].mean !== 'NaN' &&
+                        cluster[index].items < 0
+                      ? 'NED'
+                      : 'N/A'}
+                  </StyledTableCell>
+                ))}
+              </StyledTableRow>
+
+              <StyledTableRow Key={stars}>
+                <StyledTableCell
+                  size="small"
+                  component="th"
+                  scope="row"
+                  className={classes.sticky}
+                  style={{ fontWeight: 'bold', width: '250px' }}
+                >
+                  Most Repeated rate
+                </StyledTableCell>
+
+                {[...Array(90).keys()].map((e, index) => (
+                  <StyledTableCell
+                    size="small"
+                    key={index}
+                    className={classes.rates}
+                  >
+                    {cluster[index].mod !== 'NaN' && cluster[index].items > 0
+                      ? reqHotel[index].rate - Math.round(cluster[index].mod)
+                      : cluster[index].mod !== 'NaN' && cluster[index].items < 0
+                      ? 'NED'
+                      : 'N/A'}
+                  </StyledTableCell>
+                ))}
+              </StyledTableRow>
+
+              <StyledTableRow Key={stars}>
+                <StyledTableCell
+                  size="small"
+                  component="th"
+                  scope="row"
+                  className={classes.sticky}
+                  style={{ fontWeight: 'bold', width: '250px' }}
+                >
+                  Middle Rate
+                </StyledTableCell>
+
+                {[...Array(90).keys()].map((e, index) => (
+                  <StyledTableCell
+                    size="small"
+                    key={index}
+                    className={classes.rates}
+                  >
+                    {cluster[index].median !== 'NaN' && cluster[index].items > 0
+                      ? reqHotel[index].rate - Math.round(cluster[index].median)
+                      : cluster[index].median !== 'NaN' &&
+                        cluster[index].items < 0
+                      ? 'NED'
+                      : 'N/A'}
+                  </StyledTableCell>
+                ))}
+              </StyledTableRow>
+              <StyledTableRow Key={stars}>
+                <StyledTableCell
+                  size="small"
+                  component="th"
+                  scope="row"
+                  className={classes.sticky}
+                  style={{ fontWeight: 'bold', width: '250px' }}
+                >
+                  &emsp;Highest Rate
+                </StyledTableCell>
+
+                {[...Array(90).keys()].map((e, index) => (
+                  <StyledTableCell
+                    size="small"
+                    key={index}
+                    className={classes.rates}
+                  >
+                    {cluster[index].max !== 'NaN' && cluster[index].items > 0
+                      ? reqHotel[index].rate - Math.round(cluster[index].max)
+                      : cluster[index].max !== 'NaN' && cluster[index].items < 0
+                      ? 'NED'
+                      : 'N/A'}
+                  </StyledTableCell>
+                ))}
+              </StyledTableRow>
+              <StyledTableRow Key={stars}>
+                <StyledTableCell
+                  size="small"
+                  component="th"
+                  scope="row"
+                  className={classes.sticky}
+                  style={{
+                    fontWeight: 'bold',
+                    width: '250px',
+                    borderTop: '2px solid grey',
+                  }}
+                >
+                  &emsp;&emsp;Average of Highest Rates
+                </StyledTableCell>
+
+                {[...Array(90).keys()].map((e, index) => (
+                  <StyledTableCell
+                    size="small"
+                    key={index}
+                    className={classes.rates}
+                    style={{
+                      borderTop: '3px solid grey',
+                    }}
+                  >
+                    {cluster[index].highAVG !== 'NaN' &&
+                    cluster[index].items > 0
+                      ? reqHotel[index].rate -
+                        Math.round(cluster[index].highAVG)
+                      : cluster[index].highAVG !== 'NaN' &&
+                        cluster[index].items < 0
+                      ? 'NED'
+                      : 'N/A'}
+                  </StyledTableCell>
+                ))}
+              </StyledTableRow>
+              <StyledTableRow Key={stars}>
+                <StyledTableCell
+                  size="small"
+                  component="th"
+                  scope="row"
+                  className={classes.sticky}
+                  style={{ fontWeight: 'bold', width: '250px' }}
+                >
+                  &emsp;&emsp;Average of Middle Rates
+                </StyledTableCell>
+
+                {[...Array(90).keys()].map((e, index) => (
+                  <StyledTableCell
+                    size="small"
+                    key={index}
+                    className={classes.rates}
+                  >
+                    {cluster[index].midAVG !== 'NaN' && cluster[index].items > 0
+                      ? reqHotel[index].rate - Math.round(cluster[index].midAVG)
+                      : cluster[index].midAVG !== 'NaN' &&
+                        cluster[index].items < 0
+                      ? 'NED'
+                      : 'N/A'}
+                  </StyledTableCell>
+                ))}
+              </StyledTableRow>
+              <StyledTableRow Key={stars}>
+                <StyledTableCell
+                  size="small"
+                  component="th"
+                  scope="row"
+                  className={classes.sticky}
+                  style={{
+                    fontWeight: 'bold',
+                    width: '250px',
+                    borderBottom: '3px solid grey',
+                  }}
+                >
+                  &emsp;&emsp;Average of Lowest Rates
+                </StyledTableCell>
+
+                {[...Array(90).keys()].map((e, index) => (
+                  <StyledTableCell
+                    size="small"
+                    key={index}
+                    className={classes.rates}
+                    style={{
+                      borderBottom: '3px solid grey',
+                    }}
+                  >
+                    {cluster[index].lowAVG !== 'NaN' && cluster[index].items > 0
+                      ? reqHotel[index].rate - Math.round(cluster[index].lowAVG)
+                      : cluster[index].lowAVG !== 'NaN' &&
+                        cluster[index].items < 0
+                      ? 'NED'
+                      : 'N/A'}
+                  </StyledTableCell>
+                ))}
+              </StyledTableRow>
+              <StyledTableRow Key={stars}>
+                <StyledTableCell
+                  size="small"
+                  component="th"
+                  scope="row"
+                  className={classes.sticky}
+                  style={{ fontWeight: 'bold', width: '250px' }}
+                >
+                  &emsp;Lowest Rate
+                </StyledTableCell>
+
+                {[...Array(90).keys()].map((e, index) => (
+                  <StyledTableCell
+                    size="small"
+                    key={index}
+                    className={classes.rates}
+                  >
+                    {cluster[index].min !== 'NaN' && cluster[index].items > 0
+                      ? reqHotel[index].rate - Math.round(cluster[index].min)
+                      : cluster[index].min !== 'NaN' && cluster[index].items < 0
+                      ? 'NED'
+                      : 'N/A'}
+                  </StyledTableCell>
+                ))}
+              </StyledTableRow>
+            </TableBody>
+          </Table>
+          <br />
+        </Box>
+      </TableContainer>
+    );
+  };
 
   return (
     <>
-      {!loading ? (
+      {!loading && clusterData.length > 0 ? (
         <>
           <TableContainer component={Paper} className="my-5">
             <Box width={100}>
@@ -252,6 +539,10 @@ export default function ClusterBucket({ selectedDate }) {
               <br />
             </Box>
           </TableContainer>
+          <RatePositionTable cluster={cluster4} stars={5} className="my-5" />
+          <RatePositionTable cluster={cluster3} stars={4} className="my-5" />
+          <RatePositionTable cluster={cluster2} stars={3} className="my-5" />
+          <RatePositionTable cluster={cluster1} stars={2} className="my-5" />
         </>
       ) : (
         <>loading</>

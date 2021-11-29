@@ -304,16 +304,16 @@ export const ClusteredData = () => {
             Rate Buckets
           </Nav.Link>
         </Nav.Item>{' '}
-        {/* <Nav.Item>
+        <Nav.Item>
           <Nav.Link
             className={tab === 7 ? tabularNavCls : 'text-dark font-weight-bold'}
             eventKey="link-1"
             disabled={loading}
             onClick={() => setTab(7)}
           >
-            Unclustered Matrix
+            Rate Position
           </Nav.Link>
-        </Nav.Item>{' '} */}
+        </Nav.Item>{' '}
         <Nav.Item>
           <Nav.Link
             className={tab === 1 ? tabularNavCls : 'text-dark font-weight-bold'}
@@ -581,7 +581,6 @@ export const ClusteredData = () => {
         <Alert severity="error">{err}</Alert>
       ) : clusterData.length > 0 && tab === 0 ? (
         <>
-          <ClusterBucket selectedDate={selectedDate} />
           <div id="stars5" className="my-5">
             <ClusterDataTable cluster={cluster4} stars={5} />
           </div>
@@ -595,23 +594,11 @@ export const ClusteredData = () => {
             <ClusterDataTable cluster={cluster1} stars={2} />
           </div>
         </>
-      ) : // : clusterData.length > 0 && tab === 7 ? (
-      //   <>
-      //     <div id="stars5" className="my-5">
-      //       <UnClusteredMatrix cluster={cluster4} stars={5} />
-      //     </div>
-      //     <div id="stars4" className="my-5">
-      //       <UnClusteredMatrix cluster={cluster3} stars={4} />
-      //     </div>
-      //     <div id="stars3" className="my-5">
-      //       <UnClusteredMatrix cluster={cluster2} stars={3} />
-      //     </div>
-      //     <div id="stars2" className="my-5">
-      //       <UnClusteredMatrix cluster={cluster1} stars={2} />
-      //     </div>
-      //   </>
-      // )
-      clusterData.length > 0 && tab === 1 ? (
+      ) : clusterData.length > 0 && tab === 7 ? (
+        <>
+          <ClusterBucket selectedDate={selectedDate} className="my-5" />
+        </>
+      ) : clusterData.length > 0 && tab === 1 ? (
         <BucketMovements selectedDate={selectedDate} />
       ) : clusterData.length > 0 && tab === 2 ? (
         <Graphs selectedDate={selectedDate} />
