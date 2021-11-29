@@ -127,12 +127,25 @@ export default function ClusterBucket({ selectedDate }) {
                     key={index}
                     className={classes.rates}
                   >
-                    {cluster[index].mean !== 'NaN' && cluster[index].items > 0
-                      ? reqHotel[index].rate - Math.round(cluster[index].mean)
-                      : cluster[index].mean !== 'NaN' &&
-                        cluster[index].items < 0
-                      ? 'NED'
-                      : 'N/A'}
+                    {cluster[index].mean !== 'NaN' &&
+                    cluster[index].items > 0 ? (
+                      <span
+                        className={
+                          reqHotel[index].rate -
+                            Math.round(cluster[index].mean) >=
+                          0
+                            ? ''
+                            : 'text-danger'
+                        }
+                      >
+                        {reqHotel[index].rate - Math.round(cluster[index].mean)}
+                      </span>
+                    ) : cluster[index].mean !== 'NaN' &&
+                      cluster[index].items < 0 ? (
+                      'NED'
+                    ) : (
+                      'N/A'
+                    )}
                   </StyledTableCell>
                 ))}
               </StyledTableRow>
@@ -154,11 +167,25 @@ export default function ClusterBucket({ selectedDate }) {
                     key={index}
                     className={classes.rates}
                   >
-                    {cluster[index].mod !== 'NaN' && cluster[index].items > 0
-                      ? reqHotel[index].rate - Math.round(cluster[index].mod)
-                      : cluster[index].mod !== 'NaN' && cluster[index].items < 0
-                      ? 'NED'
-                      : 'N/A'}
+                    {cluster[index].mod !== 'NaN' &&
+                    cluster[index].items > 0 ? (
+                      <span
+                        className={
+                          reqHotel[index].rate -
+                            Math.round(cluster[index].mod) >=
+                          0
+                            ? ''
+                            : 'text-danger'
+                        }
+                      >
+                        {reqHotel[index].rate - Math.round(cluster[index].mod)}
+                      </span>
+                    ) : cluster[index].mod !== 'NaN' &&
+                      cluster[index].items < 0 ? (
+                      'NED'
+                    ) : (
+                      'N/A'
+                    )}
                   </StyledTableCell>
                 ))}
               </StyledTableRow>
@@ -180,12 +207,26 @@ export default function ClusterBucket({ selectedDate }) {
                     key={index}
                     className={classes.rates}
                   >
-                    {cluster[index].median !== 'NaN' && cluster[index].items > 0
-                      ? reqHotel[index].rate - Math.round(cluster[index].median)
-                      : cluster[index].median !== 'NaN' &&
-                        cluster[index].items < 0
-                      ? 'NED'
-                      : 'N/A'}
+                    {cluster[index].median !== 'NaN' &&
+                    cluster[index].items > 0 ? (
+                      <span
+                        className={
+                          reqHotel[index].rate -
+                            Math.round(cluster[index].median) >=
+                          0
+                            ? ''
+                            : 'text-danger'
+                        }
+                      >
+                        {reqHotel[index].rate -
+                          Math.round(cluster[index].median)}
+                      </span>
+                    ) : cluster[index].median !== 'NaN' &&
+                      cluster[index].items < 0 ? (
+                      'NED'
+                    ) : (
+                      'N/A'
+                    )}
                   </StyledTableCell>
                 ))}
               </StyledTableRow>
@@ -206,11 +247,25 @@ export default function ClusterBucket({ selectedDate }) {
                     key={index}
                     className={classes.rates}
                   >
-                    {cluster[index].max !== 'NaN' && cluster[index].items > 0
-                      ? reqHotel[index].rate - Math.round(cluster[index].max)
-                      : cluster[index].max !== 'NaN' && cluster[index].items < 0
-                      ? 'NED'
-                      : 'N/A'}
+                    {cluster[index].max !== 'NaN' &&
+                    cluster[index].items > 0 ? (
+                      <span
+                        className={
+                          reqHotel[index].rate -
+                            Math.round(cluster[index].max) >=
+                          0
+                            ? ''
+                            : 'text-danger'
+                        }
+                      >
+                        {reqHotel[index].rate - Math.round(cluster[index].max)}
+                      </span>
+                    ) : cluster[index].max !== 'NaN' &&
+                      cluster[index].items < 0 ? (
+                      'NED'
+                    ) : (
+                      'N/A'
+                    )}
                   </StyledTableCell>
                 ))}
               </StyledTableRow>
@@ -239,13 +294,25 @@ export default function ClusterBucket({ selectedDate }) {
                     }}
                   >
                     {cluster[index].highAVG !== 'NaN' &&
-                    cluster[index].items > 0
-                      ? reqHotel[index].rate -
-                        Math.round(cluster[index].highAVG)
-                      : cluster[index].highAVG !== 'NaN' &&
-                        cluster[index].items < 0
-                      ? 'NED'
-                      : 'N/A'}
+                    cluster[index].items > 0 ? (
+                      <span
+                        className={
+                          reqHotel[index].rate -
+                            Math.round(cluster[index].highAVG) >=
+                          0
+                            ? ''
+                            : 'text-danger'
+                        }
+                      >
+                        {reqHotel[index].rate -
+                          Math.round(cluster[index].highAVG)}
+                      </span>
+                    ) : cluster[index].highAVG !== 'NaN' &&
+                      cluster[index].items < 0 ? (
+                      'NED'
+                    ) : (
+                      'N/A'
+                    )}
                   </StyledTableCell>
                 ))}
               </StyledTableRow>
@@ -266,12 +333,26 @@ export default function ClusterBucket({ selectedDate }) {
                     key={index}
                     className={classes.rates}
                   >
-                    {cluster[index].midAVG !== 'NaN' && cluster[index].items > 0
-                      ? reqHotel[index].rate - Math.round(cluster[index].midAVG)
-                      : cluster[index].midAVG !== 'NaN' &&
-                        cluster[index].items < 0
-                      ? 'NED'
-                      : 'N/A'}
+                    {cluster[index].midAVG !== 'NaN' &&
+                    cluster[index].items > 0 ? (
+                      <span
+                        className={
+                          reqHotel[index].rate -
+                            Math.round(cluster[index].midAVG) >=
+                          0
+                            ? ''
+                            : 'text-danger'
+                        }
+                      >
+                        {reqHotel[index].rate -
+                          Math.round(cluster[index].midAVG)}
+                      </span>
+                    ) : cluster[index].midAVG !== 'NaN' &&
+                      cluster[index].items < 0 ? (
+                      'NED'
+                    ) : (
+                      'N/A'
+                    )}
                   </StyledTableCell>
                 ))}
               </StyledTableRow>
@@ -299,12 +380,26 @@ export default function ClusterBucket({ selectedDate }) {
                       borderBottom: '3px solid grey',
                     }}
                   >
-                    {cluster[index].lowAVG !== 'NaN' && cluster[index].items > 0
-                      ? reqHotel[index].rate - Math.round(cluster[index].lowAVG)
-                      : cluster[index].lowAVG !== 'NaN' &&
-                        cluster[index].items < 0
-                      ? 'NED'
-                      : 'N/A'}
+                    {cluster[index].lowAVG !== 'NaN' &&
+                    cluster[index].items > 0 ? (
+                      <span
+                        className={
+                          reqHotel[index].rate -
+                            Math.round(cluster[index].lowAVG) >=
+                          0
+                            ? ''
+                            : 'text-danger'
+                        }
+                      >
+                        {reqHotel[index].rate -
+                          Math.round(cluster[index].lowAVG)}
+                      </span>
+                    ) : cluster[index].lowAVG !== 'NaN' &&
+                      cluster[index].items < 0 ? (
+                      'NED'
+                    ) : (
+                      'N/A'
+                    )}
                   </StyledTableCell>
                 ))}
               </StyledTableRow>
@@ -325,11 +420,25 @@ export default function ClusterBucket({ selectedDate }) {
                     key={index}
                     className={classes.rates}
                   >
-                    {cluster[index].min !== 'NaN' && cluster[index].items > 0
-                      ? reqHotel[index].rate - Math.round(cluster[index].min)
-                      : cluster[index].min !== 'NaN' && cluster[index].items < 0
-                      ? 'NED'
-                      : 'N/A'}
+                    {cluster[index].min !== 'NaN' &&
+                    cluster[index].items > 0 ? (
+                      <span
+                        className={
+                          reqHotel[index].rate -
+                            Math.round(cluster[index].min) >=
+                          0
+                            ? ''
+                            : 'text-danger'
+                        }
+                      >
+                        {reqHotel[index].rate - Math.round(cluster[index].min)}
+                      </span>
+                    ) : cluster[index].min !== 'NaN' &&
+                      cluster[index].items < 0 ? (
+                      'NED'
+                    ) : (
+                      'N/A'
+                    )}
                   </StyledTableCell>
                 ))}
               </StyledTableRow>
