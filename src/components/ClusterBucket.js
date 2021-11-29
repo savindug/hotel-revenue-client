@@ -131,14 +131,14 @@ export default function ClusterBucket({ selectedDate }) {
                     cluster[index].items > 0 ? (
                       <span
                         className={
-                          reqHotel[index].rate -
-                            Math.round(cluster[index].mean) >=
+                          Math.round(cluster[index].mean) -
+                            reqHotel[index].rate >=
                           0
-                            ? ''
+                            ? 'text-success'
                             : 'text-danger'
                         }
                       >
-                        {reqHotel[index].rate - Math.round(cluster[index].mean)}
+                        {Math.round(cluster[index].mean) - reqHotel[index].rate}
                       </span>
                     ) : cluster[index].mean !== 'NaN' &&
                       cluster[index].items < 0 ? (
@@ -171,14 +171,14 @@ export default function ClusterBucket({ selectedDate }) {
                     cluster[index].items > 0 ? (
                       <span
                         className={
-                          reqHotel[index].rate -
-                            Math.round(cluster[index].mod) >=
+                          Math.round(cluster[index].mod) -
+                            reqHotel[index].rate >=
                           0
-                            ? ''
+                            ? 'text-success'
                             : 'text-danger'
                         }
                       >
-                        {reqHotel[index].rate - Math.round(cluster[index].mod)}
+                        {Math.round(cluster[index].mod) - reqHotel[index].rate}
                       </span>
                     ) : cluster[index].mod !== 'NaN' &&
                       cluster[index].items < 0 ? (
@@ -211,15 +211,15 @@ export default function ClusterBucket({ selectedDate }) {
                     cluster[index].items > 0 ? (
                       <span
                         className={
-                          reqHotel[index].rate -
-                            Math.round(cluster[index].median) >=
+                          Math.round(cluster[index].median) -
+                            reqHotel[index].rate >=
                           0
-                            ? ''
+                            ? 'text-success'
                             : 'text-danger'
                         }
                       >
-                        {reqHotel[index].rate -
-                          Math.round(cluster[index].median)}
+                        {Math.round(cluster[index].median) -
+                          reqHotel[index].rate}
                       </span>
                     ) : cluster[index].median !== 'NaN' &&
                       cluster[index].items < 0 ? (
@@ -251,14 +251,14 @@ export default function ClusterBucket({ selectedDate }) {
                     cluster[index].items > 0 ? (
                       <span
                         className={
-                          reqHotel[index].rate -
-                            Math.round(cluster[index].max) >=
+                          Math.round(cluster[index].max) -
+                            reqHotel[index].rate >=
                           0
-                            ? ''
+                            ? 'text-success'
                             : 'text-danger'
                         }
                       >
-                        {reqHotel[index].rate - Math.round(cluster[index].max)}
+                        {Math.round(cluster[index].max) - reqHotel[index].rate}
                       </span>
                     ) : cluster[index].max !== 'NaN' &&
                       cluster[index].items < 0 ? (
@@ -297,15 +297,15 @@ export default function ClusterBucket({ selectedDate }) {
                     cluster[index].items > 0 ? (
                       <span
                         className={
-                          reqHotel[index].rate -
-                            Math.round(cluster[index].highAVG) >=
+                          Math.round(cluster[index].highAVG) -
+                            reqHotel[index].rate >=
                           0
-                            ? ''
+                            ? 'text-success'
                             : 'text-danger'
                         }
                       >
-                        {reqHotel[index].rate -
-                          Math.round(cluster[index].highAVG)}
+                        {Math.round(cluster[index].highAVG) -
+                          reqHotel[index].rate}
                       </span>
                     ) : cluster[index].highAVG !== 'NaN' &&
                       cluster[index].items < 0 ? (
@@ -337,15 +337,15 @@ export default function ClusterBucket({ selectedDate }) {
                     cluster[index].items > 0 ? (
                       <span
                         className={
-                          reqHotel[index].rate -
-                            Math.round(cluster[index].midAVG) >=
+                          Math.round(cluster[index].midAVG) -
+                            reqHotel[index].rate >=
                           0
-                            ? ''
+                            ? 'text-success'
                             : 'text-danger'
                         }
                       >
-                        {reqHotel[index].rate -
-                          Math.round(cluster[index].midAVG)}
+                        {Math.round(cluster[index].midAVG) -
+                          reqHotel[index].rate}
                       </span>
                     ) : cluster[index].midAVG !== 'NaN' &&
                       cluster[index].items < 0 ? (
@@ -384,15 +384,15 @@ export default function ClusterBucket({ selectedDate }) {
                     cluster[index].items > 0 ? (
                       <span
                         className={
-                          reqHotel[index].rate -
-                            Math.round(cluster[index].lowAVG) >=
+                          Math.round(cluster[index].lowAVG) -
+                            reqHotel[index].rate >=
                           0
-                            ? ''
+                            ? 'text-success'
                             : 'text-danger'
                         }
                       >
-                        {reqHotel[index].rate -
-                          Math.round(cluster[index].lowAVG)}
+                        {Math.round(cluster[index].lowAVG) -
+                          reqHotel[index].rate}
                       </span>
                     ) : cluster[index].lowAVG !== 'NaN' &&
                       cluster[index].items < 0 ? (
@@ -424,14 +424,14 @@ export default function ClusterBucket({ selectedDate }) {
                     cluster[index].items > 0 ? (
                       <span
                         className={
-                          reqHotel[index].rate -
-                            Math.round(cluster[index].min) >=
+                          Math.round(cluster[index].min) -
+                            reqHotel[index].rate >=
                           0
-                            ? ''
+                            ? 'text-success'
                             : 'text-danger'
                         }
                       >
-                        {reqHotel[index].rate - Math.round(cluster[index].min)}
+                        {Math.round(cluster[index].min) - reqHotel[index].rate}
                       </span>
                     ) : cluster[index].min !== 'NaN' &&
                       cluster[index].items < 0 ? (

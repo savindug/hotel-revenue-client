@@ -35,6 +35,7 @@ import { CompareArrowsOutlined } from '@material-ui/icons';
 import SimilarityScore from './SimilarityScore';
 import SimilarityScoreWe from './SimilarityScoreWe';
 import UnClusteredMatrix from './UnClusteredMatrix';
+import { RateStrength } from './RateStrength';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -610,6 +611,8 @@ export const ClusteredData = () => {
         <SimilarityScore selectedDate={selectedDate} />
       ) : hotels.length > 0 && tab === 6 ? (
         <SimilarityScoreWe selectedDate={selectedDate} />
+      ) : hotels.length > 0 && tab === 8 ? (
+        <RateStrength selectedDate={selectedDate} />
       ) : (
         <></>
       )}
