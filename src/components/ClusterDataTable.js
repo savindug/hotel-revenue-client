@@ -183,7 +183,7 @@ export default function ClusterDataTable({ cluster, stars }) {
                     style={{ fontSize: '14px', width: '250px' }}
                   >
                     <span className="font-italic font-weight-bold">
-                      Rate Strength Exception for 90 Days
+                      Rate Strength Exception
                     </span>
                   </StyledTableCell>
 
