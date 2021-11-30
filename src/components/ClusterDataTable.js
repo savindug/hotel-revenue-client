@@ -80,9 +80,12 @@ export default function ClusterDataTable({ cluster, stars }) {
     }
 
     const rateStrengthHandler = () => {
-      const midAvgArr = cluster.map((e) =>
-        e.midAVG != 'NaN' ? Math.round(e.midAVG) : 0
-      );
+      let midAvgArr = [];
+      cluster.map((e) => {
+        if (e.midAVG != 'NaN') {
+          midAvgArr.push(Math.round(e.midAVG));
+        }
+      });
       const sd = getStandardDeviation(midAvgArr);
 
       const avg = midAvgArr.reduce((a, b) => a + b) / midAvgArr.length;
@@ -97,16 +100,19 @@ export default function ClusterDataTable({ cluster, stars }) {
           _rateStrength.push('High');
         }
         if (e.rate >= avg - 1 * sd && e.rate < avg + 1 * sd) {
-          _rateStrength.push('Low');
+          _rateStrength.push('');
         }
         if (e.rate >= avg - 2 * sd && e.rate < avg - 1 * sd) {
+          _rateStrength.push('Low');
+        }
+        if (e.rate <= avg - 2 * sd) {
           _rateStrength.push('Very Low');
         }
       });
 
-      // console.log(
-      //   `_rateStrength: ${_rateStrength}, sd: ${sd}, avg: ${avg}, midAvgArr.length: ${midAvgArr.length}, midAvgArr: ${midAvgArr}`
-      // );
+      console.log(
+        `_rateStrength: ${_rateStrength}, sd: ${sd}, avg: ${avg}, midAvgArr.length: ${midAvgArr.length}, midAvgArr: ${midAvgArr}`
+      );
 
       setRateStrength(_rateStrength);
     };
