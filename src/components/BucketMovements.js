@@ -414,7 +414,7 @@ export default function BucketMovements({ selectedDate }) {
                         borderTop: '2px solid grey',
                       }}
                     >
-                      Bucket Index
+                      Bucket Size Index
                     </StyledTableCell>
                     {[...Array(90).keys()].map((e, index) =>
                       (() => {
@@ -549,7 +549,7 @@ export default function BucketMovements({ selectedDate }) {
                         borderTop: '2px solid grey',
                       }}
                     >
-                      Bucket Index
+                      Bucket Size Index
                     </StyledTableCell>
                     {[...Array(90).keys()].map((e, index) =>
                       (() => {
@@ -684,7 +684,7 @@ export default function BucketMovements({ selectedDate }) {
                         borderTop: '2px solid grey',
                       }}
                     >
-                      Bucket Index
+                      Bucket Size Index
                     </StyledTableCell>
                     {[...Array(90).keys()].map((e, index) =>
                       (() => {
@@ -819,7 +819,7 @@ export default function BucketMovements({ selectedDate }) {
                         borderTop: '2px solid grey',
                       }}
                     >
-                      Bucket Index
+                      Bucket Size Index
                     </StyledTableCell>
                     {[...Array(90).keys()].map((e, index) =>
                       (() => {
