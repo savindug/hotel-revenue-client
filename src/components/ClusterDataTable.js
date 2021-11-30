@@ -110,9 +110,9 @@ export default function ClusterDataTable({ cluster, stars }) {
         }
       });
 
-      console.log(
-        `_rateStrength: ${_rateStrength}, sd: ${sd}, avg: ${avg}, midAvgArr.length: ${midAvgArr.length}, midAvgArr: ${midAvgArr}`
-      );
+      // console.log(
+      //   `_rateStrength: ${_rateStrength}, sd: ${sd}, avg: ${avg}, midAvgArr.length: ${midAvgArr.length}, midAvgArr: ${midAvgArr}`
+      // );
 
       setRateStrength(_rateStrength);
     };
