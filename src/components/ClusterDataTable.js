@@ -92,23 +92,25 @@ export default function ClusterDataTable({ cluster, stars }) {
 
       let _rateStrength = [];
 
-      reqHotel.map((e, index) => {
-        if (e.rate >= avg + 2 * sd) {
+      cluster.map((e, index) => {
+        if (e.mean >= avg + 2 * sd) {
           _rateStrength.push('Very High');
         }
-        if (e.rate >= avg + 1 * sd && e.rate < avg + 2 * sd) {
+        if (e.mean >= avg + 1 * sd && e.mean < avg + 2 * sd) {
           _rateStrength.push('High');
         }
-        if (e.rate >= avg - 1 * sd && e.rate < avg + 1 * sd) {
+        if (e.mean >= avg - 1 * sd && e.mean < avg + 1 * sd) {
           _rateStrength.push('');
         }
-        if (e.rate >= avg - 2 * sd && e.rate < avg - 1 * sd) {
+        if (e.mean >= avg - 2 * sd && e.mean < avg - 1 * sd) {
           _rateStrength.push('Low');
         }
-        if (e.rate <= avg - 2 * sd) {
+        if (e.mean <= avg - 2 * sd) {
           _rateStrength.push('Very Low');
         }
       });
+
+      // console.log(`Bucket: ${stars} star sd: ${sd}, avg: ${avg},`);
 
       // console.log(
       //   `_rateStrength: ${_rateStrength}, sd: ${sd}, avg: ${avg}, midAvgArr.length: ${midAvgArr.length}, midAvgArr: ${midAvgArr}`
