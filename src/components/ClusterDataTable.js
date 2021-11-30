@@ -15,6 +15,7 @@ import Paper from '@material-ui/core/Paper';
 import moment from 'moment';
 import { CLUSTER_BACKGROUND, FONT_FAMILY } from '../utils/const';
 import { LoadingOverlay } from './UI/LoadingOverlay';
+import { useSelector } from 'react-redux';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -55,18 +56,71 @@ const useStyles = makeStyles({
 export default function ClusterDataTable({ cluster, stars }) {
   const classes = useStyles();
 
+  const getClusterDataSet = useSelector((state) => state.clusterDataSet);
+  const { loading, reqHotel } = getClusterDataSet;
+
   const [load, setLoad] = useState(true);
+
+  const [rateStrength, setRateStrength] = useState([]);
 
   useEffect(() => {
     //setStars((cluster.index += 2));
     setLoad(true);
     //console.log(`no of Hotels length : ${noOfHotels.length} => ${noOfHotels}`);
+
+    function getStandardDeviation(array) {
+      if (array.length === 0) {
+        return 0;
+      }
+      const n = array.length;
+      const mean = array.reduce((a, b) => a + b) / n;
+      return Math.sqrt(
+        array.map((x) => Math.pow(x - mean, 2)).reduce((a, b) => a + b) / n
+      );
+    }
+
+    const rateStrengthHandler = () => {
+      const midAvgArr = cluster.map((e) =>
+        e.midAVG != 'NaN' ? Math.round(e.midAVG) : 0
+      );
+      const sd = getStandardDeviation(midAvgArr);
+
+      const avg = midAvgArr.reduce((a, b) => a + b) / midAvgArr.length;
+
+      let _rateStrength = [];
+
+      reqHotel.map((e, index) => {
+        if (e.rate >= avg + 2 * sd) {
+          _rateStrength.push('Very High');
+        }
+        if (e.rate >= avg + 1 * sd && e.rate < avg + 2 * sd) {
+          _rateStrength.push('High');
+        }
+        if (e.rate >= avg - 1 * sd && e.rate < avg + 1 * sd) {
+          _rateStrength.push('Low');
+        }
+        if (e.rate >= avg - 2 * sd && e.rate < avg - 1 * sd) {
+          _rateStrength.push('Very Low');
+        }
+      });
+
+      // console.log(
+      //   `_rateStrength: ${_rateStrength}, sd: ${sd}, avg: ${avg}, midAvgArr.length: ${midAvgArr.length}, midAvgArr: ${midAvgArr}`
+      // );
+
+      setRateStrength(_rateStrength);
+    };
+
+    if (cluster.length > 0 && reqHotel.length > 0) {
+      rateStrengthHandler();
+    }
+
     setLoad(false);
   }, []);
 
   return (
     <>
-      {!load ? (
+      {!load && rateStrength.length > 0 ? (
         <TableContainer component={Paper} className="my-5">
           <Box width={100}>
             <Table
@@ -114,6 +168,30 @@ export default function ClusterDataTable({ cluster, stars }) {
                 )}
               </TableHead>
               <TableBody>
+                <StyledTableRow Key={stars}>
+                  <StyledTableCell
+                    size="small"
+                    component="th"
+                    scope="row"
+                    className={classes.sticky}
+                    style={{ fontSize: '14px', width: '250px' }}
+                  >
+                    <span className="font-italic font-weight-bold">
+                      Rate Strength Exception for 90 Days
+                    </span>
+                  </StyledTableCell>
+
+                  {rateStrength.map((e, index) => (
+                    <StyledTableCell
+                      size="small"
+                      key={index}
+                      style={{ fontSize: '12px' }}
+                    >
+                      <span className="">{e}</span>
+                    </StyledTableCell>
+                  ))}
+                </StyledTableRow>
+
                 <StyledTableRow Key={stars}>
                   <StyledTableCell
                     size="small"
