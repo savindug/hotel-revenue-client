@@ -346,7 +346,7 @@ const SimpleMap = () => {
                                     variant="body2"
                                     className="font-weight-bold"
                                   >
-                                    Weekday Freq Bucket: {mode(cluster_arr_wd)}
+                                    Weekday Bucket: {mode(cluster_arr_wd)}
                                   </Typography>
                                   <Typography
                                     sx={{ display: 'inline' }}
@@ -354,7 +354,7 @@ const SimpleMap = () => {
                                     variant="body2"
                                     className="font-weight-bold"
                                   >
-                                    Weekend Freq Bucket: {mode(cluster_arr_we)}
+                                    Weekend Bucket: {mode(cluster_arr_we)}
                                   </Typography>
                                 </Grid>
                               </React.Fragment>
