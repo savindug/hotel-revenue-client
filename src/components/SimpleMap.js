@@ -160,7 +160,15 @@ const SimpleMap = () => {
       .pop();
   };
 
-  const AnyReactComponent = ({ id, text, stars, prices, mod_wd, mod_we }) => (
+  const AnyReactComponent = ({
+    id,
+    text,
+    stars,
+    prices,
+    mod_wd,
+    mod_we,
+    mod_w,
+  }) => (
     <div key={id} style={{ cursor: 'pointer' }}>
       {/* <OverlayTrigger
         key={placement}
@@ -169,13 +177,13 @@ const SimpleMap = () => {
       > */}
       <img
         src={
-          stars === 2
+          mod_w === 2
             ? stars2
-            : stars === 3
+            : mod_w === 3
             ? stars3
-            : stars === 4
+            : mod_w === 4
             ? stars4
-            : stars === 5
+            : mod_w === 5
             ? stars5
             : black_Hotel
         }
@@ -252,11 +260,16 @@ const SimpleMap = () => {
                   (() => {
                     let cluster_arr_wd = [];
                     let cluster_arr_we = [];
+                    let cluster_arr_w = [];
                     _hotel.prices.map((dt, ix) => {
                       if (dt !== null) {
                         const day = moment(dt.date)
                           .format('dddd')
                           .substring(0, 3);
+                        cluster_arr_w.push(
+                          getClusterByPrice(dt.price[getPrice(dt.price)], ix) +
+                            2
+                        );
                         if (day === 'Sat' || day === 'Fri') {
                           cluster_arr_we.push(
                             getClusterByPrice(
@@ -280,7 +293,9 @@ const SimpleMap = () => {
                           className="shadow-lg border border-white rounded font-weight-bold"
                           style={{
                             backgroundColor:
-                              CLUSTER_BACKGROUND[Math.floor(_hotel.stars) - 2],
+                              CLUSTER_BACKGROUND[
+                                Math.floor(mode(cluster_arr_w)) - 2
+                              ],
                             cursor: 'pointer',
                           }}
                           alignItems="flex-start"
@@ -305,6 +320,7 @@ const SimpleMap = () => {
                                     sx={{ display: 'inline' }}
                                     component="span"
                                     variant="body2"
+                                    className="font-weight-bold"
                                   >
                                     Stars: {_hotel.stars}
                                   </Typography>
@@ -312,6 +328,7 @@ const SimpleMap = () => {
                                     sx={{ display: 'inline' }}
                                     component="span"
                                     variant="body2"
+                                    className="font-weight-bold"
                                   >
                                     Ratings: {_hotel.ratings}
                                   </Typography>
@@ -319,6 +336,7 @@ const SimpleMap = () => {
                                     sx={{ display: 'inline' }}
                                     component="span"
                                     variant="body2"
+                                    className="font-weight-bold"
                                   >
                                     # Rooms: {_hotel.noOfRooms}
                                   </Typography>
@@ -326,6 +344,7 @@ const SimpleMap = () => {
                                     sx={{ display: 'inline' }}
                                     component="span"
                                     variant="body2"
+                                    className="font-weight-bold"
                                   >
                                     Weekday Freq Bucket: {mode(cluster_arr_wd)}
                                   </Typography>
@@ -333,6 +352,7 @@ const SimpleMap = () => {
                                     sx={{ display: 'inline' }}
                                     component="span"
                                     variant="body2"
+                                    className="font-weight-bold"
                                   >
                                     Weekend Freq Bucket: {mode(cluster_arr_we)}
                                   </Typography>
@@ -389,9 +409,13 @@ const SimpleMap = () => {
               (() => {
                 let cluster_arr_wd = [];
                 let cluster_arr_we = [];
+                let cluster_arr_w = [];
                 _hotel.prices.map((dt, ix) => {
                   if (dt !== null) {
                     const day = moment(dt.date).format('dddd').substring(0, 3);
+                    cluster_arr_w.push(
+                      getClusterByPrice(dt.price[getPrice(dt.price)], ix) + 2
+                    );
                     if (day === 'Sat' || day === 'Fri') {
                       cluster_arr_we.push(
                         getClusterByPrice(dt.price[getPrice(dt.price)], ix) + 2
@@ -413,6 +437,7 @@ const SimpleMap = () => {
                     prices={_hotel.prices}
                     mod_wd={mode(cluster_arr_wd)}
                     mod_we={mode(cluster_arr_we)}
+                    mod_w={mode(cluster_arr_w)}
                   />
                 );
               })()

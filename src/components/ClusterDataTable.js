@@ -192,6 +192,8 @@ export default function ClusterDataTable({ cluster, stars }) {
                   {rateStrength.map((e, index) => (
                     <StyledTableCell
                       size="small"
+                      component="th"
+                      scope="row"
                       key={index}
                       style={{ fontSize: '12px' }}
                     >
