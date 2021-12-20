@@ -571,11 +571,14 @@ export const Graphs = ({ selectedDate }) => {
   useEffect(() => {
     const getPropertyRankInCluster = (day, others) => {
       let rank = null;
+      let rate = 'N/A';
 
       if (reqHotel[day] != null) {
         let pr_rnk =
           parseInt(reqHotel[day].rank.split('/')[1]) -
           parseInt(reqHotel[day].rank.split('/')[0]);
+
+        rate = reqHotel[day].rate;
 
         pr_rnk = pr_rnk + others;
 
@@ -600,7 +603,7 @@ export const Graphs = ({ selectedDate }) => {
         }
       }
 
-      return rank;
+      return `${rank}`;
     };
 
     const buildHotelsDataSet = async () => {
@@ -989,12 +992,11 @@ export const Graphs = ({ selectedDate }) => {
             </FormControl>
           </Grid>
 
+          <Line data={lineData} height={100} />
+
           <Box className="my-5">
             <Bar height={400} width={100} data={chartData} options={options} />
           </Box>
-          <hr className="my-5"></hr>
-
-          <Line data={lineData} height={100} />
         </>
       ) : (
         <>Binding Data...</>
