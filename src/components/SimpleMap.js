@@ -168,6 +168,7 @@ const SimpleMap = () => {
     mod_wd,
     mod_we,
     mod_w,
+    ratings,
   }) => (
     <div key={id} style={{ cursor: 'pointer' }}>
       {/* <OverlayTrigger
@@ -195,7 +196,7 @@ const SimpleMap = () => {
       {infoWindow && infoWindowID === id ? (
         <div>
           <Toast
-            className="bg-dark text-light"
+            className="text-light"
             onClick={handleInfoClose}
             style={{
               position: 'absolute',
@@ -203,20 +204,24 @@ const SimpleMap = () => {
               zIndex: 10,
               minWidth: '200px',
               minHeight: '100px',
+              background: '#9E9E9E',
             }}
-            autohide
           >
-            <Toast.Header className="bg-dark text-light">
+            <Toast.Header
+              className="text-light"
+              style={{ background: '#9E9E9E' }}
+            >
               <h6>
                 <span>{`${text}`}</span>
               </h6>
 
               <strong className="mr-auto text-light"></strong>
             </Toast.Header>
-            <Toast.Body className="bg-dark">
+            <Toast.Body className="" style={{ background: '#9E9E9E' }}>
               <p>{`Stars: ${stars}`}</p>
-              <p>{`Weekday Freq Bucket: ${mod_wd}`}</p>
-              <p>{`Weekend Freq Bucket: ${mod_we}`}</p>
+              <p>{`Ratings: ${ratings}`}</p>
+              <p>{`Weekday Bucket: ${mod_wd}`}</p>
+              <p>{`Weekend Bucket: ${mod_we}`}</p>
               {/* <ul>
                 <li className="bg-dark">Stars {stars}</li>
                 <li className="bg-dark"> Date</li>
@@ -433,6 +438,7 @@ const SimpleMap = () => {
                     lat={_hotel.location.lat}
                     lng={_hotel.location.lng}
                     stars={Math.floor(_hotel.stars)}
+                    ratings={_hotel.ratings}
                     text={_hotel.hotelName}
                     prices={_hotel.prices}
                     mod_wd={mode(cluster_arr_wd)}

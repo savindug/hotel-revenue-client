@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { login, refresh } from '../../redux/actions/auth.actions';
 import { LoadingOverlay } from '../UI/LoadingOverlay';
 import { checkAuthTokens } from '../../services/auth.service';
+import { RB_MAIN_LOGO } from '../../env';
 
 export const Login = (props) => {
   const auth = useSelector((state) => state.auth);
@@ -67,13 +68,9 @@ export const Login = (props) => {
       ) : (
         <div className={style.form_signin}>
           <img
-            className="mb-4 mx-auto d-block"
-            src={
-              'https://res.cloudinary.com/ratebuckets/image/upload/v1622351600/logo_ibwvbs.jpg'
-            }
+            className="my-5 mx-auto d-block w-100"
+            src={RB_MAIN_LOGO}
             alt=""
-            width="72"
-            height="57"
           />
           {formError !== null ? (
             <Alert variant={'danger'}>

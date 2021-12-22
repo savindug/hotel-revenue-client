@@ -128,33 +128,9 @@ export default function MiniDrawer(props) {
           [classes.appBarShift]: open,
         })}
       >
-        {/* <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            className={clsx(classes.menuButton, {
-              [classes.hide]: true,
-            })}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap>
-            <Link
-              to="/"
-              variant="body2"
-              color="inherit"
-              style={{ textDecoration: 'none', color: '#f4f4f4' }}
-            >
-              {' '}
-              Rate Buckets{' '}
-            </Link>
-          </Typography>
-        </Toolbar> */}
         <Navbar className="navbar navbar-expand-lg navbar-inverse">
-          <Navbar.Brand href="/" className="text-light mx-auto">
-            Rate Buckets
+          <Navbar.Brand href="/" className="text-light mx-auto rb-logo">
+            RateBuckets
           </Navbar.Brand>
           <Navbar.Toggle />
           <Navbar.Collapse className="justify-content-end">
@@ -218,101 +194,6 @@ export default function MiniDrawer(props) {
           </Navbar.Collapse>
         </Navbar>
       </AppBar>
-      {/* <Drawer
-        variant="permanent"
-        className={clsx(classes.drawer, {
-          [classes.drawerOpen]: open,
-          [classes.drawerClose]: !open,
-        })}
-        classes={{
-          paper: clsx({
-            [classes.drawerOpen]: open,
-            [classes.drawerClose]: !open,
-          }),
-        }}
-      >
-        <div className={classes.toolbar}>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'rtl' ? (
-              <ChevronRightIcon
-                style={{
-                  color: '#f4f4f4',
-                }}
-              />
-            ) : (
-              <ChevronLeftIcon
-                style={{
-                  color: '#f4f4f4',
-                }}
-              />
-            )}
-          </IconButton>
-        </div>
-        <Divider />
-        <List>
-          {' '}
-          <Link
-            to="/clusters"
-            variant="body2"
-            color="inherit"
-            style={{ textDecoration: 'none', color: '#f4f4f4' }}
-          >
-            <ListItem button key="clusters">
-              <ListItemIcon
-                style={{
-                  color: '#f4f4f4',
-                }}
-              >
-                <TableChartOutlined />
-              </ListItemIcon>
-              {open ? <ListItemText primary="Cluster Reports" /> : <></>}
-            </ListItem>
-          </Link>
-        </List>
-        <Divider />
-        <List>
-          {' '}
-          <Link
-            to="/clusters"
-            variant="body2"
-            color="inherit"
-            style={{ textDecoration: 'none', color: '#f4f4f4' }}
-          >
-            <ListItem button key="clusters">
-              <ListItemIcon
-                style={{
-                  color: '#f4f4f4',
-                }}
-              >
-                <BarChartOutlined />
-              </ListItemIcon>
-              {open ? <ListItemText primary="Analytics Graphs" /> : <></>}
-            </ListItem>
-          </Link>
-        </List>
-        <Divider />
-        <List>
-          {' '}
-          <Link
-            to="/clusters"
-            variant="body2"
-            color="inherit"
-            style={{ textDecoration: 'none', color: '#f4f4f4' }}
-          >
-            <ListItem button key="clusters">
-              <ListItemIcon
-                style={{
-                  color: '#f4f4f4',
-                }}
-              >
-                <MultilineChartOutlined />
-              </ListItemIcon>
-              {open ? <ListItemText primary="RADAR Reports" /> : <></>}
-            </ListItem>
-          </Link>
-        </List>
-        <Divider />
-      </Drawer>*/}
     </div>
   );
 }
