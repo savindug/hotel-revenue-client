@@ -1,5 +1,5 @@
 import * as ACTION_TYPES from '../actions/types';
-import { apiURI } from '../../env';
+import { apiURI, INTERNAL_SERVER_ERR } from '../../env';
 import axios from 'axios';
 import { AUTHORIZATION_KEY, REFRESH_KEY } from '../../utils/const';
 import { getReqHeaders } from '../../services/auth.service';
@@ -53,18 +53,18 @@ export const login = (user) => async (dispatch) => {
         payload: res.data.user,
       });
 
-      await dispatch(
-        getUserReports({
-          _id: res.data.user._id,
-          name: res.data.user.name,
-          email: res.data.user.email,
-          application: res.data.user.application,
-          role: res.data.user.role,
-        })
-      );
-
       // console.log(res);
       if (res.results === true) {
+        await dispatch(
+          getUserReports({
+            _id: res.data.user._id,
+            name: res.data.user.name,
+            email: res.data.user.email,
+            application: res.data.user.application,
+            role: res.data.user.role,
+          })
+        );
+
         storeAuthTokens(AUTHORIZATION_KEY, res.data.token);
         storeAuthTokens(REFRESH_KEY, res.data.user.tokens.refresh);
         dispatch({
@@ -82,11 +82,11 @@ export const login = (user) => async (dispatch) => {
       console.log(err);
       dispatch({
         type: ACTION_TYPES.LOGIN_FAILED,
-        payload: err,
+        payload: INTERNAL_SERVER_ERR,
       });
       dispatch({
         type: ACTION_TYPES.ISLOGGEDIN_FALSE,
-        payload: err,
+        payload: INTERNAL_SERVER_ERR,
       });
     });
 };
@@ -104,18 +104,17 @@ export const refresh = () => async (dispatch) => {
         payload: res.data.user,
       });
 
-      await dispatch(
-        getUserReports({
-          _id: res.data.user._id,
-          name: res.data.user.name,
-          email: res.data.user.email,
-          application: res.data.user.application,
-          role: res.data.user.role,
-        })
-      );
-
       // console.log(res);
       if (res.results === true) {
+        await dispatch(
+          getUserReports({
+            _id: res.data.user._id,
+            name: res.data.user.name,
+            email: res.data.user.email,
+            application: res.data.user.application,
+            role: res.data.user.role,
+          })
+        );
         storeAuthTokens(AUTHORIZATION_KEY, res.data.token);
         storeAuthTokens(REFRESH_KEY, res.data.user.tokens.refresh);
         dispatch({
@@ -130,14 +129,14 @@ export const refresh = () => async (dispatch) => {
       }
     })
     .catch((err) => {
-      //console.log(err);
+      console.log(err);
       dispatch({
         type: ACTION_TYPES.LOGIN_FAILED,
-        payload: err,
+        payload: INTERNAL_SERVER_ERR,
       });
       dispatch({
         type: ACTION_TYPES.ISLOGGEDIN_FALSE,
-        payload: err,
+        payload: INTERNAL_SERVER_ERR,
       });
     });
 };
