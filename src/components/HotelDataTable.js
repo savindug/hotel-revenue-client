@@ -144,51 +144,74 @@ export default function HotelDataTable({ selectedDate }) {
   }, []);
 
   const getClusterByPrice = (rate, ix) => {
-    if (
-      (cluster1[ix].min != undefined || cluster1[ix].min != null) &&
-      (cluster1[ix].max != undefined || cluster1[ix].max != null)
-    ) {
-      if (rate >= cluster1[ix].min && rate <= cluster1[ix].max) {
-        // console.log(
-        //   `${ix} => ${cluster1[ix].min} < ${rate} > ${cluster1[ix].max} `
-        // );
-        return 0;
-      }
+    let clustered = [];
+
+    if (cluster1.length > 0) {
+      clustered.push(cluster1);
     }
-    if (
-      (cluster2[ix].min != undefined || cluster2[ix].min != null) &&
-      (cluster2[ix].max != undefined || cluster2[ix].max != null)
-    ) {
-      if (rate >= cluster2[ix].min && rate <= cluster2[ix].max) {
-        // console.log(
-        //   `${ix} =>${cluster2[ix].min} < ${rate} > ${cluster2[ix].max} `
-        // );
-        return 1;
-      }
+    if (cluster2.length > 0) {
+      clustered.push(cluster2);
+    }
+    if (cluster3.length > 0) {
+      clustered.push(cluster3);
+    }
+    if (cluster4.length > 0) {
+      clustered.push(cluster4);
     }
 
-    if (
-      (cluster3[ix].min != undefined || cluster3[ix].min != null) &&
-      (cluster3[ix].max != undefined || cluster3[ix].max != null)
-    ) {
-      if (rate >= cluster3[ix].min && rate <= cluster3[ix].max) {
-        // console.log(
-        //   `${ix} =>${cluster3[ix].min} < ${rate} > ${cluster3[ix].max} `
-        // );
-        return 2;
+    clustered.sort((a, b) => a.mean - b.mean);
+
+    clustered.map((cl, id) => {
+      if (rate >= cl.min && rate <= cl.max) {
+        return id;
       }
-    }
-    if (
-      (cluster4[ix].min != undefined || cluster4[ix].min != null) &&
-      (cluster4[ix].max != undefined || cluster4[ix].max != null)
-    ) {
-      if (rate >= cluster4[ix].min && rate <= cluster4[ix].max) {
-        // console.log(
-        //   `${ix} =>${cluster4[ix].min} < ${rate} > ${cluster4[ix].max} `
-        // );
-        return 3;
-      }
-    }
+    });
+
+    // if (
+    //   (cluster1[ix].min != undefined || cluster1[ix].min != null) &&
+    //   (cluster1[ix].max != undefined || cluster1[ix].max != null)
+    // ) {
+    //   if (rate >= cluster1[ix].min && rate <= cluster1[ix].max) {
+    //     // console.log(
+    //     //   `${ix} => ${cluster1[ix].min} < ${rate} > ${cluster1[ix].max} `
+    //     // );
+    //     return 0;
+    //   }
+    // }
+    // if (
+    //   (cluster2[ix].min != undefined || cluster2[ix].min != null) &&
+    //   (cluster2[ix].max != undefined || cluster2[ix].max != null)
+    // ) {
+    //   if (rate >= cluster2[ix].min && rate <= cluster2[ix].max) {
+    //     // console.log(
+    //     //   `${ix} =>${cluster2[ix].min} < ${rate} > ${cluster2[ix].max} `
+    //     // );
+    //     return 1;
+    //   }
+    // }
+
+    // if (
+    //   (cluster3[ix].min != undefined || cluster3[ix].min != null) &&
+    //   (cluster3[ix].max != undefined || cluster3[ix].max != null)
+    // ) {
+    //   if (rate >= cluster3[ix].min && rate <= cluster3[ix].max) {
+    //     // console.log(
+    //     //   `${ix} =>${cluster3[ix].min} < ${rate} > ${cluster3[ix].max} `
+    //     // );
+    //     return 2;
+    //   }
+    // }
+    // if (
+    //   (cluster4[ix].min != undefined || cluster4[ix].min != null) &&
+    //   (cluster4[ix].max != undefined || cluster4[ix].max != null)
+    // ) {
+    //   if (rate >= cluster4[ix].min && rate <= cluster4[ix].max) {
+    //     // console.log(
+    //     //   `${ix} =>${cluster4[ix].min} < ${rate} > ${cluster4[ix].max} `
+    //     // );
+    //     return 3;
+    //   }
+    // }
   };
 
   const sortData = (sortBy, sortOrder) => {

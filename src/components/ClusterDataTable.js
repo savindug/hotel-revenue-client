@@ -128,7 +128,7 @@ export default function ClusterDataTable({ cluster, stars }) {
 
   return (
     <>
-      {!load && rateStrength.length > 0 ? (
+      {!load && rateStrength.length > 0 && cluster.length > 0 ? (
         <TableContainer component={Paper} className="my-5">
           <Box width={100}>
             <Table
@@ -424,7 +424,8 @@ export default function ClusterDataTable({ cluster, stars }) {
           </Box>
         </TableContainer>
       ) : (
-        <LoadingOverlay show={load} />
+        // <LoadingOverlay show={load} />
+        <></>
       )}
     </>
   );

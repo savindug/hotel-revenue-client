@@ -10,5 +10,8 @@ export const STRIPE_SECRET =
 export const INTERNAL_SERVER_ERR =
   'Sorry, we were unable to process your request at this time.';
 
+export const DATA_ERR =
+  'Sorry, we were unable to process your request at this time.';
+
 export const RB_MAIN_LOGO =
   'https://res.cloudinary.com/ratebuckets/image/upload/v1640190469/ratebuckets_main_logo_yb45li.png';

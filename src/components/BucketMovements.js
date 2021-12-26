@@ -95,8 +95,7 @@ export default function BucketMovements({ selectedDate }) {
       hotels.length > 0 &&
       cluster1.length > 0 &&
       cluster2.length > 0 &&
-      cluster3.length > 0 &&
-      cluster4.length > 0 ? (
+      cluster3.length > 0 ? (
         <>
           <TableContainer component={Paper} className="my-5">
             <Box width={100}>

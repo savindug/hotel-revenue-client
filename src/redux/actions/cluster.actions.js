@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { apiURI } from '../../env';
+import { apiURI, DATA_ERR } from '../../env';
 import { getReqHeaders } from '../../services/auth.service';
 import { refresh } from './auth.actions';
 import * as ACTION_TYPES from './types';
@@ -67,7 +67,7 @@ export const fetchClusterData =
         });
       })
       .catch(async (err) => {
-        dispatch(handleErr(err));
+        dispatch(handleErr(DATA_ERR));
       });
   };
 
@@ -89,7 +89,7 @@ export const fetchHotelData =
         });
       })
       .catch(async (err) => {
-        dispatch(handleErr(err));
+        dispatch(handleErr(DATA_ERR));
       });
   };
 
@@ -107,7 +107,7 @@ export const fetchHotelsList = (destID) => async (dispatch) => {
       });
     })
     .catch(async (err) => {
-      dispatch(handleErr(err));
+      dispatch(handleErr(DATA_ERR));
     });
 };
 
@@ -125,7 +125,7 @@ export const fetchMarkets = () => async (dispatch) => {
       });
     })
     .catch(async (err) => {
-      dispatch(handleErr(err));
+      dispatch(handleErr(DATA_ERR));
     });
 };
 
@@ -143,7 +143,7 @@ export const fetchRefreshDates = (destID) => async (dispatch) => {
       });
     })
     .catch(async (err) => {
-      dispatch(handleErr(err));
+      dispatch(handleErr(DATA_ERR));
     });
 };
 
@@ -155,7 +155,7 @@ export const handleErr = (err) => async (dispatch) => {
     } else {
       dispatch({
         type: ACTION_TYPES.GET_REFRESH_DATES_FAILED,
-        payload: err,
+        payload: DATA_ERR,
       });
     }
   }
