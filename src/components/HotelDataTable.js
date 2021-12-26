@@ -145,27 +145,33 @@ export default function HotelDataTable({ selectedDate }) {
 
   const getClusterByPrice = (rate, ix) => {
     let clustered = [];
+    let res = 5;
 
     if (cluster1.length > 0) {
-      clustered.push(cluster1);
+      clustered.push(cluster1[ix]);
     }
     if (cluster2.length > 0) {
-      clustered.push(cluster2);
+      clustered.push(cluster2[ix]);
     }
     if (cluster3.length > 0) {
-      clustered.push(cluster3);
+      clustered.push(cluster3[ix]);
     }
     if (cluster4.length > 0) {
-      clustered.push(cluster4);
+      clustered.push(cluster4[ix]);
     }
 
     clustered.sort((a, b) => a.mean - b.mean);
 
+    // console.log(clustered);
+
     clustered.map((cl, id) => {
       if (rate >= cl.min && rate <= cl.max) {
-        return id;
+        res = id;
+        return;
       }
     });
+
+    return res;
 
     // if (
     //   (cluster1[ix].min != undefined || cluster1[ix].min != null) &&
