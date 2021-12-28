@@ -99,51 +99,34 @@ const SimpleMap = () => {
   };
 
   const getClusterByPrice = (rate, ix) => {
-    if (
-      (cluster1[ix].min != undefined || cluster1[ix].min != null) &&
-      (cluster1[ix].max != undefined || cluster1[ix].max != null)
-    ) {
-      if (rate >= cluster1[ix].min && rate <= cluster1[ix].max) {
-        // console.log(
-        //   `${ix} => ${cluster1[ix].min} < ${rate} > ${cluster1[ix].max} `
-        // );
-        return 0;
-      }
+    let clustered = [];
+    let res;
+
+    if (cluster1.length > 0) {
+      clustered.push(cluster1[ix]);
     }
-    if (
-      (cluster2[ix].min != undefined || cluster2[ix].min != null) &&
-      (cluster2[ix].max != undefined || cluster2[ix].max != null)
-    ) {
-      if (rate >= cluster2[ix].min && rate <= cluster2[ix].max) {
-        // console.log(
-        //   `${ix} =>${cluster2[ix].min} < ${rate} > ${cluster2[ix].max} `
-        // );
-        return 1;
-      }
+    if (cluster2.length > 0) {
+      clustered.push(cluster2[ix]);
+    }
+    if (cluster3.length > 0) {
+      clustered.push(cluster3[ix]);
+    }
+    if (cluster4.length > 0) {
+      clustered.push(cluster4[ix]);
     }
 
-    if (
-      (cluster3[ix].min != undefined || cluster3[ix].min != null) &&
-      (cluster3[ix].max != undefined || cluster3[ix].max != null)
-    ) {
-      if (rate >= cluster3[ix].min && rate <= cluster3[ix].max) {
-        // console.log(
-        //   `${ix} =>${cluster3[ix].min} < ${rate} > ${cluster3[ix].max} `
-        // );
-        return 2;
+    clustered.sort((a, b) => a.mean - b.mean);
+
+    // console.log(clustered);
+
+    clustered.map((cl, id) => {
+      if (rate >= cl.min && rate <= cl.max) {
+        res = id;
+        return;
       }
-    }
-    if (
-      (cluster4[ix].min != undefined || cluster4[ix].min != null) &&
-      (cluster4[ix].max != undefined || cluster4[ix].max != null)
-    ) {
-      if (rate >= cluster4[ix].min && rate <= cluster4[ix].max) {
-        // console.log(
-        //   `${ix} =>${cluster4[ix].min} < ${rate} > ${cluster4[ix].max} `
-        // );
-        return 3;
-      }
-    }
+    });
+
+    return res;
   };
 
   const getPrice = (arr) => {
@@ -239,11 +222,7 @@ const SimpleMap = () => {
   return (
     <Grid container justify="space-evenly">
       <div className="mt-5" style={{ height: '100vh', width: '50%' }}>
-        {hotels.length > 0 &&
-        cluster1.length > 0 &&
-        cluster2.length > 0 &&
-        cluster3.length > 0 &&
-        cluster4.length > 0 ? (
+        {hotels.length > 0 ? (
           <Box
             overflow="auto"
             height="100vh"
@@ -351,7 +330,10 @@ const SimpleMap = () => {
                                     variant="body2"
                                     className="font-weight-bold"
                                   >
-                                    Weekday Bucket: {mode(cluster_arr_wd)}
+                                    Weekday Bucket:{' '}
+                                    {mode(cluster_arr_wd) <= 5
+                                      ? mode(cluster_arr_wd)
+                                      : 'N/A'}
                                   </Typography>
                                   <Typography
                                     sx={{ display: 'inline' }}
@@ -359,7 +341,10 @@ const SimpleMap = () => {
                                     variant="body2"
                                     className="font-weight-bold"
                                   >
-                                    Weekend Bucket: {mode(cluster_arr_we)}
+                                    Weekend Bucket:{' '}
+                                    {mode(cluster_arr_we) <= 5
+                                      ? mode(cluster_arr_we)
+                                      : 'N/A'}
                                   </Typography>
                                 </Grid>
                               </React.Fragment>
@@ -378,11 +363,8 @@ const SimpleMap = () => {
         )}
       </div>
       <div className="mt-5" style={{ height: '100vh', width: '50%' }}>
-        {hotels.length > 0 &&
-        cluster1.length > 0 &&
-        cluster2.length > 0 &&
-        cluster3.length > 0 &&
-        cluster4.length > 0 ? (
+        {/* {console.log(defaultProps)}, */}
+        {hotels.length > 0 ? (
           <GoogleMapReact
             bootstrapURLKeys={{
               key: GOOGLE_MAP_KEY,

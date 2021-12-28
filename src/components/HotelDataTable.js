@@ -145,7 +145,7 @@ export default function HotelDataTable({ selectedDate }) {
 
   const getClusterByPrice = (rate, ix) => {
     let clustered = [];
-    let res = 5;
+    let res;
 
     if (cluster1.length > 0) {
       clustered.push(cluster1[ix]);
@@ -355,12 +355,26 @@ export default function HotelDataTable({ selectedDate }) {
   };
 
   const checkHotelAvailability = (id, day) => {
-    const hotels_arr = Array.prototype.concat(
-      cluster1[day].unwanted,
-      cluster2[day].unwanted,
-      cluster3[day].unwanted,
-      cluster4[day].unwanted
-    );
+    let clustered = [];
+
+    if (cluster1.length > 0) {
+      clustered.push(cluster1[day].unwanted);
+    }
+    if (cluster2.length > 0) {
+      clustered.push(cluster2[day].unwanted);
+    }
+    if (cluster3.length > 0) {
+      clustered.push(cluster3[day].unwanted);
+    }
+    if (cluster4.length > 0) {
+      clustered.push(cluster4[day].unwanted);
+    }
+
+    let hotels_arr = [];
+
+    for (var i = 0; i < clustered.length; i++) {
+      hotels_arr = hotels_arr.concat(clustered[i]);
+    }
 
     const exists = hotels_arr.some((obj) => obj.id == id);
 
@@ -373,12 +387,7 @@ export default function HotelDataTable({ selectedDate }) {
 
   return (
     <>
-      {hotels.length > 0 &&
-      originalRows.length > 0 &&
-      cluster1.length > 0 &&
-      cluster2.length > 0 &&
-      cluster3.length > 0 &&
-      cluster4.length > 0 ? (
+      {hotels.length > 0 && originalRows.length > 0 ? (
         <>
           <Grid container justify="space-evenly" className="my-3">
             <FormGroup className={classes.formControl}>

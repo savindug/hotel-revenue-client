@@ -69,12 +69,26 @@ export default function BucketMovements({ selectedDate }) {
   };
 
   const checkHotelAvailability = (id, day) => {
-    const hotels_arr = Array.prototype.concat(
-      cluster1[day].unwanted,
-      cluster2[day].unwanted,
-      cluster3[day].unwanted,
-      cluster4[day].unwanted
-    );
+    let clustered = [];
+
+    if (cluster1.length > 0) {
+      clustered.push(cluster1[day].unwanted);
+    }
+    if (cluster2.length > 0) {
+      clustered.push(cluster2[day].unwanted);
+    }
+    if (cluster3.length > 0) {
+      clustered.push(cluster3[day].unwanted);
+    }
+    if (cluster4.length > 0) {
+      clustered.push(cluster4[day].unwanted);
+    }
+
+    let hotels_arr = [];
+
+    for (var i = 0; i < clustered.length; i++) {
+      hotels_arr = hotels_arr.concat(clustered[i]);
+    }
 
     const exists = hotels_arr.some((obj) => obj.id == id);
 
@@ -91,11 +105,7 @@ export default function BucketMovements({ selectedDate }) {
 
   return (
     <>
-      {!loading &&
-      hotels.length > 0 &&
-      cluster1.length > 0 &&
-      cluster2.length > 0 &&
-      cluster3.length > 0 ? (
+      {!loading && hotels.length > 0 ? (
         <>
           <TableContainer component={Paper} className="my-5">
             <Box width={100}>
@@ -160,12 +170,18 @@ export default function BucketMovements({ selectedDate }) {
                     {[...Array(90).keys()].map((e, index) =>
                       (() => {
                         let hotel_count = 0;
-                        hotel_count =
-                          hotel_count + cluster2[index].stars5.length;
-                        hotel_count =
-                          hotel_count + cluster1[index].stars5.length;
-                        hotel_count =
-                          hotel_count + cluster3[index].stars5.length;
+                        if (
+                          cluster2.length > 0 &&
+                          cluster1.length > 0 &&
+                          cluster3.length > 0
+                        ) {
+                          hotel_count =
+                            hotel_count + cluster2[index].stars5.length;
+                          hotel_count =
+                            hotel_count + cluster1[index].stars5.length;
+                          hotel_count =
+                            hotel_count + cluster3[index].stars5.length;
+                        }
                         return (
                           <StyledTableCell
                             size="small"
@@ -197,8 +213,11 @@ export default function BucketMovements({ selectedDate }) {
                     {[...Array(90).keys()].map((e, index) =>
                       (() => {
                         let hotel_count = 0;
-                        hotel_count =
-                          hotel_count + cluster4[index].stars4.length;
+                        if (cluster4.length > 0) {
+                          hotel_count =
+                            hotel_count + cluster4[index].stars4.length;
+                        }
+
                         return (
                           <StyledTableCell
                             size="small"
@@ -230,10 +249,15 @@ export default function BucketMovements({ selectedDate }) {
                     {[...Array(90).keys()].map((e, index) =>
                       (() => {
                         let hotel_count = 0;
-                        hotel_count =
-                          hotel_count + cluster2[index].stars4.length;
-                        hotel_count =
-                          hotel_count + cluster1[index].stars4.length;
+                        if (cluster1.length > 0) {
+                          hotel_count =
+                            hotel_count + cluster1[index].stars4.length;
+                        }
+                        if (cluster2.length > 0) {
+                          hotel_count =
+                            hotel_count + cluster2[index].stars4.length;
+                        }
+
                         return (
                           <StyledTableCell
                             size="small"
@@ -265,10 +289,15 @@ export default function BucketMovements({ selectedDate }) {
                     {[...Array(90).keys()].map((e, index) =>
                       (() => {
                         let hotel_count = 0;
-                        hotel_count =
-                          hotel_count + cluster3[index].stars3.length;
-                        hotel_count =
-                          hotel_count + cluster4[index].stars3.length;
+                        if (cluster3.length > 0) {
+                          hotel_count =
+                            hotel_count + cluster3[index].stars3.length;
+                        }
+                        if (cluster4.length > 0) {
+                          hotel_count =
+                            hotel_count + cluster4[index].stars3.length;
+                        }
+
                         return (
                           <StyledTableCell
                             size="small"
@@ -300,8 +329,10 @@ export default function BucketMovements({ selectedDate }) {
                     {[...Array(90).keys()].map((e, index) =>
                       (() => {
                         let hotel_count = 0;
-                        hotel_count =
-                          hotel_count + cluster1[index].stars3.length;
+                        if (cluster1.length > 0) {
+                          hotel_count =
+                            hotel_count + cluster1[index].stars3.length;
+                        }
                         return (
                           <StyledTableCell
                             size="small"
@@ -333,12 +364,18 @@ export default function BucketMovements({ selectedDate }) {
                     {[...Array(90).keys()].map((e, index) =>
                       (() => {
                         let hotel_count = 0;
-                        hotel_count =
-                          hotel_count + cluster2[index].stars2.length;
-                        hotel_count =
-                          hotel_count + cluster3[index].stars2.length;
-                        hotel_count =
-                          hotel_count + cluster4[index].stars2.length;
+                        if (cluster2.length > 0) {
+                          hotel_count =
+                            hotel_count + cluster2[index].stars2.length;
+                        }
+                        if (cluster3.length > 0) {
+                          hotel_count =
+                            hotel_count + cluster3[index].stars2.length;
+                        }
+                        if (cluster4.length > 0) {
+                          hotel_count =
+                            hotel_count + cluster4[index].stars2.length;
+                        }
                         return (
                           <StyledTableCell
                             size="small"
@@ -357,545 +394,622 @@ export default function BucketMovements({ selectedDate }) {
             </Box>
           </TableContainer>
 
-          <TableContainer component={Paper} className="my-5">
-            <Box width={100}>
-              <Table
-                id="stars5"
-                className={classes.table}
-                aria-label="customized table"
-                bodyStyle={{ overflow: 'visible' }}
-              >
-                <TableHead>
-                  <StyledTableCell
-                    style={{ fontWeight: 'bold', width: '250px' }}
-                    className={classes.sticky}
-                  >
-                    5 Star Hotels Count <hr />
-                    Days Out
-                  </StyledTableCell>
-                  {/* <StyledTableCell size="small">Stars</StyledTableCell> */}
-                  {[...Array(90).keys()].map((e, index) =>
-                    (() => {
-                      let day = moment(selectedDate)
-                        .add(index, 'd')
-                        .format('YYYY-MM-DD');
-                      let date = moment(day).format('dddd').substring(0, 3);
-                      return (
-                        <StyledTableCell
-                          size="small"
-                          key={index}
-                          className={
-                            date === 'Sat' || date === 'Fri'
-                              ? 'bg-secondary text-light text-center'
-                              : 'text-center'
-                          }
-                          style={{ fontSize: '12px' }}
-                        >
-                          {`${date.toUpperCase()}\n${moment(day).format(
-                            'MM/DD'
-                          )}`}
-                          <hr />
-                          {index}
-                        </StyledTableCell>
-                      );
-                    })()
-                  )}
-                </TableHead>
-                <TableBody>
-                  <StyledTableRow>
+          {cluster4.length > 0 ? (
+            <TableContainer component={Paper} className="my-5">
+              <Box width={100}>
+                <Table
+                  id="stars5"
+                  className={classes.table}
+                  aria-label="customized table"
+                  bodyStyle={{ overflow: 'visible' }}
+                >
+                  <TableHead>
                     <StyledTableCell
-                      component="th"
-                      scope="row"
+                      style={{ fontWeight: 'bold', width: '250px' }}
                       className={classes.sticky}
-                      style={{
-                        fontWeight: 'bold',
-                        width: '250px',
-                        borderTop: '2px solid grey',
-                      }}
                     >
-                      Bucket Size Index
+                      5 Star Hotels Count <hr />
+                      Days Out
                     </StyledTableCell>
+                    {/* <StyledTableCell size="small">Stars</StyledTableCell> */}
                     {[...Array(90).keys()].map((e, index) =>
                       (() => {
-                        let star_hotel_count = cluster4[index].unwanted.length;
-
-                        let hotel_count =
-                          cluster1[index].stars5.length +
-                          cluster2[index].stars5.length +
-                          cluster3[index].stars5.length +
-                          cluster4[index].stars5.length;
-
+                        let day = moment(selectedDate)
+                          .add(index, 'd')
+                          .format('YYYY-MM-DD');
+                        let date = moment(day).format('dddd').substring(0, 3);
                         return (
                           <StyledTableCell
-                            style={{
-                              borderTop: '2px solid grey',
-                              fontWeight: 'bold',
-                            }}
-                            className={classes.rates + ' text-center'}
+                            size="small"
+                            key={index}
+                            className={
+                              date === 'Sat' || date === 'Fri'
+                                ? 'bg-secondary text-light text-center'
+                                : 'text-center'
+                            }
+                            style={{ fontSize: '12px' }}
                           >
-                            {parseFloat(star_hotel_count / hotel_count).toFixed(
-                              2
-                            )}
+                            {`${date.toUpperCase()}\n${moment(day).format(
+                              'MM/DD'
+                            )}`}
+                            <hr />
+                            {index}
                           </StyledTableCell>
                         );
                       })()
                     )}
-                  </StyledTableRow>
-                  <StyledTableRow>
-                    <StyledTableCell
-                      component="th"
-                      scope="row"
-                      className={classes.sticky}
-                      style={{
-                        fontWeight: 'bold',
-                        width: '250px',
-                        backgroundColor: CLUSTER_BACKGROUND[3],
-                        borderTop: '2px solid grey',
-                      }}
-                    >
-                      <p className="font-weight-bold">Hotels Showing Rates</p>
-                      <div className="text-center">
-                        <Divider />
-                        5-stars <Divider /> 4-stars <Divider /> 3-stars
-                        <Divider />
-                        2-stars{' '}
-                      </div>
-                    </StyledTableCell>
-                    {/* <StyledTableCell size="small"></StyledTableCell> */}
-                    {cluster4.map((day, index) => (
+                  </TableHead>
+                  <TableBody>
+                    <StyledTableRow>
                       <StyledTableCell
                         component="th"
                         scope="row"
-                        key={index}
+                        className={classes.sticky}
                         style={{
-                          fontSize: '14px',
+                          fontWeight: 'bold',
+                          width: '250px',
                           borderTop: '2px solid grey',
                         }}
-                        className={classes.rates + ' text-center'}
                       >
-                        <p className="font-weight-bold">
-                          {getFilterHotels(day.stars2).length +
-                            getFilterHotels(day.stars3).length +
-                            getFilterHotels(day.stars4).length +
-                            getFilterHotels(day.stars5).length}
-                        </p>
-                        <Divider />
-                        {getFilterHotels(day.stars5).length} <Divider />{' '}
-                        {getFilterHotels(day.stars4).length} <Divider />{' '}
-                        {getFilterHotels(day.stars3).length} <Divider />{' '}
-                        {getFilterHotels(day.stars2).length}
+                        Bucket Size Index
                       </StyledTableCell>
-                    ))}
-                  </StyledTableRow>
-                </TableBody>
-              </Table>
-            </Box>
-          </TableContainer>
+                      {[...Array(90).keys()].map((e, index) =>
+                        (() => {
+                          let star_hotel_count =
+                            cluster4.length > 0
+                              ? cluster4[index].unwanted.length
+                              : 0;
 
-          <TableContainer component={Paper} className="my-5">
-            <Box width={100}>
-              <Table
-                id="stars4"
-                className={classes.table}
-                aria-label="customized table"
-                bodyStyle={{ overflow: 'visible' }}
-              >
-                <TableHead>
-                  <StyledTableCell
-                    style={{ fontWeight: 'bold', width: '250px' }}
-                    className={classes.sticky}
-                  >
-                    4 Star Hotels Count <hr />
-                    Days Out
-                  </StyledTableCell>
-                  {/* <StyledTableCell size="small">Stars</StyledTableCell> */}
-                  {[...Array(90).keys()].map((e, index) =>
-                    (() => {
-                      let day = moment(selectedDate)
-                        .add(index, 'd')
-                        .format('YYYY-MM-DD');
-                      let date = moment(day).format('dddd').substring(0, 3);
-                      return (
-                        <StyledTableCell
-                          size="small"
-                          key={index}
-                          className={
-                            date === 'Sat' || date === 'Fri'
-                              ? 'bg-secondary text-light text-center'
-                              : 'text-center'
+                          let hotel_count = 0;
+                          if (cluster1.length > 0) {
+                            hotel_count += cluster1[index].stars5.length;
                           }
-                          style={{ fontSize: '12px' }}
-                        >
-                          {`${date.toUpperCase()}\n${moment(day).format(
-                            'MM/DD'
-                          )}`}
-                          <hr />
-                          {index}
-                        </StyledTableCell>
-                      );
-                    })()
-                  )}
-                </TableHead>
-                <TableBody>
-                  <StyledTableRow>
-                    <StyledTableCell
-                      component="th"
-                      scope="row"
-                      className={classes.sticky}
-                      style={{
-                        fontWeight: 'bold',
-                        width: '250px',
-                        borderTop: '2px solid grey',
-                      }}
-                    >
-                      Bucket Size Index
-                    </StyledTableCell>
-                    {[...Array(90).keys()].map((e, index) =>
-                      (() => {
-                        let star_hotel_count = cluster3[index].unwanted.length;
+                          if (cluster2.length > 0) {
+                            hotel_count += cluster2[index].stars5.length;
+                          }
+                          if (cluster3.length > 0) {
+                            hotel_count += cluster3[index].stars5.length;
+                          }
+                          if (cluster4.length > 0) {
+                            hotel_count += cluster4[index].stars5.length;
+                          }
 
-                        let hotel_count =
-                          cluster1[index].stars4.length +
-                          cluster2[index].stars4.length +
-                          cluster3[index].stars4.length +
-                          cluster4[index].stars4.length;
-
-                        return (
+                          return (
+                            <StyledTableCell
+                              style={{
+                                borderTop: '2px solid grey',
+                                fontWeight: 'bold',
+                              }}
+                              className={classes.rates + ' text-center'}
+                            >
+                              {parseFloat(
+                                star_hotel_count / hotel_count
+                              ).toFixed(2)}
+                            </StyledTableCell>
+                          );
+                        })()
+                      )}
+                    </StyledTableRow>
+                    <StyledTableRow>
+                      <StyledTableCell
+                        component="th"
+                        scope="row"
+                        className={classes.sticky}
+                        style={{
+                          fontWeight: 'bold',
+                          width: '250px',
+                          backgroundColor: CLUSTER_BACKGROUND[3],
+                          borderTop: '2px solid grey',
+                        }}
+                      >
+                        <p className="font-weight-bold">Hotels Showing Rates</p>
+                        <div className="text-center">
+                          <Divider />
+                          5-stars <Divider /> 4-stars <Divider /> 3-stars
+                          <Divider />
+                          2-stars{' '}
+                        </div>
+                      </StyledTableCell>
+                      {/* <StyledTableCell size="small"></StyledTableCell> */}
+                      {cluster4.length > 0 ? (
+                        cluster4.map((day, index) => (
                           <StyledTableCell
+                            component="th"
+                            scope="row"
+                            key={index}
                             style={{
+                              fontSize: '14px',
                               borderTop: '2px solid grey',
-                              fontWeight: 'bold',
                             }}
                             className={classes.rates + ' text-center'}
                           >
-                            {parseFloat(star_hotel_count / hotel_count).toFixed(
-                              2
-                            )}
+                            <p className="font-weight-bold">
+                              {getFilterHotels(day.stars2).length +
+                                getFilterHotels(day.stars3).length +
+                                getFilterHotels(day.stars4).length +
+                                getFilterHotels(day.stars5).length}
+                            </p>
+                            <Divider />
+                            {
+                              getFilterHotels(day.stars5).length
+                            } <Divider /> {getFilterHotels(day.stars4).length}{' '}
+                            <Divider /> {getFilterHotels(day.stars3).length}{' '}
+                            <Divider /> {getFilterHotels(day.stars2).length}
+                          </StyledTableCell>
+                        ))
+                      ) : (
+                        <></>
+                      )}
+                    </StyledTableRow>
+                  </TableBody>
+                </Table>
+              </Box>
+            </TableContainer>
+          ) : (
+            <></>
+          )}
+
+          {cluster3.length > 0 ? (
+            <TableContainer component={Paper} className="my-5">
+              <Box width={100}>
+                <Table
+                  id="stars4"
+                  className={classes.table}
+                  aria-label="customized table"
+                  bodyStyle={{ overflow: 'visible' }}
+                >
+                  <TableHead>
+                    <StyledTableCell
+                      style={{ fontWeight: 'bold', width: '250px' }}
+                      className={classes.sticky}
+                    >
+                      4 Star Hotels Count <hr />
+                      Days Out
+                    </StyledTableCell>
+                    {/* <StyledTableCell size="small">Stars</StyledTableCell> */}
+                    {[...Array(90).keys()].map((e, index) =>
+                      (() => {
+                        let day = moment(selectedDate)
+                          .add(index, 'd')
+                          .format('YYYY-MM-DD');
+                        let date = moment(day).format('dddd').substring(0, 3);
+                        return (
+                          <StyledTableCell
+                            size="small"
+                            key={index}
+                            className={
+                              date === 'Sat' || date === 'Fri'
+                                ? 'bg-secondary text-light text-center'
+                                : 'text-center'
+                            }
+                            style={{ fontSize: '12px' }}
+                          >
+                            {`${date.toUpperCase()}\n${moment(day).format(
+                              'MM/DD'
+                            )}`}
+                            <hr />
+                            {index}
                           </StyledTableCell>
                         );
                       })()
                     )}
-                  </StyledTableRow>
-                  <StyledTableRow>
-                    <StyledTableCell
-                      component="th"
-                      scope="row"
-                      className={classes.sticky}
-                      style={{
-                        fontWeight: 'bold',
-                        width: '250px',
-                        backgroundColor: CLUSTER_BACKGROUND[2],
-                        borderTop: '2px solid grey',
-                      }}
-                    >
-                      <p className="font-weight-bold">Hotels Showing Rates</p>
-                      <div className="text-center">
-                        <Divider />
-                        5-stars <Divider /> 4-stars <Divider /> 3-stars
-                        <Divider />
-                        2-stars{' '}
-                      </div>
-                    </StyledTableCell>
-                    {/* <StyledTableCell size="small"></StyledTableCell> */}
-                    {cluster3.map((day, index) => (
+                  </TableHead>
+                  <TableBody>
+                    <StyledTableRow>
                       <StyledTableCell
                         component="th"
                         scope="row"
-                        key={index}
+                        className={classes.sticky}
                         style={{
-                          fontSize: '14px',
+                          fontWeight: 'bold',
+                          width: '250px',
                           borderTop: '2px solid grey',
                         }}
-                        className={classes.rates + ' text-center'}
                       >
-                        <p className="font-weight-bold">
-                          {getFilterHotels(day.stars2).length +
-                            getFilterHotels(day.stars3).length +
-                            getFilterHotels(day.stars4).length +
-                            getFilterHotels(day.stars5).length}
-                        </p>
-                        <Divider />
-                        {getFilterHotels(day.stars5).length} <Divider />{' '}
-                        {getFilterHotels(day.stars4).length} <Divider />{' '}
-                        {getFilterHotels(day.stars3).length} <Divider />{' '}
-                        {getFilterHotels(day.stars2).length}
+                        Bucket Size Index
                       </StyledTableCell>
-                    ))}
-                  </StyledTableRow>
-                </TableBody>
-              </Table>
-            </Box>
-          </TableContainer>
+                      {[...Array(90).keys()].map((e, index) =>
+                        (() => {
+                          let star_hotel_count = 0;
 
-          <TableContainer component={Paper} className="my-5">
-            <Box width={100}>
-              <Table
-                id="stars3"
-                className={classes.table}
-                aria-label="customized table"
-                bodyStyle={{ overflow: 'visible' }}
-              >
-                <TableHead>
-                  <StyledTableCell
-                    style={{ fontWeight: 'bold', width: '250px' }}
-                    className={classes.sticky}
-                  >
-                    3 Star Hotels Count <hr />
-                    Days Out
-                  </StyledTableCell>
-                  {/* <StyledTableCell size="small">Stars</StyledTableCell> */}
-                  {[...Array(90).keys()].map((e, index) =>
-                    (() => {
-                      let day = moment(selectedDate)
-                        .add(index, 'd')
-                        .format('YYYY-MM-DD');
-                      let date = moment(day).format('dddd').substring(0, 3);
-                      return (
-                        <StyledTableCell
-                          size="small"
-                          key={index}
-                          className={
-                            date === 'Sat' || date === 'Fri'
-                              ? 'bg-secondary text-light text-center'
-                              : 'text-center'
+                          if (cluster3.length > 0) {
+                            star_hotel_count += cluster3[index].unwanted.length;
                           }
-                          style={{ fontSize: '12px' }}
+
+                          let hotel_count = 0;
+                          if (cluster1.length > 0) {
+                            hotel_count += cluster1[index].stars4.length;
+                          }
+                          if (cluster2.length > 0) {
+                            hotel_count =
+                              hotel_count + cluster2[index].stars4.length;
+                          }
+                          if (cluster3.length > 0) {
+                            hotel_count =
+                              hotel_count + cluster3[index].stars4.length;
+                          }
+                          if (cluster4.length > 0) {
+                            hotel_count =
+                              hotel_count + cluster4[index].stars4.length;
+                          }
+
+                          return (
+                            <StyledTableCell
+                              style={{
+                                borderTop: '2px solid grey',
+                                fontWeight: 'bold',
+                              }}
+                              className={classes.rates + ' text-center'}
+                            >
+                              {parseFloat(
+                                star_hotel_count / hotel_count
+                              ).toFixed(2)}
+                            </StyledTableCell>
+                          );
+                        })()
+                      )}
+                    </StyledTableRow>
+                    <StyledTableRow>
+                      <StyledTableCell
+                        component="th"
+                        scope="row"
+                        className={classes.sticky}
+                        style={{
+                          fontWeight: 'bold',
+                          width: '250px',
+                          backgroundColor: CLUSTER_BACKGROUND[2],
+                          borderTop: '2px solid grey',
+                        }}
+                      >
+                        <p className="font-weight-bold">Hotels Showing Rates</p>
+                        <div className="text-center">
+                          <Divider />
+                          5-stars <Divider /> 4-stars <Divider /> 3-stars
+                          <Divider />
+                          2-stars{' '}
+                        </div>
+                      </StyledTableCell>
+                      {/* <StyledTableCell size="small"></StyledTableCell> */}
+                      {cluster3.map((day, index) => (
+                        <StyledTableCell
+                          component="th"
+                          scope="row"
+                          key={index}
+                          style={{
+                            fontSize: '14px',
+                            borderTop: '2px solid grey',
+                          }}
+                          className={classes.rates + ' text-center'}
                         >
-                          {`${date.toUpperCase()}\n${moment(day).format(
-                            'MM/DD'
-                          )}`}
-                          <hr />
-                          {index}
+                          <p className="font-weight-bold">
+                            {getFilterHotels(day.stars2).length +
+                              getFilterHotels(day.stars3).length +
+                              getFilterHotels(day.stars4).length +
+                              getFilterHotels(day.stars5).length}
+                          </p>
+                          <Divider />
+                          {getFilterHotels(day.stars5).length} <Divider />{' '}
+                          {getFilterHotels(day.stars4).length} <Divider />{' '}
+                          {getFilterHotels(day.stars3).length} <Divider />{' '}
+                          {getFilterHotels(day.stars2).length}
                         </StyledTableCell>
-                      );
-                    })()
-                  )}
-                </TableHead>
-                <TableBody>
-                  <StyledTableRow>
+                      ))}
+                    </StyledTableRow>
+                  </TableBody>
+                </Table>
+              </Box>
+            </TableContainer>
+          ) : (
+            <></>
+          )}
+
+          {cluster2.length > 0 ? (
+            <TableContainer component={Paper} className="my-5">
+              <Box width={100}>
+                <Table
+                  id="stars3"
+                  className={classes.table}
+                  aria-label="customized table"
+                  bodyStyle={{ overflow: 'visible' }}
+                >
+                  <TableHead>
                     <StyledTableCell
-                      component="th"
-                      scope="row"
+                      style={{ fontWeight: 'bold', width: '250px' }}
                       className={classes.sticky}
-                      style={{
-                        fontWeight: 'bold',
-                        width: '250px',
-                        borderTop: '2px solid grey',
-                      }}
                     >
-                      Bucket Size Index
+                      3 Star Hotels Count <hr />
+                      Days Out
                     </StyledTableCell>
+                    {/* <StyledTableCell size="small">Stars</StyledTableCell> */}
                     {[...Array(90).keys()].map((e, index) =>
                       (() => {
-                        let star_hotel_count = cluster2[index].unwanted.length;
-
-                        let hotel_count =
-                          cluster1[index].stars3.length +
-                          cluster2[index].stars3.length +
-                          cluster3[index].stars3.length +
-                          cluster4[index].stars3.length;
-
+                        let day = moment(selectedDate)
+                          .add(index, 'd')
+                          .format('YYYY-MM-DD');
+                        let date = moment(day).format('dddd').substring(0, 3);
                         return (
                           <StyledTableCell
-                            style={{
-                              borderTop: '2px solid grey',
-                              fontWeight: 'bold',
-                            }}
-                            className={classes.rates + ' text-center'}
+                            size="small"
+                            key={index}
+                            className={
+                              date === 'Sat' || date === 'Fri'
+                                ? 'bg-secondary text-light text-center'
+                                : 'text-center'
+                            }
+                            style={{ fontSize: '12px' }}
                           >
-                            {parseFloat(star_hotel_count / hotel_count).toFixed(
-                              2
-                            )}
+                            {`${date.toUpperCase()}\n${moment(day).format(
+                              'MM/DD'
+                            )}`}
+                            <hr />
+                            {index}
                           </StyledTableCell>
                         );
                       })()
                     )}
-                  </StyledTableRow>
-                  <StyledTableRow>
-                    <StyledTableCell
-                      component="th"
-                      scope="row"
-                      className={classes.sticky}
-                      style={{
-                        fontWeight: 'bold',
-                        width: '250px',
-                        backgroundColor: CLUSTER_BACKGROUND[1],
-                        borderTop: '2px solid grey',
-                      }}
-                    >
-                      <p className="font-weight-bold">Hotels Showing Rates</p>
-                      <div className="text-center">
-                        <Divider />
-                        5-stars <Divider /> 4-stars <Divider /> 3-stars
-                        <Divider />
-                        2-stars{' '}
-                      </div>
-                    </StyledTableCell>
-                    {/* <StyledTableCell size="small"></StyledTableCell> */}
-                    {cluster2.map((day, index) => (
+                  </TableHead>
+                  <TableBody>
+                    <StyledTableRow>
                       <StyledTableCell
                         component="th"
                         scope="row"
-                        key={index}
+                        className={classes.sticky}
                         style={{
-                          fontSize: '14px',
+                          fontWeight: 'bold',
+                          width: '250px',
                           borderTop: '2px solid grey',
                         }}
-                        className={classes.rates + ' text-center'}
                       >
-                        <p className="font-weight-bold">
-                          {getFilterHotels(day.stars2).length +
-                            getFilterHotels(day.stars3).length +
-                            getFilterHotels(day.stars4).length +
-                            getFilterHotels(day.stars5).length}
-                        </p>
-                        <Divider />
-                        {getFilterHotels(day.stars5).length} <Divider />{' '}
-                        {getFilterHotels(day.stars4).length} <Divider />{' '}
-                        {getFilterHotels(day.stars3).length} <Divider />{' '}
-                        {getFilterHotels(day.stars2).length}
+                        Bucket Size Index
                       </StyledTableCell>
-                    ))}
-                  </StyledTableRow>
-                </TableBody>
-              </Table>
-            </Box>
-          </TableContainer>
+                      {[...Array(90).keys()].map((e, index) =>
+                        (() => {
+                          let star_hotel_count = 0;
 
-          <TableContainer component={Paper} className="my-5">
-            <Box width={100}>
-              <Table
-                id="stars2"
-                className={classes.table}
-                aria-label="customized table"
-                bodyStyle={{ overflow: 'visible' }}
-              >
-                <TableHead>
-                  <StyledTableCell
-                    style={{ fontWeight: 'bold', width: '250px' }}
-                    className={classes.sticky}
-                  >
-                    2 Star Hotels Count <hr />
-                    Days Out
-                  </StyledTableCell>
-                  {/* <StyledTableCell size="small">Stars</StyledTableCell> */}
-                  {[...Array(90).keys()].map((e, index) =>
-                    (() => {
-                      let day = moment(selectedDate)
-                        .add(index, 'd')
-                        .format('YYYY-MM-DD');
-                      let date = moment(day).format('dddd').substring(0, 3);
-                      return (
-                        <StyledTableCell
-                          size="small"
-                          key={index}
-                          className={
-                            date === 'Sat' || date === 'Fri'
-                              ? 'bg-secondary text-light text-center'
-                              : 'text-center'
+                          if (cluster2.length > 0) {
+                            star_hotel_count += cluster2[index].unwanted.length;
                           }
-                          style={{ fontSize: '12px' }}
+
+                          let hotel_count = 0;
+                          if (cluster1.length > 0) {
+                            hotel_count += cluster1[index].stars3.length;
+                          }
+                          if (cluster2.length > 0) {
+                            hotel_count =
+                              hotel_count + cluster2[index].stars3.length;
+                          }
+                          if (cluster3.length > 0) {
+                            hotel_count =
+                              hotel_count + cluster3[index].stars3.length;
+                          }
+                          if (cluster4.length > 0) {
+                            hotel_count =
+                              hotel_count + cluster4[index].stars3.length;
+                          }
+
+                          return (
+                            <StyledTableCell
+                              style={{
+                                borderTop: '2px solid grey',
+                                fontWeight: 'bold',
+                              }}
+                              className={classes.rates + ' text-center'}
+                            >
+                              {parseFloat(
+                                star_hotel_count / hotel_count
+                              ).toFixed(2)}
+                            </StyledTableCell>
+                          );
+                        })()
+                      )}
+                    </StyledTableRow>
+                    <StyledTableRow>
+                      <StyledTableCell
+                        component="th"
+                        scope="row"
+                        className={classes.sticky}
+                        style={{
+                          fontWeight: 'bold',
+                          width: '250px',
+                          backgroundColor: CLUSTER_BACKGROUND[1],
+                          borderTop: '2px solid grey',
+                        }}
+                      >
+                        <p className="font-weight-bold">Hotels Showing Rates</p>
+                        <div className="text-center">
+                          <Divider />
+                          5-stars <Divider /> 4-stars <Divider /> 3-stars
+                          <Divider />
+                          2-stars{' '}
+                        </div>
+                      </StyledTableCell>
+                      {/* <StyledTableCell size="small"></StyledTableCell> */}
+                      {cluster2.map((day, index) => (
+                        <StyledTableCell
+                          component="th"
+                          scope="row"
+                          key={index}
+                          style={{
+                            fontSize: '14px',
+                            borderTop: '2px solid grey',
+                          }}
+                          className={classes.rates + ' text-center'}
                         >
-                          {`${date.toUpperCase()}\n${moment(day).format(
-                            'MM/DD'
-                          )}`}
-                          <hr />
-                          {index}
+                          <p className="font-weight-bold">
+                            {getFilterHotels(day.stars2).length +
+                              getFilterHotels(day.stars3).length +
+                              getFilterHotels(day.stars4).length +
+                              getFilterHotels(day.stars5).length}
+                          </p>
+                          <Divider />
+                          {getFilterHotels(day.stars5).length} <Divider />{' '}
+                          {getFilterHotels(day.stars4).length} <Divider />{' '}
+                          {getFilterHotels(day.stars3).length} <Divider />{' '}
+                          {getFilterHotels(day.stars2).length}
                         </StyledTableCell>
-                      );
-                    })()
-                  )}
-                </TableHead>
-                <TableBody>
-                  <StyledTableRow>
+                      ))}
+                    </StyledTableRow>
+                  </TableBody>
+                </Table>
+              </Box>
+            </TableContainer>
+          ) : (
+            <></>
+          )}
+
+          {cluster1.length > 0 ? (
+            <TableContainer component={Paper} className="my-5">
+              <Box width={100}>
+                <Table
+                  id="stars2"
+                  className={classes.table}
+                  aria-label="customized table"
+                  bodyStyle={{ overflow: 'visible' }}
+                >
+                  <TableHead>
                     <StyledTableCell
-                      component="th"
-                      scope="row"
+                      style={{ fontWeight: 'bold', width: '250px' }}
                       className={classes.sticky}
-                      style={{
-                        fontWeight: 'bold',
-                        width: '250px',
-                        borderTop: '2px solid grey',
-                      }}
                     >
-                      Bucket Size Index
+                      2 Star Hotels Count <hr />
+                      Days Out
                     </StyledTableCell>
+                    {/* <StyledTableCell size="small">Stars</StyledTableCell> */}
                     {[...Array(90).keys()].map((e, index) =>
                       (() => {
-                        let star_hotel_count = cluster1[index].unwanted.length;
-
-                        let hotel_count =
-                          cluster1[index].stars2.length +
-                          cluster2[index].stars2.length +
-                          cluster3[index].stars2.length +
-                          cluster4[index].stars2.length;
-
+                        let day = moment(selectedDate)
+                          .add(index, 'd')
+                          .format('YYYY-MM-DD');
+                        let date = moment(day).format('dddd').substring(0, 3);
                         return (
                           <StyledTableCell
-                            style={{
-                              borderTop: '2px solid grey',
-                              fontWeight: 'bold',
-                            }}
-                            className={classes.rates + ' text-center'}
+                            size="small"
+                            key={index}
+                            className={
+                              date === 'Sat' || date === 'Fri'
+                                ? 'bg-secondary text-light text-center'
+                                : 'text-center'
+                            }
+                            style={{ fontSize: '12px' }}
                           >
-                            {parseFloat(star_hotel_count / hotel_count).toFixed(
-                              2
-                            )}
+                            {`${date.toUpperCase()}\n${moment(day).format(
+                              'MM/DD'
+                            )}`}
+                            <hr />
+                            {index}
                           </StyledTableCell>
                         );
                       })()
                     )}
-                  </StyledTableRow>
-                  <StyledTableRow>
-                    <StyledTableCell
-                      component="th"
-                      scope="row"
-                      className={classes.sticky}
-                      style={{
-                        fontWeight: 'bold',
-                        width: '250px',
-                        backgroundColor: CLUSTER_BACKGROUND[0],
-                        borderTop: '2px solid grey',
-                      }}
-                    >
-                      <p className="font-weight-bold">Hotels Showing Rates</p>
-                      <div className="text-center">
-                        <Divider />
-                        5-stars <Divider /> 4-stars <Divider /> 3-stars
-                        <Divider />
-                        2-stars{' '}
-                      </div>
-                    </StyledTableCell>
-                    {/* <StyledTableCell size="small"></StyledTableCell> */}
-                    {cluster1.map((day, index) => (
+                  </TableHead>
+                  <TableBody>
+                    <StyledTableRow>
                       <StyledTableCell
                         component="th"
                         scope="row"
-                        key={index}
+                        className={classes.sticky}
                         style={{
-                          fontSize: '14px',
+                          fontWeight: 'bold',
+                          width: '250px',
                           borderTop: '2px solid grey',
                         }}
-                        className={classes.rates + ' text-center'}
                       >
-                        <p className="font-weight-bold">
-                          {getFilterHotels(day.stars2).length +
-                            getFilterHotels(day.stars3).length +
-                            getFilterHotels(day.stars4).length +
-                            getFilterHotels(day.stars5).length}
-                        </p>
-                        <Divider />
-                        {getFilterHotels(day.stars5).length}
-                        <Divider /> {getFilterHotels(day.stars4).length}{' '}
-                        <Divider /> {getFilterHotels(day.stars3).length}{' '}
-                        <Divider /> {getFilterHotels(day.stars2).length}
+                        Bucket Size Index
                       </StyledTableCell>
-                    ))}
-                  </StyledTableRow>
-                </TableBody>
-              </Table>
-            </Box>
-          </TableContainer>
+                      {[...Array(90).keys()].map((e, index) =>
+                        (() => {
+                          let star_hotel_count = 0;
+
+                          if (cluster1.length > 0) {
+                            star_hotel_count += cluster1[index].unwanted.length;
+                          }
+
+                          let hotel_count = 0;
+                          if (cluster1.length > 0) {
+                            hotel_count += cluster1[index].stars2.length;
+                          }
+                          if (cluster2.length > 0) {
+                            hotel_count =
+                              hotel_count + cluster2[index].stars2.length;
+                          }
+                          if (cluster3.length > 0) {
+                            hotel_count =
+                              hotel_count + cluster3[index].stars2.length;
+                          }
+                          if (cluster4.length > 0) {
+                            hotel_count =
+                              hotel_count + cluster4[index].stars2.length;
+                          }
+
+                          return (
+                            <StyledTableCell
+                              style={{
+                                borderTop: '2px solid grey',
+                                fontWeight: 'bold',
+                              }}
+                              className={classes.rates + ' text-center'}
+                            >
+                              {parseFloat(
+                                star_hotel_count / hotel_count
+                              ).toFixed(2)}
+                            </StyledTableCell>
+                          );
+                        })()
+                      )}
+                    </StyledTableRow>
+                    <StyledTableRow>
+                      <StyledTableCell
+                        component="th"
+                        scope="row"
+                        className={classes.sticky}
+                        style={{
+                          fontWeight: 'bold',
+                          width: '250px',
+                          backgroundColor: CLUSTER_BACKGROUND[0],
+                          borderTop: '2px solid grey',
+                        }}
+                      >
+                        <p className="font-weight-bold">Hotels Showing Rates</p>
+                        <div className="text-center">
+                          <Divider />
+                          5-stars <Divider /> 4-stars <Divider /> 3-stars
+                          <Divider />
+                          2-stars{' '}
+                        </div>
+                      </StyledTableCell>
+                      {/* <StyledTableCell size="small"></StyledTableCell> */}
+                      {cluster1.map((day, index) => (
+                        <StyledTableCell
+                          component="th"
+                          scope="row"
+                          key={index}
+                          style={{
+                            fontSize: '14px',
+                            borderTop: '2px solid grey',
+                          }}
+                          className={classes.rates + ' text-center'}
+                        >
+                          <p className="font-weight-bold">
+                            {getFilterHotels(day.stars2).length +
+                              getFilterHotels(day.stars3).length +
+                              getFilterHotels(day.stars4).length +
+                              getFilterHotels(day.stars5).length}
+                          </p>
+                          <Divider />
+                          {getFilterHotels(day.stars5).length}
+                          <Divider /> {getFilterHotels(day.stars4).length}{' '}
+                          <Divider /> {getFilterHotels(day.stars3).length}{' '}
+                          <Divider /> {getFilterHotels(day.stars2).length}
+                        </StyledTableCell>
+                      ))}
+                    </StyledTableRow>
+                  </TableBody>
+                </Table>
+              </Box>
+            </TableContainer>
+          ) : (
+            <></>
+          )}
 
           <TableContainer component={Paper} className="my-5">
             <Box width={100}>
@@ -967,32 +1081,76 @@ export default function BucketMovements({ selectedDate }) {
                       (() => {
                         let hotel_count = 0;
 
-                        hotel_count =
-                          cluster1[index].unwanted.length +
-                          cluster2[index].unwanted.length +
-                          cluster3[index].unwanted.length +
-                          cluster4[index].unwanted.length;
+                        hotel_count = 0;
 
-                        let hotel_count_2 =
-                          cluster1[index].stars2.length +
-                          cluster2[index].stars2.length +
-                          cluster3[index].stars2.length +
-                          cluster4[index].stars2.length;
-                        let hotel_count_3 =
-                          cluster1[index].stars3.length +
-                          cluster2[index].stars3.length +
-                          cluster3[index].stars3.length +
-                          cluster4[index].stars3.length;
-                        let hotel_count_4 =
-                          cluster1[index].stars4.length +
-                          cluster2[index].stars4.length +
-                          cluster3[index].stars4.length +
-                          cluster4[index].stars4.length;
-                        let hotel_count_5 =
-                          cluster1[index].stars5.length +
-                          cluster2[index].stars5.length +
-                          cluster3[index].stars5.length +
-                          cluster4[index].stars5.length;
+                        if (cluster1.length > 0) {
+                          hotel_count += cluster1[index].unwanted.length;
+                        }
+                        if (cluster2.length > 0) {
+                          hotel_count += cluster2[index].unwanted.length;
+                        }
+                        if (cluster3.length > 0) {
+                          hotel_count += cluster3[index].unwanted.length;
+                        }
+                        if (cluster4.length > 0) {
+                          hotel_count += cluster4[index].unwanted.length;
+                        }
+
+                        let hotel_count_2 = 0;
+                        if (cluster1.length > 0) {
+                          hotel_count_2 += cluster1[index].stars2.length;
+                        }
+                        if (cluster2.length > 0) {
+                          hotel_count_2 += cluster2[index].stars2.length;
+                        }
+                        if (cluster3.length > 0) {
+                          hotel_count_2 += cluster3[index].stars2.length;
+                        }
+                        if (cluster4.length > 0) {
+                          hotel_count_2 += cluster4[index].stars2.length;
+                        }
+
+                        let hotel_count_3 = 0;
+                        if (cluster1.length > 0) {
+                          hotel_count_3 += cluster1[index].stars3.length;
+                        }
+                        if (cluster2.length > 0) {
+                          hotel_count_3 += cluster2[index].stars3.length;
+                        }
+                        if (cluster3.length > 0) {
+                          hotel_count_3 += cluster3[index].stars3.length;
+                        }
+                        if (cluster4.length > 0) {
+                          hotel_count_3 += cluster4[index].stars3.length;
+                        }
+
+                        let hotel_count_4 = 0;
+                        if (cluster1.length > 0) {
+                          hotel_count_4 += cluster1[index].stars4.length;
+                        }
+                        if (cluster2.length > 0) {
+                          hotel_count_4 += cluster2[index].stars4.length;
+                        }
+                        if (cluster3.length > 0) {
+                          hotel_count_4 += cluster3[index].stars4.length;
+                        }
+                        if (cluster4.length > 0) {
+                          hotel_count_4 += cluster4[index].stars4.length;
+                        }
+
+                        let hotel_count_5 = 0;
+                        if (cluster1.length > 0) {
+                          hotel_count_5 += cluster1[index].stars5.length;
+                        }
+                        if (cluster2.length > 0) {
+                          hotel_count_5 += cluster2[index].stars5.length;
+                        }
+                        if (cluster3.length > 0) {
+                          hotel_count_5 += cluster3[index].stars5.length;
+                        }
+                        if (cluster4.length > 0) {
+                          hotel_count_5 += cluster4[index].stars5.length;
+                        }
 
                         let outliers = [];
                         let noRateHotels = [];

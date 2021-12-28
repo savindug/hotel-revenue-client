@@ -47,55 +47,63 @@ export const Graphs = ({ selectedDate }) => {
       .slice(dateRange[datePage][0], dateRange[datePage][1])
       .map((a) => moment(a.date).format('MM/DD')),
     datasets: [
-      {
-        label: 'Stars 2',
-        backgroundColor: CLUSTER_BACKGROUND[0],
-        borderColor: CLUSTER_BACKGROUND[0],
-        borderWidth: 1,
-        //stack: 1,
-        hoverBackgroundColor: CLUSTER_BACKGROUND[0],
-        hoverBorderColor: CLUSTER_BACKGROUND[0],
-        data: cluster1
-          .slice(dateRange[datePage][0], dateRange[datePage][1])
-          .map((a) => (a.items > 0 ? a.mean : 'NED')),
-      },
+      cluster1.length > 0
+        ? {
+            label: 'Stars 2',
+            backgroundColor: CLUSTER_BACKGROUND[0],
+            borderColor: CLUSTER_BACKGROUND[0],
+            borderWidth: 1,
+            //stack: 1,
+            hoverBackgroundColor: CLUSTER_BACKGROUND[0],
+            hoverBorderColor: CLUSTER_BACKGROUND[0],
+            data: cluster1
+              .slice(dateRange[datePage][0], dateRange[datePage][1])
+              .map((a) => (a.items > 0 ? a.mean : 'NED')),
+          }
+        : {},
 
-      {
-        label: 'Stars 3',
-        backgroundColor: CLUSTER_BACKGROUND[1],
-        borderColor: CLUSTER_BACKGROUND[1],
-        borderWidth: 1,
-        //stack: 1,
-        hoverBackgroundColor: CLUSTER_BACKGROUND[1],
-        hoverBorderColor: CLUSTER_BACKGROUND[1],
-        data: cluster2
-          .slice(dateRange[datePage][0], dateRange[datePage][1])
-          .map((a) => (a.items > 0 ? a.mean : 'NED')),
-      },
-      {
-        label: 'Stars 4',
-        backgroundColor: CLUSTER_BACKGROUND[2],
-        borderColor: CLUSTER_BACKGROUND[2],
-        borderWidth: 1,
-        //stack: 1,
-        hoverBackgroundColor: CLUSTER_BACKGROUND[2],
-        hoverBorderColor: CLUSTER_BACKGROUND[2],
-        data: cluster3
-          .slice(dateRange[datePage][0], dateRange[datePage][1])
-          .map((a) => (a.items > 0 ? a.mean : 'NED')),
-      },
-      {
-        label: 'Stars 5',
-        backgroundColor: CLUSTER_BACKGROUND[3],
-        borderColor: CLUSTER_BACKGROUND[3],
-        borderWidth: 1,
-        // stack: 1,
-        hoverBackgroundColor: CLUSTER_BACKGROUND[3],
-        hoverBorderColor: CLUSTER_BACKGROUND[3],
-        data: cluster4
-          .slice(dateRange[datePage][0], dateRange[datePage][1])
-          .map((a) => (a.items > 0 ? a.mean : 'NED')),
-      },
+      cluster2.length > 0
+        ? {
+            label: 'Stars 3',
+            backgroundColor: CLUSTER_BACKGROUND[1],
+            borderColor: CLUSTER_BACKGROUND[1],
+            borderWidth: 1,
+            //stack: 1,
+            hoverBackgroundColor: CLUSTER_BACKGROUND[1],
+            hoverBorderColor: CLUSTER_BACKGROUND[1],
+            data: cluster2
+              .slice(dateRange[datePage][0], dateRange[datePage][1])
+              .map((a) => (a.items > 0 ? a.mean : 'NED')),
+          }
+        : {},
+      cluster3.length > 0
+        ? {
+            label: 'Stars 4',
+            backgroundColor: CLUSTER_BACKGROUND[2],
+            borderColor: CLUSTER_BACKGROUND[2],
+            borderWidth: 1,
+            //stack: 1,
+            hoverBackgroundColor: CLUSTER_BACKGROUND[2],
+            hoverBorderColor: CLUSTER_BACKGROUND[2],
+            data: cluster3
+              .slice(dateRange[datePage][0], dateRange[datePage][1])
+              .map((a) => (a.items > 0 ? a.mean : 'NED')),
+          }
+        : {},
+      cluster4.length > 0
+        ? {
+            label: 'Stars 5',
+            backgroundColor: CLUSTER_BACKGROUND[3],
+            borderColor: CLUSTER_BACKGROUND[3],
+            borderWidth: 1,
+            // stack: 1,
+            hoverBackgroundColor: CLUSTER_BACKGROUND[3],
+            hoverBorderColor: CLUSTER_BACKGROUND[3],
+            data: cluster4
+              .slice(dateRange[datePage][0], dateRange[datePage][1])
+              .map((a) => (a.items > 0 ? a.mean : 'NED')),
+          }
+        : {},
     ],
   });
   const [lineData, setLineData] = useState({
@@ -103,55 +111,92 @@ export const Graphs = ({ selectedDate }) => {
       .slice(dateRange[datePage][0], dateRange[datePage][1])
       .map((a) => moment(a.date).format('MM/DD')),
     datasets: [
-      {
-        label: '2 Star Cluster',
-        fill: true,
-        borderColor: CLUSTER_BACKGROUND[0],
-        borderWidth: 2,
-        data: cluster1
-          .slice(dateRange[datePage][0], dateRange[datePage][1])
-          .map((a) => (a.items > 0 ? a.mean : 'NED')),
-      },
-
-      {
-        label: '3 Star Cluster',
-        fill: true,
-        borderColor: CLUSTER_BACKGROUND[1],
-        borderWidth: 2,
-        data: cluster2
-          .slice(dateRange[datePage][0], dateRange[datePage][1])
-          .map((a) => (a.items > 0 ? a.mean : 'NED')),
-      },
-      {
-        label: '4 Star Cluster',
-        fill: true,
-        borderColor: CLUSTER_BACKGROUND[2],
-        borderWidth: 2,
-        data: cluster3
-          .slice(dateRange[datePage][0], dateRange[datePage][1])
-          .map((a) => (a.items > 0 ? a.mean : 'NED')),
-      },
-      {
-        label: '5 Star Cluster',
-        fill: true,
-        // backgroundColor: 'rgba(75,192,192,0.2)',
-        borderColor: CLUSTER_BACKGROUND[3],
-        borderWidth: 2,
-        data: cluster4
-          .slice(dateRange[datePage][0], dateRange[datePage][1])
-          .map((a) => (a.items > 0 ? a.mean : 'NED')),
-      },
-      {
-        label: reqHotel.find((el) => el.name != null).name,
-        //new option, type will default to bar as that what is used to create the scale
-        type: 'line',
-        fill: false,
-        borderColor: '#2e2e2e',
-        borderWidth: 2,
-        data: reqHotel
-          .slice(dateRange[datePage][0], dateRange[datePage][1])
-          .map((a) => a.rate),
-      },
+      cluster1.length > 0
+        ? {
+            label: '2 Star Cluster',
+            fill: true,
+            borderColor: CLUSTER_BACKGROUND[0],
+            borderWidth: 5,
+            data: cluster1
+              .slice(dateRange[datePage][0], dateRange[datePage][1])
+              .map((a) => (a.items > 0 ? a.mean : 'NED')),
+          }
+        : {
+            label: '2 Star Cluster',
+            fill: true,
+            borderColor: CLUSTER_BACKGROUND[0],
+            borderWidth: 5,
+          },
+      cluster2.length > 0
+        ? {
+            label: '3 Star Cluster',
+            fill: true,
+            borderColor: CLUSTER_BACKGROUND[1],
+            borderWidth: 5,
+            data: cluster2
+              .slice(dateRange[datePage][0], dateRange[datePage][1])
+              .map((a) => (a.items > 0 ? a.mean : 'NED')),
+          }
+        : {
+            label: '3 Star Cluster',
+            fill: true,
+            borderColor: CLUSTER_BACKGROUND[1],
+            borderWidth: 5,
+          },
+      cluster3.length > 0
+        ? {
+            label: '4 Star Cluster',
+            fill: true,
+            borderColor: CLUSTER_BACKGROUND[2],
+            borderWidth: 5,
+            data: cluster3
+              .slice(dateRange[datePage][0], dateRange[datePage][1])
+              .map((a) => (a.items > 0 ? a.mean : 'NED')),
+          }
+        : {
+            label: '4 Star Cluster',
+            fill: true,
+            borderColor: CLUSTER_BACKGROUND[2],
+            borderWidth: 5,
+          },
+      cluster4.length > 0
+        ? {
+            label: '5 Star Cluster',
+            fill: true,
+            // backgroundColor: 'rgba(75,192,192,0.2)',
+            borderColor: CLUSTER_BACKGROUND[3],
+            borderWidth: 5,
+            data: cluster4
+              .slice(dateRange[datePage][0], dateRange[datePage][1])
+              .map((a) => (a.items > 0 ? a.mean : 'NED')),
+          }
+        : {
+            label: '5 Star Cluster',
+            fill: true,
+            // backgroundColor: 'rgba(75,192,192,0.2)',
+            borderColor: CLUSTER_BACKGROUND[3],
+            borderWidth: 5,
+          },
+      reqHotel.length > 0
+        ? {
+            label: reqHotel.find((el) => el.name != null).name,
+            //new option, type will default to bar as that what is used to create the scale
+            type: 'line',
+            fill: false,
+            borderColor: '#4A148C',
+            borderWidth: 5,
+            data: reqHotel
+              .slice(dateRange[datePage][0], dateRange[datePage][1])
+              .map((a) => a.rate),
+          }
+        : {
+            label: reqHotel.find((el) => el.name != null).name,
+            //new option, type will default to bar as that what is used to create the scale
+            type: 'line',
+            fill: false,
+            borderColor: '#2e2e2e',
+            borderWidth: 5,
+          },
     ],
   });
   const [options, setOptions] = useState({
@@ -331,158 +376,278 @@ export const Graphs = ({ selectedDate }) => {
       .slice(dateRange[datePage][0], dateRange[datePage][1])
       .map((a) => a.rate);
 
-    if (matrix === 'avg') {
-      chartData.datasets.map((set, ix) => {
-        if (ix === 0)
-          set.data = cluster1
-            .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items > 0 ? a.mean : 'NED'));
-        if (ix === 1)
-          set.data = cluster2
-            .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items > 0 ? a.mean : 'NED'));
-        if (ix === 2)
-          set.data = cluster3
-            .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items > 0 ? a.mean : 'NED'));
-        if (ix === 3)
-          set.data = cluster4
-            .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items > 0 ? a.mean : 'NED'));
-      });
-      lineData.datasets.map((set, ix) => {
-        if (ix === 0)
-          set.data = cluster1
-            .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items > 0 ? a.mean : 'NED'));
-        if (ix === 1)
-          set.data = cluster2
-            .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items > 0 ? a.mean : 'NED'));
-        if (ix === 2)
-          set.data = cluster3
-            .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items > 0 ? a.mean : 'NED'));
-        if (ix === 3)
-          set.data = cluster4
-            .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items > 0 ? a.mean : 'NED'));
-      });
-    }
-    if (matrix === 'max') {
-      chartData.datasets.map((set, ix) => {
-        if (ix === 0)
-          set.data = cluster1
-            .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items > 0 ? a.max : 'NED'));
-        if (ix === 1)
-          set.data = cluster2
-            .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items > 0 ? a.max : 'NED'));
-        if (ix === 2)
-          set.data = cluster3
-            .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items > 0 ? a.max : 'NED'));
-        if (ix === 3)
-          set.data = cluster4
-            .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items > 0 ? a.max : 'NED'));
-      });
-      lineData.datasets.map((set, ix) => {
-        if (ix === 0)
-          set.data = cluster1
-            .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items > 0 ? a.max : 'NED'));
-        if (ix === 1)
-          set.data = cluster2
-            .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items > 0 ? a.max : 'NED'));
-        if (ix === 2)
-          set.data = cluster3
-            .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items > 0 ? a.max : 'NED'));
-        if (ix === 3)
-          set.data = cluster4
-            .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items > 0 ? a.max : 'NED'));
-      });
-    }
-    if (matrix === 'min') {
-      chartData.datasets.map((set, ix) => {
-        if (ix === 0)
-          set.data = cluster1
-            .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items > 0 ? a.min : 'NED'));
-        if (ix === 1)
-          set.data = cluster2
-            .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items > 0 ? a.min : 'NED'));
-        if (ix === 2)
-          set.data = cluster3
-            .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items > 0 ? a.min : 'NED'));
-        if (ix === 3)
-          set.data = cluster4
-            .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items > 0 ? a.min : 'NED'));
-      });
-      lineData.datasets.map((set, ix) => {
-        if (ix === 0)
-          set.data = cluster1
-            .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items > 0 ? a.min : 'NED'));
-        if (ix === 1)
-          set.data = cluster2
-            .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items > 0 ? a.min : 'NED'));
-        if (ix === 2)
-          set.data = cluster3
-            .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items > 0 ? a.min : 'NED'));
-        if (ix === 3)
-          set.data = cluster4
-            .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items > 0 ? a.min : 'NED'));
-      });
-    }
-    if (matrix === 'mod') {
-      chartData.datasets.map((set, ix) => {
-        if (ix === 0)
-          set.data = cluster1
-            .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items > 0 ? a.mod : 'NED'));
-        if (ix === 1)
-          set.data = cluster2
-            .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items > 0 ? a.mod : 'NED'));
-        if (ix === 2)
-          set.data = cluster3
-            .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items > 0 ? a.mod : 'NED'));
-        if (ix === 3)
-          set.data = cluster4
-            .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items > 0 ? a.mod : 'NED'));
-      });
-      lineData.datasets.map((set, ix) => {
-        if (ix === 0)
-          set.data = cluster1
-            .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items > 0 ? a.mod : 'NED'));
-        if (ix === 1)
-          set.data = cluster2
-            .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items > 0 ? a.mod : 'NED'));
-        if (ix === 2)
-          set.data = cluster3
-            .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items > 0 ? a.mod : 'NED'));
-        if (ix === 3)
-          set.data = cluster4
-            .slice(dateRange[datePage][0], dateRange[datePage][1])
-            .map((a) => (a.items > 0 ? a.mod : 'NED'));
-      });
-    }
+    try {
+      if (matrix === 'avg') {
+        chartData.datasets.map((set, ix) => {
+          if (ix === 0) {
+            if (cluster1.length > 0) {
+              set.data = cluster1
+                .slice(dateRange[datePage][0], dateRange[datePage][1])
+                .map((a) => (a.items > 0 ? a.mean : 'NED'));
+            }
+          }
+
+          if (ix === 1) {
+            if (cluster2.length > 0) {
+              set.data = cluster2
+                .slice(dateRange[datePage][0], dateRange[datePage][1])
+                .map((a) => (a.items > 0 ? a.mean : 'NED'));
+            }
+          }
+
+          if (ix === 2) {
+            if (cluster3.length > 0) {
+              set.data = cluster3
+                .slice(dateRange[datePage][0], dateRange[datePage][1])
+                .map((a) => (a.items > 0 ? a.mean : 'NED'));
+            }
+          }
+
+          if (ix === 3) {
+            if (cluster4.length > 0) {
+              set.data = cluster4
+                .slice(dateRange[datePage][0], dateRange[datePage][1])
+                .map((a) => (a.items > 0 ? a.mean : 'NED'));
+            }
+          }
+        });
+        lineData.datasets.map((set, ix) => {
+          if (ix === 0) {
+            if (cluster1.length > 0) {
+              set.data = cluster1
+                .slice(dateRange[datePage][0], dateRange[datePage][1])
+                .map((a) => (a.items > 0 ? a.mean : 'NED'));
+            }
+          }
+
+          if (ix === 1) {
+            if (cluster2.length > 0) {
+              set.data = cluster2
+                .slice(dateRange[datePage][0], dateRange[datePage][1])
+                .map((a) => (a.items > 0 ? a.mean : 'NED'));
+            }
+          }
+          if (ix === 2) {
+            if (cluster3.length > 0) {
+              set.data = cluster3
+                .slice(dateRange[datePage][0], dateRange[datePage][1])
+                .map((a) => (a.items > 0 ? a.mean : 'NED'));
+            }
+          }
+          if (ix === 3) {
+            if (cluster4.length > 0) {
+              set.data = cluster4
+                .slice(dateRange[datePage][0], dateRange[datePage][1])
+                .map((a) => (a.items > 0 ? a.mean : 'NED'));
+            }
+          }
+        });
+      }
+      if (matrix === 'max') {
+        chartData.datasets.map((set, ix) => {
+          if (ix === 0) {
+            if (cluster1.length > 0) {
+              set.data = cluster1
+                .slice(dateRange[datePage][0], dateRange[datePage][1])
+                .map((a) => (a.items > 0 ? a.max : 'NED'));
+            }
+          }
+
+          if (ix === 1) {
+            if (cluster2.length > 0) {
+              set.data = cluster2
+                .slice(dateRange[datePage][0], dateRange[datePage][1])
+                .map((a) => (a.items > 0 ? a.max : 'NED'));
+            }
+          }
+
+          if (ix === 2) {
+            if (cluster3.length > 0) {
+              set.data = cluster3
+                .slice(dateRange[datePage][0], dateRange[datePage][1])
+                .map((a) => (a.items > 0 ? a.max : 'NED'));
+            }
+          }
+
+          if (ix === 3) {
+            if (cluster4.length > 0) {
+              set.data = cluster4
+                .slice(dateRange[datePage][0], dateRange[datePage][1])
+                .map((a) => (a.items > 0 ? a.max : 'NED'));
+            }
+          }
+        });
+        lineData.datasets.map((set, ix) => {
+          if (ix === 0) {
+            if (cluster1.length > 0) {
+              set.data = cluster1
+                .slice(dateRange[datePage][0], dateRange[datePage][1])
+                .map((a) => (a.items > 0 ? a.max : 'NED'));
+            }
+          }
+
+          if (ix === 1) {
+            if (cluster2.length > 0) {
+              set.data = cluster2
+                .slice(dateRange[datePage][0], dateRange[datePage][1])
+                .map((a) => (a.items > 0 ? a.max : 'NED'));
+            }
+          }
+
+          if (ix === 2) {
+            if (cluster3.length > 0) {
+              set.data = cluster3
+                .slice(dateRange[datePage][0], dateRange[datePage][1])
+                .map((a) => (a.items > 0 ? a.max : 'NED'));
+            }
+          }
+
+          if (ix === 3) {
+            if (cluster4.length > 0) {
+              set.data = cluster4
+                .slice(dateRange[datePage][0], dateRange[datePage][1])
+                .map((a) => (a.items > 0 ? a.max : 'NED'));
+            }
+          }
+        });
+      }
+      if (matrix === 'min') {
+        chartData.datasets.map((set, ix) => {
+          if (ix === 0) {
+            if (cluster1.length > 0) {
+              set.data = cluster1
+                .slice(dateRange[datePage][0], dateRange[datePage][1])
+                .map((a) => (a.items > 0 ? a.min : 'NED'));
+            }
+          }
+
+          if (ix === 1) {
+            if (cluster2.length > 0) {
+              set.data = cluster2
+                .slice(dateRange[datePage][0], dateRange[datePage][1])
+                .map((a) => (a.items > 0 ? a.min : 'NED'));
+            }
+          }
+
+          if (ix === 2) {
+            if (cluster3.length > 0) {
+              set.data = cluster3
+                .slice(dateRange[datePage][0], dateRange[datePage][1])
+                .map((a) => (a.items > 0 ? a.min : 'NED'));
+            }
+          }
+
+          if (ix === 3) {
+            if (cluster4.length > 0) {
+              set.data = cluster4
+                .slice(dateRange[datePage][0], dateRange[datePage][1])
+                .map((a) => (a.items > 0 ? a.min : 'NED'));
+            }
+          }
+        });
+        lineData.datasets.map((set, ix) => {
+          if (ix === 0) {
+            if (cluster1.length > 0) {
+              set.data = cluster1
+                .slice(dateRange[datePage][0], dateRange[datePage][1])
+                .map((a) => (a.items > 0 ? a.min : 'NED'));
+            }
+          }
+
+          if (ix === 1) {
+            if (cluster2.length > 0) {
+              set.data = cluster2
+                .slice(dateRange[datePage][0], dateRange[datePage][1])
+                .map((a) => (a.items > 0 ? a.min : 'NED'));
+            }
+          }
+
+          if (ix === 2) {
+            if (cluster3.length > 0) {
+              set.data = cluster3
+                .slice(dateRange[datePage][0], dateRange[datePage][1])
+                .map((a) => (a.items > 0 ? a.min : 'NED'));
+            }
+          }
+
+          if (ix === 3) {
+            if (cluster4.length > 0) {
+              set.data = cluster4
+                .slice(dateRange[datePage][0], dateRange[datePage][1])
+                .map((a) => (a.items > 0 ? a.min : 'NED'));
+            }
+          }
+        });
+      }
+      if (matrix === 'mod') {
+        chartData.datasets.map((set, ix) => {
+          if (ix === 0) {
+            if (cluster1.length > 0) {
+              set.data = cluster1
+                .slice(dateRange[datePage][0], dateRange[datePage][1])
+                .map((a) => (a.items > 0 ? a.mod : 'NED'));
+            }
+          }
+
+          if (ix === 1) {
+            if (cluster2.length > 0) {
+              set.data = cluster2
+                .slice(dateRange[datePage][0], dateRange[datePage][1])
+                .map((a) => (a.items > 0 ? a.mod : 'NED'));
+            }
+          }
+
+          if (ix === 2) {
+            if (cluster3.length > 0) {
+              set.data = cluster3
+                .slice(dateRange[datePage][0], dateRange[datePage][1])
+                .map((a) => (a.items > 0 ? a.mod : 'NED'));
+            }
+          }
+
+          if (ix === 3) {
+            if (cluster4.length > 0) {
+              set.data = cluster4
+                .slice(dateRange[datePage][0], dateRange[datePage][1])
+                .map((a) => (a.items > 0 ? a.mod : 'NED'));
+            }
+          }
+        });
+        lineData.datasets.map((set, ix) => {
+          if (ix === 0) {
+            if (cluster1.length > 0) {
+              set.data = cluster1
+                .slice(dateRange[datePage][0], dateRange[datePage][1])
+                .map((a) => (a.items > 0 ? a.mod : 'NED'));
+            }
+          }
+
+          if (ix === 1) {
+            if (cluster2.length > 0) {
+              set.data = cluster2
+                .slice(dateRange[datePage][0], dateRange[datePage][1])
+                .map((a) => (a.items > 0 ? a.mod : 'NED'));
+            }
+          }
+
+          if (ix === 2) {
+            if (cluster3.length > 0) {
+              set.data = cluster3
+                .slice(dateRange[datePage][0], dateRange[datePage][1])
+                .map((a) => (a.items > 0 ? a.mod : 'NED'));
+            }
+          }
+
+          if (ix === 3) {
+            if (cluster4.length > 0) {
+              set.data = cluster4
+                .slice(dateRange[datePage][0], dateRange[datePage][1])
+                .map((a) => (a.items > 0 ? a.mod : 'NED'));
+            }
+          }
+        });
+      }
+    } catch (e) {}
   };
 
   const handleScatterPlotMatrix = (e) => {
@@ -490,51 +655,34 @@ export const Graphs = ({ selectedDate }) => {
   };
 
   const getClusterByPrice = (rate, ix) => {
-    if (
-      (cluster1[ix].min != undefined || cluster1[ix].min != null) &&
-      (cluster1[ix].max != undefined || cluster1[ix].max != null)
-    ) {
-      if (rate >= cluster1[ix].min && rate <= cluster1[ix].max) {
-        // console.log(
-        //   `${ix} => ${cluster1[ix].min} < ${rate} > ${cluster1[ix].max} `
-        // );
-        return 0;
-      }
+    let clustered = [];
+    let res;
+
+    if (cluster1.length > 0) {
+      clustered.push(cluster1[ix]);
     }
-    if (
-      (cluster2[ix].min != undefined || cluster2[ix].min != null) &&
-      (cluster2[ix].max != undefined || cluster2[ix].max != null)
-    ) {
-      if (rate >= cluster2[ix].min && rate <= cluster2[ix].max) {
-        // console.log(
-        //   `${ix} =>${cluster2[ix].min} < ${rate} > ${cluster2[ix].max} `
-        // );
-        return 1;
-      }
+    if (cluster2.length > 0) {
+      clustered.push(cluster2[ix]);
+    }
+    if (cluster3.length > 0) {
+      clustered.push(cluster3[ix]);
+    }
+    if (cluster4.length > 0) {
+      clustered.push(cluster4[ix]);
     }
 
-    if (
-      (cluster3[ix].min != undefined || cluster3[ix].min != null) &&
-      (cluster3[ix].max != undefined || cluster3[ix].max != null)
-    ) {
-      if (rate >= cluster3[ix].min && rate <= cluster3[ix].max) {
-        // console.log(
-        //   `${ix} =>${cluster3[ix].min} < ${rate} > ${cluster3[ix].max} `
-        // );
-        return 2;
+    clustered.sort((a, b) => a.mean - b.mean);
+
+    // console.log(clustered);
+
+    clustered.map((cl, id) => {
+      if (rate >= cl.min && rate <= cl.max) {
+        res = id;
+        return;
       }
-    }
-    if (
-      (cluster4[ix].min != undefined || cluster4[ix].min != null) &&
-      (cluster4[ix].max != undefined || cluster4[ix].max != null)
-    ) {
-      if (rate >= cluster4[ix].min && rate <= cluster4[ix].max) {
-        // console.log(
-        //   `${ix} =>${cluster4[ix].min} < ${rate} > ${cluster4[ix].max} `
-        // );
-        return 3;
-      }
-    }
+    });
+
+    return res;
   };
 
   const handleDatePage = (e) => {
@@ -552,12 +700,26 @@ export const Graphs = ({ selectedDate }) => {
   };
 
   const checkHotelAvailability = (id, day) => {
-    const hotels_arr = Array.prototype.concat(
-      cluster1[day].unwanted,
-      cluster2[day].unwanted,
-      cluster3[day].unwanted,
-      cluster4[day].unwanted
-    );
+    let clustered = [];
+
+    if (cluster1.length > 0) {
+      clustered.push(cluster1[day].unwanted);
+    }
+    if (cluster2.length > 0) {
+      clustered.push(cluster2[day].unwanted);
+    }
+    if (cluster3.length > 0) {
+      clustered.push(cluster3[day].unwanted);
+    }
+    if (cluster4.length > 0) {
+      clustered.push(cluster4[day].unwanted);
+    }
+
+    let hotels_arr = [];
+
+    for (var i = 0; i < clustered.length; i++) {
+      hotels_arr = hotels_arr.concat(clustered[i]);
+    }
 
     const exists = hotels_arr.some((obj) => obj.id == id);
 
@@ -691,58 +853,66 @@ export const Graphs = ({ selectedDate }) => {
           .slice(dateRange[datePage][0], dateRange[datePage][1])
           .map((a) => moment(a.date).format('MM/DD'))
       );
-      cluster1
-        .slice(dateRange[datePage][0], dateRange[datePage][1])
-        .map((cl) => {
-          if (cl.items > 0) {
-            setScatterData2avg((state) => [...state, cl.mean]);
-            setScatterData2high((state) => [...state, cl.max]);
-            setScatterData2low((state) => [...state, cl.min]);
-          } else {
-            setScatterData2avg((state) => [...state, 'NED']);
-            setScatterData2high((state) => [...state, 'NED']);
-            setScatterData2low((state) => [...state, 'NED']);
-          }
-        });
-      cluster2
-        .slice(dateRange[datePage][0], dateRange[datePage][1])
-        .map((cl) => {
-          if (cl.items > 0) {
-            setScatterData3avg((state) => [...state, cl.mean]);
-            setScatterData3high((state) => [...state, cl.max]);
-            setScatterData3low((state) => [...state, cl.min]);
-          } else {
-            setScatterData3avg((state) => [...state, 'NED']);
-            setScatterData3high((state) => [...state, 'NED']);
-            setScatterData3low((state) => [...state, 'NED']);
-          }
-        });
-      cluster3
-        .slice(dateRange[datePage][0], dateRange[datePage][1])
-        .map((cl) => {
-          if (cl.items > 0) {
-            setScatterData4avg((state) => [...state, cl.mean]);
-            setScatterData4high((state) => [...state, cl.max]);
-            setScatterData4low((state) => [...state, cl.min]);
-          } else {
-            setScatterData4avg((state) => [...state, 'NED']);
-            setScatterData4high((state) => [...state, 'NED']);
-            setScatterData4low((state) => [...state, 'NED']);
-          }
-        });
-      cluster4
-        .slice(dateRange[datePage][0], dateRange[datePage][1])
-        .map((cl) => {
-          if (cl.items > 0) {
-            setScatterData5avg((state) => [...state, cl.mean]);
-            setScatterData5high((state) => [...state, cl.max]);
-            setScatterData5low((state) => [...state, cl.min]);
-          } else {
-            setScatterData5avg((state) => [...state, 'NED']);
-            setScatterData5high((state) => [...state, 'NED']);
-            setScatterData5low((state) => [...state, 'NED']);
-          }
-        });
+      if (cluster1.length > 0) {
+        cluster1
+          .slice(dateRange[datePage][0], dateRange[datePage][1])
+          .map((cl) => {
+            if (cl.items > 0) {
+              setScatterData2avg((state) => [...state, cl.mean]);
+              setScatterData2high((state) => [...state, cl.max]);
+              setScatterData2low((state) => [...state, cl.min]);
+            } else {
+              setScatterData2avg((state) => [...state, 'NED']);
+              setScatterData2high((state) => [...state, 'NED']);
+              setScatterData2low((state) => [...state, 'NED']);
+            }
+          });
+      }
+      if (cluster2.length > 0) {
+        cluster2
+          .slice(dateRange[datePage][0], dateRange[datePage][1])
+          .map((cl) => {
+            if (cl.items > 0) {
+              setScatterData3avg((state) => [...state, cl.mean]);
+              setScatterData3high((state) => [...state, cl.max]);
+              setScatterData3low((state) => [...state, cl.min]);
+            } else {
+              setScatterData3avg((state) => [...state, 'NED']);
+              setScatterData3high((state) => [...state, 'NED']);
+              setScatterData3low((state) => [...state, 'NED']);
+            }
+          });
+      }
+      if (cluster3.length > 0) {
+        cluster3
+          .slice(dateRange[datePage][0], dateRange[datePage][1])
+          .map((cl) => {
+            if (cl.items > 0) {
+              setScatterData4avg((state) => [...state, cl.mean]);
+              setScatterData4high((state) => [...state, cl.max]);
+              setScatterData4low((state) => [...state, cl.min]);
+            } else {
+              setScatterData4avg((state) => [...state, 'NED']);
+              setScatterData4high((state) => [...state, 'NED']);
+              setScatterData4low((state) => [...state, 'NED']);
+            }
+          });
+      }
+      if (cluster4.length > 0) {
+        cluster4
+          .slice(dateRange[datePage][0], dateRange[datePage][1])
+          .map((cl) => {
+            if (cl.items > 0) {
+              setScatterData5avg((state) => [...state, cl.mean]);
+              setScatterData5high((state) => [...state, cl.max]);
+              setScatterData5low((state) => [...state, cl.min]);
+            } else {
+              setScatterData5avg((state) => [...state, 'NED']);
+              setScatterData5high((state) => [...state, 'NED']);
+              setScatterData5low((state) => [...state, 'NED']);
+            }
+          });
+      }
     }
   }, [datePage]);
 
@@ -751,24 +921,8 @@ export const Graphs = ({ selectedDate }) => {
       {bind ? (
         <>
           <Grid className="my-5" container justify="space-around">
-            {/* <h3> Buckets Count</h3> */}
-            <h3> Rate Position</h3>
-            {/* <FormControl className={classes.formControl}>
-              <InputLabel htmlFor="grouped-native-select">
-                Scatter Plot for
-              </InputLabel>
-              <Select
-                native={true}
-                onChange={(e) => handleScatterPlotMatrix(e.target.value)}
-                id="grouped-native-select"
-                value={scatterPlot}
-              >
-                <option value="2">2 Star Cluster</option>
-                <option value="3">3 Star Cluster</option>
-                <option value="4">4 Star Cluster</option>
-                <option value="5">5 Star Cluster</option>
-              </Select>
-            </FormControl> */}
+            <h3>Rate Position</h3>
+
             <FormControl className={classes.formControl}></FormControl>
             <FormControl className={classes.formControl}>
               <InputLabel htmlFor="grouped-native-select">
@@ -795,166 +949,6 @@ export const Graphs = ({ selectedDate }) => {
             />
           </Box>
 
-          {/* <hr className="my-5"></hr> */}
-          {/* {scatterData2avg.length > 0 && scatterPlot == 2 ? (
-            //(console.log('scatterData => ' + JSON.stringify(scatterData)),
-            <Line
-              data={{
-                labels: scatterPlotLabels,
-                datasets: [
-                  {
-                    label: 'HIGH',
-                    showLine: false,
-                    backgroundColor: '#f4f4f4',
-                    borderColor: '#3F51B5',
-                    hoverBackgroundColor: '#3F51B5',
-                    hoverBorderColor: '#f4f4f4',
-                    data: scatterData2high,
-                    pointRadius: 3,
-                  },
-                  {
-                    label: 'AVG',
-                    showLine: false,
-                    backgroundColor: '#f4f4f4',
-                    borderColor: '#00BCD4',
-                    hoverBackgroundColor: '#00BCD4',
-                    hoverBorderColor: '#f4f4f4',
-                    pointRadius: 6,
-                    data: scatterData2avg,
-                  },
-                  {
-                    label: 'LOW',
-                    showLine: false,
-                    backgroundColor: '#f4f4f4',
-                    borderColor: '#E91E63',
-                    hoverBackgroundColor: '#E91E63',
-                    hoverBorderColor: '#f4f4f4',
-                    pointRadius: 3,
-                    data: scatterData2low,
-                  },
-                ],
-              }}
-            />
-          ) : scatterData3avg.length > 0 && scatterPlot == 3 ? (
-            //(console.log('scatterData => ' + JSON.stringify(scatterData)),
-            <Line
-              data={{
-                labels: scatterPlotLabels,
-                datasets: [
-                  {
-                    label: 'HIGH',
-                    showLine: false,
-                    backgroundColor: '#f4f4f4',
-                    borderColor: '#3F51B5',
-                    hoverBackgroundColor: '#3F51B5',
-                    hoverBorderColor: '#f4f4f4',
-                    pointRadius: 3,
-                    data: scatterData3high,
-                  },
-                  {
-                    label: 'AVG',
-                    showLine: false,
-                    backgroundColor: '#f4f4f4',
-                    borderColor: '#00BCD4',
-                    hoverBackgroundColor: '#00BCD4',
-                    hoverBorderColor: '#f4f4f4',
-                    pointRadius: 6,
-                    data: scatterData3avg,
-                  },
-                  {
-                    label: 'LOW',
-                    showLine: false,
-                    backgroundColor: '#f4f4f4',
-                    borderColor: '#E91E63',
-                    hoverBackgroundColor: '#E91E63',
-                    hoverBorderColor: '#f4f4f4',
-                    pointRadius: 3,
-                    data: scatterData3low,
-                  },
-                ],
-              }}
-            />
-          ) : scatterData4avg.length > 0 && scatterPlot == 4 ? (
-            //(console.log('scatterData => ' + JSON.stringify(scatterData)),
-            <Line
-              data={{
-                labels: scatterPlotLabels,
-                datasets: [
-                  {
-                    label: 'HIGH',
-                    showLine: false,
-                    backgroundColor: '#f4f4f4',
-                    borderColor: '#3F51B5',
-                    hoverBackgroundColor: '#3F51B5',
-                    hoverBorderColor: '#f4f4f4',
-                    pointRadius: 3,
-                    data: scatterData4high,
-                  },
-                  {
-                    label: 'AVG',
-                    showLine: false,
-                    backgroundColor: '#f4f4f4',
-                    borderColor: '#00BCD4',
-                    hoverBackgroundColor: '#00BCD4',
-                    hoverBorderColor: '#f4f4f4',
-                    pointRadius: 6,
-                    data: scatterData4avg,
-                  },
-                  {
-                    label: 'LOW',
-                    showLine: false,
-                    backgroundColor: '#f4f4f4',
-                    borderColor: '#E91E63',
-                    hoverBackgroundColor: '#E91E63',
-                    hoverBorderColor: '#f4f4f4',
-                    pointRadius: 3,
-                    data: scatterData4low,
-                  },
-                ],
-              }}
-            />
-          ) : scatterData5avg.length > 0 && scatterPlot == 5 ? (
-            //(console.log('scatterData => ' + JSON.stringify(scatterData)),
-            <Line
-              data={{
-                labels: scatterPlotLabels,
-                datasets: [
-                  {
-                    label: 'HIGH',
-                    showLine: false,
-                    backgroundColor: '#f4f4f4',
-                    borderColor: '#3F51B5',
-                    hoverBackgroundColor: '#3F51B5',
-                    hoverBorderColor: '#f4f4f4',
-                    pointRadius: 3,
-                    data: scatterData5high,
-                  },
-                  {
-                    label: 'AVG',
-                    showLine: false,
-                    backgroundColor: '#f4f4f4',
-                    borderColor: '#00BCD4',
-                    hoverBackgroundColor: '#00BCD4',
-                    hoverBorderColor: '#f4f4f4',
-                    pointRadius: 6,
-                    data: scatterData5avg,
-                  },
-                  {
-                    label: 'LOW',
-                    showLine: false,
-                    backgroundColor: '#f4f4f4',
-                    borderColor: '#E91E63',
-                    hoverBackgroundColor: '#E91E63',
-                    hoverBorderColor: '#f4f4f4',
-                    pointRadius: 3,
-                    data: scatterData5low,
-                  },
-                ],
-              }}
-            />
-          ) : (
-            <></>
-          )} */}
           <hr className="my-5"></hr>
           <Grid container justify="space-around" className="my-5">
             <h3>Bucket Rates</h3>

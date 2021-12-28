@@ -204,51 +204,34 @@ export default function SimilarityScore({ selectedDate }) {
   }, []);
 
   const getClusterByPrice = (rate, ix) => {
-    if (
-      (cluster1[ix].min != undefined || cluster1[ix].min != null) &&
-      (cluster1[ix].max != undefined || cluster1[ix].max != null)
-    ) {
-      if (rate >= cluster1[ix].min && rate <= cluster1[ix].max) {
-        // console.log(
-        //   `${ix} => ${cluster1[ix].min} < ${rate} > ${cluster1[ix].max} `
-        // );
-        return 0;
-      }
+    let clustered = [];
+    let res;
+
+    if (cluster1.length > 0) {
+      clustered.push(cluster1[ix]);
     }
-    if (
-      (cluster2[ix].min != undefined || cluster2[ix].min != null) &&
-      (cluster2[ix].max != undefined || cluster2[ix].max != null)
-    ) {
-      if (rate >= cluster2[ix].min && rate <= cluster2[ix].max) {
-        // console.log(
-        //   `${ix} =>${cluster2[ix].min} < ${rate} > ${cluster2[ix].max} `
-        // );
-        return 1;
-      }
+    if (cluster2.length > 0) {
+      clustered.push(cluster2[ix]);
+    }
+    if (cluster3.length > 0) {
+      clustered.push(cluster3[ix]);
+    }
+    if (cluster4.length > 0) {
+      clustered.push(cluster4[ix]);
     }
 
-    if (
-      (cluster3[ix].min != undefined || cluster3[ix].min != null) &&
-      (cluster3[ix].max != undefined || cluster3[ix].max != null)
-    ) {
-      if (rate >= cluster3[ix].min && rate <= cluster3[ix].max) {
-        // console.log(
-        //   `${ix} =>${cluster3[ix].min} < ${rate} > ${cluster3[ix].max} `
-        // );
-        return 2;
+    clustered.sort((a, b) => a.mean - b.mean);
+
+    // console.log(clustered);
+
+    clustered.map((cl, id) => {
+      if (rate >= cl.min && rate <= cl.max) {
+        res = id;
+        return;
       }
-    }
-    if (
-      (cluster4[ix].min != undefined || cluster4[ix].min != null) &&
-      (cluster4[ix].max != undefined || cluster4[ix].max != null)
-    ) {
-      if (rate >= cluster4[ix].min && rate <= cluster4[ix].max) {
-        // console.log(
-        //   `${ix} =>${cluster4[ix].min} < ${rate} > ${cluster4[ix].max} `
-        // );
-        return 3;
-      }
-    }
+    });
+
+    return res;
   };
 
   // const handleHotelsFilter = async (event) => {
@@ -286,12 +269,26 @@ export default function SimilarityScore({ selectedDate }) {
   };
 
   const checkHotelAvailability = (id, day) => {
-    const hotels_arr = Array.prototype.concat(
-      cluster1[day].unwanted,
-      cluster2[day].unwanted,
-      cluster3[day].unwanted,
-      cluster4[day].unwanted
-    );
+    let clustered = [];
+
+    if (cluster1.length > 0) {
+      clustered.push(cluster1[day].unwanted);
+    }
+    if (cluster2.length > 0) {
+      clustered.push(cluster2[day].unwanted);
+    }
+    if (cluster3.length > 0) {
+      clustered.push(cluster3[day].unwanted);
+    }
+    if (cluster4.length > 0) {
+      clustered.push(cluster4[day].unwanted);
+    }
+
+    let hotels_arr = [];
+
+    for (var i = 0; i < clustered.length; i++) {
+      hotels_arr = hotels_arr.concat(clustered[i]);
+    }
 
     const exists = hotels_arr.some((obj) => obj.id == id);
 
@@ -320,13 +317,7 @@ export default function SimilarityScore({ selectedDate }) {
 
   return (
     <>
-      {hotels.length > 0 &&
-      originalRows.length > 0 &&
-      cluster1.length > 0 &&
-      cluster2.length > 0 &&
-      cluster3.length > 0 &&
-      !binding &&
-      cluster4.length > 0 ? (
+      {hotels.length > 0 && originalRows.length > 0 && !binding ? (
         <>
           <Grid container justify="space-evenly" className="my-3">
             <FormGroup className={classes.formControl}>
