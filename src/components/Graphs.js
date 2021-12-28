@@ -840,7 +840,7 @@ export const Graphs = ({ selectedDate }) => {
 
       set_hotelsCountDataset(datebyhotelcount);
       setBind(true);
-      console.log(reqHotel);
+      // console.log(reqHotel);
     };
 
     buildHotelsDataSet();

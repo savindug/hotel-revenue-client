@@ -78,7 +78,7 @@ const SimpleMap = () => {
   const { loading, err, cluster1, cluster2, cluster3, cluster4, hotels } =
     getClusterDataSet;
 
-  const [defaultProps] = useState({
+  const [defaultProps, setDefaultProps] = useState({
     center: {
       lat: Number(hotels[0].location.lat),
       lng: Number(hotels[0].location.lng),
@@ -142,6 +142,22 @@ const SimpleMap = () => {
       )
       .pop();
   };
+
+  useEffect(() => {
+    const setMapPosition = async () => {
+      setDefaultProps({
+        center: {
+          lat: Number(hotels[0].location.lat),
+          lng: Number(hotels[0].location.lng),
+        },
+        zoom: 15,
+      });
+    };
+
+    if (hotels.length > 0 && !loading) {
+      setMapPosition();
+    }
+  }, [hotels]);
 
   const AnyReactComponent = ({
     id,
@@ -222,7 +238,7 @@ const SimpleMap = () => {
   return (
     <Grid container justify="space-evenly">
       <div className="mt-5" style={{ height: '100vh', width: '50%' }}>
-        {hotels.length > 0 ? (
+        {hotels.length > 0 && !loading ? (
           <Box
             overflow="auto"
             height="100vh"
@@ -364,7 +380,7 @@ const SimpleMap = () => {
       </div>
       <div className="mt-5" style={{ height: '100vh', width: '50%' }}>
         {/* {console.log(defaultProps)}, */}
-        {hotels.length > 0 ? (
+        {hotels.length > 0 && !loading ? (
           <GoogleMapReact
             bootstrapURLKeys={{
               key: GOOGLE_MAP_KEY,
