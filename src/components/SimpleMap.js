@@ -79,19 +79,19 @@ const SimpleMap = () => {
     getClusterDataSet;
 
   const [defaultProps, setDefaultProps] = useState({
-    center: {
-      lat: Number(hotels[0].location.lat),
-      lng: Number(hotels[0].location.lng),
-    },
     zoom: 15,
   });
 
   const [infoWindow, setInfoWindow] = useState(false);
   const [infoWindowID, setInfoWindowID] = useState();
 
-  const handleInfoOpen = (key) => {
+  const handleInfoOpen = (key, lat_lng) => {
     setInfoWindow(true);
     setInfoWindowID(key);
+    setDefaultProps({
+      center: lat_lng,
+      zoom: 15,
+    });
   };
 
   const handleInfoClose = () => {
@@ -146,11 +146,11 @@ const SimpleMap = () => {
   useEffect(() => {
     const setMapPosition = async () => {
       setDefaultProps({
+        ...defaultProps,
         center: {
           lat: Number(hotels[0].location.lat),
           lng: Number(hotels[0].location.lng),
         },
-        zoom: 15,
       });
     };
 
@@ -168,72 +168,75 @@ const SimpleMap = () => {
     mod_we,
     mod_w,
     ratings,
-  }) => (
-    <div key={id} style={{ cursor: 'pointer' }}>
-      {/* <OverlayTrigger
+    lat_lng,
+  }) => {
+    return (
+      <div key={id} style={{ cursor: 'pointer' }}>
+        {/* <OverlayTrigger
         key={placement}
         placement={placement}
         overlay=
       > */}
-      <img
-        src={
-          mod_w === 2
-            ? stars2
-            : mod_w === 3
-            ? stars3
-            : mod_w === 4
-            ? stars4
-            : mod_w === 5
-            ? stars5
-            : black_Hotel
-        }
-        width={hotelIconDim.width}
-        height={hotelIconDim.height}
-        onMouseEnter={() => handleInfoOpen(id)}
-        onMouseLeave={handleInfoClose}
-      />
-      {infoWindow && infoWindowID === id ? (
-        <div>
-          <Toast
-            className="text-light"
-            onClick={handleInfoClose}
-            style={{
-              position: 'absolute',
-              top: 0,
-              zIndex: 10,
-              minWidth: '200px',
-              minHeight: '100px',
-              background: '#9E9E9E',
-            }}
-          >
-            <Toast.Header
+        <img
+          src={
+            mod_w === 2
+              ? stars2
+              : mod_w === 3
+              ? stars3
+              : mod_w === 4
+              ? stars4
+              : mod_w === 5
+              ? stars5
+              : black_Hotel
+          }
+          width={hotelIconDim.width}
+          height={hotelIconDim.height}
+          onMouseEnter={() => handleInfoOpen(id, lat_lng)}
+          onMouseLeave={handleInfoClose}
+        />
+        {infoWindow && infoWindowID === id ? (
+          <div>
+            <Toast
               className="text-light"
-              style={{ background: '#9E9E9E' }}
+              onClick={handleInfoClose}
+              style={{
+                position: 'absolute',
+                top: 0,
+                zIndex: 10,
+                minWidth: '200px',
+                minHeight: '100px',
+                background: '#9E9E9E',
+              }}
             >
-              <h6>
-                <span>{`${text}`}</span>
-              </h6>
+              <Toast.Header
+                className="text-light"
+                style={{ background: '#9E9E9E' }}
+              >
+                <h6>
+                  <span>{`${text}`}</span>
+                </h6>
 
-              <strong className="mr-auto text-light"></strong>
-            </Toast.Header>
-            <Toast.Body className="" style={{ background: '#9E9E9E' }}>
-              <p>{`Stars: ${stars}`}</p>
-              <p>{`Ratings: ${ratings}`}</p>
-              <p>{`Weekday Bucket: ${mod_wd}`}</p>
-              <p>{`Weekend Bucket: ${mod_we}`}</p>
-              {/* <ul>
+                <strong className="mr-auto text-light"></strong>
+              </Toast.Header>
+              <Toast.Body className="" style={{ background: '#9E9E9E' }}>
+                <p>{`Stars: ${stars}`}</p>
+                <p>{`Ratings: ${ratings}`}</p>
+                <p>{`Weekday Bucket: ${mod_wd}`}</p>
+                <p>{`Weekend Bucket: ${mod_we}`}</p>
+                {/* <ul>
                 <li className="bg-dark">Stars {stars}</li>
                 <li className="bg-dark"> Date</li>
                 <li className="bg-dark">Rate</li>
               </ul> */}
-            </Toast.Body>
-          </Toast>
-        </div>
-      ) : (
-        <></>
-      )}
-    </div>
-  );
+              </Toast.Body>
+            </Toast>
+          </div>
+        ) : (
+          <></>
+        )}
+      </div>
+    );
+  };
 
   return (
     <Grid container justify="space-evenly">
@@ -386,7 +389,7 @@ const SimpleMap = () => {
               key: GOOGLE_MAP_KEY,
             }}
             yesIWantToUseGoogleMapApiInternals
-            defaultCenter={defaultProps.center}
+            center={defaultProps.center}
             defaultZoom={defaultProps.zoom}
             options={{
               styles: [
@@ -442,6 +445,10 @@ const SimpleMap = () => {
                     mod_wd={mode(cluster_arr_wd)}
                     mod_we={mode(cluster_arr_we)}
                     mod_w={mode(cluster_arr_w)}
+                    lat_lng={{
+                      lat: _hotel.location.lat,
+                      lng: _hotel.location.lng,
+                    }}
                   />
                 );
               })()
