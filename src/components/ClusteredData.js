@@ -127,6 +127,12 @@ export const ClusteredData = () => {
   };
 
   useEffect(() => {
+    if (selectedMarket != 0) {
+      getRefreshDates(selectedMarket);
+    }
+  }, [selectedMarket]);
+
+  useEffect(() => {
     if (refreshDates.dates.length > 0) {
       setSelectedDate(moment(refreshDates.dates[0]).format('YYYY-MM-DD'));
     }
