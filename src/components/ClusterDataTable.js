@@ -181,8 +181,8 @@ export default function ClusterDataTable({ cluster, stars }) {
                     size="small"
                     component="th"
                     scope="row"
-                    className={classes.sticky}
-                    style={{ fontSize: '14px', width: '250px' }}
+                    className={classes.sticky + ' p-2'}
+                    style={{ fontSize: '15px', width: '250px' }}
                   >
                     <span className="font-italic font-weight-bold">
                       Rate Strength Exception
@@ -192,10 +192,8 @@ export default function ClusterDataTable({ cluster, stars }) {
                   {rateStrength.map((e, index) => (
                     <StyledTableCell
                       size="small"
-                      component="th"
-                      scope="row"
                       key={index}
-                      style={{ fontSize: '12px' }}
+                      style={{ fontSize: '10px' }}
                     >
                       <span className="">{e}</span>
                     </StyledTableCell>

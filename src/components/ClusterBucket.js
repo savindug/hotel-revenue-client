@@ -44,6 +44,7 @@ const useStyles = makeStyles({
   },
   rates: {
     fontFamily: FONT_FAMILY,
+    textAlign: 'center',
   },
 });
 
