@@ -23,7 +23,7 @@ import AppSettingsAltOutlinedIcon from '@mui/icons-material/AppSettingsAltOutlin
 import { UserCrud } from '../auth/UserCrud';
 import MonetizationOnOutlinedIcon from '@mui/icons-material/MonetizationOnOutlined';
 
-const drawerWidth = 240;
+const drawerWidth = window.innerWidth / 8;
 
 export default function Profile() {
   const auth = useSelector((state) => state.auth);
@@ -169,38 +169,38 @@ export default function Profile() {
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'flex-start',
-                p: 1,
-                m: 1,
                 bgcolor: 'background.paper',
                 borderRadius: 1,
               }}
             >
               {['Account Details', 'Manage Radar', 'Billing', 'Drafts'].map(
                 (text, index) => (
-                  <ListItem
-                    className="my-5"
-                    button
-                    key={text}
-                    onClick={() => handleMenuChange(index)}
-                  >
-                    <ListItemIcon>
-                      {index === 0 ? (
-                        <AccountCircleOutlinedIcon />
-                      ) : index === 1 ? (
-                        <AppSettingsAltOutlinedIcon />
-                      ) : index === 2 ? (
-                        <MonetizationOnOutlinedIcon />
-                      ) : (
-                        <MailIcon />
-                      )}
-                    </ListItemIcon>
-                    <ListItemText primary={text} />
-                  </ListItem>
+                  <>
+                    <ListItem
+                      className="my-5"
+                      button
+                      key={text}
+                      onClick={() => handleMenuChange(index)}
+                    >
+                      <ListItemIcon>
+                        {index === 0 ? (
+                          <AccountCircleOutlinedIcon />
+                        ) : index === 1 ? (
+                          <AppSettingsAltOutlinedIcon />
+                        ) : index === 2 ? (
+                          <MonetizationOnOutlinedIcon />
+                        ) : (
+                          <MailIcon />
+                        )}
+                      </ListItemIcon>
+                      <ListItemText primary={text} />
+                    </ListItem>
+                    <Divider />
+                  </>
                 )
               )}
             </Box>
           </List>
-          <Divider />
         </Box>
       </Drawer>
       <Box component="main" className="m-5" sx={{ flexGrow: 1, p: 3 }}>
