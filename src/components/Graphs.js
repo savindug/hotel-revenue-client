@@ -1004,10 +1004,6 @@ export const Graphs = ({ selectedDate }) => {
             data={lineData}
             height={100}
             options={{
-              maintainAspectRatio: false,
-              legend: {
-                display: false,
-              },
               scales: {
                 yAxes: [
                   {
