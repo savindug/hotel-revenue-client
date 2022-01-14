@@ -206,6 +206,16 @@ export const Graphs = ({ selectedDate }) => {
       display: false,
     },
     type: 'bar',
+    scales: {
+      yAxes: [
+        {
+          scaleLabel: {
+            display: true,
+            labelString: 'Rates',
+          },
+        },
+      ],
+    },
   });
   const [stackedOptions, setStackedOptions] = useState({
     responsive: true,
@@ -223,6 +233,10 @@ export const Graphs = ({ selectedDate }) => {
       yAxes: [
         {
           stacked: true,
+          scaleLabel: {
+            display: true,
+            labelString: 'Hotel Rank',
+          },
         },
       ],
     },
@@ -986,7 +1000,26 @@ export const Graphs = ({ selectedDate }) => {
             </FormControl>
           </Grid>
 
-          <Line data={lineData} height={100} />
+          <Line
+            data={lineData}
+            height={100}
+            options={{
+              maintainAspectRatio: false,
+              legend: {
+                display: false,
+              },
+              scales: {
+                yAxes: [
+                  {
+                    scaleLabel: {
+                      display: true,
+                      labelString: 'Rates',
+                    },
+                  },
+                ],
+              },
+            }}
+          />
 
           <Box className="my-5">
             <Bar height={400} width={100} data={chartData} options={options} />
