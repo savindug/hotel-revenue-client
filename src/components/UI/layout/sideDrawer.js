@@ -171,7 +171,7 @@ export default function MiniDrawer(props) {
                     <Popover.Content>
                       <Link
                         className="text-light mx-auto"
-                        to="/profile"
+                        to="/dashboard"
                         onClick={() => setShow(!show)}
                       >
                         <Button variant="outline-primary">View Profile</Button>

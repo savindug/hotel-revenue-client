@@ -10,6 +10,8 @@ import { ForgotPassword } from './components/auth/ForgotPassword';
 import { UserProfile } from './components/auth/UserProfile';
 import { FONT_FAMILY } from './utils/const';
 import { Register } from './components/auth/Register';
+import Profile from './components/Dashboard/Profile';
+import Footer from './components/UI/layout/Footer';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,22 +42,23 @@ function App() {
 
   return (
     <Router>
-      <div className={classes.root}>
+      <div className={classes.root + ' mb-5'}>
         <MiniDrawer />
         <main className={classes.content}>
           <div className={classes.toolbar} />
           <Switch>
             <PrivateRoute exact path="/" component={ClusteredData} />
-            <PrivateRoute path="/profile" component={UserProfile} />
+            <PrivateRoute path="/dashboard" component={Profile} />
             <Route path="/login" component={Login} />
             <Route path="/reset-password" component={ResetPassword} />
             <Route path="/forgot-password" component={ForgotPassword} />
             <Route path="/register" component={Register} />
-            {/*  <Route path="/hotels" component={HotelDataset} />
-            <Route path="/graphs" component={Graphs} /> */}
+            <Route path="/profile" component={UserProfile} />
           </Switch>
         </main>
       </div>
+
+      <Footer />
     </Router>
   );
 }

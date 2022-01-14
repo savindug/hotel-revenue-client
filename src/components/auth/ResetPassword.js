@@ -9,6 +9,7 @@ import {
   setUserpassword,
   forceLogOut,
 } from '../../services/auth.service';
+import { RB_MAIN_LOGO } from '../../env';
 
 export const ResetPassword = (props) => {
   const [userD, setUserD] = useState({
@@ -83,13 +84,7 @@ export const ResetPassword = (props) => {
       {' '}
       {userD._id != null && userD.name != null && userD.email != null ? (
         <div className={style.form_signin}>
-          <img
-            className="mb-4 mx-auto d-block"
-            src="https://res.cloudinary.com/ratebuckets/image/upload/v1622351600/logo_ibwvbs.jpg"
-            alt=""
-            width="72"
-            height="57"
-          />
+          <img className="mb-4 mx-auto d-block" src={RB_MAIN_LOGO} alt="" />
           {formError !== null ? (
             <Alert variant={'danger'}>
               <Alert.Link href="">{formError}</Alert.Link>

@@ -206,7 +206,7 @@ export const UserCrud = ({ setformNotification }) => {
                 </Badge>
               )))
             ) : (
-              <></>
+              <>No Selected Properties </>
             )}
           </Box>
 
