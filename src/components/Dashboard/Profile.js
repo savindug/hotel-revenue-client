@@ -159,7 +159,7 @@ export default function Profile() {
           [`& .MuiDrawer-paper`]: {
             width: drawerWidth,
             boxSizing: 'border-box',
-            bgcolor: '#516B8F',
+            bgcolor: '#1f1e37',
             color: '#f4f4f4',
           },
         }}
@@ -172,7 +172,7 @@ export default function Profile() {
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'flex-start',
-                bgcolor: '#516B8F',
+                bgcolor: '#1f1e37',
                 color: '#f4f4f4',
                 borderRadius: 1,
               }}
