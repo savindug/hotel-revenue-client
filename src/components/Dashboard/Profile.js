@@ -22,6 +22,7 @@ import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined
 import AppSettingsAltOutlinedIcon from '@mui/icons-material/AppSettingsAltOutlined';
 import { UserCrud } from '../auth/UserCrud';
 import MonetizationOnOutlinedIcon from '@mui/icons-material/MonetizationOnOutlined';
+import { Billing } from './Billing';
 
 const drawerWidth = window.innerWidth / 8;
 
@@ -158,6 +159,8 @@ export default function Profile() {
           [`& .MuiDrawer-paper`]: {
             width: drawerWidth,
             boxSizing: 'border-box',
+            bgcolor: '#516B8F',
+            color: '#f4f4f4',
           },
         }}
       >
@@ -169,7 +172,8 @@ export default function Profile() {
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'flex-start',
-                bgcolor: 'background.paper',
+                bgcolor: '#516B8F',
+                color: '#f4f4f4',
                 borderRadius: 1,
               }}
             >
@@ -184,13 +188,19 @@ export default function Profile() {
                     >
                       <ListItemIcon>
                         {index === 0 ? (
-                          <AccountCircleOutlinedIcon />
+                          <AccountCircleOutlinedIcon
+                            style={{ fill: 'white' }}
+                          />
                         ) : index === 1 ? (
-                          <AppSettingsAltOutlinedIcon />
+                          <AppSettingsAltOutlinedIcon
+                            style={{ fill: 'white' }}
+                          />
                         ) : index === 2 ? (
-                          <MonetizationOnOutlinedIcon />
+                          <MonetizationOnOutlinedIcon
+                            style={{ fill: 'white' }}
+                          />
                         ) : (
-                          <MailIcon />
+                          <MailIcon style={{ fill: 'white' }} />
                         )}
                       </ListItemIcon>
                       <ListItemText primary={text} />
@@ -220,6 +230,8 @@ export default function Profile() {
           <UserDetailsForm />
         ) : selectedSection === 1 ? (
           <UserCrud setformNotification={setformNotification} />
+        ) : selectedSection === 2 ? (
+          <Billing />
         ) : (
           <></>
         )}
