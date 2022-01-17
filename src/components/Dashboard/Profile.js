@@ -143,7 +143,7 @@ export default function Profile() {
     } else if (index === 1) {
       setSectionTitle('Configure Analysis Set');
     } else if (index === 2) {
-      setSectionTitle('Billing');
+      setSectionTitle('Billing Console');
     }
   };
 

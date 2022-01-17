@@ -21,7 +21,7 @@ export const Billing = () => {
     <div>
       <div className="container">
         <div className="row">
-          <div className="col-md-4">
+          <div className="col-md-5">
             <Card>
               <CardActionArea>
                 <CardContent>
@@ -64,7 +64,7 @@ export const Billing = () => {
               </CardActionArea>
             </Card>
           </div>
-          <div className="col-md-2"></div>
+          <div className="col-md-1"></div>
           <div className="col-md-6">
             <Card>
               <CardActionArea>
@@ -94,6 +94,64 @@ export const Billing = () => {
                       <></>
                     )}
                   </ListGroup>
+                </CardContent>
+              </CardActionArea>
+            </Card>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-md-4">
+            <Card>
+              <CardActionArea>
+                <CardContent>
+                  <div class="page-header">
+                    <div class="float-left">
+                      <Typography gutterBottom variant="h5">
+                        Payment Method{' '}
+                      </Typography>
+                    </div>
+                    <div class="float-right">
+                      <button className="btn btn-sm  btn-outline-primary">
+                        Update
+                      </button>
+                    </div>
+                    <div class="clearfix"></div>
+                  </div>
+                  <Divider className="my-2" />
+                  <Typography variant="body2" color="text.secondary">
+                    <div class="page-header">
+                      <div class="float-left">
+                        <span class="badge badge-pill badge-light py-1">
+                          Credit Card
+                        </span>
+                        <br />
+                        <span class="badge badge-pill badge-light py-1">
+                          Network
+                        </span>
+                        <br />
+                        <span class="badge badge-pill badge-light py-1">
+                          Expires on
+                        </span>
+                      </div>
+                      <div class="float-right ">
+                        <span className="text-dark font-weight-normal py-1">
+                          {' '}
+                          **** **** **** 4433
+                        </span>
+                        <br />
+                        <span className="text-dark font-weight-normal py-1">
+                          {' '}
+                          Visa
+                        </span>
+                        <br />
+                        <span className="text-dark font-weight-normal py-1">
+                          {' '}
+                          05/22
+                        </span>
+                      </div>
+                      <div class="clearfix"></div>
+                    </div>
+                  </Typography>
                 </CardContent>
               </CardActionArea>
             </Card>
