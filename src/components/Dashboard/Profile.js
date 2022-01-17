@@ -159,8 +159,7 @@ export default function Profile() {
           [`& .MuiDrawer-paper`]: {
             width: drawerWidth,
             boxSizing: 'border-box',
-            bgcolor: '#1f1e37',
-            color: '#f4f4f4',
+            bgcolor: '#EEEEEE',
           },
         }}
       >
@@ -172,8 +171,7 @@ export default function Profile() {
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'flex-start',
-                bgcolor: '#1f1e37',
-                color: '#f4f4f4',
+                bgcolor: '#EEEEEE',
                 borderRadius: 1,
               }}
             >
@@ -188,19 +186,13 @@ export default function Profile() {
                     >
                       <ListItemIcon>
                         {index === 0 ? (
-                          <AccountCircleOutlinedIcon
-                            style={{ fill: 'white' }}
-                          />
+                          <AccountCircleOutlinedIcon />
                         ) : index === 1 ? (
-                          <AppSettingsAltOutlinedIcon
-                            style={{ fill: 'white' }}
-                          />
+                          <AppSettingsAltOutlinedIcon />
                         ) : index === 2 ? (
-                          <MonetizationOnOutlinedIcon
-                            style={{ fill: 'white' }}
-                          />
+                          <MonetizationOnOutlinedIcon />
                         ) : (
-                          <MailIcon style={{ fill: 'white' }} />
+                          <MailIcon />
                         )}
                       </ListItemIcon>
                       <ListItemText primary={text} />
