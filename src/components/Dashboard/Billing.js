@@ -26,9 +26,10 @@ export const Billing = () => {
   const [paymentMethods, setPaymentMethods] = useState(null);
   const stripePromise = loadStripe(STRIPE_SECRET);
 
+  const [customerDetails, setCustomerDetails] = useState(null);
+
   useEffect(() => {
     const getSubscriptionData = async (cus_id) => {
-      let response = false;
       await axios
         .post(
           `http://localhost:5000/api/app/payment/customer-payment-methods`,
@@ -46,7 +47,26 @@ export const Billing = () => {
         });
     };
 
+    const getCustomerDetails = async (cus_id) => {
+      await axios
+        .post(
+          `http://localhost:5000/api/app/payment/getCustomer`,
+          { customer_id: cus_id },
+          {
+            headers: await getReqHeaders(),
+          }
+        )
+        .then((result) => {
+          const res = result.data;
+          if (res.results) {
+            const customer = res.data;
+            setCustomerDetails(customer);
+          }
+        });
+    };
+
     getSubscriptionData(user.subscription.renavalAt);
+    getCustomerDetails(user.subscription.renavalAt);
   }, []);
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -87,7 +107,7 @@ export const Billing = () => {
                       id="outlined-email-input"
                       margin="normal"
                       variant="outlined"
-                      type="email"
+                      type="text"
                       required
                       value={''}
                       onChange={(e) => setCardName(e.target.value)}
@@ -106,7 +126,7 @@ export const Billing = () => {
                     // onClick={handleSubmitSub}
                     onClick={props.onHide}
                   >
-                    Subscribe
+                    Update Payment Method
                   </Button>
                 </div>
               </CardContent>
@@ -267,6 +287,92 @@ export const Billing = () => {
                       <div className="text-dark font-weight-normal my-1">
                         {' '}
                         No associated payment methods{' '}
+                      </div>
+                    )}
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+            </Card>
+            <br />
+            <Card>
+              <CardActionArea>
+                <CardContent style={{ cursor: 'pointer' }}>
+                  <div class="page-header">
+                    <div class="float-left">
+                      <Typography gutterBottom variant="h5">
+                        Billing Details{' '}
+                      </Typography>
+                    </div>
+                    <div class="float-right">
+                      <button className="btn btn-sm  btn-outline-primary">
+                        Update
+                      </button>
+                    </div>
+                    <div class="clearfix"></div>
+                  </div>
+                  <Divider className="my-2" />
+                  <Typography variant="body2" color="text.secondary">
+                    {customerDetails != null ? (
+                      <div class="page-header">
+                        <div class="float-left">
+                          <span class="badge badge-pill badge-light py-1">
+                            Name
+                          </span>
+                          <br />
+                          <span class="badge badge-pill badge-light py-1">
+                            Email
+                          </span>
+                          <br />
+                          <span class="badge badge-pill badge-light py-1">
+                            Phone
+                          </span>
+                          <br />
+                          <span class="badge badge-pill badge-light py-1">
+                            Address
+                          </span>
+                        </div>
+                        <div class="float-right  text-right">
+                          <span className="text-dark font-weight-normal py-1">
+                            {' '}
+                            {customerDetails.name != null
+                              ? customerDetails.name
+                              : '-'}
+                          </span>
+                          <br />
+                          <span className="text-dark font-weight-normal py-1 ">
+                            {' '}
+                            {customerDetails.email != null
+                              ? customerDetails.email
+                              : '-'}
+                          </span>
+                          <br />
+                          <span className="text-dark font-weight-normal py-1 ">
+                            {' '}
+                            {customerDetails.phone != null
+                              ? customerDetails.phone
+                              : '-'}
+                          </span>
+                          <br />
+                          <span className="text-dark font-weight-normal py-1 ">
+                            {' '}
+                            {customerDetails.address != null
+                              ? `${customerDetails.address.line1} ${customerDetails.address.line2}`
+                              : '-'}
+                          </span>
+                          <br />
+                          <span className="text-dark font-weight-normal py-1 ">
+                            {' '}
+                            {customerDetails.address != null
+                              ? `${customerDetails.address.city} ${customerDetails.address.state} ${customerDetails.address.postal_code} ${customerDetails.address.country}`
+                              : '-'}
+                          </span>
+                        </div>
+                        <div class="clearfix"></div>
+                      </div>
+                    ) : (
+                      <div className="text-dark font-weight-normal my-1">
+                        {' '}
+                        No associated Billing Details Available{' '}
                       </div>
                     )}
                   </Typography>

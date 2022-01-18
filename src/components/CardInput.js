@@ -4,6 +4,7 @@ const CARD_ELEMENT_OPTIONS = {
   style: {
     base: {
       color: '#32325d',
+      background: '#EEEEEE',
       fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
       fontSmoothing: 'antialiased',
       fontSize: '16px',
@@ -19,5 +20,9 @@ const CARD_ELEMENT_OPTIONS = {
 };
 
 export default function CardInput() {
-  return <CardElement className="container " options={CARD_ELEMENT_OPTIONS} />;
+  return (
+    <div className="bg-light p-3 container">
+      <CardElement className="container " options={CARD_ELEMENT_OPTIONS} />
+    </div>
+  );
 }

@@ -175,7 +175,7 @@ export default function Profile() {
                 borderRadius: 1,
               }}
             >
-              {['Account Details', 'Manage Radar', 'Billing', 'Drafts'].map(
+              {['Account Details', 'Manage Radar', 'Billing Console'].map(
                 (text, index) => (
                   <>
                     <ListItem
@@ -205,7 +205,11 @@ export default function Profile() {
           </List>
         </Box>
       </Drawer>
-      <Box component="main" className="m-5" sx={{ flexGrow: 1, p: 3 }}>
+      <Box
+        component="main"
+        className="mx-5"
+        sx={{ flexGrow: 1, p: 5, overflow: 'auto' }}
+      >
         {/* <Toolbar /> */}
         {formNotification.text !== null && formNotification.varient !== null ? (
           <AlertModel
