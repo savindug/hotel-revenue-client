@@ -133,7 +133,7 @@ export const Billing = () => {
       } else {
         await axios
           .post(
-            `${apiURI}app/app/payment/updateCustomerPaymentMethod`,
+            `${apiURI}app/payment/updateCustomerPaymentMethod`,
             {
               payment_method: result.paymentMethod.id,
               cus_id: user.subscription.renavalAt,
@@ -159,7 +159,7 @@ export const Billing = () => {
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-            Update Payment Method
+            ${apiURI}app/yment Method
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -729,7 +729,7 @@ export const Billing = () => {
                               setAnchorEl(null);
                             }}
                           >
-                            Update Payment Method
+                            ${apiURI}app/yment Method
                           </button>
                           <Divider />
                           <button
