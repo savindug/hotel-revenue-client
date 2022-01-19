@@ -159,7 +159,7 @@ export const Billing = () => {
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-            ${apiURI}app/yment Method
+            Update Payment Method
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -226,7 +226,6 @@ export const Billing = () => {
     const [selectedCountry, setSelectedCountry] = useState('');
 
     useEffect(() => {
-      // console.log(`selectedCountry: ${selectedCountry}`);
       if (userData.address != null) {
         setSelectedCountry(countryList().getLabel(userData.address.country));
       }
@@ -287,10 +286,7 @@ export const Billing = () => {
               headers: await getReqHeaders(),
             }
           )
-          .then((result) => {
-            const res = result.data;
-            console.log(res);
-          });
+          .then((result) => {});
       }
       props.onHide();
       setFetchCustomerData(true);
@@ -519,7 +515,7 @@ export const Billing = () => {
           aria-describedby="alert-dialog-description"
         >
           <DialogTitle id="alert-dialog-title">
-            {'Remove Paymenth Method?'}
+            {'Remove Payment Method?'}
           </DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
@@ -729,7 +725,7 @@ export const Billing = () => {
                               setAnchorEl(null);
                             }}
                           >
-                            ${apiURI}app/yment Method
+                            Update Payment Method
                           </button>
                           <Divider />
                           <button
