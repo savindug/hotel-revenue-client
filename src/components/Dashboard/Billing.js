@@ -553,7 +553,7 @@ export const Billing = () => {
         <ConfirmDialog />
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-            Update Payment Method
+            Remove Payment Method
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
