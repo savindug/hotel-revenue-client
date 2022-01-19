@@ -182,8 +182,8 @@ export const Graphs = ({ selectedDate }) => {
             label: reqHotel.find((el) => el.name != null).name,
             //new option, type will default to bar as that what is used to create the scale
             type: 'line',
-            fill: false,
-            borderColor: '#4A148C',
+            fill: true,
+            borderColor: '#2e2e2e',
             borderWidth: 5,
             data: reqHotel
               .slice(dateRange[datePage][0], dateRange[datePage][1])
@@ -193,7 +193,7 @@ export const Graphs = ({ selectedDate }) => {
             label: reqHotel.find((el) => el.name != null).name,
             //new option, type will default to bar as that what is used to create the scale
             type: 'line',
-            fill: false,
+            fill: true,
             borderColor: '#2e2e2e',
             borderWidth: 5,
           },

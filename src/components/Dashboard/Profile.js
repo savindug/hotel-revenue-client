@@ -24,7 +24,7 @@ import { UserCrud } from '../auth/UserCrud';
 import MonetizationOnOutlinedIcon from '@mui/icons-material/MonetizationOnOutlined';
 import { Billing } from './Billing';
 
-const drawerWidth = window.innerWidth / 8;
+const drawerWidth = 240;
 
 export default function Profile() {
   const auth = useSelector((state) => state.auth);
@@ -148,7 +148,7 @@ export default function Profile() {
   };
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex', overflow: 'auto' }}>
       <CssBaseline />
 
       <Drawer
@@ -209,6 +209,7 @@ export default function Profile() {
         component="main"
         className="mx-5"
         sx={{ flexGrow: 1, p: 5, overflow: 'auto' }}
+        style={{ overflow: 'auto' }}
       >
         {/* <Toolbar /> */}
         {formNotification.text !== null && formNotification.varient !== null ? (
@@ -223,11 +224,14 @@ export default function Profile() {
         <h1>{sectionTitle}</h1>
         <Divider className="mb-5" />
         {selectedSection === 0 ? (
-          <UserDetailsForm />
+          <UserDetailsForm className="mb-5" />
         ) : selectedSection === 1 ? (
-          <UserCrud setformNotification={setformNotification} />
+          <UserCrud
+            setformNotification={setformNotification}
+            className="mb-5"
+          />
         ) : selectedSection === 2 ? (
-          <Billing />
+          <Billing className="mb-5" />
         ) : (
           <></>
         )}

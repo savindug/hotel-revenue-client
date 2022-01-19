@@ -53,7 +53,7 @@ function App() {
             <Route path="/reset-password" component={ResetPassword} />
             <Route path="/forgot-password" component={ForgotPassword} />
             <Route path="/register" component={Register} />
-            <Route path="/profile" component={UserProfile} />
+            {/* <Route path="/profile" component={UserProfile} /> */}
           </Switch>
         </main>
       </div>
