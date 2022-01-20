@@ -588,16 +588,32 @@ export const ClusteredData = () => {
       ) : clusterData.length > 0 && tab === 0 ? (
         <>
           <div id="stars5" className="my-5">
-            <ClusterDataTable cluster={cluster4} stars={5} />
+            <ClusterDataTable
+              cluster={cluster4}
+              stars={5}
+              selectedDate={selectedDate}
+            />
           </div>
           <div id="stars4" className="my-5">
-            <ClusterDataTable cluster={cluster3} stars={4} />
+            <ClusterDataTable
+              cluster={cluster3}
+              stars={4}
+              selectedDate={selectedDate}
+            />
           </div>
           <div id="stars3" className="my-5">
-            <ClusterDataTable cluster={cluster2} stars={3} />
+            <ClusterDataTable
+              cluster={cluster2}
+              stars={3}
+              selectedDate={selectedDate}
+            />
           </div>
           <div id="stars2" className="my-5">
-            <ClusterDataTable cluster={cluster1} stars={2} />
+            <ClusterDataTable
+              cluster={cluster1}
+              stars={2}
+              selectedDate={selectedDate}
+            />
           </div>
         </>
       ) : clusterData.length > 0 && tab === 7 ? (

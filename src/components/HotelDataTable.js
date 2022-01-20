@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import {
   Box,
@@ -31,6 +31,8 @@ import {
   multiSelectStyles,
 } from '../utils/const';
 import SearchBar from 'material-ui-search-bar';
+
+import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -98,8 +100,16 @@ export default function HotelDataTable({ selectedDate }) {
 
   // const [hotelsList, setHotelsList] = useState([]);
   const getClusterDataSet = useSelector((state) => state.clusterDataSet);
-  const { loading, err, cluster1, cluster2, cluster3, cluster4, hotels } =
-    getClusterDataSet;
+  const {
+    loading,
+    err,
+    reqHotel,
+    cluster1,
+    cluster2,
+    cluster3,
+    cluster4,
+    hotels,
+  } = getClusterDataSet;
 
   const auth = useSelector((state) => state.auth);
   const { user } = auth;
@@ -111,6 +121,22 @@ export default function HotelDataTable({ selectedDate }) {
   const [nights, setNights] = useState(0);
 
   const [searched, setSearched] = useState('');
+
+  const tableRef = useRef(null);
+
+  const getReportName = () => {
+    let name = null;
+    if (reqHotel.length > 0) {
+      reqHotel.map((e, index) => {
+        if (e.name !== null) {
+          name = e.name;
+          return;
+        }
+      });
+    }
+
+    return `${name}-Hotle_Radar-${moment(selectedDate).format('YYYY-MM-DD')}`;
+  };
 
   const requestSearch = (searchedVal) => {
     // setSearched(searchedVal);
@@ -500,6 +526,16 @@ export default function HotelDataTable({ selectedDate }) {
                 ))}
               </Select>
             </FormControl>
+            <FormControl className={classes.formControl}>
+              <ReactHTMLTableToExcel
+                id="test-table-xls-button"
+                className="btn btn-success download-table-xls-button"
+                table="table-to-xls"
+                filename={getReportName()}
+                sheet={getReportName()}
+                buttonText="Export to XLS"
+              />
+            </FormControl>
           </Grid>
 
           <TableContainer
@@ -508,11 +544,13 @@ export default function HotelDataTable({ selectedDate }) {
           >
             <Box width={100}>
               <Table
+                id="table-to-xls"
                 className={classes.table}
                 size="medium"
                 aria-label="customized table"
                 stickyHeader
                 bodystyle={{ overflow: 'visible' }}
+                ref={tableRef}
               >
                 <TableHead>
                   <StyledTableRow>

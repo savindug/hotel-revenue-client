@@ -16,7 +16,7 @@ import moment from 'moment';
 import { CLUSTER_BACKGROUND, FONT_FAMILY } from '../utils/const';
 import { LoadingOverlay } from './UI/LoadingOverlay';
 import { useSelector } from 'react-redux';
-
+import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 const StyledTableCell = withStyles((theme) => ({
   head: {
     backgroundColor: theme.palette.common.white,
@@ -53,7 +53,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function ClusterDataTable({ cluster, stars }) {
+export default function ClusterDataTable({ cluster, stars, selectedDate }) {
   const classes = useStyles();
 
   const getClusterDataSet = useSelector((state) => state.clusterDataSet);
@@ -126,12 +126,35 @@ export default function ClusterDataTable({ cluster, stars }) {
     setLoad(false);
   }, []);
 
+  const getReportName = () => {
+    let name = null;
+    if (reqHotel.length > 0) {
+      reqHotel.map((e, index) => {
+        if (e.name !== null) {
+          name = e.name;
+          return;
+        }
+      });
+    }
+
+    return `${name}-Rate_Buckets-${moment(selectedDate).format('YYYY-MM-DD')}`;
+  };
+
   return (
     <>
       {!load && rateStrength.length > 0 && cluster.length > 0 ? (
         <TableContainer component={Paper} className="my-5">
+          <ReactHTMLTableToExcel
+            id="test-table-xls-button"
+            className="btn btn-success download-table-xls-button"
+            table="clusters-to-xls"
+            filename={getReportName()}
+            sheet={getReportName()}
+            buttonText="Export to XLS"
+          />
           <Box width={100}>
             <Table
+              id="clusters-to-xls"
               className={classes.table}
               size="medium"
               aria-label="customized table"
