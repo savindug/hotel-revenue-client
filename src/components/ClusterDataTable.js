@@ -144,14 +144,16 @@ export default function ClusterDataTable({ cluster, stars, selectedDate }) {
     <>
       {!load && rateStrength.length > 0 && cluster.length > 0 ? (
         <TableContainer component={Paper} className="my-5">
-          <ReactHTMLTableToExcel
-            id="test-table-xls-button"
-            className="btn btn-success download-table-xls-button"
-            table="clusters-to-xls"
-            filename={getReportName()}
-            sheet={getReportName()}
-            buttonText="Export to XLS"
-          />
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <ReactHTMLTableToExcel
+              id="test-table-xls-button"
+              className="btn btn-success download-table-xls-button"
+              table="clusters-to-xls"
+              filename={getReportName()}
+              sheet={getReportName()}
+              buttonText="Export to XLS"
+            />
+          </div>
           <Box width={100}>
             <Table
               id="clusters-to-xls"
