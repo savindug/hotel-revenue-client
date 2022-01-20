@@ -137,7 +137,9 @@ export default function ClusterDataTable({ cluster, stars, selectedDate }) {
       });
     }
 
-    return `${name}-Rate_Buckets-${moment(selectedDate).format('YYYY-MM-DD')}`;
+    return `${name}-Rate_Buckets-Cluster-${stars}-${moment(selectedDate).format(
+      'YYYY-MM-DD'
+    )}`;
   };
 
   return (
@@ -146,9 +148,8 @@ export default function ClusterDataTable({ cluster, stars, selectedDate }) {
         <TableContainer component={Paper} className="my-5">
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
             <ReactHTMLTableToExcel
-              id="test-table-xls-button"
               className="btn btn-success download-table-xls-button"
-              table="clusters-to-xls"
+              table={`clusters-${stars}-to-xls`}
               filename={getReportName()}
               sheet={getReportName()}
               buttonText="Export to XLS"
@@ -156,7 +157,7 @@ export default function ClusterDataTable({ cluster, stars, selectedDate }) {
           </div>
           <Box width={100}>
             <Table
-              id="clusters-to-xls"
+              id={`clusters-${stars}-to-xls`}
               className={classes.table}
               size="medium"
               aria-label="customized table"
