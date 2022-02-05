@@ -25,6 +25,7 @@
     "bootstrap": "^4.6.0",
     "chart.js": "^2.9.4",
     "date-fns": "^2.19.0",
+    "excellentexport": "^3.7.3",
     "firebase": "^8.2.10",
     "google-map-react": "^2.1.9",
     "jquery": "^3.6.0",
@@ -53,7 +54,9 @@
     "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^2.3.0",
     "sass": "^1.45.2",
+    "tableexport": "^5.2.0",
     "web-vitals": "^1.1.1",
+    "xlsx": "^0.17.5",
     "yup": "^0.32.9"
   },
   "scripts": {

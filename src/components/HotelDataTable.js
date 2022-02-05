@@ -109,6 +109,7 @@ export default function HotelDataTable({ selectedDate }) {
     cluster3,
     cluster4,
     hotels,
+    report_len,
   } = getClusterDataSet;
 
   const auth = useSelector((state) => state.auth);
@@ -576,7 +577,7 @@ export default function HotelDataTable({ selectedDate }) {
                       <TableSortLabel disabled>Days Out</TableSortLabel>
                       {/* <TableSortLabel onClick={handleSort(0)}></TableSortLabel> */}
                     </StyledTableCell>
-                    <StyledTableCell size="small">
+                    <StyledTableCell>
                       <TableSortLabel
                         active={sortBy === 1}
                         direction={sortDir}
@@ -590,7 +591,7 @@ export default function HotelDataTable({ selectedDate }) {
                     <StyledTableCell className="text-center">
                       Freq Bucket
                     </StyledTableCell>
-                    {[...Array(90).keys()].map((d, i) =>
+                    {[...Array(report_len).keys()].map((d, i) =>
                       (() => {
                         let date = moment(selectedDate)
                           .add(i, 'd')
@@ -630,7 +631,7 @@ export default function HotelDataTable({ selectedDate }) {
                       Days Out
                     </StyledTableCell>
                     <StyledTableCell size="small"></StyledTableCell>
-                    {[...Array(90).keys()].map((e, index) => (
+                    {[...Array(report_len).keys()].map((e, index) => (
                       <StyledTableCell size="small">{index}</StyledTableCell>
                     ))}
                   </StyledTableRow> */}

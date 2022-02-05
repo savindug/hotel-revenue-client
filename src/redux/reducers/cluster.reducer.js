@@ -17,6 +17,7 @@ const initialState = {
     destinationId: null,
     dates: [],
   },
+  report_len: 0,
 };
 
 const clusterDataReducer = (state = initialState, action) => {
@@ -158,7 +159,11 @@ const clusterDataReducer = (state = initialState, action) => {
         loading: false,
         err: action.payload,
       };
-
+    case ACTION_TYPES.SET_REPORT_LEN:
+      return {
+        ...state,
+        report_len: action.payload,
+      };
     default:
       return state;
   }

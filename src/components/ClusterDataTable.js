@@ -17,6 +17,11 @@ import { CLUSTER_BACKGROUND, FONT_FAMILY } from '../utils/const';
 import { LoadingOverlay } from './UI/LoadingOverlay';
 import { useSelector } from 'react-redux';
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
+import * as XLSX from 'xlsx';
+
+import $ from 'jquery';
+import TableExport from 'tableexport';
+
 const StyledTableCell = withStyles((theme) => ({
   head: {
     backgroundColor: theme.palette.common.white,
@@ -53,6 +58,25 @@ const useStyles = makeStyles({
   },
 });
 
+ReactHTMLTableToExcel.format = (s, c) => {
+  // console.log(`c: ${JSON.stringify(c)}\n s: ${s}`);
+  if (c && c['table']) {
+    const tables_html = document.getElementsByTagName('table');
+    const html = c.table;
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+    const rows = doc.querySelectorAll('tr');
+
+    console.log(`doc: ${new XMLSerializer().serializeToString(tables_html)}`);
+
+    // for (const row of rows) row.removeChild(row.firstChild);
+
+    // c.table = doc.querySelector('table').outerHTML;
+  }
+
+  return s.replace(/{(\w+)}/g, (m, p) => c[p]);
+};
+
 export default function ClusterDataTable({ cluster, stars, selectedDate }) {
   const classes = useStyles();
 
@@ -62,6 +86,94 @@ export default function ClusterDataTable({ cluster, stars, selectedDate }) {
   const [load, setLoad] = useState(true);
 
   const [rateStrength, setRateStrength] = useState([]);
+
+  const tablesToExcel = function () {
+    var uri = 'data:application/vnd.ms-excel;base64,',
+      tmplWorkbookXML =
+        '<?xml version="1.0"?><?mso-application progid="Excel.Sheet"?><Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">' +
+        '<DocumentProperties xmlns="urn:schemas-microsoft-com:office:office"><Author>Axel Richter</Author><Created>{created}</Created></DocumentProperties>' +
+        '<Styles>' +
+        '<Style ss:ID="Currency"><NumberFormat ss:Format="Currency"></NumberFormat></Style>' +
+        '<Style ss:ID="Date"><NumberFormat ss:Format="Medium Date"></NumberFormat></Style>' +
+        '</Styles>' +
+        '{worksheets}</Workbook>',
+      tmplWorksheetXML =
+        '<Worksheet ss:Name="{nameWS}"><Table>{rows}</Table></Worksheet>',
+      tmplCellXML =
+        '<Cell{attributeStyleID}{attributeFormula}><Data ss:Type="{nameType}">{data}</Data></Cell>',
+      base64 = function (s) {
+        return window.btoa(unescape(encodeURIComponent(s)));
+      },
+      format = function (s, c) {
+        return s.replace(/{(\w+)}/g, function (m, p) {
+          return c[p];
+        });
+      };
+    return function (wsnames, wbname, appname) {
+      var ctx = '';
+      var workbookXML = '';
+      var worksheetsXML = '';
+      var rowsXML = '';
+      var tables = $('table');
+      for (var i = 0; i < tables.length; i++) {
+        for (var j = 0; j < tables[i].rows.length; j++) {
+          rowsXML += '<Row>';
+          for (var k = 0; k < tables[i].rows[j].cells.length; k++) {
+            var dataType = tables[i].rows[j].cells[k].getAttribute('data-type');
+            var dataStyle =
+              tables[i].rows[j].cells[k].getAttribute('data-style');
+            var dataValue =
+              tables[i].rows[j].cells[k].getAttribute('data-value');
+            dataValue = dataValue
+              ? dataValue
+              : tables[i].rows[j].cells[k].innerHTML;
+            var dataFormula =
+              tables[i].rows[j].cells[k].getAttribute('data-formula');
+            dataFormula = dataFormula
+              ? dataFormula
+              : appname == 'Calc' && dataType == 'DateTime'
+              ? dataValue
+              : null;
+            ctx = {
+              attributeStyleID:
+                dataStyle == 'Currency' || dataStyle == 'Date'
+                  ? ' ss:StyleID="' + dataStyle + '"'
+                  : '',
+              nameType:
+                dataType == 'Number' ||
+                dataType == 'DateTime' ||
+                dataType == 'Boolean' ||
+                dataType == 'Error'
+                  ? dataType
+                  : 'String',
+              data: dataFormula ? '' : dataValue.replace('<br>', ''),
+              attributeFormula: dataFormula
+                ? ' ss:Formula="' + dataFormula + '"'
+                : '',
+            };
+            rowsXML += format(tmplCellXML, ctx);
+          }
+          rowsXML += '</Row>';
+        }
+        ctx = { rows: rowsXML, nameWS: wsnames[i] || 'Sheet' + i };
+        worksheetsXML += format(tmplWorksheetXML, ctx);
+        rowsXML = '';
+      }
+
+      ctx = { created: new Date().getTime(), worksheets: worksheetsXML };
+      workbookXML = format(tmplWorkbookXML, ctx);
+
+      console.log(workbookXML);
+
+      var link = document.createElement('A');
+      link.href = uri + base64(workbookXML);
+      link.download = wbname || 'Workbook.xls';
+      link.target = '_blank';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    };
+  };
 
   useEffect(() => {
     //setStars((cluster.index += 2));
@@ -142,11 +254,83 @@ export default function ClusterDataTable({ cluster, stars, selectedDate }) {
     )}`;
   };
 
+  const tbOptions = {
+    headers: true,
+    formats: ['xlsx'], // (String[]), filetype(s) for the export, (default: ['xlsx', 'csv', 'txt'])
+    bootstrap: true, // (Boolean), style buttons using bootstrap, (default: true)
+    exportButtons: false, // (Boolean), automatically generate the built-in export buttons for each of the specified formats (default: true)
+    position: 'bottom', // (top, bottom), position of the caption element relative to table, (default: 'bottom')
+  };
+  const DowlandExcel = (key) => {
+    const table = TableExport(document.getElementById(key), tbOptions);
+    var exportData = table.getExportData();
+    var xlsxData = exportData[key].xlsx;
+    console.log(xlsxData); // Replace with the kind of file you want from the exportData
+    table.export2file(
+      xlsxData.data,
+      xlsxData.mimeType,
+      xlsxData.filename,
+      xlsxData.fileExtension,
+      xlsxData.merges,
+      xlsxData.RTL,
+      xlsxData.sheetname
+    );
+  };
+
+  const DowlandExcelMultiTable = (keys) => {
+    const tables = [];
+    const xlsxDatas = [];
+    keys.forEach((key) => {
+      const selector = document.getElementById(key);
+      if (selector) {
+        const table = TableExport(selector, tbOptions);
+        tables.push(table);
+        xlsxDatas.push(table.getExportData()[key].xlsx);
+      }
+    });
+
+    const mergeXlsxData = {
+      RTL: false,
+      data: [],
+      fileExtension: '.xlsx',
+      filename: 'rapor',
+      merges: [],
+      mimeType:
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      sheetname: 'Rapor',
+    };
+    for (let i = 0; i < xlsxDatas.length; i++) {
+      const xlsxData = xlsxDatas[i];
+      mergeXlsxData.data.push(...xlsxData.data);
+
+      xlsxData.merges = xlsxData.merges.map((merge) => {
+        const diff = mergeXlsxData.data.length - xlsxData.data.length;
+
+        merge.e.r += diff;
+        merge.s.r += diff;
+
+        return merge;
+      });
+      mergeXlsxData.merges.push(...xlsxData.merges);
+      mergeXlsxData.data.push([null]);
+    }
+    console.log(mergeXlsxData);
+    tables[0].export2file(
+      mergeXlsxData.data,
+      mergeXlsxData.mimeType,
+      mergeXlsxData.filename,
+      mergeXlsxData.fileExtension,
+      mergeXlsxData.merges,
+      mergeXlsxData.RTL,
+      mergeXlsxData.sheetname
+    );
+  };
+
   return (
     <>
       {!load && rateStrength.length > 0 && cluster.length > 0 ? (
         <TableContainer component={Paper} className="my-5">
-          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          {/* <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
             <ReactHTMLTableToExcel
               className="btn btn-success download-table-xls-button"
               table={`clusters-${stars}-to-xls`}
@@ -154,7 +338,19 @@ export default function ClusterDataTable({ cluster, stars, selectedDate }) {
               sheet={getReportName()}
               buttonText="Export to XLS"
             />
-          </div>
+            <button
+              className="btn btn-success"
+              onClick={() =>
+                DowlandExcelMultiTable([
+                  `clusters-2-to-xls`,
+                  `clusters-3-to-xls`,
+                  `clusters-4-to-xls`,
+                ])
+              }
+            >
+              Export Report
+            </button>
+          </div> */}
           <Box width={100}>
             <Table
               id={`clusters-${stars}-to-xls`}

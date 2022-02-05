@@ -60,6 +60,7 @@ export default function ClusterBucket({ selectedDate }) {
     cluster3,
     cluster4,
     clusterData,
+    report_len,
   } = getClusterDataSet;
 
   const RatePositionTable = ({ stars, cluster }) => {
@@ -124,7 +125,7 @@ export default function ClusterBucket({ selectedDate }) {
                       Average Rate
                     </StyledTableCell>
 
-                    {[...Array(90).keys()].map((e, index) => (
+                    {[...Array(report_len).keys()].map((e, index) => (
                       <StyledTableCell
                         size="small"
                         key={index}
@@ -165,7 +166,7 @@ export default function ClusterBucket({ selectedDate }) {
                       Most Repeated rate
                     </StyledTableCell>
 
-                    {[...Array(90).keys()].map((e, index) => (
+                    {[...Array(report_len).keys()].map((e, index) => (
                       <StyledTableCell
                         size="small"
                         key={index}
@@ -206,7 +207,7 @@ export default function ClusterBucket({ selectedDate }) {
                       Middle Rate
                     </StyledTableCell>
 
-                    {[...Array(90).keys()].map((e, index) => (
+                    {[...Array(report_len).keys()].map((e, index) => (
                       <StyledTableCell
                         size="small"
                         key={index}
@@ -246,7 +247,7 @@ export default function ClusterBucket({ selectedDate }) {
                       &emsp;Highest Rate
                     </StyledTableCell>
 
-                    {[...Array(90).keys()].map((e, index) => (
+                    {[...Array(report_len).keys()].map((e, index) => (
                       <StyledTableCell
                         size="small"
                         key={index}
@@ -290,7 +291,7 @@ export default function ClusterBucket({ selectedDate }) {
                       &emsp;&emsp;Average of Highest Rates
                     </StyledTableCell>
 
-                    {[...Array(90).keys()].map((e, index) => (
+                    {[...Array(report_len).keys()].map((e, index) => (
                       <StyledTableCell
                         size="small"
                         key={index}
@@ -333,7 +334,7 @@ export default function ClusterBucket({ selectedDate }) {
                       &emsp;&emsp;Average of Middle Rates
                     </StyledTableCell>
 
-                    {[...Array(90).keys()].map((e, index) => (
+                    {[...Array(report_len).keys()].map((e, index) => (
                       <StyledTableCell
                         size="small"
                         key={index}
@@ -377,7 +378,7 @@ export default function ClusterBucket({ selectedDate }) {
                       &emsp;&emsp;Average of Lowest Rates
                     </StyledTableCell>
 
-                    {[...Array(90).keys()].map((e, index) => (
+                    {[...Array(report_len).keys()].map((e, index) => (
                       <StyledTableCell
                         size="small"
                         key={index}
@@ -420,7 +421,7 @@ export default function ClusterBucket({ selectedDate }) {
                       &emsp;Lowest Rate
                     </StyledTableCell>
 
-                    {[...Array(90).keys()].map((e, index) => (
+                    {[...Array(report_len).keys()].map((e, index) => (
                       <StyledTableCell
                         size="small"
                         key={index}

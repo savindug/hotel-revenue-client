@@ -32,6 +32,7 @@ export const Graphs = ({ selectedDate }) => {
     cluster4,
     hotels,
     reqHotel,
+    report_len,
   } = getClusterDataSet;
 
   const [dateRange, setDateRange] = useState([
@@ -784,10 +785,10 @@ export const Graphs = ({ selectedDate }) => {
 
     const buildHotelsDataSet = async () => {
       let datebyhotelcount = [];
-      const dates_arr = [...Array(90).keys()].map((ob, id) =>
+      const dates_arr = [...Array(report_len).keys()].map((ob, id) =>
         moment(selectedDate).add(id, 'd').format('YYYY-MM-DD')
       );
-      await [...Array(90).keys()].map((e, ix) => {
+      await [...Array(report_len).keys()].map((e, ix) => {
         let cls5h = [];
         let cls4h = [];
         let cls3h = [];

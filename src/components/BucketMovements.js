@@ -54,8 +54,16 @@ export default function BucketMovements({ selectedDate }) {
   const classes = useStyles();
 
   const getClusterDataSet = useSelector((state) => state.clusterDataSet);
-  const { loading, reqHotel, cluster1, cluster2, cluster3, cluster4, hotels } =
-    getClusterDataSet;
+  const {
+    loading,
+    reqHotel,
+    cluster1,
+    cluster2,
+    cluster3,
+    cluster4,
+    hotels,
+    report_len,
+  } = getClusterDataSet;
 
   const [totalHotelCount, setTotalHotelCount] = useState(0);
 
@@ -100,7 +108,7 @@ export default function BucketMovements({ selectedDate }) {
   };
 
   const getPricingUps = (stars) => {
-    [...Array(90).keys()].map((day) => {});
+    [...Array(report_len).keys()].map((day) => {});
   };
 
   return (
@@ -124,7 +132,7 @@ export default function BucketMovements({ selectedDate }) {
                     Days Out
                   </StyledTableCell>
                   {/* <StyledTableCell size="small">Stars</StyledTableCell> */}
-                  {[...Array(90).keys()].map((e, index) =>
+                  {[...Array(report_len).keys()].map((e, index) =>
                     (() => {
                       let day = moment(selectedDate)
                         .add(index, 'd')
@@ -167,7 +175,7 @@ export default function BucketMovements({ selectedDate }) {
                       5 Star Pricing Down
                     </StyledTableCell>
                     {/* <StyledTableCell size="small"></StyledTableCell> */}
-                    {[...Array(90).keys()].map((e, index) =>
+                    {[...Array(report_len).keys()].map((e, index) =>
                       (() => {
                         let hotel_count = 0;
                         if (
@@ -210,7 +218,7 @@ export default function BucketMovements({ selectedDate }) {
                       4 Star Pricing Up
                     </StyledTableCell>
                     {/* <StyledTableCell size="small"></StyledTableCell> */}
-                    {[...Array(90).keys()].map((e, index) =>
+                    {[...Array(report_len).keys()].map((e, index) =>
                       (() => {
                         let hotel_count = 0;
                         if (cluster4.length > 0) {
@@ -246,7 +254,7 @@ export default function BucketMovements({ selectedDate }) {
                       4 Star Pricing Down
                     </StyledTableCell>
                     {/* <StyledTableCell size="small"></StyledTableCell> */}
-                    {[...Array(90).keys()].map((e, index) =>
+                    {[...Array(report_len).keys()].map((e, index) =>
                       (() => {
                         let hotel_count = 0;
                         if (cluster1.length > 0) {
@@ -286,7 +294,7 @@ export default function BucketMovements({ selectedDate }) {
                       3 Star Pricing Up
                     </StyledTableCell>
                     {/* <StyledTableCell size="small"></StyledTableCell> */}
-                    {[...Array(90).keys()].map((e, index) =>
+                    {[...Array(report_len).keys()].map((e, index) =>
                       (() => {
                         let hotel_count = 0;
                         if (cluster3.length > 0) {
@@ -326,7 +334,7 @@ export default function BucketMovements({ selectedDate }) {
                       3 Star Pricing Down
                     </StyledTableCell>
                     {/* <StyledTableCell size="small"></StyledTableCell> */}
-                    {[...Array(90).keys()].map((e, index) =>
+                    {[...Array(report_len).keys()].map((e, index) =>
                       (() => {
                         let hotel_count = 0;
                         if (cluster1.length > 0) {
@@ -361,7 +369,7 @@ export default function BucketMovements({ selectedDate }) {
                       2 Star Pricing Up
                     </StyledTableCell>
                     {/* <StyledTableCell size="small"></StyledTableCell> */}
-                    {[...Array(90).keys()].map((e, index) =>
+                    {[...Array(report_len).keys()].map((e, index) =>
                       (() => {
                         let hotel_count = 0;
                         if (cluster2.length > 0) {
@@ -412,7 +420,7 @@ export default function BucketMovements({ selectedDate }) {
                       Days Out
                     </StyledTableCell>
                     {/* <StyledTableCell size="small">Stars</StyledTableCell> */}
-                    {[...Array(90).keys()].map((e, index) =>
+                    {[...Array(report_len).keys()].map((e, index) =>
                       (() => {
                         let day = moment(selectedDate)
                           .add(index, 'd')
@@ -453,7 +461,7 @@ export default function BucketMovements({ selectedDate }) {
                       >
                         Bucket Size Index
                       </StyledTableCell>
-                      {[...Array(90).keys()].map((e, index) =>
+                      {[...Array(report_len).keys()].map((e, index) =>
                         (() => {
                           let star_hotel_count =
                             cluster4.length > 0
@@ -567,7 +575,7 @@ export default function BucketMovements({ selectedDate }) {
                       Days Out
                     </StyledTableCell>
                     {/* <StyledTableCell size="small">Stars</StyledTableCell> */}
-                    {[...Array(90).keys()].map((e, index) =>
+                    {[...Array(report_len).keys()].map((e, index) =>
                       (() => {
                         let day = moment(selectedDate)
                           .add(index, 'd')
@@ -608,7 +616,7 @@ export default function BucketMovements({ selectedDate }) {
                       >
                         Bucket Size Index
                       </StyledTableCell>
-                      {[...Array(90).keys()].map((e, index) =>
+                      {[...Array(report_len).keys()].map((e, index) =>
                         (() => {
                           let star_hotel_count = 0;
 
@@ -721,7 +729,7 @@ export default function BucketMovements({ selectedDate }) {
                       Days Out
                     </StyledTableCell>
                     {/* <StyledTableCell size="small">Stars</StyledTableCell> */}
-                    {[...Array(90).keys()].map((e, index) =>
+                    {[...Array(report_len).keys()].map((e, index) =>
                       (() => {
                         let day = moment(selectedDate)
                           .add(index, 'd')
@@ -762,7 +770,7 @@ export default function BucketMovements({ selectedDate }) {
                       >
                         Bucket Size Index
                       </StyledTableCell>
-                      {[...Array(90).keys()].map((e, index) =>
+                      {[...Array(report_len).keys()].map((e, index) =>
                         (() => {
                           let star_hotel_count = 0;
 
@@ -875,7 +883,7 @@ export default function BucketMovements({ selectedDate }) {
                       Days Out
                     </StyledTableCell>
                     {/* <StyledTableCell size="small">Stars</StyledTableCell> */}
-                    {[...Array(90).keys()].map((e, index) =>
+                    {[...Array(report_len).keys()].map((e, index) =>
                       (() => {
                         let day = moment(selectedDate)
                           .add(index, 'd')
@@ -916,7 +924,7 @@ export default function BucketMovements({ selectedDate }) {
                       >
                         Bucket Size Index
                       </StyledTableCell>
-                      {[...Array(90).keys()].map((e, index) =>
+                      {[...Array(report_len).keys()].map((e, index) =>
                         (() => {
                           let star_hotel_count = 0;
 
@@ -1027,7 +1035,7 @@ export default function BucketMovements({ selectedDate }) {
                     Days Out
                   </StyledTableCell>
                   {/* <StyledTableCell size="small">Stars</StyledTableCell> */}
-                  {[...Array(90).keys()].map((e, index) =>
+                  {[...Array(report_len).keys()].map((e, index) =>
                     (() => {
                       let day = moment(selectedDate)
                         .add(index, 'd')
@@ -1077,7 +1085,7 @@ export default function BucketMovements({ selectedDate }) {
                     </StyledTableCell>
                     {/* <StyledTableCell size="small"></StyledTableCell> */}
 
-                    {[...Array(90).keys()].map((e, index) =>
+                    {[...Array(report_len).keys()].map((e, index) =>
                       (() => {
                         let hotel_count = 0;
 

@@ -82,6 +82,7 @@ export default function SimilarityScore({ selectedDate }) {
     cluster4,
     hotels,
     reqHotel,
+    report_len,
   } = getClusterDataSet;
 
   const auth = useSelector((state) => state.auth);
@@ -138,7 +139,7 @@ export default function SimilarityScore({ selectedDate }) {
   useEffect(() => {
     const similarityScoreRateings = () => {
       setBinding(true);
-      [...Array(90).keys()].map((d, i) => {
+      [...Array(report_len).keys()].map((d, i) => {
         hotels.map((_hotel, id) => {
           if (_hotel.prices[i] != null) {
             // _hotel.score = `${reqHotel[i].rate} - ${
@@ -151,7 +152,7 @@ export default function SimilarityScore({ selectedDate }) {
           }
         });
       });
-      [...Array(90).keys()].map((d, i) => {
+      [...Array(report_len).keys()].map((d, i) => {
         let score_arr = [];
         hotels.map((_hotel, id) => {
           if (_hotel.prices[i] != null) {
@@ -396,7 +397,7 @@ export default function SimilarityScore({ selectedDate }) {
                     <StyledTableCell className="text-center">
                       Freq Bucket
                     </StyledTableCell>
-                    {[...Array(90).keys()].map((d, i) =>
+                    {[...Array(report_len).keys()].map((d, i) =>
                       (() => {
                         let date = moment(selectedDate)
                           .add(i, 'd')

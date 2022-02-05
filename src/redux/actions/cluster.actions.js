@@ -29,42 +29,50 @@ export const fetchClusterData =
           type: ACTION_TYPES.SET_REQ_HOTEL,
           payload: reqHotelData,
         });
-        clusterData.map((day, index) => {
-          day.map((cl, el) => {
-            if (el === 0) {
-              cl1.push(cl);
-            }
-            if (el === 1) {
-              cl2.push(cl);
-            }
-            if (el === 2) {
-              cl3.push(cl);
-            }
-            if (el === 3) {
-              cl4.push(cl);
-            }
+
+        if (clusterData.length > 0) {
+          dispatch({
+            type: ACTION_TYPES.SET_REPORT_LEN,
+            payload: clusterData.length,
           });
-        });
-        dispatch({
-          type: ACTION_TYPES.GET_CLUSTER,
-          payload: clusterData,
-        });
-        dispatch({
-          type: ACTION_TYPES.SET_CLUSTER_1,
-          payload: setOutliers(cl1, 2),
-        });
-        dispatch({
-          type: ACTION_TYPES.SET_CLUSTER_2,
-          payload: setOutliers(cl2, 3),
-        });
-        dispatch({
-          type: ACTION_TYPES.SET_CLUSTER_3,
-          payload: setOutliers(cl3, 4),
-        });
-        dispatch({
-          type: ACTION_TYPES.SET_CLUSTER_4,
-          payload: setOutliers(cl4, 5),
-        });
+
+          clusterData.map((day, index) => {
+            day.map((cl, el) => {
+              if (el === 0) {
+                cl1.push(cl);
+              }
+              if (el === 1) {
+                cl2.push(cl);
+              }
+              if (el === 2) {
+                cl3.push(cl);
+              }
+              if (el === 3) {
+                cl4.push(cl);
+              }
+            });
+          });
+          dispatch({
+            type: ACTION_TYPES.GET_CLUSTER,
+            payload: clusterData,
+          });
+          dispatch({
+            type: ACTION_TYPES.SET_CLUSTER_1,
+            payload: setOutliers(cl1, 2),
+          });
+          dispatch({
+            type: ACTION_TYPES.SET_CLUSTER_2,
+            payload: setOutliers(cl2, 3),
+          });
+          dispatch({
+            type: ACTION_TYPES.SET_CLUSTER_3,
+            payload: setOutliers(cl3, 4),
+          });
+          dispatch({
+            type: ACTION_TYPES.SET_CLUSTER_4,
+            payload: setOutliers(cl4, 5),
+          });
+        }
       })
       .catch(async (err) => {
         dispatch(handleErr(DATA_ERR));
