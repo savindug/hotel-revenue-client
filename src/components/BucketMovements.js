@@ -132,11 +132,9 @@ export default function BucketMovements({ selectedDate }) {
                     Days Out
                   </StyledTableCell>
                   {/* <StyledTableCell size="small">Stars</StyledTableCell> */}
-                  {[...Array(report_len).keys()].map((e, index) =>
+                  {cluster1.map((e, index) =>
                     (() => {
-                      let day = moment(selectedDate)
-                        .add(index, 'd')
-                        .format('YYYY-MM-DD');
+                      let day = moment(e.date).format('YYYY-MM-DD');
                       let date = moment(day).format('dddd').substring(0, 3);
                       return (
                         <StyledTableCell
@@ -575,11 +573,9 @@ export default function BucketMovements({ selectedDate }) {
                       Days Out
                     </StyledTableCell>
                     {/* <StyledTableCell size="small">Stars</StyledTableCell> */}
-                    {[...Array(report_len).keys()].map((e, index) =>
+                    {cluster1.map((e, index) =>
                       (() => {
-                        let day = moment(selectedDate)
-                          .add(index, 'd')
-                          .format('YYYY-MM-DD');
+                        let day = moment(e.date).format('YYYY-MM-DD');
                         let date = moment(day).format('dddd').substring(0, 3);
                         return (
                           <StyledTableCell
@@ -729,11 +725,9 @@ export default function BucketMovements({ selectedDate }) {
                       Days Out
                     </StyledTableCell>
                     {/* <StyledTableCell size="small">Stars</StyledTableCell> */}
-                    {[...Array(report_len).keys()].map((e, index) =>
+                    {cluster1.map((e, index) =>
                       (() => {
-                        let day = moment(selectedDate)
-                          .add(index, 'd')
-                          .format('YYYY-MM-DD');
+                        let day = moment(e.date).format('YYYY-MM-DD');
                         let date = moment(day).format('dddd').substring(0, 3);
                         return (
                           <StyledTableCell
@@ -883,11 +877,9 @@ export default function BucketMovements({ selectedDate }) {
                       Days Out
                     </StyledTableCell>
                     {/* <StyledTableCell size="small">Stars</StyledTableCell> */}
-                    {[...Array(report_len).keys()].map((e, index) =>
+                    {cluster1.map((e, index) =>
                       (() => {
-                        let day = moment(selectedDate)
-                          .add(index, 'd')
-                          .format('YYYY-MM-DD');
+                        let day = moment(e.date).format('YYYY-MM-DD');
                         let date = moment(day).format('dddd').substring(0, 3);
                         return (
                           <StyledTableCell
@@ -1035,11 +1027,9 @@ export default function BucketMovements({ selectedDate }) {
                     Days Out
                   </StyledTableCell>
                   {/* <StyledTableCell size="small">Stars</StyledTableCell> */}
-                  {[...Array(report_len).keys()].map((e, index) =>
+                  {cluster1.map((e, index) =>
                     (() => {
-                      let day = moment(selectedDate)
-                        .add(index, 'd')
-                        .format('YYYY-MM-DD');
+                      let day = moment(e.date).format('YYYY-MM-DD');
                       let date = moment(day).format('dddd').substring(0, 3);
                       return (
                         <StyledTableCell

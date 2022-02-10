@@ -591,11 +591,9 @@ export default function HotelDataTable({ selectedDate }) {
                     <StyledTableCell className="text-center">
                       Freq Bucket
                     </StyledTableCell>
-                    {[...Array(report_len).keys()].map((d, i) =>
+                    {cluster1.map((e, i) =>
                       (() => {
-                        let date = moment(selectedDate)
-                          .add(i, 'd')
-                          .format('YYYY-MM-DD');
+                        let date = moment(e.date).format('YYYY-MM-DD');
                         let day = moment(date).format('dddd').substring(0, 3);
                         // console.log('selectedDate+: ' + date + ', day: ' + day);
                         return (
