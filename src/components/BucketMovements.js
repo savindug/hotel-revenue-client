@@ -122,36 +122,38 @@ export default function BucketMovements({ selectedDate }) {
                 size="medium"
                 aria-label="customized table"
                 bodyStyle={{ overflow: 'visible' }}
+                stickyHeader
               >
                 <TableHead>
                   <StyledTableCell
-                    style={{ fontWeight: 'bold', width: '250px' }}
-                    className={classes.sticky}
+                    style={{ fontWeight: 'bold', width: '250px', zIndex: 100 }}
                   >
                     Net Bucket Movements <hr />
                     Days Out
                   </StyledTableCell>
-                  {/* <StyledTableCell size="small">Stars</StyledTableCell> */}
                   {cluster1.map((e, index) =>
                     (() => {
-                      let day = moment(e.date).format('YYYY-MM-DD');
-                      let date = moment(day).format('dddd').substring(0, 3);
+                      let _date = moment(e.date);
+                      let daysOut = _date.diff(selectedDate, 'days');
+                      let day = _date.format('dddd').substring(0, 3);
                       return (
                         <StyledTableCell
                           size="small"
                           key={index}
                           className={
-                            date === 'Sat' || date === 'Fri'
+                            day === 'Sat' || day === 'Fri'
                               ? 'bg-secondary text-light text-center'
                               : 'text-center'
                           }
                           style={{ fontSize: '12px' }}
                         >
-                          {`${date.toUpperCase()}\n${moment(day).format(
+                          {`${
+                            day === 'Sat' || day === 'Fri' ? 'WEND' : 'WDAY'
+                          }\n${day.toUpperCase()}\n${moment(_date).format(
                             'MM/DD'
                           )}`}
                           <hr />
-                          {index}
+                          {daysOut}
                         </StyledTableCell>
                       );
                     })()
@@ -408,11 +410,15 @@ export default function BucketMovements({ selectedDate }) {
                   className={classes.table}
                   aria-label="customized table"
                   bodyStyle={{ overflow: 'visible' }}
+                  stickyHeader
                 >
                   <TableHead>
                     <StyledTableCell
-                      style={{ fontWeight: 'bold', width: '250px' }}
-                      className={classes.sticky}
+                      style={{
+                        fontWeight: 'bold',
+                        width: '250px',
+                        zIndex: 100,
+                      }}
                     >
                       5 Star Hotels Count <hr />
                       Days Out
@@ -420,26 +426,27 @@ export default function BucketMovements({ selectedDate }) {
                     {/* <StyledTableCell size="small">Stars</StyledTableCell> */}
                     {[...Array(report_len).keys()].map((e, index) =>
                       (() => {
-                        let day = moment(selectedDate)
-                          .add(index, 'd')
-                          .format('YYYY-MM-DD');
-                        let date = moment(day).format('dddd').substring(0, 3);
+                        let _date = moment(e.date);
+                        let daysOut = _date.diff(selectedDate, 'days');
+                        let day = _date.format('dddd').substring(0, 3);
                         return (
                           <StyledTableCell
                             size="small"
                             key={index}
                             className={
-                              date === 'Sat' || date === 'Fri'
+                              day === 'Sat' || day === 'Fri'
                                 ? 'bg-secondary text-light text-center'
                                 : 'text-center'
                             }
                             style={{ fontSize: '12px' }}
                           >
-                            {`${date.toUpperCase()}\n${moment(day).format(
+                            {`${
+                              day === 'Sat' || day === 'Fri' ? 'WEND' : 'WDAY'
+                            }\n${day.toUpperCase()}\n${moment(_date).format(
                               'MM/DD'
                             )}`}
                             <hr />
-                            {index}
+                            {daysOut}
                           </StyledTableCell>
                         );
                       })()
@@ -563,11 +570,15 @@ export default function BucketMovements({ selectedDate }) {
                   className={classes.table}
                   aria-label="customized table"
                   bodyStyle={{ overflow: 'visible' }}
+                  stickyHeader
                 >
                   <TableHead>
                     <StyledTableCell
-                      style={{ fontWeight: 'bold', width: '250px' }}
-                      className={classes.sticky}
+                      style={{
+                        fontWeight: 'bold',
+                        width: '250px',
+                        zIndex: 100,
+                      }}
                     >
                       4 Star Hotels Count <hr />
                       Days Out
@@ -575,24 +586,27 @@ export default function BucketMovements({ selectedDate }) {
                     {/* <StyledTableCell size="small">Stars</StyledTableCell> */}
                     {cluster1.map((e, index) =>
                       (() => {
-                        let day = moment(e.date).format('YYYY-MM-DD');
-                        let date = moment(day).format('dddd').substring(0, 3);
+                        let _date = moment(e.date);
+                        let daysOut = _date.diff(selectedDate, 'days');
+                        let day = _date.format('dddd').substring(0, 3);
                         return (
                           <StyledTableCell
                             size="small"
                             key={index}
                             className={
-                              date === 'Sat' || date === 'Fri'
+                              day === 'Sat' || day === 'Fri'
                                 ? 'bg-secondary text-light text-center'
                                 : 'text-center'
                             }
                             style={{ fontSize: '12px' }}
                           >
-                            {`${date.toUpperCase()}\n${moment(day).format(
+                            {`${
+                              day === 'Sat' || day === 'Fri' ? 'WEND' : 'WDAY'
+                            }\n${day.toUpperCase()}\n${moment(_date).format(
                               'MM/DD'
                             )}`}
                             <hr />
-                            {index}
+                            {daysOut}
                           </StyledTableCell>
                         );
                       })()
@@ -715,11 +729,15 @@ export default function BucketMovements({ selectedDate }) {
                   className={classes.table}
                   aria-label="customized table"
                   bodyStyle={{ overflow: 'visible' }}
+                  stickyHeader
                 >
                   <TableHead>
                     <StyledTableCell
-                      style={{ fontWeight: 'bold', width: '250px' }}
-                      className={classes.sticky}
+                      style={{
+                        fontWeight: 'bold',
+                        width: '250px',
+                        zIndex: 100,
+                      }}
                     >
                       3 Star Hotels Count <hr />
                       Days Out
@@ -727,24 +745,27 @@ export default function BucketMovements({ selectedDate }) {
                     {/* <StyledTableCell size="small">Stars</StyledTableCell> */}
                     {cluster1.map((e, index) =>
                       (() => {
-                        let day = moment(e.date).format('YYYY-MM-DD');
-                        let date = moment(day).format('dddd').substring(0, 3);
+                        let _date = moment(e.date);
+                        let daysOut = _date.diff(selectedDate, 'days');
+                        let day = _date.format('dddd').substring(0, 3);
                         return (
                           <StyledTableCell
                             size="small"
                             key={index}
                             className={
-                              date === 'Sat' || date === 'Fri'
+                              day === 'Sat' || day === 'Fri'
                                 ? 'bg-secondary text-light text-center'
                                 : 'text-center'
                             }
                             style={{ fontSize: '12px' }}
                           >
-                            {`${date.toUpperCase()}\n${moment(day).format(
+                            {`${
+                              day === 'Sat' || day === 'Fri' ? 'WEND' : 'WDAY'
+                            }\n${day.toUpperCase()}\n${moment(_date).format(
                               'MM/DD'
                             )}`}
                             <hr />
-                            {index}
+                            {daysOut}
                           </StyledTableCell>
                         );
                       })()
@@ -867,11 +888,15 @@ export default function BucketMovements({ selectedDate }) {
                   className={classes.table}
                   aria-label="customized table"
                   bodyStyle={{ overflow: 'visible' }}
+                  stickyHeader
                 >
                   <TableHead>
                     <StyledTableCell
-                      style={{ fontWeight: 'bold', width: '250px' }}
-                      className={classes.sticky}
+                      style={{
+                        fontWeight: 'bold',
+                        width: '250px',
+                        zIndex: 100,
+                      }}
                     >
                       2 Star Hotels Count <hr />
                       Days Out
@@ -879,24 +904,27 @@ export default function BucketMovements({ selectedDate }) {
                     {/* <StyledTableCell size="small">Stars</StyledTableCell> */}
                     {cluster1.map((e, index) =>
                       (() => {
-                        let day = moment(e.date).format('YYYY-MM-DD');
-                        let date = moment(day).format('dddd').substring(0, 3);
+                        let _date = moment(e.date);
+                        let daysOut = _date.diff(selectedDate, 'days');
+                        let day = _date.format('dddd').substring(0, 3);
                         return (
                           <StyledTableCell
                             size="small"
                             key={index}
                             className={
-                              date === 'Sat' || date === 'Fri'
+                              day === 'Sat' || day === 'Fri'
                                 ? 'bg-secondary text-light text-center'
                                 : 'text-center'
                             }
                             style={{ fontSize: '12px' }}
                           >
-                            {`${date.toUpperCase()}\n${moment(day).format(
+                            {`${
+                              day === 'Sat' || day === 'Fri' ? 'WEND' : 'WDAY'
+                            }\n${day.toUpperCase()}\n${moment(_date).format(
                               'MM/DD'
                             )}`}
                             <hr />
-                            {index}
+                            {daysOut}
                           </StyledTableCell>
                         );
                       })()
@@ -1017,11 +1045,11 @@ export default function BucketMovements({ selectedDate }) {
                 className={classes.table}
                 aria-label="customized table"
                 bodyStyle={{ overflow: 'visible' }}
+                stickyHeader
               >
                 <TableHead>
                   <StyledTableCell
-                    style={{ fontWeight: 'bold', width: '250px' }}
-                    className={classes.sticky}
+                    style={{ fontWeight: 'bold', width: '250px', zIndex: 100 }}
                   >
                     Total Hotels Count &nbsp; ({hotels.length})<hr />
                     Days Out
@@ -1029,24 +1057,27 @@ export default function BucketMovements({ selectedDate }) {
                   {/* <StyledTableCell size="small">Stars</StyledTableCell> */}
                   {cluster1.map((e, index) =>
                     (() => {
-                      let day = moment(e.date).format('YYYY-MM-DD');
-                      let date = moment(day).format('dddd').substring(0, 3);
+                      let _date = moment(e.date);
+                      let daysOut = _date.diff(selectedDate, 'days');
+                      let day = _date.format('dddd').substring(0, 3);
                       return (
                         <StyledTableCell
                           size="small"
                           key={index}
                           className={
-                            date === 'Sat' || date === 'Fri'
+                            day === 'Sat' || day === 'Fri'
                               ? 'bg-secondary text-light text-center'
                               : 'text-center'
                           }
                           style={{ fontSize: '12px' }}
                         >
-                          {`${date.toUpperCase()}\n${moment(day).format(
+                          {`${
+                            day === 'Sat' || day === 'Fri' ? 'WEND' : 'WDAY'
+                          }\n${day.toUpperCase()}\n${moment(_date).format(
                             'MM/DD'
                           )}`}
                           <hr />
-                          {index}
+                          {daysOut}
                         </StyledTableCell>
                       );
                     })()

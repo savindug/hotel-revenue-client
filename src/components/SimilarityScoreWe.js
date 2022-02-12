@@ -398,8 +398,9 @@ export default function SimilarityScoreWe({ selectedDate }) {
                     </StyledTableCell>
                     {cluster1.map((e, i) =>
                       (() => {
-                        let date = moment(e.date).format('YYYY-MM-DD');
-                        let day = moment(date).format('dddd').substring(0, 3);
+                        let _date = moment(e.date);
+                        let daysOut = _date.diff(selectedDate, 'days');
+                        let day = _date.format('dddd').substring(0, 3);
                         // console.log('selectedDate+: ' + date + ', day: ' + day);
                         if (day === 'Sat' || day === 'Fri') {
                           return (
@@ -413,11 +414,13 @@ export default function SimilarityScoreWe({ selectedDate }) {
                               }
                               style={{ fontSize: '12px' }}
                             >
-                              {`${day.toUpperCase()}\n${moment(date).format(
+                              {`${
+                                day === 'Sat' || day === 'Fri' ? 'WEND' : 'WDAY'
+                              }\n${day.toUpperCase()}\n${moment(_date).format(
                                 'MM/DD'
                               )}`}{' '}
                               <hr />
-                              {i}
+                              {daysOut}
                             </StyledTableCell>
                           );
                         }

@@ -358,24 +358,29 @@ export default function ClusterDataTable({ cluster, stars, selectedDate }) {
               size="medium"
               aria-label="customized table"
               bodyStyle={{ overflow: 'visible' }}
+              stickyHeader
             >
               <TableHead>
                 <StyledTableCell
                   style={{
                     backgroundColor: CLUSTER_BACKGROUND[stars - 2],
+                    width: '250px',
+                    zIndex: 100,
+                    fontFamily: FONT_FAMILY,
                   }}
-                  className={classes.sticky}
                 >
                   <TableSortLabel disabled>
                     {' '}
                     {`${stars} Star Bucket Matrix`}
                   </TableSortLabel>{' '}
                   <hr />
-                  <TableSortLabel disabled> Days Out</TableSortLabel>
+                  <TableSortLabel disabled>Days Out</TableSortLabel>
                 </StyledTableCell>
                 {cluster.map((e, index) =>
                   (() => {
-                    let date = moment(e.date).format('dddd').substring(0, 3);
+                    let _date = moment(e.date);
+                    let daysOut = _date.diff(selectedDate, 'days');
+                    let date = _date.format('dddd').substring(0, 3);
                     return (
                       <StyledTableCell
                         size="small"
@@ -387,11 +392,13 @@ export default function ClusterDataTable({ cluster, stars, selectedDate }) {
                         }
                         style={{ fontSize: '12px' }}
                       >
-                        {`${date.toUpperCase()}\n${moment(e.date).format(
+                        {`${
+                          date === 'Sat' || date === 'Fri' ? 'WEND' : 'WDAY'
+                        }\n${date.toUpperCase()}\n${moment(e.date).format(
                           'MM/DD'
                         )}`}{' '}
                         <hr />
-                        {index}
+                        {daysOut}
                       </StyledTableCell>
                     );
                   })()

@@ -145,30 +145,6 @@ export const ClusteredData = () => {
   }, [dispatch, clusterData]);
 
   useEffect(() => {
-    async function getClusters(market_id, property_id, report_date) {
-      await dispatch(
-        fetchClusterData(
-          market_id,
-          moment().format('YYYY-MM-DD'),
-          90,
-          property_id,
-          report_date
-        )
-      );
-    }
-
-    async function getHotels(market_id, property_id, report_date) {
-      await dispatch(
-        fetchHotelData(
-          market_id,
-          moment().format('YYYY-MM-DD'),
-          90,
-          property_id,
-          report_date
-        )
-      );
-    }
-
     async function autoFetchproperties(mrkt) {
       // console.log(`selectedMarket: ${mrkt}`);
       await dispatch(fetchHotelsList(mrkt));
@@ -177,17 +153,6 @@ export const ClusteredData = () => {
     if (reports.length > 0) {
       setSelectedMarket(reports[0].destination);
       setSelectedProperty(reports[0].property);
-
-      getClusters(
-        reports[0].destination,
-        reports[0].property,
-        reports[0].report_date
-      );
-      getHotels(
-        reports[0].destination,
-        reports[0].property,
-        reports[0].report_date
-      );
 
       autoFetchproperties(reports[0].destination);
     }

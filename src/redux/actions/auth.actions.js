@@ -3,6 +3,7 @@ import { apiURI, INTERNAL_SERVER_ERR } from '../../env';
 import axios from 'axios';
 import { AUTHORIZATION_KEY, REFRESH_KEY } from '../../utils/const';
 import { getReqHeaders } from '../../services/auth.service';
+import moment from 'moment';
 
 const storeAuthTokens = async (key, token) => {
   await localStorage.setItem(key, token);
@@ -208,9 +209,18 @@ export const getUserReports = (user) => async (dispatch) => {
     )
     .then((result) => {
       const res = result.data;
+
+      const today = moment(new Date());
+      const user_reports = res.data.sort(function (a, b) {
+        var distancea = Math.abs(moment(a.report_date).diff(today, 'days'));
+        var distanceb = Math.abs(moment(b.report_date).diff(today, 'days'));
+
+        return distancea - distanceb;
+      });
+
       dispatch({
         type: ACTION_TYPES.GET_USER_REPORTS,
-        payload: res.data,
+        payload: user_reports,
       });
     })
     .catch((err) => {

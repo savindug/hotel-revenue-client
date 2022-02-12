@@ -74,24 +74,29 @@ export default function ClusterBucket({ selectedDate }) {
                 size="medium"
                 aria-label="customized table"
                 bodyStyle={{ overflow: 'visible' }}
+                stickyHeader
               >
                 <TableHead>
                   <StyledTableCell
                     style={{
                       backgroundColor: CLUSTER_BACKGROUND[stars - 2],
+                      width: '250px',
+                      zIndex: 100,
+                      fontFamily: FONT_FAMILY,
                     }}
-                    className={classes.sticky}
                   >
                     <TableSortLabel disabled>
                       {' '}
                       {`${stars} Star Bucket Matrix`}
                     </TableSortLabel>{' '}
                     <hr />
-                    <TableSortLabel disabled> Days Out</TableSortLabel>
+                    <TableSortLabel disabled>Days Out</TableSortLabel>
                   </StyledTableCell>
                   {cluster.map((e, index) =>
                     (() => {
-                      let date = moment(e.date).format('dddd').substring(0, 3);
+                      let _date = moment(e.date);
+                      let daysOut = _date.diff(selectedDate, 'days');
+                      let date = _date.format('dddd').substring(0, 3);
                       return (
                         <StyledTableCell
                           size="small"
@@ -103,11 +108,13 @@ export default function ClusterBucket({ selectedDate }) {
                           }
                           style={{ fontSize: '12px' }}
                         >
+                          {date === 'Sat' || date === 'Fri' ? 'WEND' : 'WDAY'}
+                          <hr />
                           {`${date.toUpperCase()}\n${moment(e.date).format(
                             'MM/DD'
                           )}`}{' '}
                           <hr />
-                          {index}
+                          {daysOut}
                         </StyledTableCell>
                       );
                     })()
@@ -473,22 +480,26 @@ export default function ClusterBucket({ selectedDate }) {
                 size="medium"
                 aria-label="customized table"
                 bodyStyle={{ overflow: 'visible' }}
+                stickyHeader
               >
                 <TableHead>
                   <StyledTableCell
-                    style={{ fontWeight: 'bold', width: '250px' }}
-                    className={classes.sticky}
+                    style={{
+                      width: '250px',
+                      zIndex: 100,
+                      fontFamily: FONT_FAMILY,
+                    }}
                   >
-                    Your Property
+                    <TableSortLabel disabled>Your Property</TableSortLabel>{' '}
                     <hr />
-                    Days Out
+                    <TableSortLabel disabled>Days Out</TableSortLabel>
                   </StyledTableCell>
                   <StyledTableCell size="small">Stars</StyledTableCell>
                   {reqHotel.map((e, index) =>
                     (() => {
-                      let date = moment(e.checkIn)
-                        .format('dddd')
-                        .substring(0, 3);
+                      let _date = moment(e.checkIn);
+                      let daysOut = _date.diff(selectedDate, 'days');
+                      let date = _date.format('dddd').substring(0, 3);
                       return (
                         <StyledTableCell
                           size="small"
@@ -500,11 +511,13 @@ export default function ClusterBucket({ selectedDate }) {
                           }
                           style={{ fontSize: '12px' }}
                         >
-                          {`${date.toUpperCase()}\n${moment(e.checkIn).format(
+                          {`${
+                            date === 'Sat' || date === 'Fri' ? 'WEND' : 'WDAY'
+                          }\n${date.toUpperCase()}\n${moment(e.checkIn).format(
                             'MM/DD'
                           )}`}
                           <hr />
-                          {index}
+                          {daysOut}
                         </StyledTableCell>
                       );
                     })()
@@ -627,7 +640,11 @@ export default function ClusterBucket({ selectedDate }) {
                       component="th"
                       scope="row"
                       className={classes.sticky}
-                      style={{ fontWeight: 'bold', width: '250px' }}
+                      style={{
+                        fontWeight: 'bold',
+                        width: '250px',
+                        zIndex: 100,
+                      }}
                     >
                       Rate Bucket Rank (Highest to Lowest)
                     </StyledTableCell>
