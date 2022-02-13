@@ -35,6 +35,7 @@ import { CompareArrowsOutlined } from '@material-ui/icons';
 import SimilarityScore from './SimilarityScore';
 import SimilarityScoreWe from './SimilarityScoreWe';
 import UnClusteredMatrix from './UnClusteredMatrix';
+import { Similarity } from './Similarity';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -322,19 +323,9 @@ export const ClusteredData = () => {
             disabled={loading}
             onClick={() => setTab(5)}
           >
-            Similarity - Weekdays
+            Similarity Analysis
           </Nav.Link>
         </Nav.Item>{' '}
-        <Nav.Item>
-          <Nav.Link
-            className={tab === 6 ? tabularNavCls : 'text-dark font-weight-bold'}
-            eventKey="link-1"
-            disabled={loading}
-            onClick={() => setTab(6)}
-          >
-            Similarity - Weekends
-          </Nav.Link>
-        </Nav.Item>
       </Nav>
     );
   };
@@ -594,9 +585,7 @@ export const ClusteredData = () => {
       ) : hotels.length > 0 && tab === 4 ? (
         <SimpleMap />
       ) : hotels.length > 0 && tab === 5 ? (
-        <SimilarityScore selectedDate={selectedDate} />
-      ) : hotels.length > 0 && tab === 6 ? (
-        <SimilarityScoreWe selectedDate={selectedDate} />
+        <Similarity selectedDate={selectedDate} />
       ) : (
         <></>
       )}
