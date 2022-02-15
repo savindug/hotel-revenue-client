@@ -138,23 +138,27 @@ export default function ClusterBucket({ selectedDate }) {
                         key={index}
                         className={classes.rates}
                       >
-                        {cluster[index].mean !== 'NaN' &&
-                        cluster[index].items > 0 ? (
-                          <span
-                            className={
-                              Math.round(cluster[index].mean) -
-                                reqHotel[index].rate >=
-                              0
-                                ? 'text-success'
-                                : 'text-danger'
-                            }
-                          >
-                            {Math.round(cluster[index].mean) -
-                              reqHotel[index].rate}
-                          </span>
-                        ) : cluster[index].mean !== 'NaN' &&
-                          cluster[index].items < 0 ? (
-                          'NED'
+                        {cluster[index] ? (
+                          cluster[index].mean !== 'NaN' &&
+                          cluster[index].items > 0 ? (
+                            <span
+                              className={
+                                Math.round(cluster[index].mean) -
+                                  reqHotel[index].rate >=
+                                0
+                                  ? 'text-success'
+                                  : 'text-danger'
+                              }
+                            >
+                              {Math.round(cluster[index].mean) -
+                                reqHotel[index].rate}
+                            </span>
+                          ) : cluster[index].mean !== 'NaN' &&
+                            cluster[index].items < 0 ? (
+                            'NED'
+                          ) : (
+                            'N/A'
+                          )
                         ) : (
                           'N/A'
                         )}
@@ -179,23 +183,27 @@ export default function ClusterBucket({ selectedDate }) {
                         key={index}
                         className={classes.rates}
                       >
-                        {cluster[index].mod !== 'NaN' &&
-                        cluster[index].items > 0 ? (
-                          <span
-                            className={
-                              Math.round(cluster[index].mod) -
-                                reqHotel[index].rate >=
-                              0
-                                ? 'text-success'
-                                : 'text-danger'
-                            }
-                          >
-                            {Math.round(cluster[index].mod) -
-                              reqHotel[index].rate}
-                          </span>
-                        ) : cluster[index].mod !== 'NaN' &&
-                          cluster[index].items < 0 ? (
-                          'NED'
+                        {cluster[index] ? (
+                          cluster[index].mod !== 'NaN' &&
+                          cluster[index].items > 0 ? (
+                            <span
+                              className={
+                                Math.round(cluster[index].mod) -
+                                  reqHotel[index].rate >=
+                                0
+                                  ? 'text-success'
+                                  : 'text-danger'
+                              }
+                            >
+                              {Math.round(cluster[index].mod) -
+                                reqHotel[index].rate}
+                            </span>
+                          ) : cluster[index].mod !== 'NaN' &&
+                            cluster[index].items < 0 ? (
+                            'NED'
+                          ) : (
+                            'N/A'
+                          )
                         ) : (
                           'N/A'
                         )}
@@ -220,23 +228,27 @@ export default function ClusterBucket({ selectedDate }) {
                         key={index}
                         className={classes.rates}
                       >
-                        {cluster[index].median !== 'NaN' &&
-                        cluster[index].items > 0 ? (
-                          <span
-                            className={
-                              Math.round(cluster[index].median) -
-                                reqHotel[index].rate >=
-                              0
-                                ? 'text-success'
-                                : 'text-danger'
-                            }
-                          >
-                            {Math.round(cluster[index].median) -
-                              reqHotel[index].rate}
-                          </span>
-                        ) : cluster[index].median !== 'NaN' &&
-                          cluster[index].items < 0 ? (
-                          'NED'
+                        {cluster[index] ? (
+                          cluster[index].median !== 'NaN' &&
+                          cluster[index].items > 0 ? (
+                            <span
+                              className={
+                                Math.round(cluster[index].median) -
+                                  reqHotel[index].rate >=
+                                0
+                                  ? 'text-success'
+                                  : 'text-danger'
+                              }
+                            >
+                              {Math.round(cluster[index].median) -
+                                reqHotel[index].rate}
+                            </span>
+                          ) : cluster[index].median !== 'NaN' &&
+                            cluster[index].items < 0 ? (
+                            'NED'
+                          ) : (
+                            'N/A'
+                          )
                         ) : (
                           'N/A'
                         )}
@@ -260,23 +272,27 @@ export default function ClusterBucket({ selectedDate }) {
                         key={index}
                         className={classes.rates}
                       >
-                        {cluster[index].max !== 'NaN' &&
-                        cluster[index].items > 0 ? (
-                          <span
-                            className={
-                              Math.round(cluster[index].max) -
-                                reqHotel[index].rate >=
-                              0
-                                ? 'text-success'
-                                : 'text-danger'
-                            }
-                          >
-                            {Math.round(cluster[index].max) -
-                              reqHotel[index].rate}
-                          </span>
-                        ) : cluster[index].max !== 'NaN' &&
-                          cluster[index].items < 0 ? (
-                          'NED'
+                        {cluster[index] ? (
+                          cluster[index].max !== 'NaN' &&
+                          cluster[index].items > 0 ? (
+                            <span
+                              className={
+                                Math.round(cluster[index].max) -
+                                  reqHotel[index].rate >=
+                                0
+                                  ? 'text-success'
+                                  : 'text-danger'
+                              }
+                            >
+                              {Math.round(cluster[index].max) -
+                                reqHotel[index].rate}
+                            </span>
+                          ) : cluster[index].max !== 'NaN' &&
+                            cluster[index].items < 0 ? (
+                            'NED'
+                          ) : (
+                            'N/A'
+                          )
                         ) : (
                           'N/A'
                         )}
@@ -307,23 +323,27 @@ export default function ClusterBucket({ selectedDate }) {
                           borderTop: '3px solid grey',
                         }}
                       >
-                        {cluster[index].highAVG !== 'NaN' &&
-                        cluster[index].items > 0 ? (
-                          <span
-                            className={
-                              Math.round(cluster[index].highAVG) -
-                                reqHotel[index].rate >=
-                              0
-                                ? 'text-success'
-                                : 'text-danger'
-                            }
-                          >
-                            {Math.round(cluster[index].highAVG) -
-                              reqHotel[index].rate}
-                          </span>
-                        ) : cluster[index].highAVG !== 'NaN' &&
-                          cluster[index].items < 0 ? (
-                          'NED'
+                        {cluster[index] ? (
+                          cluster[index].highAVG !== 'NaN' &&
+                          cluster[index].items > 0 ? (
+                            <span
+                              className={
+                                Math.round(cluster[index].highAVG) -
+                                  reqHotel[index].rate >=
+                                0
+                                  ? 'text-success'
+                                  : 'text-danger'
+                              }
+                            >
+                              {Math.round(cluster[index].highAVG) -
+                                reqHotel[index].rate}
+                            </span>
+                          ) : cluster[index].highAVG !== 'NaN' &&
+                            cluster[index].items < 0 ? (
+                            'NED'
+                          ) : (
+                            'N/A'
+                          )
                         ) : (
                           'N/A'
                         )}
@@ -347,23 +367,27 @@ export default function ClusterBucket({ selectedDate }) {
                         key={index}
                         className={classes.rates}
                       >
-                        {cluster[index].midAVG !== 'NaN' &&
-                        cluster[index].items > 0 ? (
-                          <span
-                            className={
-                              Math.round(cluster[index].midAVG) -
-                                reqHotel[index].rate >=
-                              0
-                                ? 'text-success'
-                                : 'text-danger'
-                            }
-                          >
-                            {Math.round(cluster[index].midAVG) -
-                              reqHotel[index].rate}
-                          </span>
-                        ) : cluster[index].midAVG !== 'NaN' &&
-                          cluster[index].items < 0 ? (
-                          'NED'
+                        {cluster[index] ? (
+                          cluster[index].midAVG !== 'NaN' &&
+                          cluster[index].items > 0 ? (
+                            <span
+                              className={
+                                Math.round(cluster[index].midAVG) -
+                                  reqHotel[index].rate >=
+                                0
+                                  ? 'text-success'
+                                  : 'text-danger'
+                              }
+                            >
+                              {Math.round(cluster[index].midAVG) -
+                                reqHotel[index].rate}
+                            </span>
+                          ) : cluster[index].midAVG !== 'NaN' &&
+                            cluster[index].items < 0 ? (
+                            'NED'
+                          ) : (
+                            'N/A'
+                          )
                         ) : (
                           'N/A'
                         )}
@@ -394,23 +418,27 @@ export default function ClusterBucket({ selectedDate }) {
                           borderBottom: '3px solid grey',
                         }}
                       >
-                        {cluster[index].lowAVG !== 'NaN' &&
-                        cluster[index].items > 0 ? (
-                          <span
-                            className={
-                              Math.round(cluster[index].lowAVG) -
-                                reqHotel[index].rate >=
-                              0
-                                ? 'text-success'
-                                : 'text-danger'
-                            }
-                          >
-                            {Math.round(cluster[index].lowAVG) -
-                              reqHotel[index].rate}
-                          </span>
-                        ) : cluster[index].lowAVG !== 'NaN' &&
-                          cluster[index].items < 0 ? (
-                          'NED'
+                        {cluster[index] ? (
+                          cluster[index].lowAVG !== 'NaN' &&
+                          cluster[index].items > 0 ? (
+                            <span
+                              className={
+                                Math.round(cluster[index].lowAVG) -
+                                  reqHotel[index].rate >=
+                                0
+                                  ? 'text-success'
+                                  : 'text-danger'
+                              }
+                            >
+                              {Math.round(cluster[index].lowAVG) -
+                                reqHotel[index].rate}
+                            </span>
+                          ) : cluster[index].lowAVG !== 'NaN' &&
+                            cluster[index].items < 0 ? (
+                            'NED'
+                          ) : (
+                            'N/A'
+                          )
                         ) : (
                           'N/A'
                         )}
@@ -434,23 +462,27 @@ export default function ClusterBucket({ selectedDate }) {
                         key={index}
                         className={classes.rates}
                       >
-                        {cluster[index].min !== 'NaN' &&
-                        cluster[index].items > 0 ? (
-                          <span
-                            className={
-                              Math.round(cluster[index].min) -
-                                reqHotel[index].rate >=
-                              0
-                                ? 'text-success'
-                                : 'text-danger'
-                            }
-                          >
-                            {Math.round(cluster[index].min) -
-                              reqHotel[index].rate}
-                          </span>
-                        ) : cluster[index].min !== 'NaN' &&
-                          cluster[index].items < 0 ? (
-                          'NED'
+                        {cluster[index] ? (
+                          cluster[index].min !== 'NaN' &&
+                          cluster[index].items > 0 ? (
+                            <span
+                              className={
+                                Math.round(cluster[index].min) -
+                                  reqHotel[index].rate >=
+                                0
+                                  ? 'text-success'
+                                  : 'text-danger'
+                              }
+                            >
+                              {Math.round(cluster[index].min) -
+                                reqHotel[index].rate}
+                            </span>
+                          ) : cluster[index].min !== 'NaN' &&
+                            cluster[index].items < 0 ? (
+                            'NED'
+                          ) : (
+                            'N/A'
+                          )
                         ) : (
                           'N/A'
                         )}

@@ -673,16 +673,16 @@ export const Graphs = ({ selectedDate }) => {
     let clustered = [];
     let res;
 
-    if (cluster1.length > 0) {
+    if (cluster1.length > 0 && cluster1[ix]) {
       clustered.push(cluster1[ix]);
     }
-    if (cluster2.length > 0) {
+    if (cluster2.length > 0 && cluster2[ix]) {
       clustered.push(cluster2[ix]);
     }
-    if (cluster3.length > 0) {
+    if (cluster3.length > 0 && cluster3[ix]) {
       clustered.push(cluster3[ix]);
     }
-    if (cluster4.length > 0) {
+    if (cluster4.length > 0 && cluster4[ix]) {
       clustered.push(cluster4[ix]);
     }
 
@@ -719,16 +719,16 @@ export const Graphs = ({ selectedDate }) => {
   const checkHotelAvailability = (id, day) => {
     let clustered = [];
 
-    if (cluster1.length > 0) {
+    if (cluster1.length > 0 && cluster1[day]) {
       clustered.push(cluster1[day].unwanted);
     }
-    if (cluster2.length > 0) {
+    if (cluster2.length > 0 && cluster2[day]) {
       clustered.push(cluster2[day].unwanted);
     }
-    if (cluster3.length > 0) {
+    if (cluster3.length > 0 && cluster3[day]) {
       clustered.push(cluster3[day].unwanted);
     }
-    if (cluster4.length > 0) {
+    if (cluster4.length > 0 && cluster4[day]) {
       clustered.push(cluster4[day].unwanted);
     }
 

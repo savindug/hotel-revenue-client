@@ -79,16 +79,16 @@ export default function BucketMovements({ selectedDate }) {
   const checkHotelAvailability = (id, day) => {
     let clustered = [];
 
-    if (cluster1.length > 0) {
+    if (cluster1.length > 0 && cluster1[day]) {
       clustered.push(cluster1[day].unwanted);
     }
-    if (cluster2.length > 0) {
+    if (cluster2.length > 0 && cluster2[day]) {
       clustered.push(cluster2[day].unwanted);
     }
-    if (cluster3.length > 0) {
+    if (cluster3.length > 0 && cluster3[day]) {
       clustered.push(cluster3[day].unwanted);
     }
-    if (cluster4.length > 0) {
+    if (cluster4.length > 0 && cluster4[day]) {
       clustered.push(cluster4[day].unwanted);
     }
 
@@ -178,15 +178,15 @@ export default function BucketMovements({ selectedDate }) {
                     {[...Array(report_len).keys()].map((e, index) =>
                       (() => {
                         let hotel_count = 0;
-                        if (
-                          cluster2.length > 0 &&
-                          cluster1.length > 0 &&
-                          cluster3.length > 0
-                        ) {
+                        if (cluster2.length > 0 && cluster2[index]) {
                           hotel_count =
                             hotel_count + cluster2[index].stars5.length;
+                        }
+                        if (cluster1.length > 0 && cluster1[index]) {
                           hotel_count =
                             hotel_count + cluster1[index].stars5.length;
+                        }
+                        if (cluster3.length > 0 && cluster3[index]) {
                           hotel_count =
                             hotel_count + cluster3[index].stars5.length;
                         }
@@ -221,7 +221,7 @@ export default function BucketMovements({ selectedDate }) {
                     {[...Array(report_len).keys()].map((e, index) =>
                       (() => {
                         let hotel_count = 0;
-                        if (cluster4.length > 0) {
+                        if (cluster4.length > 0 && cluster4[index]) {
                           hotel_count =
                             hotel_count + cluster4[index].stars4.length;
                         }
@@ -257,11 +257,11 @@ export default function BucketMovements({ selectedDate }) {
                     {[...Array(report_len).keys()].map((e, index) =>
                       (() => {
                         let hotel_count = 0;
-                        if (cluster1.length > 0) {
+                        if (cluster1.length > 0 && cluster1[index]) {
                           hotel_count =
                             hotel_count + cluster1[index].stars4.length;
                         }
-                        if (cluster2.length > 0) {
+                        if (cluster2.length > 0 && cluster2[index]) {
                           hotel_count =
                             hotel_count + cluster2[index].stars4.length;
                         }
@@ -297,11 +297,11 @@ export default function BucketMovements({ selectedDate }) {
                     {[...Array(report_len).keys()].map((e, index) =>
                       (() => {
                         let hotel_count = 0;
-                        if (cluster3.length > 0) {
+                        if (cluster3.length > 0 && cluster3[index]) {
                           hotel_count =
                             hotel_count + cluster3[index].stars3.length;
                         }
-                        if (cluster4.length > 0) {
+                        if (cluster4.length > 0 && cluster4[index]) {
                           hotel_count =
                             hotel_count + cluster4[index].stars3.length;
                         }
@@ -337,7 +337,7 @@ export default function BucketMovements({ selectedDate }) {
                     {[...Array(report_len).keys()].map((e, index) =>
                       (() => {
                         let hotel_count = 0;
-                        if (cluster1.length > 0) {
+                        if (cluster1.length > 0 && cluster1[index]) {
                           hotel_count =
                             hotel_count + cluster1[index].stars3.length;
                         }
@@ -372,15 +372,15 @@ export default function BucketMovements({ selectedDate }) {
                     {[...Array(report_len).keys()].map((e, index) =>
                       (() => {
                         let hotel_count = 0;
-                        if (cluster2.length > 0) {
+                        if (cluster2.length > 0 && cluster2[index]) {
                           hotel_count =
                             hotel_count + cluster2[index].stars2.length;
                         }
-                        if (cluster3.length > 0) {
+                        if (cluster3.length > 0 && cluster3[index]) {
                           hotel_count =
                             hotel_count + cluster3[index].stars2.length;
                         }
-                        if (cluster4.length > 0) {
+                        if (cluster4.length > 0 && cluster4[index]) {
                           hotel_count =
                             hotel_count + cluster4[index].stars2.length;
                         }
@@ -469,21 +469,21 @@ export default function BucketMovements({ selectedDate }) {
                       {[...Array(report_len).keys()].map((e, index) =>
                         (() => {
                           let star_hotel_count =
-                            cluster4.length > 0
+                            cluster4.length > 0 && cluster4[index]
                               ? cluster4[index].unwanted.length
                               : 0;
 
                           let hotel_count = 0;
-                          if (cluster1.length > 0) {
+                          if (cluster1.length > 0 && cluster1[index]) {
                             hotel_count += cluster1[index].stars5.length;
                           }
-                          if (cluster2.length > 0) {
+                          if (cluster2.length > 0 && cluster2[index]) {
                             hotel_count += cluster2[index].stars5.length;
                           }
-                          if (cluster3.length > 0) {
+                          if (cluster3.length > 0 && cluster3[index]) {
                             hotel_count += cluster3[index].stars5.length;
                           }
-                          if (cluster4.length > 0) {
+                          if (cluster4.length > 0 && cluster4[index]) {
                             hotel_count += cluster4[index].stars5.length;
                           }
 
@@ -537,17 +537,21 @@ export default function BucketMovements({ selectedDate }) {
                             className={classes.rates + ' text-center'}
                           >
                             <p className="font-weight-bold">
-                              {getFilterHotels(day.stars2).length +
-                                getFilterHotels(day.stars3).length +
-                                getFilterHotels(day.stars4).length +
-                                getFilterHotels(day.stars5).length}
+                              {day
+                                ? getFilterHotels(day.stars2).length +
+                                  getFilterHotels(day.stars3).length +
+                                  getFilterHotels(day.stars4).length +
+                                  getFilterHotels(day.stars5).length
+                                : 0}
                             </p>
                             <Divider />
-                            {
-                              getFilterHotels(day.stars5).length
-                            } <Divider /> {getFilterHotels(day.stars4).length}{' '}
-                            <Divider /> {getFilterHotels(day.stars3).length}{' '}
-                            <Divider /> {getFilterHotels(day.stars2).length}
+                            {day ? getFilterHotels(day.stars5).length : 0}{' '}
+                            <Divider />{' '}
+                            {day ? getFilterHotels(day.stars4).length : 0}{' '}
+                            <Divider />{' '}
+                            {day ? getFilterHotels(day.stars3).length : 0}{' '}
+                            <Divider />{' '}
+                            {day ? getFilterHotels(day.stars2).length : 0}
                           </StyledTableCell>
                         ))
                       ) : (
@@ -630,23 +634,23 @@ export default function BucketMovements({ selectedDate }) {
                         (() => {
                           let star_hotel_count = 0;
 
-                          if (cluster3.length > 0) {
+                          if (cluster3.length > 0 && cluster3[index]) {
                             star_hotel_count += cluster3[index].unwanted.length;
                           }
 
                           let hotel_count = 0;
-                          if (cluster1.length > 0) {
+                          if (cluster1.length > 0 && cluster1[index]) {
                             hotel_count += cluster1[index].stars4.length;
                           }
-                          if (cluster2.length > 0) {
+                          if (cluster2.length > 0 && cluster2[index]) {
                             hotel_count =
                               hotel_count + cluster2[index].stars4.length;
                           }
-                          if (cluster3.length > 0) {
+                          if (cluster3.length > 0 && cluster3[index]) {
                             hotel_count =
                               hotel_count + cluster3[index].stars4.length;
                           }
-                          if (cluster4.length > 0) {
+                          if (cluster4.length > 0 && cluster4[index]) {
                             hotel_count =
                               hotel_count + cluster4[index].stars4.length;
                           }
@@ -700,16 +704,21 @@ export default function BucketMovements({ selectedDate }) {
                           className={classes.rates + ' text-center'}
                         >
                           <p className="font-weight-bold">
-                            {getFilterHotels(day.stars2).length +
-                              getFilterHotels(day.stars3).length +
-                              getFilterHotels(day.stars4).length +
-                              getFilterHotels(day.stars5).length}
+                            {day
+                              ? getFilterHotels(day.stars2).length +
+                                getFilterHotels(day.stars3).length +
+                                getFilterHotels(day.stars4).length +
+                                getFilterHotels(day.stars5).length
+                              : 0}
                           </p>
                           <Divider />
-                          {getFilterHotels(day.stars5).length} <Divider />{' '}
-                          {getFilterHotels(day.stars4).length} <Divider />{' '}
-                          {getFilterHotels(day.stars3).length} <Divider />{' '}
-                          {getFilterHotels(day.stars2).length}
+                          {day ? getFilterHotels(day.stars5).length : 0}{' '}
+                          <Divider />{' '}
+                          {day ? getFilterHotels(day.stars4).length : 0}{' '}
+                          <Divider />{' '}
+                          {day ? getFilterHotels(day.stars3).length : 0}{' '}
+                          <Divider />{' '}
+                          {day ? getFilterHotels(day.stars2).length : 0}
                         </StyledTableCell>
                       ))}
                     </StyledTableRow>
@@ -789,23 +798,23 @@ export default function BucketMovements({ selectedDate }) {
                         (() => {
                           let star_hotel_count = 0;
 
-                          if (cluster2.length > 0) {
+                          if (cluster2.length > 0 && cluster2[index]) {
                             star_hotel_count += cluster2[index].unwanted.length;
                           }
 
                           let hotel_count = 0;
-                          if (cluster1.length > 0) {
+                          if (cluster1.length > 0 && cluster1[index]) {
                             hotel_count += cluster1[index].stars3.length;
                           }
-                          if (cluster2.length > 0) {
+                          if (cluster2.length > 0 && cluster2[index]) {
                             hotel_count =
                               hotel_count + cluster2[index].stars3.length;
                           }
-                          if (cluster3.length > 0) {
+                          if (cluster3.length > 0 && cluster3[index]) {
                             hotel_count =
                               hotel_count + cluster3[index].stars3.length;
                           }
-                          if (cluster4.length > 0) {
+                          if (cluster4.length > 0 && cluster4[index]) {
                             hotel_count =
                               hotel_count + cluster4[index].stars3.length;
                           }
@@ -858,17 +867,25 @@ export default function BucketMovements({ selectedDate }) {
                           }}
                           className={classes.rates + ' text-center'}
                         >
-                          <p className="font-weight-bold">
-                            {getFilterHotels(day.stars2).length +
-                              getFilterHotels(day.stars3).length +
-                              getFilterHotels(day.stars4).length +
-                              getFilterHotels(day.stars5).length}
-                          </p>
+                          {' '}
+                          {day ? (
+                            <p className="font-weight-bold">
+                              {getFilterHotels(day.stars2).length +
+                                getFilterHotels(day.stars3).length +
+                                getFilterHotels(day.stars4).length +
+                                getFilterHotels(day.stars5).length}
+                            </p>
+                          ) : (
+                            0
+                          )}
                           <Divider />
-                          {getFilterHotels(day.stars5).length} <Divider />{' '}
-                          {getFilterHotels(day.stars4).length} <Divider />{' '}
-                          {getFilterHotels(day.stars3).length} <Divider />{' '}
-                          {getFilterHotels(day.stars2).length}
+                          {day ? getFilterHotels(day.stars5).length : 0}{' '}
+                          <Divider />{' '}
+                          {day ? getFilterHotels(day.stars4).length : 0}{' '}
+                          <Divider />{' '}
+                          {day ? getFilterHotels(day.stars3).length : 0}{' '}
+                          <Divider />{' '}
+                          {day ? getFilterHotels(day.stars2).length : 0}
                         </StyledTableCell>
                       ))}
                     </StyledTableRow>
@@ -947,24 +964,24 @@ export default function BucketMovements({ selectedDate }) {
                       {[...Array(report_len).keys()].map((e, index) =>
                         (() => {
                           let star_hotel_count = 0;
+                          let hotel_count = 0;
 
-                          if (cluster1.length > 0) {
+                          if (cluster1.length > 0 && cluster1[index]) {
                             star_hotel_count += cluster1[index].unwanted.length;
                           }
 
-                          let hotel_count = 0;
-                          if (cluster1.length > 0) {
+                          if (cluster1.length > 0 && cluster1[index]) {
                             hotel_count += cluster1[index].stars2.length;
                           }
-                          if (cluster2.length > 0) {
+                          if (cluster2.length > 0 && cluster2[index]) {
                             hotel_count =
                               hotel_count + cluster2[index].stars2.length;
                           }
-                          if (cluster3.length > 0) {
+                          if (cluster3.length > 0 && cluster3[index]) {
                             hotel_count =
                               hotel_count + cluster3[index].stars2.length;
                           }
-                          if (cluster4.length > 0) {
+                          if (cluster4.length > 0 && cluster4[index]) {
                             hotel_count =
                               hotel_count + cluster4[index].stars2.length;
                           }
@@ -1017,17 +1034,24 @@ export default function BucketMovements({ selectedDate }) {
                           }}
                           className={classes.rates + ' text-center'}
                         >
-                          <p className="font-weight-bold">
-                            {getFilterHotels(day.stars2).length +
-                              getFilterHotels(day.stars3).length +
-                              getFilterHotels(day.stars4).length +
-                              getFilterHotels(day.stars5).length}
-                          </p>
+                          {day ? (
+                            <p className="font-weight-bold">
+                              {getFilterHotels(day.stars2).length +
+                                getFilterHotels(day.stars3).length +
+                                getFilterHotels(day.stars4).length +
+                                getFilterHotels(day.stars5).length}
+                            </p>
+                          ) : (
+                            0
+                          )}
                           <Divider />
-                          {getFilterHotels(day.stars5).length}
-                          <Divider /> {getFilterHotels(day.stars4).length}{' '}
-                          <Divider /> {getFilterHotels(day.stars3).length}{' '}
-                          <Divider /> {getFilterHotels(day.stars2).length}
+                          {day ? getFilterHotels(day.stars5).length : 0}
+                          <Divider />{' '}
+                          {day ? getFilterHotels(day.stars4).length : 0}{' '}
+                          <Divider />{' '}
+                          {day ? getFilterHotels(day.stars3).length : 0}{' '}
+                          <Divider />{' '}
+                          {day ? getFilterHotels(day.stars2).length : 0}
                         </StyledTableCell>
                       ))}
                     </StyledTableRow>
@@ -1112,72 +1136,72 @@ export default function BucketMovements({ selectedDate }) {
 
                         hotel_count = 0;
 
-                        if (cluster1.length > 0) {
+                        if (cluster1.length > 0 && cluster1[index]) {
                           hotel_count += cluster1[index].unwanted.length;
                         }
-                        if (cluster2.length > 0) {
+                        if (cluster2.length > 0 && cluster2[index]) {
                           hotel_count += cluster2[index].unwanted.length;
                         }
-                        if (cluster3.length > 0) {
+                        if (cluster3.length > 0 && cluster3[index]) {
                           hotel_count += cluster3[index].unwanted.length;
                         }
-                        if (cluster4.length > 0) {
+                        if (cluster4.length > 0 && cluster4[index]) {
                           hotel_count += cluster4[index].unwanted.length;
                         }
 
                         let hotel_count_2 = 0;
-                        if (cluster1.length > 0) {
+                        if (cluster1.length > 0 && cluster1[index]) {
                           hotel_count_2 += cluster1[index].stars2.length;
                         }
-                        if (cluster2.length > 0) {
+                        if (cluster2.length > 0 && cluster2[index]) {
                           hotel_count_2 += cluster2[index].stars2.length;
                         }
-                        if (cluster3.length > 0) {
+                        if (cluster3.length > 0 && cluster3[index]) {
                           hotel_count_2 += cluster3[index].stars2.length;
                         }
-                        if (cluster4.length > 0) {
+                        if (cluster4.length > 0 && cluster4[index]) {
                           hotel_count_2 += cluster4[index].stars2.length;
                         }
 
                         let hotel_count_3 = 0;
-                        if (cluster1.length > 0) {
+                        if (cluster1.length > 0 && cluster1[index]) {
                           hotel_count_3 += cluster1[index].stars3.length;
                         }
-                        if (cluster2.length > 0) {
+                        if (cluster2.length > 0 && cluster2[index]) {
                           hotel_count_3 += cluster2[index].stars3.length;
                         }
-                        if (cluster3.length > 0) {
+                        if (cluster3.length > 0 && cluster3[index]) {
                           hotel_count_3 += cluster3[index].stars3.length;
                         }
-                        if (cluster4.length > 0) {
+                        if (cluster4.length > 0 && cluster4[index]) {
                           hotel_count_3 += cluster4[index].stars3.length;
                         }
 
                         let hotel_count_4 = 0;
-                        if (cluster1.length > 0) {
+                        if (cluster1.length > 0 && cluster1[index]) {
                           hotel_count_4 += cluster1[index].stars4.length;
                         }
-                        if (cluster2.length > 0) {
+                        if (cluster2.length > 0 && cluster2[index]) {
                           hotel_count_4 += cluster2[index].stars4.length;
                         }
-                        if (cluster3.length > 0) {
+                        if (cluster3.length > 0 && cluster3[index]) {
                           hotel_count_4 += cluster3[index].stars4.length;
                         }
-                        if (cluster4.length > 0) {
+                        if (cluster4.length > 0 && cluster4[index]) {
                           hotel_count_4 += cluster4[index].stars4.length;
                         }
 
                         let hotel_count_5 = 0;
-                        if (cluster1.length > 0) {
+                        if (cluster1.length > 0 && cluster1[index]) {
                           hotel_count_5 += cluster1[index].stars5.length;
                         }
-                        if (cluster2.length > 0) {
+                        if (cluster2.length > 0 && cluster2[index]) {
                           hotel_count_5 += cluster2[index].stars5.length;
                         }
-                        if (cluster3.length > 0) {
+                        if (cluster3.length > 0 && cluster3[index]) {
                           hotel_count_5 += cluster3[index].stars5.length;
                         }
-                        if (cluster4.length > 0) {
+                        if (cluster4.length > 0 && cluster4[index]) {
                           hotel_count_5 += cluster4[index].stars5.length;
                         }
 
