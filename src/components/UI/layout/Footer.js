@@ -1,10 +1,8 @@
-import { AppBar, Container, Toolbar, Typography } from '@mui/material';
-
 export default function Footer() {
   return (
     <div
       className="fixed-bottom"
-      style={{ backgroundColor: '#516B8F', zIndex: 1 }}
+      style={{ backgroundColor: '#516B8F', zIndex: 100 }}
     >
       <footer className="text-center text-white">
         <div

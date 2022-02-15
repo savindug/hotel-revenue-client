@@ -13,6 +13,13 @@ const initialState = {
   reqHotel: [],
   hotelList: [],
   markets: [],
+  ratingCluster: {
+    clusterData: [],
+    cluster1: [],
+    cluster2: [],
+    cluster3: [],
+    cluster4: [],
+  },
   refreshDates: {
     destinationId: null,
     dates: [],
@@ -163,6 +170,11 @@ const clusterDataReducer = (state = initialState, action) => {
       return {
         ...state,
         report_len: action.payload,
+      };
+    case ACTION_TYPES.SET_RATING_CLUSTER:
+      return {
+        ...state,
+        ratingCluster: action.payload,
       };
     default:
       return state;

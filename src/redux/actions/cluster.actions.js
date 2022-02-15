@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Exception } from 'sass';
 import { apiURI, DATA_ERR } from '../../env';
 import { getReqHeaders } from '../../services/auth.service';
 import { refresh } from './auth.actions';
@@ -12,6 +13,11 @@ export const fetchClusterData =
     let cl3 = [];
     let cl4 = [];
 
+    let rating_cl1 = [];
+    let rating_cl2 = [];
+    let rating_cl3 = [];
+    let rating_cl4 = [];
+
     await axios(
       `${apiURI}app/cluster/report/${property}/${destID}/${date}/${refreshDate}?range=${range}`,
       {
@@ -21,6 +27,40 @@ export const fetchClusterData =
       .then((res) => {
         let clusterData = res.data.data.cluster_report;
         let reqHotelData = res.data.data.property_report;
+        let rating_cluster_report = res.data.data.rating_cluster_report;
+
+        try {
+          rating_cluster_report[0].clusters.map((day, index) => {
+            day.map((cl, el) => {
+              if (el === 0) {
+                rating_cl1.push(cl);
+              }
+              if (el === 1) {
+                rating_cl2.push(cl);
+              }
+              if (el === 2) {
+                rating_cl3.push(cl);
+              }
+              if (el === 3) {
+                rating_cl4.push(cl);
+              }
+            });
+          });
+
+          dispatch({
+            type: ACTION_TYPES.SET_RATING_CLUSTER,
+            payload: {
+              min_rating: rating_cluster_report[0].min_rating,
+              max_rating: rating_cluster_report[0].max_rating,
+              clusterData: rating_cluster_report[0].clusters,
+              cluster1: rating_cl1,
+              cluster2: rating_cl2,
+              cluster3: rating_cl3,
+              cluster4: rating_cl4,
+            },
+          });
+        } catch (e) {}
+
         dispatch({
           type: ACTION_TYPES.SET_QUARY,
           payload: res.data.quary,

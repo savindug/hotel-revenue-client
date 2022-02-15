@@ -36,6 +36,7 @@ import SimilarityScore from './SimilarityScore';
 import SimilarityScoreWe from './SimilarityScoreWe';
 import UnClusteredMatrix from './UnClusteredMatrix';
 import { Similarity } from './Similarity';
+import { Ratebuckets } from './Ratebuckets';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -542,36 +543,7 @@ export const ClusteredData = () => {
       ) : err !== null ? (
         <Alert severity="error">{err}</Alert>
       ) : clusterData.length > 0 && tab === 0 ? (
-        <>
-          <div id="stars5" className="my-5">
-            <ClusterDataTable
-              cluster={cluster4}
-              stars={5}
-              selectedDate={selectedDate}
-            />
-          </div>
-          <div id="stars4" className="my-5">
-            <ClusterDataTable
-              cluster={cluster3}
-              stars={4}
-              selectedDate={selectedDate}
-            />
-          </div>
-          <div id="stars3" className="my-5">
-            <ClusterDataTable
-              cluster={cluster2}
-              stars={3}
-              selectedDate={selectedDate}
-            />
-          </div>
-          <div id="stars2" className="my-5">
-            <ClusterDataTable
-              cluster={cluster1}
-              stars={2}
-              selectedDate={selectedDate}
-            />
-          </div>
-        </>
+        <Ratebuckets selectedDate={selectedDate} />
       ) : clusterData.length > 0 && tab === 7 ? (
         <>
           <ClusterBucket selectedDate={selectedDate} className="my-5" />
