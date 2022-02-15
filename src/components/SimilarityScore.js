@@ -225,12 +225,14 @@ export default function SimilarityScore({ selectedDate }) {
 
     // console.log(clustered);
 
-    clustered.map((cl, id) => {
-      if (rate >= cl.min && rate <= cl.max) {
-        res = id;
-        return;
-      }
-    });
+    try {
+      clustered.map((cl, id) => {
+        if (rate >= cl.min && rate <= cl.max) {
+          res = id;
+          return;
+        }
+      });
+    } catch (e) {}
 
     return res;
   };
