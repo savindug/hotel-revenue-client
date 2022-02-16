@@ -86,7 +86,7 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(3),
+    padding: theme.spacing(2),
   },
 }));
 
@@ -136,21 +136,6 @@ export default function MiniDrawer(props) {
           <Navbar.Collapse className="justify-content-end">
             {isLoggedIn ? (
               <>
-                {/* <Navbar.Text className="text-light mx-1">
-                  Signed in as:&nbsp;{' '}
-                  <Link className="text-light" to="/profile">
-                    {user.name}
-                  </Link>
-                </Navbar.Text> */}
-                {/* <Button
-                  variant="outline-light"
-                  onClick={() => {
-                    handleLogOut();
-                  }}
-                >
-                  Logout
-                </Button> */}
-
                 <img
                   class="rounded-circle img-fluid img-circle d-block"
                   src={createImageFromInitials(40, user.name, '#1A237E')}

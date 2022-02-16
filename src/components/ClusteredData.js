@@ -335,7 +335,7 @@ export const ClusteredData = () => {
     <div style={{ backgroundColor: 'white', fontFamily: FONT_FAMILY }}>
       <Grid>
         <MuiPickersUtilsProvider utils={MomentUtils}>
-          <Grid container justify="space-around" className="mb-3">
+          <Grid container justify="space-around" className="mb-1">
             <FormControl className={classes.formControl}>
               <InputLabel htmlFor="grouped-native-select">
                 Destination
@@ -494,8 +494,7 @@ export const ClusteredData = () => {
             </Button>
           </FormControl> */}
           </Grid>
-          <Grid container justify="space-around" className="mb-3">
-            {/* <img src={img_star_bucktet} /> */}
+          <Grid container justify="space-around" className="mb-1">
             <div>
               <Badge
                 className="p-2 cursor-pointer"

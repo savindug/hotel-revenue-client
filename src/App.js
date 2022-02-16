@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-end',
-    padding: theme.spacing(0, 1),
+    padding: theme.spacing(0, 0.5),
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
   },
@@ -45,7 +45,7 @@ function App() {
       <div className={classes.root + ' mb-5'}>
         <MiniDrawer />
         <main className={classes.content}>
-          <div className={classes.toolbar} />
+          <div className="my-5" />
           <Switch>
             <PrivateRoute exact path="/" component={ClusteredData} />
             <PrivateRoute path="/dashboard" component={Profile} />

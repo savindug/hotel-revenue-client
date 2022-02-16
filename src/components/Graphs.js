@@ -35,11 +35,26 @@ export const Graphs = ({ selectedDate }) => {
     report_len,
   } = getClusterDataSet;
 
-  const [dateRange, setDateRange] = useState([
-    [0, 30],
-    [30, 60],
-    [60, 90],
-  ]);
+  const getDateRange = () => {
+    let dateRange_arr = [];
+    let totalDays = 0;
+
+    if (report_len > 0) {
+      const no_chuncks = Math.ceil(report_len / 30);
+
+      for (let i = 1; i <= no_chuncks; i++) {
+        totalDays += 30;
+        if (totalDays <= report_len) {
+          dateRange_arr.push([(i - 1) * 30, i * 30]);
+        } else if (totalDays > report_len) {
+          dateRange_arr.push([(i - 1) * 30, i * 30 - (totalDays - report_len)]);
+        }
+      }
+    }
+    return dateRange_arr;
+  };
+
+  const [dateRange, setDateRange] = useState(getDateRange());
 
   const [datePage, setDatePage] = useState(0);
 
@@ -951,9 +966,13 @@ export const Graphs = ({ selectedDate }) => {
                 id="grouped-native-select"
                 value={datePage}
               >
-                <option value="0">{`${dateRange[0][0]} - ${dateRange[0][1]}`}</option>
-                <option value="1">{`${dateRange[1][0]} - ${dateRange[1][1]}`}</option>
-                <option value="2">{`${dateRange[2][0]} - ${dateRange[2][1]}`}</option>
+                {dateRange.length > 0 ? (
+                  dateRange.map((e, i) => (
+                    <option value={i}>{`${e[0]} - ${e[1]} Days`}</option>
+                  ))
+                ) : (
+                  <></>
+                )}
               </Select>
             </FormControl>
           </Grid>
@@ -996,9 +1015,13 @@ export const Graphs = ({ selectedDate }) => {
                 id="grouped-native-select"
                 value={datePage}
               >
-                <option value="0">{`${dateRange[0][0]} - ${dateRange[0][1]}`}</option>
-                <option value="1">{`${dateRange[1][0]} - ${dateRange[1][1]}`}</option>
-                <option value="2">{`${dateRange[2][0]} - ${dateRange[2][1]}`}</option>
+                {dateRange.length > 0 ? (
+                  dateRange.map((e, i) => (
+                    <option value={i}>{`${e[0]} - ${e[1]} Days`}</option>
+                  ))
+                ) : (
+                  <></>
+                )}
               </Select>
             </FormControl>
           </Grid>

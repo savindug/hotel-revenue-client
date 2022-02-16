@@ -42,32 +42,36 @@ export const Ratebuckets = ({ selectedDate }) => {
       'text-light border-bottom-0 border-secondary  ' + classes.tabularNavStyle
     );
     return (
-      <Nav variant="tabs" justify="space-around">
-        <Nav.Item>
-          <Nav.Link
-            className={tab === 1 ? tabularNavCls : 'text-dark font-weight-bold'}
-            eventKey="link-1"
-            onClick={() => setTab(1)}
-          >
-            All Hotels
-          </Nav.Link>
-        </Nav.Item>{' '}
-        {ratingCluster.clusterData.length > 0 ? (
+      <div>
+        <Nav variant="tabs" justify="space-around">
           <Nav.Item>
             <Nav.Link
               className={
-                tab === 2 ? tabularNavCls : 'text-dark font-weight-bold'
+                tab === 1 ? tabularNavCls : 'text-dark font-weight-bold'
               }
               eventKey="link-1"
-              onClick={() => setTab(2)}
+              onClick={() => setTab(1)}
             >
-              Best Rating Hotels
+              All Hotels
             </Nav.Link>
-          </Nav.Item>
-        ) : (
-          <></>
-        )}
-      </Nav>
+          </Nav.Item>{' '}
+          {ratingCluster.clusterData.length > 0 ? (
+            <Nav.Item>
+              <Nav.Link
+                className={
+                  tab === 2 ? tabularNavCls : 'text-dark font-weight-bold'
+                }
+                eventKey="link-1"
+                onClick={() => setTab(2)}
+              >
+                Best Rated Hotels
+              </Nav.Link>
+            </Nav.Item>
+          ) : (
+            <></>
+          )}
+        </Nav>
+      </div>
     );
   };
 
