@@ -29,6 +29,17 @@ export const fetchClusterData =
         let reqHotelData = res.data.data.property_report;
         let rating_cluster_report = res.data.data.rating_cluster_report;
 
+        dispatch({
+          type: ACTION_TYPES.SET_RATING_CLUSTER,
+          payload: {
+            clusterData: [],
+            cluster1: [],
+            cluster2: [],
+            cluster3: [],
+            cluster4: [],
+          },
+        });
+
         try {
           rating_cluster_report[0].clusters.map((day, index) => {
             day.map((cl, el) => {
