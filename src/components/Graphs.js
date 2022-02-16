@@ -47,10 +47,14 @@ export const Graphs = ({ selectedDate }) => {
         if (totalDays <= report_len) {
           dateRange_arr.push([(i - 1) * 30, i * 30]);
         } else if (totalDays > report_len) {
-          dateRange_arr.push([(i - 1) * 30, i * 30 - (totalDays - report_len)]);
+          dateRange_arr.push([
+            (i - 1) * 30,
+            i * 30 - (totalDays - (report_len - 1)),
+          ]);
         }
       }
     }
+    console.log(dateRange_arr);
     return dateRange_arr;
   };
 
@@ -968,7 +972,15 @@ export const Graphs = ({ selectedDate }) => {
               >
                 {dateRange.length > 0 ? (
                   dateRange.map((e, i) => (
-                    <option value={i}>{`${e[0]} - ${e[1]} Days`}</option>
+                    <option value={i}>
+                      {clusterData[e[0]]
+                        ? moment(clusterData[e[0]][0].date).format('MM/DD')
+                        : ''}{' '}
+                      -{' '}
+                      {clusterData[e[1]]
+                        ? moment(clusterData[e[1]][0].date).format('MM/DD')
+                        : ''}
+                    </option>
                   ))
                 ) : (
                   <></>
@@ -1017,7 +1029,15 @@ export const Graphs = ({ selectedDate }) => {
               >
                 {dateRange.length > 0 ? (
                   dateRange.map((e, i) => (
-                    <option value={i}>{`${e[0]} - ${e[1]} Days`}</option>
+                    <option value={i}>
+                      {clusterData[e[0]]
+                        ? moment(clusterData[e[0]][0].date).format('MM/DD')
+                        : ''}{' '}
+                      -{' '}
+                      {clusterData[e[1]]
+                        ? moment(clusterData[e[1]][0].date).format('MM/DD')
+                        : ''}
+                    </option>
                   ))
                 ) : (
                   <></>
