@@ -48,20 +48,11 @@ const useStyles = makeStyles({
   },
 });
 
-export default function ClusterBucket({ selectedDate }) {
+export default function ClusterBucket({ selectedDate, reqHotel }) {
   const classes = useStyles();
 
   const getClusterDataSet = useSelector((state) => state.clusterDataSet);
-  const {
-    loading,
-    reqHotel,
-    cluster1,
-    cluster2,
-    cluster3,
-    cluster4,
-    clusterData,
-    report_len,
-  } = getClusterDataSet;
+  const { loading, clusterData, report_len } = getClusterDataSet;
 
   const RatePositionTable = ({ stars, cluster }) => {
     return (
@@ -503,7 +494,7 @@ export default function ClusterBucket({ selectedDate }) {
 
   return (
     <>
-      {!loading && clusterData.length > 0 ? (
+      {!loading && clusterData.length > 0 && reqHotel.length > 0 ? (
         <>
           <TableContainer component={Paper} className="my-5">
             <Box width={100}>
@@ -709,10 +700,10 @@ export default function ClusterBucket({ selectedDate }) {
               <br />
             </Box>
           </TableContainer>
-          <RatePositionTable cluster={cluster4} stars={5} className="my-5" />
+          {/* <RatePositionTable cluster={cluster4} stars={5} className="my-5" />
           <RatePositionTable cluster={cluster3} stars={4} className="my-5" />
           <RatePositionTable cluster={cluster2} stars={3} className="my-5" />
-          <RatePositionTable cluster={cluster1} stars={2} className="my-5" />
+          <RatePositionTable cluster={cluster1} stars={2} className="my-5" /> */}
         </>
       ) : (
         <>loading</>

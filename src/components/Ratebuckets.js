@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Nav } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { FONT_FAMILY } from '../utils/const';
+import ClusterBucket from './ClusterBucket';
 import ClusterDataTable from './ClusterDataTable';
 
 const useStyles = makeStyles((theme) => ({
@@ -28,6 +29,7 @@ export const Ratebuckets = ({ selectedDate }) => {
     cluster3,
     cluster4,
     hotels,
+    reqHotel,
     hotelList,
     markets,
     refreshDates,
@@ -80,6 +82,13 @@ export const Ratebuckets = ({ selectedDate }) => {
       <TabularNav />
       {hotels.length > 0 && tab === 1 && clusterData.length > 0 ? (
         <>
+          <>
+            <ClusterBucket
+              selectedDate={selectedDate}
+              reqHotel={reqHotel}
+              className="my-5"
+            />
+          </>
           <div id="stars5" className="my-5">
             <ClusterDataTable
               cluster={cluster4}
@@ -113,6 +122,13 @@ export const Ratebuckets = ({ selectedDate }) => {
         tab === 2 &&
         ratingCluster.clusterData.length > 0 ? (
         <>
+          <>
+            <ClusterBucket
+              selectedDate={selectedDate}
+              reqHotel={ratingCluster.reqHotel}
+              className="my-5"
+            />
+          </>
           <div id="stars5" className="my-5">
             <ClusterDataTable
               cluster={ratingCluster.cluster4}

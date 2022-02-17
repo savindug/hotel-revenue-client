@@ -277,7 +277,7 @@ export const ClusteredData = () => {
             Rate Buckets
           </Nav.Link>
         </Nav.Item>{' '}
-        <Nav.Item>
+        {/* <Nav.Item>
           <Nav.Link
             className={tab === 7 ? tabularNavCls : 'text-dark font-weight-bold'}
             eventKey="link-1"
@@ -286,7 +286,7 @@ export const ClusteredData = () => {
           >
             Rate Position
           </Nav.Link>
-        </Nav.Item>{' '}
+        </Nav.Item>{' '} */}
         <Nav.Item>
           <Nav.Link
             className={tab === 1 ? tabularNavCls : 'text-dark font-weight-bold'}
@@ -543,10 +543,6 @@ export const ClusteredData = () => {
         <Alert severity="error">{err}</Alert>
       ) : clusterData.length > 0 && tab === 0 ? (
         <Ratebuckets selectedDate={selectedDate} />
-      ) : clusterData.length > 0 && tab === 7 ? (
-        <>
-          <ClusterBucket selectedDate={selectedDate} className="my-5" />
-        </>
       ) : clusterData.length > 0 && tab === 1 ? (
         <BucketMovements selectedDate={selectedDate} />
       ) : clusterData.length > 0 && tab === 2 ? (

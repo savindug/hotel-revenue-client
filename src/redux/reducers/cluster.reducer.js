@@ -19,6 +19,7 @@ const initialState = {
     cluster2: [],
     cluster3: [],
     cluster4: [],
+    reqHotel: [],
   },
   refreshDates: {
     destinationId: null,

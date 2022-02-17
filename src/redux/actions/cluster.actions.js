@@ -37,6 +37,7 @@ export const fetchClusterData =
             cluster2: [],
             cluster3: [],
             cluster4: [],
+            reqHotel: [],
           },
         });
 
@@ -68,6 +69,7 @@ export const fetchClusterData =
               cluster2: rating_cl2,
               cluster3: rating_cl3,
               cluster4: rating_cl4,
+              reqHotel: rating_cluster_report[0].property_report,
             },
           });
         } catch (e) {}
