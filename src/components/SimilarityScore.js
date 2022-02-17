@@ -122,7 +122,6 @@ export default function SimilarityScore({ selectedDate }) {
 
     var rank = 1;
     for (var i = 0; i < sorted.length; i++) {
-      // increase rank only if current score less than previous
       if (
         i > 0 &&
         sorted[i].similiarity_score > sorted[i - 1].similiarity_score

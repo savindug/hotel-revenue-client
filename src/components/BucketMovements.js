@@ -424,7 +424,7 @@ export default function BucketMovements({ selectedDate }) {
                       Days Out
                     </StyledTableCell>
                     {/* <StyledTableCell size="small">Stars</StyledTableCell> */}
-                    {[...Array(report_len).keys()].map((e, index) =>
+                    {cluster1.map((e, index) =>
                       (() => {
                         let _date = moment(e.date);
                         let daysOut = _date.diff(selectedDate, 'days');
