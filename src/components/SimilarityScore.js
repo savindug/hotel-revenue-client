@@ -98,6 +98,8 @@ export default function SimilarityScore({ selectedDate }) {
 
   const [searched, setSearched] = useState('');
 
+  const [wday_len, setWday_len] = useState([]);
+
   const requestSearch = (searchedVal) => {
     // setSearched(searchedVal);
     const filteredRows = originalRows.filter((row) => {
@@ -110,6 +112,23 @@ export default function SimilarityScore({ selectedDate }) {
     setSearched('');
     requestSearch(searched);
   };
+
+  useEffect(() => {
+    const setWD_arr = () => {
+      let wd_arr = [];
+      cluster1.map((e) => {
+        let _date = moment(e.date);
+        let day = _date.format('dddd').substring(0, 3);
+        if (!(day === 'Sat' || day === 'Fri')) {
+          wd_arr.push(e.date);
+        }
+      });
+
+      setWday_len(wd_arr);
+    };
+
+    setWD_arr();
+  }, []);
 
   useEffect(() => {
     requestSearch(searched);
@@ -177,9 +196,11 @@ export default function SimilarityScore({ selectedDate }) {
       });
       hotels.map((_hotel, id) => {
         const rate_arr = [];
+        let availableDays = 0;
         _hotel.prices.map((item) => {
           if (item !== null) {
             const day = moment(item.date).format('dddd').substring(0, 3);
+            availableDays++;
             if (day === 'Sat' || day === 'Fri') {
             } else {
               rate_arr.push(item.similarityRank);
@@ -188,6 +209,9 @@ export default function SimilarityScore({ selectedDate }) {
         });
 
         const rate_arr_len = rate_arr.filter((x) => x !== null).length;
+
+        _hotel.rate_arr_len = rate_arr_len;
+        _hotel.availableDays = availableDays;
 
         _hotel.similarityScore =
           rate_arr.reduce((a, b) => a + b, 0) / rate_arr_len;
@@ -198,9 +222,20 @@ export default function SimilarityScore({ selectedDate }) {
 
     similarityScoreRateings();
     setOriginalRows(
-      hotels.sort((a, b) => a.similarityScore - b.similarityScore)
+      hotels
+        .filter((e) => e.availableDays >= (report_len * 95) / 100)
+        .sort((a, b) => a.similarityScore - b.similarityScore)
     );
-    setHotelsList(hotels.sort((a, b) => a.similarityScore - b.similarityScore));
+    // console.log(
+    //   hotels
+    //     .filter((e) => e.availableDays >= (report_len * 95) / 100)
+    //     .sort((a, b) => a.similarityScore - b.similarityScore)
+    // );
+    setHotelsList(
+      hotels
+        .filter((e) => e.availableDays >= (report_len * 95) / 100)
+        .sort((a, b) => a.similarityScore - b.similarityScore)
+    );
   }, []);
 
   const getClusterByPrice = (rate, ix) => {
