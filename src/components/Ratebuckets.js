@@ -96,6 +96,7 @@ export const Ratebuckets = ({ selectedDate }) => {
             <ClusterDataTable
               cluster={cluster4}
               stars={5}
+              type="cluster"
               selectedDate={selectedDate}
             />
           </div>
@@ -103,6 +104,7 @@ export const Ratebuckets = ({ selectedDate }) => {
             <ClusterDataTable
               cluster={cluster3}
               stars={4}
+              type="cluster"
               selectedDate={selectedDate}
             />
           </div>
@@ -110,6 +112,7 @@ export const Ratebuckets = ({ selectedDate }) => {
             <ClusterDataTable
               cluster={cluster2}
               stars={3}
+              type="cluster"
               selectedDate={selectedDate}
             />
           </div>
@@ -117,6 +120,7 @@ export const Ratebuckets = ({ selectedDate }) => {
             <ClusterDataTable
               cluster={cluster1}
               stars={2}
+              type="cluster"
               selectedDate={selectedDate}
             />
           </div>
@@ -138,6 +142,7 @@ export const Ratebuckets = ({ selectedDate }) => {
             <ClusterDataTable
               cluster={ratingCluster.cluster4}
               stars={5}
+              type="ratingCluster"
               selectedDate={selectedDate}
             />
           </div>
@@ -145,6 +150,7 @@ export const Ratebuckets = ({ selectedDate }) => {
             <ClusterDataTable
               cluster={ratingCluster.cluster3}
               stars={4}
+              type="ratingCluster"
               selectedDate={selectedDate}
             />
           </div>
@@ -152,6 +158,7 @@ export const Ratebuckets = ({ selectedDate }) => {
             <ClusterDataTable
               cluster={ratingCluster.cluster2}
               stars={3}
+              type="ratingCluster"
               selectedDate={selectedDate}
             />
           </div>
@@ -159,6 +166,7 @@ export const Ratebuckets = ({ selectedDate }) => {
             <ClusterDataTable
               cluster={ratingCluster.cluster1}
               stars={2}
+              type="ratingCluster"
               selectedDate={selectedDate}
             />
           </div>

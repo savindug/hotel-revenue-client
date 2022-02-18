@@ -77,7 +77,12 @@ ReactHTMLTableToExcel.format = (s, c) => {
   return s.replace(/{(\w+)}/g, (m, p) => c[p]);
 };
 
-export default function ClusterDataTable({ cluster, stars, selectedDate }) {
+export default function ClusterDataTable({
+  cluster,
+  stars,
+  selectedDate,
+  type,
+}) {
   const classes = useStyles();
 
   const getClusterDataSet = useSelector((state) => state.clusterDataSet);
@@ -206,18 +211,23 @@ export default function ClusterDataTable({ cluster, stars, selectedDate }) {
 
       cluster.map((e, index) => {
         if (e.mean >= avg + 2 * sd) {
+          e.rateStrength = 'Very High';
           _rateStrength.push('Very High');
         }
         if (e.mean >= avg + 1 * sd && e.mean < avg + 2 * sd) {
+          e.rateStrength = 'High';
           _rateStrength.push('High');
         }
         if (e.mean >= avg - 1 * sd && e.mean < avg + 1 * sd) {
+          e.rateStrength = '';
           _rateStrength.push('');
         }
         if (e.mean >= avg - 2 * sd && e.mean < avg - 1 * sd) {
+          e.rateStrength = 'Low';
           _rateStrength.push('Low');
         }
         if (e.mean <= avg - 2 * sd) {
+          e.rateStrength = 'Very Low';
           _rateStrength.push('Very Low');
         }
       });
@@ -228,6 +238,10 @@ export default function ClusterDataTable({ cluster, stars, selectedDate }) {
       //   `_rateStrength: ${_rateStrength}, sd: ${sd}, avg: ${avg}, midAvgArr.length: ${midAvgArr.length}, midAvgArr: ${midAvgArr}`
       // );
 
+      console.log(
+        `${type} => lowest sd: ${avg - 1 * sd}, highest sd: ${avg + 1 * sd}`
+      );
+
       setRateStrength(_rateStrength);
     };
 
@@ -236,7 +250,7 @@ export default function ClusterDataTable({ cluster, stars, selectedDate }) {
     }
 
     setLoad(false);
-  }, []);
+  }, [cluster]);
 
   const getReportName = () => {
     let name = null;
@@ -328,7 +342,7 @@ export default function ClusterDataTable({ cluster, stars, selectedDate }) {
 
   return (
     <>
-      {!load && rateStrength.length > 0 && cluster.length > 0 ? (
+      {!load && cluster.length > 0 ? (
         <TableContainer component={Paper} className="my-5">
           {/* <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
             <ReactHTMLTableToExcel
@@ -418,13 +432,26 @@ export default function ClusterDataTable({ cluster, stars, selectedDate }) {
                     </span>
                   </StyledTableCell>
 
-                  {rateStrength.map((e, index) => (
+                  {/* {rateStrength.map((e, index) => (
                     <StyledTableCell
                       size="small"
                       key={index}
                       style={{ fontSize: '10px' }}
                     >
                       <span className="">{e}</span>
+                    </StyledTableCell>
+                  ))} */}
+                  {cluster.map((e, index) => (
+                    <StyledTableCell
+                      size="small"
+                      key={index}
+                      style={{ fontSize: '10px' }}
+                    >
+                      {e.rateStrength ? (
+                        <span className="">{e.rateStrength}</span>
+                      ) : (
+                        ''
+                      )}
                     </StyledTableCell>
                   ))}
                 </StyledTableRow>
