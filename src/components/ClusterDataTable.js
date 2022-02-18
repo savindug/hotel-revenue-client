@@ -198,8 +198,8 @@ export default function ClusterDataTable({
 
     const rateStrengthHandler = () => {
       let midAvgArr = [];
-      cluster.map((e) => {
-        if (e.midAVG != 'NaN') {
+      cluster.map((e, i) => {
+        if (i < 90 && e.midAVG != 'NaN') {
           midAvgArr.push(Math.round(e.midAVG));
         }
       });
@@ -210,25 +210,27 @@ export default function ClusterDataTable({
       let _rateStrength = [];
 
       cluster.map((e, index) => {
-        if (e.mean >= avg + 2 * sd) {
-          e.rateStrength = 'Very High';
-          _rateStrength.push('Very High');
-        }
-        if (e.mean >= avg + 1 * sd && e.mean < avg + 2 * sd) {
-          e.rateStrength = 'High';
-          _rateStrength.push('High');
-        }
-        if (e.mean >= avg - 1 * sd && e.mean < avg + 1 * sd) {
-          e.rateStrength = '';
-          _rateStrength.push('');
-        }
-        if (e.mean >= avg - 2 * sd && e.mean < avg - 1 * sd) {
-          e.rateStrength = 'Low';
-          _rateStrength.push('Low');
-        }
-        if (e.mean <= avg - 2 * sd) {
-          e.rateStrength = 'Very Low';
-          _rateStrength.push('Very Low');
+        if (index < 90) {
+          if (e.mean >= avg + 2 * sd) {
+            e.rateStrength = 'Very High';
+            _rateStrength.push('Very High');
+          }
+          if (e.mean >= avg + 1 * sd && e.mean < avg + 2 * sd) {
+            e.rateStrength = 'High';
+            _rateStrength.push('High');
+          }
+          if (e.mean >= avg - 1 * sd && e.mean < avg + 1 * sd) {
+            e.rateStrength = '';
+            _rateStrength.push('');
+          }
+          if (e.mean >= avg - 2 * sd && e.mean < avg - 1 * sd) {
+            e.rateStrength = 'Low';
+            _rateStrength.push('Low');
+          }
+          if (e.mean <= avg - 2 * sd) {
+            e.rateStrength = 'Very Low';
+            _rateStrength.push('Very Low');
+          }
         }
       });
 
@@ -238,9 +240,11 @@ export default function ClusterDataTable({
       //   `_rateStrength: ${_rateStrength}, sd: ${sd}, avg: ${avg}, midAvgArr.length: ${midAvgArr.length}, midAvgArr: ${midAvgArr}`
       // );
 
-      console.log(
-        `${type} => lowest sd: ${avg - 1 * sd}, highest sd: ${avg + 1 * sd}`
-      );
+      // console.log(
+      //   `${type} => lowest sd: ${avg - 1 * sd}, highest sd: ${
+      //     avg + 1 * sd
+      //   }, midAvgArr.length: ${midAvgArr.length}`
+      // );
 
       setRateStrength(_rateStrength);
     };
