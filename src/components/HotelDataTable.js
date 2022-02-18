@@ -110,6 +110,7 @@ export default function HotelDataTable({ selectedDate }) {
     cluster4,
     hotels,
     report_len,
+    ratingCluster,
   } = getClusterDataSet;
 
   const auth = useSelector((state) => state.auth);
@@ -296,6 +297,12 @@ export default function HotelDataTable({ selectedDate }) {
         })
       );
       setHotelsList(selectedHotels);
+    } else if (event.target.value == 2) {
+      if (ratingCluster.min_rating) {
+        setHotelsList(
+          hotels.filter((h) => h.ratings >= ratingCluster.min_rating)
+        );
+      }
     } else {
       setHotelsList(hotels);
     }
@@ -439,6 +446,7 @@ export default function HotelDataTable({ selectedDate }) {
                 style={{ backgroundColor: 'white', fontFamily: FONT_FAMILY }}
               >
                 <option value={1}>All Hotels</option>
+                <option value={2}>Best Rated Hotels</option>
                 <option value={0}>Analysis Set</option>
               </Select>
             </FormGroup>

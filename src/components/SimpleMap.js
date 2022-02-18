@@ -27,7 +27,13 @@ import {
   K_SIZE,
 } from '../styles/mapStyles';
 import { GOOGLE_MAP_KEY } from '../env';
-import { ListGroup, OverlayTrigger, Toast, Tooltip } from 'react-bootstrap';
+import {
+  Badge,
+  ListGroup,
+  OverlayTrigger,
+  Toast,
+  Tooltip,
+} from 'react-bootstrap';
 import LocationCityOutlinedIcon from '@material-ui/icons/LocationCityOutlined';
 import moment from 'moment';
 
@@ -75,8 +81,16 @@ const apiIsLoaded = (map, maps, places) => {
 const SimpleMap = () => {
   // const [hotelsList, setHotelsList] = useState([]);
   const getClusterDataSet = useSelector((state) => state.clusterDataSet);
-  const { loading, err, cluster1, cluster2, cluster3, cluster4, hotels } =
-    getClusterDataSet;
+  const {
+    loading,
+    err,
+    cluster1,
+    cluster2,
+    cluster3,
+    cluster4,
+    hotels,
+    ratingCluster,
+  } = getClusterDataSet;
 
   const [defaultProps, setDefaultProps] = useState({
     zoom: 15,
@@ -305,12 +319,33 @@ const SimpleMap = () => {
                           alignItems="flex-start"
                           onClick={() => handleInfoOpen(_hotel.hotelID)}
                         >
-                          {/* <ListItemAvatar>
-                          <Avatar
-                            alt="hotel_img"
-                            src="/static/images/avatar/1.jpg"
-                          />
-                        </ListItemAvatar> */}
+                          <ListItemAvatar>
+                            {ratingCluster.min_rating ? (
+                              _hotel.ratings >= ratingCluster.min_rating ? (
+                                <Badge
+                                  className="p-2 cursor-pointer mr-5"
+                                  style={{
+                                    backgroundColor: '#D50000',
+                                    color: '#f4f4f4',
+                                  }}
+                                >
+                                  Best Rated
+                                </Badge>
+                              ) : (
+                                <Badge
+                                  className="p-2 cursor-pointer mr-5"
+                                  style={{
+                                    backgroundColor: 'transparent',
+                                    color: 'transparent',
+                                  }}
+                                >
+                                  Less Rated
+                                </Badge>
+                              )
+                            ) : (
+                              <></>
+                            )}
+                          </ListItemAvatar>
                           <ListItemText
                             primary={_hotel.hotelName}
                             secondary={

@@ -76,6 +76,7 @@ export const ClusteredData = () => {
     hotelList,
     markets,
     refreshDates,
+    ratingCluster,
   } = getClusterDataSet;
 
   const auth = useSelector((state) => state.auth);
@@ -530,7 +531,19 @@ export const ClusteredData = () => {
                 // onClick={() => scroll('#stars2')}
               >
                 Outliers
-              </Badge>
+              </Badge>{' '}
+              {ratingCluster.min_rating ? (
+                <Badge
+                  className="p-2 cursor-pointer"
+                  style={{ backgroundColor: '#D50000', color: '#f4f4f4' }}
+                >
+                  Best Rated above{' '}
+                  {ratingCluster.min_rating ? ratingCluster.min_rating : ''}{' '}
+                  Ratings
+                </Badge>
+              ) : (
+                <></>
+              )}
             </div>
           </Grid>
         </MuiPickersUtilsProvider>
