@@ -334,7 +334,15 @@ export const ClusteredData = () => {
 
   return (
     <div style={{ backgroundColor: 'white', fontFamily: FONT_FAMILY }}>
-      <Grid>
+      <Grid
+        // className="shadow"
+        style={{
+          position: 'sticky',
+          top: 50,
+          zIndex: 200,
+          backgroundColor: 'white',
+        }}
+      >
         <MuiPickersUtilsProvider utils={MomentUtils}>
           <Grid container justify="space-around" className="mb-1">
             <FormControl className={classes.formControl}>

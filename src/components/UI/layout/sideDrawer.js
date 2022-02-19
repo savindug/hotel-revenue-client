@@ -32,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
+    // maxHeight: '50px'
   },
   appBarShift: {
     marginLeft: drawerWidth,
@@ -138,7 +139,7 @@ export default function MiniDrawer(props) {
               <>
                 <img
                   class="rounded-circle img-fluid img-circle d-block"
-                  src={createImageFromInitials(40, user.name, '#1A237E')}
+                  src={createImageFromInitials(36, user.name, '#1A237E')}
                   alt="avatar"
                   onClick={handleClick}
                 />

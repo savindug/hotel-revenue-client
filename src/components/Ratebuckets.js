@@ -44,12 +44,14 @@ export const Ratebuckets = ({ selectedDate }) => {
       'text-light border-bottom-0 border-secondary  ' + classes.tabularNavStyle
     );
     return (
-      <div>
+      <div style={{ position: 'sticky', top: 185, zIndex: 200 }}>
         <Nav variant="tabs" justify="space-around">
           <Nav.Item>
             <Nav.Link
               className={
-                tab === 1 ? tabularNavCls : 'text-dark font-weight-bold'
+                tab === 1
+                  ? tabularNavCls
+                  : 'text-dark font-weight-bold bg-light  shadow '
               }
               eventKey="link-1"
               onClick={() => setTab(1)}
@@ -61,7 +63,9 @@ export const Ratebuckets = ({ selectedDate }) => {
             <Nav.Item>
               <Nav.Link
                 className={
-                  tab === 2 ? tabularNavCls : 'text-dark font-weight-bold'
+                  tab === 2
+                    ? tabularNavCls
+                    : 'text-dark font-weight-bold bg-light shadow '
                 }
                 eventKey="link-1"
                 onClick={() => setTab(2)}

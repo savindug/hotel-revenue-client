@@ -45,7 +45,7 @@ function App() {
       <div className={classes.root + ' mb-5'}>
         <MiniDrawer />
         <main className={classes.content}>
-          <div className="my-5" />
+          <div className="mb-5" />
           <Switch>
             <PrivateRoute exact path="/" component={ClusteredData} />
             <PrivateRoute path="/dashboard" component={Profile} />
