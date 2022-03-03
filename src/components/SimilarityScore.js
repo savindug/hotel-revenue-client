@@ -471,6 +471,7 @@ export default function SimilarityScore({ selectedDate }) {
                       Stars
                       {/* </TableSortLabel> */}
                     </StyledTableCell>
+                    <StyledTableCell size="small">Ratings</StyledTableCell>
                     <StyledTableCell className="text-center">
                       Freq Bucket
                     </StyledTableCell>
@@ -530,6 +531,9 @@ export default function SimilarityScore({ selectedDate }) {
                       </StyledTableCell>
                       <StyledTableCell size="small" className={classes.rates}>
                         {_hotel.stars}
+                      </StyledTableCell>
+                      <StyledTableCell size="small" className={classes.rates}>
+                        {_hotel.ratings}
                       </StyledTableCell>
                       {(() => {
                         let cluster_arr = [];
