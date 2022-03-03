@@ -278,6 +278,16 @@ export const ClusteredData = () => {
             Rate Buckets
           </Nav.Link>
         </Nav.Item>{' '}
+        <Nav.Item>
+          <Nav.Link
+            className={tab === 2 ? tabularNavCls : 'text-dark font-weight-bold'}
+            eventKey="link-1"
+            disabled={loading}
+            onClick={() => setTab(2)}
+          >
+            Visuals
+          </Nav.Link>
+        </Nav.Item>{' '}
         {/* <Nav.Item>
           <Nav.Link
             className={tab === 7 ? tabularNavCls : 'text-dark font-weight-bold'}
@@ -296,16 +306,6 @@ export const ClusteredData = () => {
             onClick={() => setTab(1)}
           >
             Bucket Movements
-          </Nav.Link>
-        </Nav.Item>{' '}
-        <Nav.Item>
-          <Nav.Link
-            className={tab === 2 ? tabularNavCls : 'text-dark font-weight-bold'}
-            eventKey="link-1"
-            disabled={loading}
-            onClick={() => setTab(2)}
-          >
-            Visuals
           </Nav.Link>
         </Nav.Item>{' '}
         <Nav.Item>

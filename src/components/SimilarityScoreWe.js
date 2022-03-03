@@ -82,7 +82,6 @@ export default function SimilarityScoreWe({ selectedDate }) {
     cluster4,
     hotels,
     reqHotel,
-    report_len,
   } = getClusterDataSet;
 
   const auth = useSelector((state) => state.auth);
@@ -97,6 +96,8 @@ export default function SimilarityScoreWe({ selectedDate }) {
   const [binding, setBinding] = useState(true);
 
   const [searched, setSearched] = useState('');
+
+  const report_len = 90;
 
   const requestSearch = (searchedVal) => {
     // setSearched(searchedVal);
@@ -115,14 +116,24 @@ export default function SimilarityScoreWe({ selectedDate }) {
     requestSearch(searched);
   }, [searched]);
 
+  const calculateDistance = (p1, p2) => {
+    var a = p2.stars - p1.stars;
+    var b = p2.cluster - p1.cluster;
+    var c = p2.ratings - p1.ratings;
+    var d = p2.rate - p1.rate;
+
+    return Math.abs(Math.hypot(a, b, c, d));
+
+    // return Math.abs(p2.rate - p1.rate);
+  };
+
   const getSimilarityRank = (arr) => {
-    var sorted = arr.slice().sort(function (a, b) {
-      return a.similiarity_score - b.similiarity_score;
-    });
+    var sorted = arr
+      .filter((e) => e.similiarity_score != 'NaN')
+      .sort((a, b) => a.similiarity_score - b.similiarity_score);
 
     var rank = 1;
     for (var i = 0; i < sorted.length; i++) {
-      // increase rank only if current score less than previous
       if (
         i > 0 &&
         sorted[i].similiarity_score > sorted[i - 1].similiarity_score
@@ -145,10 +156,26 @@ export default function SimilarityScoreWe({ selectedDate }) {
             // _hotel.score = `${reqHotel[i].rate} - ${
             //   _hotel.prices[i].price[getPrice(_hotel.prices[i].price)]
             // }`;
-            _hotel.prices[i].score = Math.abs(
-              reqHotel[i].rate -
-                _hotel.prices[i].price[getPrice(_hotel.prices[i].price)]
-            );
+            let p1 = {
+              stars: reqHotel[i].stars,
+              cluster: getClusterByPrice(reqHotel[i].rate, i),
+              rate: reqHotel[i].rate,
+              ratings: reqHotel[i].raings,
+            };
+
+            let p2 = {
+              stars: _hotel.stars,
+              cluster: getClusterByPrice(
+                _hotel.prices[i].price[getPrice(_hotel.prices[i].price)],
+                i
+              ),
+              rate: _hotel.prices[i].price[getPrice(_hotel.prices[i].price)],
+              ratings: _hotel.ratings,
+            };
+
+            _hotel.prices[i].score = parseFloat(
+              calculateDistance(p2, p1)
+            ).toFixed(2);
           }
         });
       });
@@ -156,35 +183,46 @@ export default function SimilarityScoreWe({ selectedDate }) {
         let score_arr = [];
         hotels.map((_hotel, id) => {
           if (_hotel.prices[i] != null) {
-            let n_hotel = {
-              checkIn: _hotel.checkIn,
-              hotelID: _hotel.hotelID,
-              hotelName: _hotel.hotelName,
-              price: _hotel.prices[i].price[getPrice(_hotel.prices[i].price)],
-              similiarity_score: _hotel.prices[i].score,
-            };
-            score_arr.push(n_hotel);
+            if (_hotel.prices[i].score != 'NaN') {
+              let n_hotel = {
+                checkIn: _hotel.checkIn,
+                hotelID: _hotel.hotelID,
+                hotelName: _hotel.hotelName,
+                price: _hotel.prices[i].price[getPrice(_hotel.prices[i].price)],
+                similiarity_score: _hotel.prices[i].score,
+              };
+              score_arr.push(n_hotel);
+            }
           }
         });
 
         const ranks_arr = getSimilarityRank(score_arr);
         hotels.map((_hotel, id) => {
           if (_hotel.prices[i] != null) {
-            _hotel.prices[i].similarityRank = ranks_arr.find(
-              (x) => x.hotelID == _hotel.hotelID
-            ).similarityRank;
+            const exist = ranks_arr.some(function (el) {
+              return el.hotelID == _hotel.hotelID;
+            });
+
+            if (exist) {
+              _hotel.prices[i].similarityRank = ranks_arr.find(
+                (x) => x.hotelID == _hotel.hotelID
+              ).similarityRank;
+            }
           }
         });
       });
+
       hotels.map((_hotel, id) => {
         const rate_arr = [];
         let availableDays = 0;
-        _hotel.prices.map((item) => {
-          if (item !== null) {
+        _hotel.prices.map((item, index) => {
+          if (index <= report_len && item !== null) {
             const day = moment(item.date).format('dddd').substring(0, 3);
             availableDays++;
             if (day === 'Sat' || day === 'Fri') {
-              rate_arr.push(item.similarityRank);
+              if (item.similarityRank) {
+                rate_arr.push(item.similarityRank);
+              }
             }
           }
         });
@@ -202,21 +240,13 @@ export default function SimilarityScoreWe({ selectedDate }) {
     };
 
     similarityScoreRateings();
-    setOriginalRows(
-      hotels
-        .filter((e) => e.availableDays >= (report_len * 95) / 100)
-        .sort((a, b) => a.similarityScore - b.similarityScore)
-    );
-    // console.log(
-    //   hotels
-    //      .filter((e) => e.availableDays >= (report_len * 95) / 100)
-    //     .sort((a, b) => a.similarityScore - b.similarityScore)
-    // );
-    setHotelsList(
-      hotels
-        .filter((e) => e.availableDays >= (report_len * 95) / 100)
-        .sort((a, b) => a.similarityScore - b.similarityScore)
-    );
+    const similarity_hotels = hotels
+      .filter((e) => e.availableDays >= (report_len * 95) / 100)
+      .sort((a, b) => a.similarityScore - b.similarityScore);
+
+    setOriginalRows(similarity_hotels);
+    // console.log(similarity_hotels);
+    setHotelsList(similarity_hotels);
   }, []);
 
   const getClusterByPrice = (rate, ix) => {

@@ -12,6 +12,8 @@ import { FONT_FAMILY } from './utils/const';
 import { Register } from './components/auth/Register';
 import Profile from './components/Dashboard/Profile';
 import Footer from './components/UI/layout/Footer';
+import { useEffect } from 'react';
+import { searchDestination } from './services/apiServices';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,6 +41,14 @@ const useStyles = makeStyles((theme) => ({
 
 function App() {
   const classes = useStyles();
+
+  // useEffect(() => {
+  //   const regex = /(<([^>]+)>)/gi;
+  //   searchDestination().then((res) => {
+  //     res.map((e) => (e.caption = e.caption.replace(regex, '')));
+  //     console.log(res);
+  //   });
+  // }, []);
 
   return (
     <Router>
