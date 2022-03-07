@@ -240,7 +240,12 @@ export default function SimilarityScoreWe({ selectedDate }) {
     };
 
     similarityScoreRateings();
-    const similarity_hotels = hotels
+
+    const filtered_similarity_hotels = hotels.filter(
+      (e) => !isNaN(e.similarityScore)
+    );
+
+    const similarity_hotels = filtered_similarity_hotels
       .filter((e) => e.availableDays >= (report_len * 95) / 100)
       .sort((a, b) => a.similarityScore - b.similarityScore);
 
