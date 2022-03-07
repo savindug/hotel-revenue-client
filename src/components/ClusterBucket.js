@@ -514,7 +514,7 @@ export default function ClusterBucket({ selectedDate, reqHotel }) {
                     }}
                   >
                     <TableSortLabel disabled>Your Property</TableSortLabel>{' '}
-                    <div class="dropdown-divider"></div>
+                    <hr />
                     <TableSortLabel disabled>Days Out</TableSortLabel>
                   </StyledTableCell>
                   <StyledTableCell size="small">Stars</StyledTableCell>
