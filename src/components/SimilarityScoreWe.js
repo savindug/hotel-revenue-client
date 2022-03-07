@@ -473,7 +473,7 @@ export default function SimilarityScoreWe({ selectedDate }) {
                               }\n${day.toUpperCase()}\n${moment(_date).format(
                                 'MM/DD'
                               )}`}{' '}
-                              <hr />
+                              <div class="dropdown-divider"></div>
                               {daysOut}
                             </StyledTableCell>
                           );

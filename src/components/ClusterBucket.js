@@ -80,7 +80,7 @@ export default function ClusterBucket({ selectedDate, reqHotel }) {
                       {' '}
                       {`${stars} Star Bucket Matrix`}
                     </TableSortLabel>{' '}
-                    <hr />
+                    <div class="dropdown-divider"></div>
                     <TableSortLabel disabled>Days Out</TableSortLabel>
                   </StyledTableCell>
                   {cluster.map((e, index) =>
@@ -100,11 +100,11 @@ export default function ClusterBucket({ selectedDate, reqHotel }) {
                           style={{ fontSize: '12px' }}
                         >
                           {date === 'Sat' || date === 'Fri' ? 'WEND' : 'WDAY'}
-                          <hr />
+                          <div class="dropdown-divider"></div>
                           {`${date.toUpperCase()}\n${moment(e.date).format(
                             'MM/DD'
                           )}`}{' '}
-                          <hr />
+                          <div class="dropdown-divider"></div>
                           {daysOut}
                         </StyledTableCell>
                       );
@@ -514,7 +514,7 @@ export default function ClusterBucket({ selectedDate, reqHotel }) {
                     }}
                   >
                     <TableSortLabel disabled>Your Property</TableSortLabel>{' '}
-                    <hr />
+                    <div class="dropdown-divider"></div>
                     <TableSortLabel disabled>Days Out</TableSortLabel>
                   </StyledTableCell>
                   <StyledTableCell size="small">Stars</StyledTableCell>
@@ -539,7 +539,7 @@ export default function ClusterBucket({ selectedDate, reqHotel }) {
                           }\n${date.toUpperCase()}\n${moment(e.checkIn).format(
                             'MM/DD'
                           )}`}
-                          <hr />
+                          <div class="dropdown-divider"></div>
                           {daysOut}
                         </StyledTableCell>
                       );

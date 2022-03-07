@@ -1068,7 +1068,7 @@ export const Graphs = ({ selectedDate }) => {
           </Box>
         </>
       ) : (
-        <>Binding Data...</>
+        <></>
       )}
     </div>
   );

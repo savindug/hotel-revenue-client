@@ -391,7 +391,7 @@ export default function ClusterDataTable({
                     {' '}
                     {`${stars} Star Bucket Matrix`}
                   </TableSortLabel>{' '}
-                  <hr />
+                  <hr style={{ 'background-color': '#f4f4f4' }} />
                   <TableSortLabel disabled>Days Out</TableSortLabel>
                 </StyledTableCell>
                 {cluster.map((e, index) =>
@@ -415,7 +415,7 @@ export default function ClusterDataTable({
                         }\n${date.toUpperCase()}\n${moment(e.date).format(
                           'MM/DD'
                         )}`}{' '}
-                        <hr />
+                        <div class="dropdown-divider"></div>
                         {daysOut}
                       </StyledTableCell>
                     );

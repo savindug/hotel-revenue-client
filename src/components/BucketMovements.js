@@ -152,7 +152,7 @@ export default function BucketMovements({ selectedDate }) {
                           }\n${day.toUpperCase()}\n${moment(_date).format(
                             'MM/DD'
                           )}`}
-                          <hr />
+                          <div class="dropdown-divider"></div>
                           {daysOut}
                         </StyledTableCell>
                       );
@@ -420,7 +420,7 @@ export default function BucketMovements({ selectedDate }) {
                         zIndex: 100,
                       }}
                     >
-                      5 Star Hotels Count <hr />
+                      5 Star Hotels Count <div class="dropdown-divider"></div>
                       Days Out
                     </StyledTableCell>
                     {/* <StyledTableCell size="small">Stars</StyledTableCell> */}
@@ -445,7 +445,7 @@ export default function BucketMovements({ selectedDate }) {
                             }\n${day.toUpperCase()}\n${moment(_date).format(
                               'MM/DD'
                             )}`}
-                            <hr />
+                            <div class="dropdown-divider"></div>
                             {daysOut}
                           </StyledTableCell>
                         );
@@ -609,7 +609,7 @@ export default function BucketMovements({ selectedDate }) {
                             }\n${day.toUpperCase()}\n${moment(_date).format(
                               'MM/DD'
                             )}`}
-                            <hr />
+                            <div class="dropdown-divider"></div>
                             {daysOut}
                           </StyledTableCell>
                         );
@@ -773,7 +773,7 @@ export default function BucketMovements({ selectedDate }) {
                             }\n${day.toUpperCase()}\n${moment(_date).format(
                               'MM/DD'
                             )}`}
-                            <hr />
+                            <div class="dropdown-divider"></div>
                             {daysOut}
                           </StyledTableCell>
                         );
@@ -940,7 +940,7 @@ export default function BucketMovements({ selectedDate }) {
                             }\n${day.toUpperCase()}\n${moment(_date).format(
                               'MM/DD'
                             )}`}
-                            <hr />
+                            <div class="dropdown-divider"></div>
                             {daysOut}
                           </StyledTableCell>
                         );
@@ -1100,7 +1100,7 @@ export default function BucketMovements({ selectedDate }) {
                           }\n${day.toUpperCase()}\n${moment(_date).format(
                             'MM/DD'
                           )}`}
-                          <hr />
+                          <div class="dropdown-divider"></div>
                           {daysOut}
                         </StyledTableCell>
                       );
