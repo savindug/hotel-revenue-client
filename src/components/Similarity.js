@@ -1,10 +1,11 @@
 import { makeStyles } from '@material-ui/core';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Nav } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { FONT_FAMILY } from '../utils/const';
 import SimilarityScore from './SimilarityScore';
 import SimilarityScoreWe from './SimilarityScoreWe';
+import { EuclidianDistance } from './EuclidianDistance';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -17,9 +18,10 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 'bold',
   },
 }));
+
 export const Similarity = ({ selectedDate }) => {
   const classes = useStyles();
-  const [tab, setTab] = useState(1);
+  const [tab, setTab] = useState(-1);
 
   const getClusterDataSet = useSelector((state) => state.clusterDataSet);
   const {
@@ -34,6 +36,7 @@ export const Similarity = ({ selectedDate }) => {
     hotelList,
     markets,
     refreshDates,
+    reqHotel,
   } = getClusterDataSet;
 
   const TabularNav = () => {
@@ -82,6 +85,8 @@ export const Similarity = ({ selectedDate }) => {
         <SimilarityScore selectedDate={selectedDate} />
       ) : hotels.length > 0 && tab === 2 ? (
         <SimilarityScoreWe selectedDate={selectedDate} />
+      ) : hotels.length > 0 && tab === -1 ? (
+        <EuclidianDistance selectedDate={selectedDate} />
       ) : (
         <></>
       )}

@@ -513,11 +513,23 @@ export default function ClusterBucket({ selectedDate, reqHotel }) {
                       fontFamily: FONT_FAMILY,
                     }}
                   >
-                    <TableSortLabel disabled>Your Property</TableSortLabel>{' '}
+                    <TableSortLabel disabled>
+                      Your Property |{' '}
+                      {(() => {
+                        let stars = null;
+                        reqHotel.map((e, index) => {
+                          if (e.stars !== null && e.stars != 'N/A') {
+                            stars = e.stars;
+                          }
+                        });
+
+                        return stars;
+                      })()}
+                      -stars{' '}
+                    </TableSortLabel>{' '}
                     <hr />
                     <TableSortLabel disabled>Days Out</TableSortLabel>
                   </StyledTableCell>
-                  <StyledTableCell size="small">Stars</StyledTableCell>
                   {reqHotel.map((e, index) =>
                     (() => {
                       let _date = moment(e.checkIn);
@@ -562,19 +574,8 @@ export default function ClusterBucket({ selectedDate, reqHotel }) {
                             name = e.name;
                           }
                         });
-                        return name;
-                      })()}
-                    </StyledTableCell>
 
-                    <StyledTableCell size="small" className={classes.rates}>
-                      {(() => {
-                        let stars = null;
-                        reqHotel.map((e, index) => {
-                          if (e.name !== null) {
-                            stars = e.stars;
-                          }
-                        });
-                        return stars;
+                        return name;
                       })()}
                     </StyledTableCell>
                     {reqHotel.map((e, index) => (

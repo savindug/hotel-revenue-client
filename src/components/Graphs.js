@@ -12,6 +12,7 @@ import React, { useEffect, useState } from 'react';
 import { Bar, Line, Scatter } from 'react-chartjs-2';
 import { useSelector } from 'react-redux';
 import { CLUSTER_BACKGROUND } from '../utils/const';
+import { HotelsPlot } from './HotelsPlot';
 const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
@@ -54,7 +55,6 @@ export const Graphs = ({ selectedDate }) => {
         }
       }
     }
-    console.log(dateRange_arr);
     return dateRange_arr;
   };
 
@@ -339,6 +339,45 @@ export const Graphs = ({ selectedDate }) => {
     ],
   });
 
+  const [dateSelection, setDateSelection] = useState(0);
+
+  const [scatterPlot, setScatterPlot] = useState(2);
+
+  const [scatterPlotLabels, setScatterPlotLabels] = useState();
+
+  const getClusterByPrice = (rate, ix) => {
+    let clustered = [];
+    let res;
+
+    if (cluster1.length > 0 && cluster1[ix]) {
+      clustered.push(cluster1[ix]);
+    }
+    if (cluster2.length > 0 && cluster2[ix]) {
+      clustered.push(cluster2[ix]);
+    }
+    if (cluster3.length > 0 && cluster3[ix]) {
+      clustered.push(cluster3[ix]);
+    }
+    if (cluster4.length > 0 && cluster4[ix]) {
+      clustered.push(cluster4[ix]);
+    }
+
+    clustered.sort((a, b) => a.mean - b.mean);
+
+    // console.log(clustered);
+
+    try {
+      clustered.map((cl, id) => {
+        if (rate >= cl.min && rate <= cl.max) {
+          res = id;
+          return;
+        }
+      });
+    } catch (e) {}
+
+    return res;
+  };
+
   const [scatterData2avg, setScatterData2avg] = useState([]);
   const [scatterData2high, setScatterData2high] = useState([]);
   const [scatterData2low, setScatterData2low] = useState([]);
@@ -356,14 +395,6 @@ export const Graphs = ({ selectedDate }) => {
   const [scatterData5low, setScatterData5low] = useState([]);
 
   const [_hotelsCountDataset, set_hotelsCountDataset] = useState([]);
-
-  const [scatterPlot, setScatterPlot] = useState(2);
-
-  const [scatterPlotLabels, setScatterPlotLabels] = useState(
-    cluster1
-      .slice(dateRange[datePage][0], dateRange[datePage][1])
-      .map((a) => moment(a.date).format('MM/DD'))
-  );
 
   const [bind, setBind] = useState(false);
 
@@ -688,39 +719,6 @@ export const Graphs = ({ selectedDate }) => {
     setScatterPlot(e);
   };
 
-  const getClusterByPrice = (rate, ix) => {
-    let clustered = [];
-    let res;
-
-    if (cluster1.length > 0 && cluster1[ix]) {
-      clustered.push(cluster1[ix]);
-    }
-    if (cluster2.length > 0 && cluster2[ix]) {
-      clustered.push(cluster2[ix]);
-    }
-    if (cluster3.length > 0 && cluster3[ix]) {
-      clustered.push(cluster3[ix]);
-    }
-    if (cluster4.length > 0 && cluster4[ix]) {
-      clustered.push(cluster4[ix]);
-    }
-
-    clustered.sort((a, b) => a.mean - b.mean);
-
-    // console.log(clustered);
-
-    try {
-      clustered.map((cl, id) => {
-        if (rate >= cl.min && rate <= cl.max) {
-          res = id;
-          return;
-        }
-      });
-    } catch (e) {}
-
-    return res;
-  };
-
   const handleDatePage = (e) => {
     setDatePage(e);
     setChartDataset(e, matrix);
@@ -728,6 +726,10 @@ export const Graphs = ({ selectedDate }) => {
     //   'datePage = ' + datePage + 'dateRange = ' + dateRange[datePage][0],
     //   dateRange[datePage][1]
     // );
+  };
+
+  const handleDateSelection = (e) => {
+    setDateSelection(e);
   };
 
   const getPrice = (arr) => {
@@ -1066,6 +1068,31 @@ export const Graphs = ({ selectedDate }) => {
           <Box className="my-5">
             <Bar height={400} width={100} data={chartData} options={options} />
           </Box>
+
+          <hr className="my-5"></hr>
+          <Grid container justify="space-around" className="my-5">
+            <h3>Value Position</h3>
+
+            <FormControl className={classes.formControl}>
+              <InputLabel htmlFor="grouped-native-select">
+                Select Date
+              </InputLabel>
+              <Select
+                native={true}
+                onChange={(evnt) => handleDateSelection(evnt.target.value)}
+                id="grouped-native-select"
+                value={dateSelection}
+              >
+                {clusterData.map((e, i) => (
+                  <option value={i}>
+                    {moment(e[0].date).format('YYYY-MM-DD')}
+                  </option>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+
+          <HotelsPlot hotels={hotels} dateSelection={dateSelection}/>
         </>
       ) : (
         <></>
