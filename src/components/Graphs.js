@@ -1070,29 +1070,6 @@ export const Graphs = ({ selectedDate }) => {
           </Box>
 
           <hr className="my-5"></hr>
-          <Grid container justify="space-around" className="my-5">
-            <h3>Value Position</h3>
-
-            <FormControl className={classes.formControl}>
-              <InputLabel htmlFor="grouped-native-select">
-                Select Date
-              </InputLabel>
-              <Select
-                native={true}
-                onChange={(evnt) => handleDateSelection(evnt.target.value)}
-                id="grouped-native-select"
-                value={dateSelection}
-              >
-                {clusterData.map((e, i) => (
-                  <option value={i}>
-                    {moment(e[0].date).format('YYYY-MM-DD')}
-                  </option>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-
-          <HotelsPlot hotels={hotels} dateSelection={dateSelection}/>
         </>
       ) : (
         <></>

@@ -1,10 +1,26 @@
 import React, { useEffect, useState } from 'react';
 
-import { Chart } from 'react-google-charts';
 import { useSelector } from 'react-redux';
 import { Scatter } from 'react-chartjs-2';
+import {
+  Box,
+  FormControl,
+  Grid,
+  InputLabel,
+  makeStyles,
+  Select,
+} from '@material-ui/core';
 
-export function HotelsPlot({ hotels, dateSelection }) {
+import moment from 'moment';
+const useStyles = makeStyles((theme) => ({
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  },
+}));
+
+export function HotelsPlot({ hotels }) {
+  const classes = useStyles();
   const getClusterDataSet = useSelector((state) => state.clusterDataSet);
   const {
     loading,
@@ -32,6 +48,34 @@ export function HotelsPlot({ hotels, dateSelection }) {
   const [scatterPlotLabels, setScatterPlotLabels] = useState();
 
   const report_len = 90;
+
+  const [dateSelection, setDateSelection] = useState([0, 30]);
+
+  const getDateRange = () => {
+    let dateRange_arr = [];
+    let totalDays = 0;
+
+    if (report_len > 0) {
+      const no_chuncks = Math.ceil(report_len / 30);
+
+      for (let i = 1; i <= no_chuncks; i++) {
+        totalDays += 30;
+        if (totalDays <= report_len) {
+          dateRange_arr.push([(i - 1) * 30, i * 30]);
+        } else if (totalDays > report_len) {
+          dateRange_arr.push([
+            (i - 1) * 30,
+            i * 30 - (totalDays - (report_len - 1)),
+          ]);
+        }
+      }
+    }
+    return dateRange_arr;
+  };
+
+  const [dateRange, setDateRange] = useState(getDateRange());
+
+  const [datePage, setDatePage] = useState(0);
 
   const getClusterByPrice = (rate, ix) => {
     let clustered = [];
@@ -108,6 +152,10 @@ export function HotelsPlot({ hotels, dateSelection }) {
     return price;
   };
 
+  Array.prototype.median = function () {
+    return this.slice().sort((a, b) => a - b)[Math.floor(this.length / 2)];
+  };
+
   const getReqHotelData = () => {
     let name = null;
     if (reqHotel.length > 0) {
@@ -150,67 +198,44 @@ export function HotelsPlot({ hotels, dateSelection }) {
           }
         });
 
-        // [...Array(report_len).keys()].map((ob, idx) => {
-        //   hotels.map((_hotel) => {
-        //     if (
-        //       _hotel.prices[idx] !== null &&
-        //       _hotel.prices[idx] !== undefined
-        //     ) {
-        //       // const FrqBucketMinMax = getFreqBucketMinMaxRatings(
-        //       //   idx,
-        //       //   _hotel.freq_bucket - 2
-        //       // );
-
-        //       // _hotel.prices[idx].FrqBucketMinMax = FrqBucketMinMax;
-
-        //       // if (FrqBucketMinMax.min > 0 && FrqBucketMinMax.max > 0) {
-        //       //   _hotel.prices[idx].frq_rating = (
-        //       //     Math.abs(_hotel.ratings - _hotel.freq_bucket) /
-        //       //       (FrqBucketMinMax.max - FrqBucketMinMax.min) +
-        //       //     _hotel.freq_bucket
-        //       //   ).toFixed(2);
-        //       // }
-        //     }
-        //   });
-        // });
-
         setHotelsDataPlot(hotels);
 
         let scaterLabels = [];
         let scaterDataset = [];
 
         hotels.map((_hotel) => {
-          if (_hotel.prices[dateSelection]) {
-            if (
-              _hotel.prices[dateSelection] != null &&
-              _hotel.prices[dateSelection] !== undefined
-            ) {
-              scaterLabels.push(_hotel.hotelNam);
-              scaterDataset.push({
-                label: _hotel.hotelName,
-                pointRadius:
-                  getReqHotelData().localeCompare(_hotel.hotelName) == 0
-                    ? 6
-                    : 3,
-                pointHoverRadius:
-                  getReqHotelData().localeCompare(_hotel.hotelName) == 0
-                    ? 6
-                    : 3,
-                backgroundColor:
-                  getReqHotelData().localeCompare(_hotel.hotelName) == 0
-                    ? '#516B8F'
-                    : '#2e2e2e',
-                data: [
-                  {
-                    x: _hotel.frq_rating,
-                    y: _hotel.prices[dateSelection].price[
-                      getPrice(_hotel.prices[dateSelection].price)
-                    ],
-                  },
-                ],
-              });
+          let rates_arr = [];
+          for (let dt = dateSelection[0]; dt < dateSelection[1]; dt++) {
+            if (_hotel.prices[dt]) {
+              if (
+                _hotel.prices[dt] != null &&
+                _hotel.prices[dt] !== undefined
+              ) {
+                rates_arr.push(
+                  _hotel.prices[dt].price[getPrice(_hotel.prices[dt].price)]
+                );
+              }
             }
           }
+
+          scaterLabels.push(_hotel.hotelNam);
+          scaterDataset.push({
+            label: _hotel.hotelName,
+            pointRadius:
+              getReqHotelData().localeCompare(_hotel.hotelName) == 0 ? 6 : 3,
+            pointHoverRadius:
+              getReqHotelData().localeCompare(_hotel.hotelName) == 0 ? 6 : 3,
+            backgroundColor:
+              getReqHotelData().localeCompare(_hotel.hotelName) == 0
+                ? '#516B8F'
+                : '#2e2e2e',
+            data: [
+              {
+                x: _hotel.frq_rating,
+                y: rates_arr.median(),
+              },
+            ],
+          });
         });
 
         setPlotDataset(scaterDataset);
@@ -231,33 +256,37 @@ export function HotelsPlot({ hotels, dateSelection }) {
       let scaterDataset = [];
 
       hotels.map((_hotel) => {
-        if (_hotel.prices[dateSelection]) {
-          if (
-            _hotel.prices[dateSelection] != null &&
-            _hotel.prices[dateSelection] !== undefined
-          ) {
-            scaterLabels.push(_hotel.hotelNam);
-            scaterDataset.push({
-              label: _hotel.hotelName,
-              pointRadius:
-                getReqHotelData().localeCompare(_hotel.hotelName) == 0 ? 6 : 3,
-              pointHoverRadius:
-                getReqHotelData().localeCompare(_hotel.hotelName) == 0 ? 6 : 3,
-              backgroundColor:
-                getReqHotelData().localeCompare(_hotel.hotelName) == 0
-                  ? '#516B8F'
-                  : '#2e2e2e',
-              data: [
-                {
-                  x: _hotel.frq_rating,
-                  y: _hotel.prices[dateSelection].price[
-                    getPrice(_hotel.prices[dateSelection].price)
-                  ],
-                },
-              ],
-            });
+        let rates_arr = [];
+        for (let dt = dateSelection[0]; dt < dateSelection[1]; dt++) {
+          if (_hotel.prices[dt]) {
+            if (_hotel.prices[dt] != null && _hotel.prices[dt] !== undefined) {
+              rates_arr.push(
+                _hotel.prices[dt].price[getPrice(_hotel.prices[dt].price)]
+              );
+            }
           }
         }
+
+        // _hotel[`datePage-${datePage}`] = rates_arr;
+
+        scaterLabels.push(_hotel.hotelNam);
+        scaterDataset.push({
+          label: _hotel.hotelName,
+          pointRadius:
+            getReqHotelData().localeCompare(_hotel.hotelName) == 0 ? 6 : 3,
+          pointHoverRadius:
+            getReqHotelData().localeCompare(_hotel.hotelName) == 0 ? 6 : 3,
+          backgroundColor:
+            getReqHotelData().localeCompare(_hotel.hotelName) == 0
+              ? '#516B8F'
+              : '#2e2e2e',
+          data: [
+            {
+              x: _hotel.frq_rating,
+              y: rates_arr.median(),
+            },
+          ],
+        });
       });
 
       setPlotDataset(scaterDataset);
@@ -266,6 +295,7 @@ export function HotelsPlot({ hotels, dateSelection }) {
 
     if (hotels.length > 0 && clusterData.length > 0) {
       handleScatterPlot();
+      // console.log(hotels);
     }
   }, [dateSelection]);
 
@@ -282,8 +312,46 @@ export function HotelsPlot({ hotels, dateSelection }) {
     return name;
   };
 
+  const handleDatePage = (e) => {
+    setDatePage(e);
+    // console.log(
+    //   'datePage = ' + datePage + 'dateRange = ' + dateRange[datePage][0],
+    //   dateRange[datePage][1]
+    // );
+    setDateSelection([dateRange[e][0], dateRange[e][1]]);
+  };
+
   return (
     <>
+      <Grid container justify="space-around" className="my-5">
+        <h3>Value Position</h3>
+
+        <FormControl className={classes.formControl}>
+          <InputLabel htmlFor="grouped-native-select">Select Date</InputLabel>
+          <Select
+            native={true}
+            onChange={(e) => handleDatePage(e.target.value)}
+            id="grouped-native-select"
+            value={datePage}
+          >
+            {dateRange.length > 0 ? (
+              dateRange.map((e, i) => (
+                <option value={i}>
+                  {clusterData[e[0]]
+                    ? moment(clusterData[e[0]][0].date).format('MM/DD')
+                    : ''}{' '}
+                  -{' '}
+                  {clusterData[e[1]]
+                    ? moment(clusterData[e[1]][0].date).format('MM/DD')
+                    : ''}
+                </option>
+              ))
+            ) : (
+              <></>
+            )}
+          </Select>
+        </FormControl>
+      </Grid>
       {plotDataset.length > 0 && plotLabels.length > 0 ? (
         <Scatter
           options={{

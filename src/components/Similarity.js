@@ -6,6 +6,7 @@ import { FONT_FAMILY } from '../utils/const';
 import SimilarityScore from './SimilarityScore';
 import SimilarityScoreWe from './SimilarityScoreWe';
 import { EuclidianDistance } from './EuclidianDistance';
+import { HotelsPlot } from './HotelsPlot';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -21,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
 
 export const Similarity = ({ selectedDate }) => {
   const classes = useStyles();
-  const [tab, setTab] = useState(-1);
+  const [tab, setTab] = useState(1);
 
   const getClusterDataSet = useSelector((state) => state.clusterDataSet);
   const {
@@ -73,6 +74,19 @@ export const Similarity = ({ selectedDate }) => {
               Similarity - Weekends
             </Nav.Link>
           </Nav.Item>
+          <Nav.Item>
+            <Nav.Link
+              className={
+                tab === 3
+                  ? tabularNavCls
+                  : 'text-dark font-weight-bold bg-light  shadow '
+              }
+              eventKey="link-1"
+              onClick={() => setTab(3)}
+            >
+              Similarity - Visuals
+            </Nav.Link>
+          </Nav.Item>
         </Nav>
       </div>
     );
@@ -87,6 +101,8 @@ export const Similarity = ({ selectedDate }) => {
         <SimilarityScoreWe selectedDate={selectedDate} />
       ) : hotels.length > 0 && tab === -1 ? (
         <EuclidianDistance selectedDate={selectedDate} />
+      ) : hotels.length > 0 && tab === 3 ? (
+        <HotelsPlot hotels={hotels} />
       ) : (
         <></>
       )}
