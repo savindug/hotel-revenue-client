@@ -41,12 +41,6 @@ export function HotelsPlot({ hotels }) {
 
   const [plotDataset, setPlotDataset] = useState([]);
 
-  const [load, setLoad] = useState(false);
-
-  const [scatterPlot, setScatterPlot] = useState(2);
-
-  const [scatterPlotLabels, setScatterPlotLabels] = useState();
-
   const report_len = 90;
 
   const [dateSelection, setDateSelection] = useState([0, 30]);
@@ -228,7 +222,7 @@ export function HotelsPlot({ hotels }) {
             backgroundColor:
               getReqHotelData().localeCompare(_hotel.hotelName) == 0
                 ? '#516B8F'
-                : '#2e2e2e',
+                : '#757575',
             data: [
               {
                 x: _hotel.frq_rating,
@@ -240,12 +234,70 @@ export function HotelsPlot({ hotels }) {
 
         setPlotDataset(scaterDataset);
         setPlotLabels(scaterLabels);
+
+        let reqHotelData = hotels.find(
+          (o) => getReqHotelData().localeCompare(o.hotelName) == 0
+        );
+
+        let reqHotelDataArr = [];
+
+        for (let dt = dateSelection[0]; dt < dateSelection[1]; dt++) {
+          if (reqHotelData.prices[dt]) {
+            if (
+              reqHotelData.prices[dt] != null &&
+              reqHotelData.prices[dt] !== undefined
+            ) {
+              reqHotelDataArr.push(
+                reqHotelData.prices[dt].price[
+                  getPrice(reqHotelData.prices[dt].price)
+                ]
+              );
+            }
+          }
+        }
+
+        let _plotData = [];
+
+        hotels.map((_hotel) => {
+          let rates_arr = [];
+          for (let dt = dateSelection[0]; dt < dateSelection[1]; dt++) {
+            if (_hotel.prices[dt]) {
+              if (
+                _hotel.prices[dt] != null &&
+                _hotel.prices[dt] !== undefined
+              ) {
+                rates_arr.push(
+                  _hotel.prices[dt].price[getPrice(_hotel.prices[dt].price)]
+                );
+              }
+            }
+          }
+          _plotData.push({
+            label: _hotel.hotelName,
+            pointRadius:
+              getReqHotelData().localeCompare(_hotel.hotelName) == 0 ? 6 : 3,
+            pointHoverRadius:
+              getReqHotelData().localeCompare(_hotel.hotelName) == 0 ? 6 : 3,
+            backgroundColor:
+              getReqHotelData().localeCompare(_hotel.hotelName) == 0
+                ? '#516B8F'
+                : '#757575',
+            data: [
+              {
+                x: (_hotel.frq_rating - reqHotelData.frq_rating).toFixed(2),
+                y: rates_arr.median() - reqHotelDataArr.median(),
+              },
+            ],
+          });
+        });
+
+        setPlotData(_plotData);
       }
     };
 
     if (hotels.length > 0 && clusterData.length > 0) {
       buildPlot();
-      getReqHotelData();
+      // getReqHotelData();
       // console.log(hotels);
     }
   }, []);
@@ -267,9 +319,7 @@ export function HotelsPlot({ hotels }) {
           }
         }
 
-        // _hotel[`datePage-${datePage}`] = rates_arr;
-
-        scaterLabels.push(_hotel.hotelNam);
+        scaterLabels.push(_hotel.hotelName);
         scaterDataset.push({
           label: _hotel.hotelName,
           pointRadius:
@@ -279,7 +329,7 @@ export function HotelsPlot({ hotels }) {
           backgroundColor:
             getReqHotelData().localeCompare(_hotel.hotelName) == 0
               ? '#516B8F'
-              : '#2e2e2e',
+              : '#757575',
           data: [
             {
               x: _hotel.frq_rating,
@@ -291,33 +341,82 @@ export function HotelsPlot({ hotels }) {
 
       setPlotDataset(scaterDataset);
       setPlotLabels(scaterLabels);
+
+      let reqHotelData = hotels.find(
+        (o) => getReqHotelData().localeCompare(o.hotelName) == 0
+      );
+
+      let reqHotelDataArr = [];
+
+      for (let dt = dateSelection[0]; dt < dateSelection[1]; dt++) {
+        if (reqHotelData.prices[dt]) {
+          if (
+            reqHotelData.prices[dt] != null &&
+            reqHotelData.prices[dt] !== undefined
+          ) {
+            reqHotelDataArr.push(
+              reqHotelData.prices[dt].price[
+                getPrice(reqHotelData.prices[dt].price)
+              ]
+            );
+          }
+        }
+      }
+
+      let _plotData = [];
+
+      hotels.map((_hotel) => {
+        let rates_arr = [];
+        for (let dt = dateSelection[0]; dt < dateSelection[1]; dt++) {
+          if (_hotel.prices[dt]) {
+            if (_hotel.prices[dt] != null && _hotel.prices[dt] !== undefined) {
+              rates_arr.push(
+                _hotel.prices[dt].price[getPrice(_hotel.prices[dt].price)]
+              );
+            }
+          }
+        }
+        _plotData.push({
+          label: _hotel.hotelName,
+          pointRadius:
+            getReqHotelData().localeCompare(_hotel.hotelName) == 0 ? 6 : 3,
+          pointHoverRadius:
+            getReqHotelData().localeCompare(_hotel.hotelName) == 0 ? 6 : 3,
+          backgroundColor:
+            getReqHotelData().localeCompare(_hotel.hotelName) == 0
+              ? '#516B8F'
+              : '#757575',
+          data: [
+            {
+              x: (_hotel.frq_rating - reqHotelData.frq_rating).toFixed(2),
+              y: rates_arr.median() - reqHotelDataArr.median(),
+            },
+          ],
+        });
+      });
+
+      setPlotData(_plotData);
     };
 
     if (hotels.length > 0 && clusterData.length > 0) {
       handleScatterPlot();
-      // console.log(hotels);
     }
   }, [dateSelection]);
 
   const getHotelDataByXY = (x, y) => {
-    let name = '';
+    let names = [];
     if (plotDataset.length > 0) {
       plotDataset.map((e) => {
         if (e.data[0].x == x && e.data[0].y == y) {
-          name = e.label;
-          return;
+          names.push(e.label);
         }
       });
     }
-    return name;
+    return names;
   };
 
   const handleDatePage = (e) => {
     setDatePage(e);
-    // console.log(
-    //   'datePage = ' + datePage + 'dateRange = ' + dateRange[datePage][0],
-    //   dateRange[datePage][1]
-    // );
     setDateSelection([dateRange[e][0], dateRange[e][1]]);
   };
 
@@ -361,12 +460,8 @@ export function HotelsPlot({ hotels }) {
             tooltips: {
               callbacks: {
                 label: function (tooltipItem, data) {
-                  var label = getHotelDataByXY(
-                    tooltipItem.xLabel,
-                    tooltipItem.yLabel
-                  );
                   return (
-                    label +
+                    data.datasets[tooltipItem.datasetIndex].label +
                     ': (' +
                     tooltipItem.xLabel +
                     ', ' +
@@ -381,8 +476,80 @@ export function HotelsPlot({ hotels }) {
             labels: plotLabels,
             datasets: plotDataset,
           }}
-          height={25}
-          width={100}
+        />
+      ) : (
+        <></>
+      )}
+      <Grid container justify="space-around" className="my-5">
+        <h3>Competitive Quadrant</h3>
+
+        <FormControl className={classes.formControl}>
+          <InputLabel htmlFor="grouped-native-select">Select Date</InputLabel>
+          <Select
+            native={true}
+            onChange={(e) => handleDatePage(e.target.value)}
+            id="grouped-native-select"
+            value={datePage}
+          >
+            {dateRange.length > 0 ? (
+              dateRange.map((e, i) => (
+                <option value={i}>
+                  {clusterData[e[0]]
+                    ? moment(clusterData[e[0]][0].date).format('MM/DD')
+                    : ''}{' '}
+                  -{' '}
+                  {clusterData[e[1]]
+                    ? moment(clusterData[e[1]][0].date).format('MM/DD')
+                    : ''}
+                </option>
+              ))
+            ) : (
+              <></>
+            )}
+          </Select>
+        </FormControl>
+      </Grid>
+      {plotData.length > 0 && plotLabels.length > 0 ? (
+        <Scatter
+          options={{
+            legend: {
+              display: false,
+            },
+            tooltips: {
+              callbacks: {
+                label: function (tooltipItem, data) {
+                  return (
+                    data.datasets[tooltipItem.datasetIndex].label +
+                    ': (' +
+                    tooltipItem.xLabel +
+                    ', ' +
+                    tooltipItem.yLabel +
+                    ')'
+                  );
+                },
+              },
+            },
+            scales: {
+              yAxes: [
+                {
+                  gridLines: {
+                    zeroLineColor: '#000000',
+                  },
+                },
+              ],
+              xAxes: [
+                {
+                  gridLines: {
+                    zeroLineColor: '#000000',
+                  },
+                },
+              ],
+            },
+          }}
+          data={{
+            labels: plotLabels,
+            datasets: plotData,
+          }}
         />
       ) : (
         <></>

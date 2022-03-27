@@ -74,19 +74,6 @@ export const Similarity = ({ selectedDate }) => {
               Similarity - Weekends
             </Nav.Link>
           </Nav.Item>
-          <Nav.Item>
-            <Nav.Link
-              className={
-                tab === 3
-                  ? tabularNavCls
-                  : 'text-dark font-weight-bold bg-light  shadow '
-              }
-              eventKey="link-1"
-              onClick={() => setTab(3)}
-            >
-              Similarity - Visuals
-            </Nav.Link>
-          </Nav.Item>
         </Nav>
       </div>
     );

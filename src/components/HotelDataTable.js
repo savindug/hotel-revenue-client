@@ -33,6 +33,8 @@ import {
 import SearchBar from 'material-ui-search-bar';
 
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
+import { Nav } from 'react-bootstrap';
+import { HotelsPlot } from './HotelsPlot';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -75,6 +77,11 @@ const useStyles = makeStyles((theme) => ({
   },
   rates: {
     fontFamily: FONT_FAMILY,
+  },
+  tabularNavStyle: {
+    backgroundColor: '#607D8B',
+    fontFamily: FONT_FAMILY,
+    fontWeight: 'bold',
   },
 }));
 
@@ -125,6 +132,8 @@ export default function HotelDataTable({ selectedDate }) {
   const [searched, setSearched] = useState('');
 
   const tableRef = useRef(null);
+
+  const [tab, setTab] = useState(1);
 
   const getReportName = () => {
     let name = null;
@@ -202,52 +211,45 @@ export default function HotelDataTable({ selectedDate }) {
     } catch (e) {}
 
     return res;
+  };
 
-    // if (
-    //   (cluster1[ix].min != undefined || cluster1[ix].min != null) &&
-    //   (cluster1[ix].max != undefined || cluster1[ix].max != null)
-    // ) {
-    //   if (rate >= cluster1[ix].min && rate <= cluster1[ix].max) {
-    //     // console.log(
-    //     //   `${ix} => ${cluster1[ix].min} < ${rate} > ${cluster1[ix].max} `
-    //     // );
-    //     return 0;
-    //   }
-    // }
-    // if (
-    //   (cluster2[ix].min != undefined || cluster2[ix].min != null) &&
-    //   (cluster2[ix].max != undefined || cluster2[ix].max != null)
-    // ) {
-    //   if (rate >= cluster2[ix].min && rate <= cluster2[ix].max) {
-    //     // console.log(
-    //     //   `${ix} =>${cluster2[ix].min} < ${rate} > ${cluster2[ix].max} `
-    //     // );
-    //     return 1;
-    //   }
-    // }
-
-    // if (
-    //   (cluster3[ix].min != undefined || cluster3[ix].min != null) &&
-    //   (cluster3[ix].max != undefined || cluster3[ix].max != null)
-    // ) {
-    //   if (rate >= cluster3[ix].min && rate <= cluster3[ix].max) {
-    //     // console.log(
-    //     //   `${ix} =>${cluster3[ix].min} < ${rate} > ${cluster3[ix].max} `
-    //     // );
-    //     return 2;
-    //   }
-    // }
-    // if (
-    //   (cluster4[ix].min != undefined || cluster4[ix].min != null) &&
-    //   (cluster4[ix].max != undefined || cluster4[ix].max != null)
-    // ) {
-    //   if (rate >= cluster4[ix].min && rate <= cluster4[ix].max) {
-    //     // console.log(
-    //     //   `${ix} =>${cluster4[ix].min} < ${rate} > ${cluster4[ix].max} `
-    //     // );
-    //     return 3;
-    //   }
-    // }
+  const TabularNav = () => {
+    const [tabularNavCls] = useState(
+      'text-light border-bottom-0 border-secondary  ' + classes.tabularNavStyle
+    );
+    return (
+      <div style={{ position: 'sticky', top: 185, zIndex: 200 }}>
+        {' '}
+        <Nav variant="tabs" justify="space-around">
+          <Nav.Item>
+            <Nav.Link
+              className={
+                tab === 1
+                  ? tabularNavCls
+                  : 'text-dark font-weight-bold bg-light  shadow '
+              }
+              eventKey="link-1"
+              onClick={() => setTab(1)}
+            >
+              Hotels
+            </Nav.Link>
+          </Nav.Item>{' '}
+          <Nav.Item>
+            <Nav.Link
+              className={
+                tab === 2
+                  ? tabularNavCls
+                  : 'text-dark font-weight-bold bg-light  shadow '
+              }
+              eventKey="link-1"
+              onClick={() => setTab(2)}
+            >
+              Visuals
+            </Nav.Link>
+          </Nav.Item>
+        </Nav>
+      </div>
+    );
   };
 
   const sortData = (sortBy, sortOrder) => {
@@ -422,7 +424,9 @@ export default function HotelDataTable({ selectedDate }) {
 
   return (
     <>
-      {hotels.length > 0 && originalRows.length > 0 ? (
+      {' '}
+      <TabularNav />
+      {hotels.length > 0 && originalRows.length > 0 && tab === 1 ? (
         <>
           <Grid container justify="space-evenly" className="my-3">
             <FormGroup className={classes.formControl}>
@@ -630,22 +634,6 @@ export default function HotelDataTable({ selectedDate }) {
                       })()
                     )}
                   </StyledTableRow>
-                  {/* <StyledTableRow>
-                    <StyledTableCell size="small">0</StyledTableCell>
-                    <StyledTableCell
-                      style={{
-                        fontWeight: 'bold',
-                        width: '250px',
-                        fontFamily: FONT_FAMILY,
-                      }}
-                    >
-                      Days Out
-                    </StyledTableCell>
-                    <StyledTableCell size="small"></StyledTableCell>
-                    {[...Array(report_len).keys()].map((e, index) => (
-                      <StyledTableCell size="small">{index}</StyledTableCell>
-                    ))}
-                  </StyledTableRow> */}
                 </TableHead>
 
                 <TableBody>
@@ -732,16 +720,9 @@ export default function HotelDataTable({ selectedDate }) {
               <br />
             </Box>
           </TableContainer>
-          {/* <TablePagination
-            rowsPerPageOptions={[10, 25]}
-            component="div"
-            count={hotels.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onChangePage={handleChangePage}
-            onChangeRowsPerPage={handleChangeRowsPerPage}
-          /> */}
         </>
+      ) : hotels.length > 0 && tab === 2 ? (
+        <HotelsPlot hotels={hotels} />
       ) : (
         <></>
       )}
