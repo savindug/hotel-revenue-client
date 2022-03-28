@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-
 import { useSelector } from 'react-redux';
 import { Scatter } from 'react-chartjs-2';
 import {
@@ -11,7 +10,10 @@ import {
   Select,
 } from '@material-ui/core';
 
+import Chart from 'chart.js';
+
 import moment from 'moment';
+import { CLUSTER_BACKGROUND } from '../utils/const';
 const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
@@ -44,6 +46,81 @@ export function HotelsPlot({ hotels }) {
   const report_len = 90;
 
   const [dateSelection, setDateSelection] = useState([0, 30]);
+
+  const quard_colors = [
+    { color: '#C5CAE9', label: 'More Expensive Lower Rated' },
+    { color: '#C8E6C9', label: 'More Expensive Bestter Rated' },
+    { color: '#FFF9C4', label: 'Less Expensive Lower Rated' },
+    { color: '#FFCCBC', label: 'Less Expensive Bestter Rated' },
+  ];
+
+  const [plugins, setPlugins] = useState([
+    // {
+    //   beforeInit: function (chart, args, options) {
+    //     // Make sure we're applying the legend to the right chart
+
+    //     const ul = document.createElement('ul');
+    //     quard_colors.map((qclr, i) => {
+    //       ul.innerHTML += `
+    //           <li>
+    //             <span style="background-color: ${quard_colors[i].color}">${quard_colors[i].label}</span>
+    //           </li>
+    //         `;
+    //     });
+
+    //     return document.getElementById('js-legend').appendChild(ul);
+    //   },
+    // },
+    {
+      beforeDraw: function (chart, easing) {
+        var chartArea = chart.chartArea;
+        var ctx = chart.chart.ctx;
+
+        // Replace these IDs if you have given your axes IDs in the config
+        var xScale = chart.scales['x-axis-1'];
+        var yScale = chart.scales['y-axis-1'];
+
+        var midX = xScale.getPixelForValue(0);
+        var midY = yScale.getPixelForValue(0);
+
+        // Top left quadrant
+        ctx.fillStyle = '#C5CAE9';
+        ctx.fillRect(
+          chartArea.left,
+          chartArea.top,
+          midX - chartArea.left,
+          midY - chartArea.top
+        );
+
+        // Top right quadrant
+        ctx.fillStyle = '#C8E6C9';
+        ctx.fillRect(
+          midX,
+          chartArea.top,
+          chartArea.right - midX,
+          midY - chartArea.top
+        );
+
+        // Bottom right quadrant
+        ctx.fillStyle = '#FFCCBC';
+        ctx.fillRect(
+          midX,
+          midY,
+          chartArea.right - midX,
+          chartArea.bottom - midY
+        );
+
+        // Bottom left quadrant
+        ctx.fillStyle = '#FFF9C4';
+        ctx.fillRect(
+          chartArea.left,
+          midY,
+          midX - chartArea.left,
+          chartArea.bottom - midY
+        );
+      },
+    },
+  ]);
 
   const getDateRange = () => {
     let dateRange_arr = [];
@@ -509,48 +586,78 @@ export function HotelsPlot({ hotels }) {
           </Select>
         </FormControl>
       </Grid>
+
       {plotData.length > 0 && plotLabels.length > 0 ? (
-        <Scatter
-          options={{
-            legend: {
-              display: false,
-            },
-            tooltips: {
-              callbacks: {
-                label: function (tooltipItem, data) {
-                  return (
-                    data.datasets[tooltipItem.datasetIndex].label +
-                    ': (' +
-                    tooltipItem.xLabel +
-                    ', ' +
-                    tooltipItem.yLabel +
-                    ')'
-                  );
+        <>
+          <Grid container justify="space-around" className="my-5">
+            <span
+              className="p-1 rounded font-weight-bold text-secondary"
+              style={{ backgroundColor: quard_colors[0].color }}
+            >
+              {quard_colors[0].label}
+            </span>
+            <span
+              className="p-1 rounded font-weight-bold text-secondary"
+              style={{ backgroundColor: quard_colors[1].color }}
+            >
+              {quard_colors[1].label}
+            </span>
+            <span
+              className="p-1 rounded font-weight-bold text-secondary"
+              style={{ backgroundColor: quard_colors[2].color }}
+            >
+              {quard_colors[2].label}
+            </span>
+            <span
+              className="p-1 rounded font-weight-bold text-secondary"
+              style={{ backgroundColor: quard_colors[3].color }}
+            >
+              {quard_colors[3].label}
+            </span>
+          </Grid>
+          <Scatter
+            options={{
+              legend: {
+                display: false,
+              },
+              tooltips: {
+                callbacks: {
+                  label: function (tooltipItem, data) {
+                    return (
+                      data.datasets[tooltipItem.datasetIndex].label +
+                      ': (' +
+                      tooltipItem.xLabel +
+                      ', ' +
+                      tooltipItem.yLabel +
+                      ')'
+                    );
+                  },
                 },
               },
-            },
-            scales: {
-              yAxes: [
-                {
-                  gridLines: {
-                    zeroLineColor: '#000000',
+              scales: {
+                yAxes: [
+                  {
+                    gridLines: {
+                      zeroLineColor: '#000000',
+                    },
                   },
-                },
-              ],
-              xAxes: [
-                {
-                  gridLines: {
-                    zeroLineColor: '#000000',
+                ],
+                xAxes: [
+                  {
+                    gridLines: {
+                      zeroLineColor: '#000000',
+                    },
                   },
-                },
-              ],
-            },
-          }}
-          data={{
-            labels: plotLabels,
-            datasets: plotData,
-          }}
-        />
+                ],
+              },
+            }}
+            plugins={plugins}
+            data={{
+              labels: plotLabels,
+              datasets: plotData,
+            }}
+          />
+        </>
       ) : (
         <></>
       )}

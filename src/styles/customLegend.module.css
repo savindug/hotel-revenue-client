@@ -1,0 +1,14 @@
+#js-legend li span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 50px;
+  height: 25px;
+
+  border-radius: 5px;
+  color: #fff;
+  font-size: 15px;
+  font-weight: bold;
+  border: 2px solid #fff;
+}
