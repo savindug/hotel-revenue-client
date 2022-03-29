@@ -548,6 +548,24 @@ export function HotelsPlot({ hotels }) {
                 },
               },
             },
+            scales: {
+              yAxes: [
+                {
+                  scaleLabel: {
+                    display: true,
+                    labelString: 'Median Rate for next 90 days',
+                  },
+                },
+              ],
+              xAxes: [
+                {
+                  scaleLabel: {
+                    display: true,
+                    labelString: 'Rating Position',
+                  },
+                },
+              ],
+            },
           }}
           data={{
             labels: plotLabels,
@@ -640,12 +658,20 @@ export function HotelsPlot({ hotels }) {
                     gridLines: {
                       zeroLineColor: '#000000',
                     },
+                    scaleLabel: {
+                      display: true,
+                      labelString: 'Median Rate for next 90 days',
+                    },
                   },
                 ],
                 xAxes: [
                   {
                     gridLines: {
                       zeroLineColor: '#000000',
+                    },
+                    scaleLabel: {
+                      display: true,
+                      labelString: 'Rating Position',
                     },
                   },
                 ],
