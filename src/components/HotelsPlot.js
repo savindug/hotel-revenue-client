@@ -660,7 +660,7 @@ export function HotelsPlot({ hotels }) {
                     },
                     scaleLabel: {
                       display: true,
-                      labelString: 'Median Rate for next 90 days',
+                      labelString: 'Difference in Median Rate for next 90 days',
                     },
                   },
                 ],
@@ -671,7 +671,7 @@ export function HotelsPlot({ hotels }) {
                     },
                     scaleLabel: {
                       display: true,
-                      labelString: 'Rating Position',
+                      labelString: 'Difference in Rating Position',
                     },
                   },
                 ],
