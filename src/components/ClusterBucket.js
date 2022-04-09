@@ -602,17 +602,6 @@ export default function ClusterBucket({ selectedDate, reqHotel }) {
                       Current Rate Bucket
                     </StyledTableCell>
 
-                    <StyledTableCell size="small" className={classes.rates}>
-                      {(() => {
-                        let stars = null;
-                        reqHotel.map((e, index) => {
-                          if (e.name !== null) {
-                            stars = e.stars;
-                          }
-                        });
-                        return stars;
-                      })()}
-                    </StyledTableCell>
                     {reqHotel.map((e, index) => (
                       <StyledTableCell
                         size="small"
