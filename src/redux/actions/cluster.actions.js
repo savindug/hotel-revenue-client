@@ -236,3 +236,32 @@ const setOutliers = (cluster, star) => {
 
   return cluster;
 };
+
+export const fetchCompReport =
+  (destID, date, range, property, refreshDate) => async (dispatch) => {
+    dispatch({ type: ACTION_TYPES.GET_COMP_REPORT_PROGRESS });
+
+    await axios(
+      `${apiURI}app/cluster/report/${property}/${destID}/${date}/${refreshDate}?range=${range}`,
+      {
+        headers: await getReqHeaders(),
+      }
+    )
+      .then((res) => {
+        let clusterData = res.data.data.cluster_report;
+        let reqHotelData = res.data.data.property_report;
+        let rating_cluster_report = res.data.data.rating_cluster_report;
+
+        dispatch({
+          type: ACTION_TYPES.GET_COMP_REPORT,
+          payload: {
+            clusterData: clusterData,
+            reqHotelData: reqHotelData,
+            rating_cluster_report: rating_cluster_report,
+          },
+        });
+      })
+      .catch(async (err) => {
+        dispatch(handleErr(DATA_ERR));
+      });
+  };

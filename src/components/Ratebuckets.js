@@ -34,6 +34,7 @@ export const Ratebuckets = ({ selectedDate }) => {
     markets,
     refreshDates,
     ratingCluster,
+    comparison_report,
   } = getClusterDataSet;
 
   const classes = useStyles();
@@ -102,6 +103,7 @@ export const Ratebuckets = ({ selectedDate }) => {
               stars={5}
               type="cluster"
               selectedDate={selectedDate}
+              comparison_report={comparison_report.clusterData}
             />
           </div>
           <div id="stars4" className="my-5">
@@ -110,6 +112,7 @@ export const Ratebuckets = ({ selectedDate }) => {
               stars={4}
               type="cluster"
               selectedDate={selectedDate}
+              comparison_report={comparison_report.clusterData}
             />
           </div>
           <div id="stars3" className="my-5">
@@ -118,6 +121,7 @@ export const Ratebuckets = ({ selectedDate }) => {
               stars={3}
               type="cluster"
               selectedDate={selectedDate}
+              comparison_report={comparison_report.clusterData}
             />
           </div>
           <div id="stars2" className="my-5">
@@ -126,6 +130,7 @@ export const Ratebuckets = ({ selectedDate }) => {
               stars={2}
               type="cluster"
               selectedDate={selectedDate}
+              comparison_report={comparison_report.clusterData}
             />
           </div>
         </>
@@ -148,6 +153,7 @@ export const Ratebuckets = ({ selectedDate }) => {
               stars={5}
               type="ratingCluster"
               selectedDate={selectedDate}
+              comparison_report={comparison_report.rating_cluster_report}
             />
           </div>
           <div id="stars4" className="my-5">
@@ -156,6 +162,7 @@ export const Ratebuckets = ({ selectedDate }) => {
               stars={4}
               type="ratingCluster"
               selectedDate={selectedDate}
+              comparison_report={comparison_report.rating_cluster_report}
             />
           </div>
           <div id="stars3" className="my-5">
@@ -164,6 +171,7 @@ export const Ratebuckets = ({ selectedDate }) => {
               stars={3}
               type="ratingCluster"
               selectedDate={selectedDate}
+              comparison_report={comparison_report.rating_cluster_report}
             />
           </div>
           <div id="stars2" className="my-5">
@@ -172,6 +180,7 @@ export const Ratebuckets = ({ selectedDate }) => {
               stars={2}
               type="ratingCluster"
               selectedDate={selectedDate}
+              comparison_report={comparison_report.rating_cluster_report}
             />
           </div>
         </>

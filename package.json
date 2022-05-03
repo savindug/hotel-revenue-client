@@ -27,6 +27,7 @@
     "date-fns": "^2.19.0",
     "excellentexport": "^3.7.3",
     "firebase": "^8.2.10",
+    "font-awesome": "^4.7.0",
     "google-map-react": "^2.1.9",
     "jquery": "^3.6.0",
     "material-table": "^1.69.3",

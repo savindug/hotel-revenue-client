@@ -18,7 +18,6 @@ import { LoadingOverlay } from './UI/LoadingOverlay';
 import { useSelector } from 'react-redux';
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 import * as XLSX from 'xlsx';
-
 import $ from 'jquery';
 import TableExport from 'tableexport';
 
@@ -82,6 +81,7 @@ export default function ClusterDataTable({
   stars,
   selectedDate,
   type,
+  comparison_report,
 }) {
   const classes = useStyles();
 
@@ -344,6 +344,34 @@ export default function ClusterDataTable({
     );
   };
 
+  useEffect(() => {
+    const CompareReport = async () => {
+      cluster.map((e) => {
+        let dateMatch = comparison_report.find(
+          (obj) =>
+            moment(e.date).format('YYYY-MM-DD') ===
+            moment(obj[stars - 2].date).format('YYYY-MM-DD')
+        );
+
+        if (dateMatch) {
+          delete dateMatch[stars - 2].cluster;
+          delete dateMatch[stars - 2].unwanted;
+
+          e.comp_report = dateMatch[stars - 2];
+
+          // console.log(`date: ${e.date}, match: ${JSON.stringify(dateMatch)}`);
+          // console.log(dateMatch[stars - 2]);
+        }
+      });
+
+      console.log(cluster);
+    };
+
+    if (comparison_report && cluster.length > 0) {
+      CompareReport();
+    }
+  }, []);
+
   return (
     <>
       {!load && cluster.length > 0 ? (
@@ -477,11 +505,25 @@ export default function ClusterDataTable({
                       key={index}
                       className={classes.rates}
                     >
-                      {e.mean !== 'NaN' && e.items > 0
-                        ? Math.round(e.mean)
-                        : e.mean !== 'NaN' && e.items < 0
-                        ? 'NED'
-                        : 'N/A'}
+                      {e.mean !== 'NaN' && e.items > 0 ? (
+                        <span>
+                          <i
+                            className={
+                              e.comp_report
+                                ? e.mean > e.comp_report.mean
+                                  ? 'fa fa-long-arrow-up text-success'
+                                  : 'fa fa-long-arrow-down text-danger'
+                                : ''
+                            }
+                            aria-hidden="true"
+                          ></i>
+                          {Math.round(e.mean)}
+                        </span>
+                      ) : e.mean !== 'NaN' && e.items < 0 ? (
+                        'NED'
+                      ) : (
+                        'N/A'
+                      )}
                     </StyledTableCell>
                   ))}
                 </StyledTableRow>
@@ -503,11 +545,25 @@ export default function ClusterDataTable({
                       key={index}
                       className={classes.rates}
                     >
-                      {e.mod !== 'NaN' && e.items > 0
-                        ? Math.round(e.mod)
-                        : e.mod !== 'NaN' && e.items < 0
-                        ? 'NED'
-                        : 'N/A'}
+                      {e.mod !== 'NaN' && e.items > 0 ? (
+                        <span>
+                          <i
+                            className={
+                              e.comp_report
+                                ? e.mod > e.comp_report.mod
+                                  ? 'fa fa-long-arrow-up text-success'
+                                  : 'fa fa-long-arrow-down text-danger'
+                                : ''
+                            }
+                            aria-hidden="true"
+                          ></i>
+                          {Math.round(e.mod)}
+                        </span>
+                      ) : e.mod !== 'NaN' && e.items < 0 ? (
+                        'NED'
+                      ) : (
+                        'N/A'
+                      )}
                     </StyledTableCell>
                   ))}
                 </StyledTableRow>
@@ -529,11 +585,25 @@ export default function ClusterDataTable({
                       key={index}
                       className={classes.rates}
                     >
-                      {e.median !== 'NaN' && e.items > 0
-                        ? Math.round(e.median)
-                        : e.median !== 'NaN' && e.items < 0
-                        ? 'NED'
-                        : 'N/A'}
+                      {e.median !== 'NaN' && e.items > 0 ? (
+                        <span>
+                          <i
+                            className={
+                              e.comp_report
+                                ? e.median > e.comp_report.median
+                                  ? 'fa fa-long-arrow-up text-success'
+                                  : 'fa fa-long-arrow-down text-danger'
+                                : ''
+                            }
+                            aria-hidden="true"
+                          ></i>
+                          {Math.round(e.median)}
+                        </span>
+                      ) : e.median !== 'NaN' && e.items < 0 ? (
+                        'NED'
+                      ) : (
+                        'N/A'
+                      )}
                     </StyledTableCell>
                   ))}
                 </StyledTableRow>
@@ -554,11 +624,25 @@ export default function ClusterDataTable({
                       key={index}
                       className={classes.rates}
                     >
-                      {e.max !== 'NaN' && e.items > 0
-                        ? Math.round(e.max)
-                        : e.max !== 'NaN' && e.items < 0
-                        ? 'NED'
-                        : 'N/A'}
+                      {e.max !== 'NaN' && e.items > 0 ? (
+                        <span>
+                          <i
+                            className={
+                              e.comp_report
+                                ? e.max > e.comp_report.max
+                                  ? 'fa fa-long-arrow-up text-success'
+                                  : 'fa fa-long-arrow-down text-danger'
+                                : ''
+                            }
+                            aria-hidden="true"
+                          ></i>
+                          {Math.round(e.max)}
+                        </span>
+                      ) : e.max !== 'NaN' && e.items < 0 ? (
+                        'NED'
+                      ) : (
+                        'N/A'
+                      )}
                     </StyledTableCell>
                   ))}
                 </StyledTableRow>
@@ -586,11 +670,25 @@ export default function ClusterDataTable({
                         borderTop: '3px solid grey',
                       }}
                     >
-                      {e.highAVG !== 'NaN' && e.items > 0
-                        ? Math.round(e.highAVG)
-                        : e.highAVG !== 'NaN' && e.items < 0
-                        ? 'NED'
-                        : 'N/A'}
+                      {e.highAVG !== 'NaN' && e.items > 0 ? (
+                        <span>
+                          <i
+                            className={
+                              e.comp_report
+                                ? e.highAVG > e.comp_report.highAVG
+                                  ? 'fa fa-long-arrow-up text-success'
+                                  : 'fa fa-long-arrow-down text-danger'
+                                : ''
+                            }
+                            aria-hidden="true"
+                          ></i>
+                          {Math.round(e.highAVG)}
+                        </span>
+                      ) : e.highAVG !== 'NaN' && e.items < 0 ? (
+                        'NED'
+                      ) : (
+                        'N/A'
+                      )}
                     </StyledTableCell>
                   ))}
                 </StyledTableRow>
@@ -611,11 +709,25 @@ export default function ClusterDataTable({
                       key={index}
                       className={classes.rates}
                     >
-                      {e.midAVG !== 'NaN' && e.items > 0
-                        ? Math.round(e.midAVG)
-                        : e.midAVG !== 'NaN' && e.items < 0
-                        ? 'NED'
-                        : 'N/A'}
+                      {e.midAVG !== 'NaN' && e.items > 0 ? (
+                        <span>
+                          <i
+                            className={
+                              e.comp_report
+                                ? e.midAVG > e.comp_report.midAVG
+                                  ? 'fa fa-long-arrow-up text-success'
+                                  : 'fa fa-long-arrow-down text-danger'
+                                : ''
+                            }
+                            aria-hidden="true"
+                          ></i>
+                          {Math.round(e.midAVG)}
+                        </span>
+                      ) : e.midAVG !== 'NaN' && e.items < 0 ? (
+                        'NED'
+                      ) : (
+                        'N/A'
+                      )}
                     </StyledTableCell>
                   ))}
                 </StyledTableRow>
@@ -643,11 +755,25 @@ export default function ClusterDataTable({
                         borderBottom: '3px solid grey',
                       }}
                     >
-                      {e.lowAVG !== 'NaN' && e.items > 0
-                        ? Math.round(e.lowAVG)
-                        : e.lowAVG !== 'NaN' && e.items < 0
-                        ? 'NED'
-                        : 'N/A'}
+                      {e.lowAVG !== 'NaN' && e.items > 0 ? (
+                        <span>
+                          <i
+                            className={
+                              e.comp_report
+                                ? e.lowAVG > e.comp_report.lowAVG
+                                  ? 'fa fa-long-arrow-up text-success'
+                                  : 'fa fa-long-arrow-down text-danger'
+                                : ''
+                            }
+                            aria-hidden="true"
+                          ></i>
+                          {Math.round(e.lowAVG)}
+                        </span>
+                      ) : e.lowAVG !== 'NaN' && e.items < 0 ? (
+                        'NED'
+                      ) : (
+                        'N/A'
+                      )}
                     </StyledTableCell>
                   ))}
                 </StyledTableRow>
@@ -668,11 +794,25 @@ export default function ClusterDataTable({
                       key={index}
                       className={classes.rates}
                     >
-                      {e.min !== 'NaN' && e.items > 0
-                        ? Math.round(e.min)
-                        : e.min !== 'NaN' && e.items < 0
-                        ? 'NED'
-                        : 'N/A'}
+                      {e.min !== 'NaN' && e.items > 0 ? (
+                        <span>
+                          <i
+                            className={
+                              e.comp_report
+                                ? e.min > e.comp_report.min
+                                  ? 'fa fa-long-arrow-up text-success'
+                                  : 'fa fa-long-arrow-down text-danger'
+                                : ''
+                            }
+                            aria-hidden="true"
+                          ></i>
+                          {Math.round(e.min)}
+                        </span>
+                      ) : e.min !== 'NaN' && e.items < 0 ? (
+                        'NED'
+                      ) : (
+                        'N/A'
+                      )}
                     </StyledTableCell>
                   ))}
                 </StyledTableRow>

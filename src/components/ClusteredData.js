@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   fetchClusterData,
+  fetchCompReport,
   fetchHotelData,
   fetchHotelsList,
   fetchRefreshDates,
@@ -208,6 +209,22 @@ export const ClusteredData = () => {
           90,
           selectedProperty,
           selectedDate
+        )
+      );
+
+      const comp_report_date = refreshDates.dates.findIndex(
+        (element) =>
+          moment(selectedDate).format('YYYY-MM-DD') ===
+          moment(element).format('YYYY-MM-DD')
+      );
+
+      await dispatch(
+        fetchCompReport(
+          selectedMarket,
+          moment().format('YYYY-MM-DD'),
+          90,
+          selectedProperty,
+          refreshDates.dates[comp_report_date + 1]
         )
       );
     }

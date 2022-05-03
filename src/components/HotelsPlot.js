@@ -54,6 +54,9 @@ export function HotelsPlot({ hotels }) {
     { color: '#FFCCBC', label: 'Less Expensive Bestter Rated' },
   ];
 
+  const [wDPlotDataset, setWDPlotDataset] = useState([]);
+  const [wEPlotDataset, setWEPlotDataset] = useState([]);
+
   const [plugins, setPlugins] = useState([
     // {
     //   beforeInit: function (chart, args, options) {
@@ -247,6 +250,8 @@ export function HotelsPlot({ hotels }) {
 
         hotels.map((_hotel) => {
           let cluster_arr = [];
+          let wdCluster_arr = [];
+          let weCluster_arr = [];
           _hotel.prices.map((dt, ix) => {
             if (dt !== null) {
               cluster_arr.push(
@@ -375,7 +380,7 @@ export function HotelsPlot({ hotels }) {
     if (hotels.length > 0 && clusterData.length > 0) {
       buildPlot();
       // getReqHotelData();
-      // console.log(hotels);
+      console.log(hotels);
     }
   }, []);
 

@@ -425,7 +425,7 @@ const SimpleMap = () => {
               key: GOOGLE_MAP_KEY,
             }}
             yesIWantToUseGoogleMapApiInternals
-            center={defaultProps.center}
+            defaultCenter={defaultProps.center}
             defaultZoom={defaultProps.zoom}
             options={{
               styles: [
