@@ -51,6 +51,7 @@ const useStyles = makeStyles({
     background: 'white',
     boxShadow: '2px 2px 2px grey',
     display: 'block',
+    zIndex: 100,
   },
   rates: {
     fontFamily: FONT_FAMILY,
