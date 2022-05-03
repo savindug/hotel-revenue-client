@@ -364,7 +364,7 @@ export default function ClusterDataTable({
         }
       });
 
-      console.log(cluster);
+      // console.log(cluster);
     };
 
     if (comparison_report && cluster.length > 0) {
