@@ -507,16 +507,34 @@ export default function ClusterDataTable({
                     >
                       {e.mean !== 'NaN' && e.items > 0 ? (
                         <span>
-                          <i
-                            className={
-                              e.comp_report
-                                ? e.mean > e.comp_report.mean
-                                  ? 'fa fa-long-arrow-up text-success'
-                                  : 'fa fa-long-arrow-down text-danger'
-                                : ''
-                            }
-                            aria-hidden="true"
-                          ></i>
+                          {e.comp_report ? (
+                            e.mean > e.comp_report.mean ? (
+                              <sup
+                                className={
+                                  e.comp_report
+                                    ? e.mean > e.comp_report.mean
+                                      ? 'fa fa-long-arrow-up text-success'
+                                      : 'fa fa-long-arrow-down text-danger'
+                                    : ''
+                                }
+                                aria-hidden="true"
+                              ></sup>
+                            ) : (
+                              <sub
+                                className={
+                                  e.comp_report
+                                    ? e.mean > e.comp_report.mean
+                                      ? 'fa fa-long-arrow-up text-success'
+                                      : 'fa fa-long-arrow-down text-danger'
+                                    : ''
+                                }
+                                aria-hidden="true"
+                              ></sub>
+                            )
+                          ) : (
+                            <></>
+                          )}
+
                           {Math.round(e.mean)}
                         </span>
                       ) : e.mean !== 'NaN' && e.items < 0 ? (
@@ -547,16 +565,33 @@ export default function ClusterDataTable({
                     >
                       {e.mod !== 'NaN' && e.items > 0 ? (
                         <span>
-                          <i
-                            className={
-                              e.comp_report
-                                ? e.mod > e.comp_report.mod
-                                  ? 'fa fa-long-arrow-up text-success'
-                                  : 'fa fa-long-arrow-down text-danger'
-                                : ''
-                            }
-                            aria-hidden="true"
-                          ></i>
+                          {e.comp_report ? (
+                            e.mod > e.comp_report.mod ? (
+                              <sup
+                                className={
+                                  e.comp_report
+                                    ? e.mod > e.comp_report.mod
+                                      ? 'fa fa-long-arrow-up text-success'
+                                      : 'fa fa-long-arrow-down text-danger'
+                                    : ''
+                                }
+                                aria-hidden="true"
+                              ></sup>
+                            ) : (
+                              <sub
+                                className={
+                                  e.comp_report
+                                    ? e.mod > e.comp_report.mod
+                                      ? 'fa fa-long-arrow-up text-success'
+                                      : 'fa fa-long-arrow-down text-danger'
+                                    : ''
+                                }
+                                aria-hidden="true"
+                              ></sub>
+                            )
+                          ) : (
+                            <></>
+                          )}
                           {Math.round(e.mod)}
                         </span>
                       ) : e.mod !== 'NaN' && e.items < 0 ? (
@@ -587,16 +622,33 @@ export default function ClusterDataTable({
                     >
                       {e.median !== 'NaN' && e.items > 0 ? (
                         <span>
-                          <i
-                            className={
-                              e.comp_report
-                                ? e.median > e.comp_report.median
-                                  ? 'fa fa-long-arrow-up text-success'
-                                  : 'fa fa-long-arrow-down text-danger'
-                                : ''
-                            }
-                            aria-hidden="true"
-                          ></i>
+                          {e.comp_report ? (
+                            e.median > e.comp_report.median ? (
+                              <sup
+                                className={
+                                  e.comp_report
+                                    ? e.median > e.comp_report.median
+                                      ? 'fa fa-long-arrow-up text-success'
+                                      : 'fa fa-long-arrow-down text-danger'
+                                    : ''
+                                }
+                                aria-hidden="true"
+                              ></sup>
+                            ) : (
+                              <sub
+                                className={
+                                  e.comp_report
+                                    ? e.median > e.comp_report.median
+                                      ? 'fa fa-long-arrow-up text-success'
+                                      : 'fa fa-long-arrow-down text-danger'
+                                    : ''
+                                }
+                                aria-hidden="true"
+                              ></sub>
+                            )
+                          ) : (
+                            <></>
+                          )}
                           {Math.round(e.median)}
                         </span>
                       ) : e.median !== 'NaN' && e.items < 0 ? (
@@ -626,16 +678,33 @@ export default function ClusterDataTable({
                     >
                       {e.max !== 'NaN' && e.items > 0 ? (
                         <span>
-                          <i
-                            className={
-                              e.comp_report
-                                ? e.max > e.comp_report.max
-                                  ? 'fa fa-long-arrow-up text-success'
-                                  : 'fa fa-long-arrow-down text-danger'
-                                : ''
-                            }
-                            aria-hidden="true"
-                          ></i>
+                          {e.comp_report ? (
+                            e.max > e.comp_report.max ? (
+                              <sup
+                                className={
+                                  e.comp_report
+                                    ? e.max > e.comp_report.max
+                                      ? 'fa fa-long-arrow-up text-success'
+                                      : 'fa fa-long-arrow-down text-danger'
+                                    : ''
+                                }
+                                aria-hidden="true"
+                              ></sup>
+                            ) : (
+                              <sub
+                                className={
+                                  e.comp_report
+                                    ? e.max > e.comp_report.max
+                                      ? 'fa fa-long-arrow-up text-success'
+                                      : 'fa fa-long-arrow-down text-danger'
+                                    : ''
+                                }
+                                aria-hidden="true"
+                              ></sub>
+                            )
+                          ) : (
+                            <></>
+                          )}
                           {Math.round(e.max)}
                         </span>
                       ) : e.max !== 'NaN' && e.items < 0 ? (
@@ -672,16 +741,33 @@ export default function ClusterDataTable({
                     >
                       {e.highAVG !== 'NaN' && e.items > 0 ? (
                         <span>
-                          <i
-                            className={
-                              e.comp_report
-                                ? e.highAVG > e.comp_report.highAVG
-                                  ? 'fa fa-long-arrow-up text-success'
-                                  : 'fa fa-long-arrow-down text-danger'
-                                : ''
-                            }
-                            aria-hidden="true"
-                          ></i>
+                          {e.comp_report ? (
+                            e.highAVG > e.comp_report.highAVG ? (
+                              <sup
+                                className={
+                                  e.comp_report
+                                    ? e.highAVG > e.comp_report.highAVG
+                                      ? 'fa fa-long-arrow-up text-success'
+                                      : 'fa fa-long-arrow-down text-danger'
+                                    : ''
+                                }
+                                aria-hidden="true"
+                              ></sup>
+                            ) : (
+                              <sub
+                                className={
+                                  e.comp_report
+                                    ? e.highAVG > e.comp_report.highAVG
+                                      ? 'fa fa-long-arrow-up text-success'
+                                      : 'fa fa-long-arrow-down text-danger'
+                                    : ''
+                                }
+                                aria-hidden="true"
+                              ></sub>
+                            )
+                          ) : (
+                            <></>
+                          )}
                           {Math.round(e.highAVG)}
                         </span>
                       ) : e.highAVG !== 'NaN' && e.items < 0 ? (
@@ -711,16 +797,33 @@ export default function ClusterDataTable({
                     >
                       {e.midAVG !== 'NaN' && e.items > 0 ? (
                         <span>
-                          <i
-                            className={
-                              e.comp_report
-                                ? e.midAVG > e.comp_report.midAVG
-                                  ? 'fa fa-long-arrow-up text-success'
-                                  : 'fa fa-long-arrow-down text-danger'
-                                : ''
-                            }
-                            aria-hidden="true"
-                          ></i>
+                          {e.comp_report ? (
+                            e.midAVG > e.comp_report.midAVG ? (
+                              <sup
+                                className={
+                                  e.comp_report
+                                    ? e.midAVG > e.comp_report.midAVG
+                                      ? 'fa fa-long-arrow-up text-success'
+                                      : 'fa fa-long-arrow-down text-danger'
+                                    : ''
+                                }
+                                aria-hidden="true"
+                              ></sup>
+                            ) : (
+                              <sub
+                                className={
+                                  e.comp_report
+                                    ? e.midAVG > e.comp_report.midAVG
+                                      ? 'fa fa-long-arrow-up text-success'
+                                      : 'fa fa-long-arrow-down text-danger'
+                                    : ''
+                                }
+                                aria-hidden="true"
+                              ></sub>
+                            )
+                          ) : (
+                            <></>
+                          )}
                           {Math.round(e.midAVG)}
                         </span>
                       ) : e.midAVG !== 'NaN' && e.items < 0 ? (
@@ -757,16 +860,33 @@ export default function ClusterDataTable({
                     >
                       {e.lowAVG !== 'NaN' && e.items > 0 ? (
                         <span>
-                          <i
-                            className={
-                              e.comp_report
-                                ? e.lowAVG > e.comp_report.lowAVG
-                                  ? 'fa fa-long-arrow-up text-success'
-                                  : 'fa fa-long-arrow-down text-danger'
-                                : ''
-                            }
-                            aria-hidden="true"
-                          ></i>
+                          {e.comp_report ? (
+                            e.lowAVG > e.comp_report.lowAVG ? (
+                              <sup
+                                className={
+                                  e.comp_report
+                                    ? e.lowAVG > e.comp_report.lowAVG
+                                      ? 'fa fa-long-arrow-up text-success'
+                                      : 'fa fa-long-arrow-down text-danger'
+                                    : ''
+                                }
+                                aria-hidden="true"
+                              ></sup>
+                            ) : (
+                              <sub
+                                className={
+                                  e.comp_report
+                                    ? e.lowAVG > e.comp_report.lowAVG
+                                      ? 'fa fa-long-arrow-up text-success'
+                                      : 'fa fa-long-arrow-down text-danger'
+                                    : ''
+                                }
+                                aria-hidden="true"
+                              ></sub>
+                            )
+                          ) : (
+                            <></>
+                          )}
                           {Math.round(e.lowAVG)}
                         </span>
                       ) : e.lowAVG !== 'NaN' && e.items < 0 ? (
@@ -796,16 +916,33 @@ export default function ClusterDataTable({
                     >
                       {e.min !== 'NaN' && e.items > 0 ? (
                         <span>
-                          <i
-                            className={
-                              e.comp_report
-                                ? e.min > e.comp_report.min
-                                  ? 'fa fa-long-arrow-up text-success'
-                                  : 'fa fa-long-arrow-down text-danger'
-                                : ''
-                            }
-                            aria-hidden="true"
-                          ></i>
+                          {e.comp_report ? (
+                            e.min > e.comp_report.min ? (
+                              <sup
+                                className={
+                                  e.comp_report
+                                    ? e.min > e.comp_report.min
+                                      ? 'fa fa-long-arrow-up text-success'
+                                      : 'fa fa-long-arrow-down text-danger'
+                                    : ''
+                                }
+                                aria-hidden="true"
+                              ></sup>
+                            ) : (
+                              <sub
+                                className={
+                                  e.comp_report
+                                    ? e.min > e.comp_report.min
+                                      ? 'fa fa-long-arrow-up text-success'
+                                      : 'fa fa-long-arrow-down text-danger'
+                                    : ''
+                                }
+                                aria-hidden="true"
+                              ></sub>
+                            )
+                          ) : (
+                            <></>
+                          )}
                           {Math.round(e.min)}
                         </span>
                       ) : e.min !== 'NaN' && e.items < 0 ? (

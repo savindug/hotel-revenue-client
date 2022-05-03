@@ -153,7 +153,9 @@ export const Ratebuckets = ({ selectedDate }) => {
               stars={5}
               type="ratingCluster"
               selectedDate={selectedDate}
-              comparison_report={comparison_report.rating_cluster_report}
+              comparison_report={
+                comparison_report.rating_cluster_report[0].clusters
+              }
             />
           </div>
           <div id="stars4" className="my-5">
@@ -162,7 +164,9 @@ export const Ratebuckets = ({ selectedDate }) => {
               stars={4}
               type="ratingCluster"
               selectedDate={selectedDate}
-              comparison_report={comparison_report.rating_cluster_report}
+              comparison_report={
+                comparison_report.rating_cluster_report[0].clusters
+              }
             />
           </div>
           <div id="stars3" className="my-5">
@@ -171,7 +175,9 @@ export const Ratebuckets = ({ selectedDate }) => {
               stars={3}
               type="ratingCluster"
               selectedDate={selectedDate}
-              comparison_report={comparison_report.rating_cluster_report}
+              comparison_report={
+                comparison_report.rating_cluster_report[0].clusters
+              }
             />
           </div>
           <div id="stars2" className="my-5">
@@ -180,7 +186,9 @@ export const Ratebuckets = ({ selectedDate }) => {
               stars={2}
               type="ratingCluster"
               selectedDate={selectedDate}
-              comparison_report={comparison_report.rating_cluster_report}
+              comparison_report={
+                comparison_report.rating_cluster_report[0].clusters
+              }
             />
           </div>
         </>
