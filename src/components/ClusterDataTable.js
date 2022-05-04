@@ -520,7 +520,9 @@ export default function ClusterDataTable({
                                     : ''
                                 }
                                 aria-hidden="true"
-                              ></sup>
+                              >
+                                &nbsp;
+                              </sup>
                             ) : (
                               <sub
                                 className={
@@ -531,12 +533,13 @@ export default function ClusterDataTable({
                                     : ''
                                 }
                                 aria-hidden="true"
-                              ></sub>
+                              >
+                                &nbsp;
+                              </sub>
                             )
                           ) : (
                             <></>
                           )}
-
                           {Math.round(e.mean)}
                         </span>
                       ) : e.mean !== 'NaN' && e.items < 0 ? (
@@ -578,7 +581,9 @@ export default function ClusterDataTable({
                                     : ''
                                 }
                                 aria-hidden="true"
-                              ></sup>
+                              >
+                                &nbsp;
+                              </sup>
                             ) : (
                               <sub
                                 className={
@@ -589,7 +594,9 @@ export default function ClusterDataTable({
                                     : ''
                                 }
                                 aria-hidden="true"
-                              ></sub>
+                              >
+                                &nbsp;
+                              </sub>
                             )
                           ) : (
                             <></>
@@ -635,7 +642,9 @@ export default function ClusterDataTable({
                                     : ''
                                 }
                                 aria-hidden="true"
-                              ></sup>
+                              >
+                                &nbsp;
+                              </sup>
                             ) : (
                               <sub
                                 className={
@@ -646,7 +655,9 @@ export default function ClusterDataTable({
                                     : ''
                                 }
                                 aria-hidden="true"
-                              ></sub>
+                              >
+                                &nbsp;
+                              </sub>
                             )
                           ) : (
                             <></>
@@ -691,7 +702,9 @@ export default function ClusterDataTable({
                                     : ''
                                 }
                                 aria-hidden="true"
-                              ></sup>
+                              >
+                                &nbsp;
+                              </sup>
                             ) : (
                               <sub
                                 className={
@@ -702,7 +715,9 @@ export default function ClusterDataTable({
                                     : ''
                                 }
                                 aria-hidden="true"
-                              ></sub>
+                              >
+                                &nbsp;
+                              </sub>
                             )
                           ) : (
                             <></>
@@ -754,7 +769,9 @@ export default function ClusterDataTable({
                                     : ''
                                 }
                                 aria-hidden="true"
-                              ></sup>
+                              >
+                                &nbsp;
+                              </sup>
                             ) : (
                               <sub
                                 className={
@@ -765,7 +782,9 @@ export default function ClusterDataTable({
                                     : ''
                                 }
                                 aria-hidden="true"
-                              ></sub>
+                              >
+                                &nbsp;
+                              </sub>
                             )
                           ) : (
                             <></>
@@ -810,7 +829,9 @@ export default function ClusterDataTable({
                                     : ''
                                 }
                                 aria-hidden="true"
-                              ></sup>
+                              >
+                                &nbsp;
+                              </sup>
                             ) : (
                               <sub
                                 className={
@@ -821,7 +842,9 @@ export default function ClusterDataTable({
                                     : ''
                                 }
                                 aria-hidden="true"
-                              ></sub>
+                              >
+                                &nbsp;
+                              </sub>
                             )
                           ) : (
                             <></>
@@ -873,7 +896,9 @@ export default function ClusterDataTable({
                                     : ''
                                 }
                                 aria-hidden="true"
-                              ></sup>
+                              >
+                                &nbsp;
+                              </sup>
                             ) : (
                               <sub
                                 className={
@@ -884,7 +909,9 @@ export default function ClusterDataTable({
                                     : ''
                                 }
                                 aria-hidden="true"
-                              ></sub>
+                              >
+                                &nbsp;
+                              </sub>
                             )
                           ) : (
                             <></>
@@ -929,7 +956,9 @@ export default function ClusterDataTable({
                                     : ''
                                 }
                                 aria-hidden="true"
-                              ></sup>
+                              >
+                                &nbsp;
+                              </sup>
                             ) : (
                               <sub
                                 className={
@@ -940,7 +969,9 @@ export default function ClusterDataTable({
                                     : ''
                                 }
                                 aria-hidden="true"
-                              ></sub>
+                              >
+                                &nbsp;
+                              </sub>
                             )
                           ) : (
                             <></>
