@@ -29,6 +29,7 @@ const StyledTableCell = withStyles((theme) => ({
   },
   body: {
     fontSize: 15,
+    minWidth: 100,
   },
 }))(TableCell);
 
@@ -478,7 +479,7 @@ export default function ClusterDataTable({
                     <StyledTableCell
                       size="small"
                       key={index}
-                      style={{ fontSize: '10px' }}
+                      style={{ fontSize: '12px' }}
                     >
                       {e.rateStrength ? (
                         <span className="">{e.rateStrength}</span>
@@ -565,15 +566,15 @@ export default function ClusterDataTable({
                       className={classes.rates}
                     >
                       {e.mod !== 'NaN' && e.items > 0 ? (
-                        <span>
+                        <span className="text-wrap">
                           {e.comp_report ? (
                             e.mod > e.comp_report.mod ? (
                               <sup
                                 className={
                                   e.comp_report
                                     ? e.mod > e.comp_report.mod
-                                      ? 'fa fa-long-arrow-up text-success'
-                                      : 'fa fa-long-arrow-down text-danger'
+                                      ? 'fa fa-long-arrow-up  text-success'
+                                      : 'fa fa-long-arrow-down  text-danger'
                                     : ''
                                 }
                                 aria-hidden="true"
@@ -583,8 +584,8 @@ export default function ClusterDataTable({
                                 className={
                                   e.comp_report
                                     ? e.mod > e.comp_report.mod
-                                      ? 'fa fa-long-arrow-up text-success'
-                                      : 'fa fa-long-arrow-down text-danger'
+                                      ? 'fa fa-long-arrow-up  text-success'
+                                      : 'fa fa-long-arrow-down   text-danger'
                                     : ''
                                 }
                                 aria-hidden="true"
