@@ -90,6 +90,8 @@ const SimpleMap = () => {
 
   const [loadHotelsList, setLoadHotelsList] = useState(false);
 
+  const [load, setLoad] = useState(true);
+
   const handleInfoOpen = (key, lat_lng) => {
     setInfoWindow(true);
     setInfoWindowID(key);
@@ -151,6 +153,7 @@ const SimpleMap = () => {
 
   useEffect(() => {
     const setMapPosition = async () => {
+      setLoad(true);
       setDefaultProps({
         ...defaultProps,
         center: {
@@ -158,6 +161,7 @@ const SimpleMap = () => {
           lng: Number(hotels[0].location.lng),
         },
       });
+      setLoad(false);
     };
 
     if (hotels.length > 0 && !loading) {
@@ -407,12 +411,9 @@ const SimpleMap = () => {
           <GoogleMapReact
             bootstrapURLKeys={{
               key: GOOGLE_MAP_KEY,
+              libraries: ['visualization'],
             }}
             yesIWantToUseGoogleMapApiInternals
-            // initialCenter={{
-            //   lat: Number(hotels[0].location.lat),
-            //   lng: Number(hotels[0].location.lng),
-            // }}
             defaultCenter={defaultProps.center}
             defaultZoom={defaultProps.zoom}
             options={{

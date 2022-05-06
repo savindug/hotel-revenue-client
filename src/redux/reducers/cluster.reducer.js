@@ -182,6 +182,7 @@ const clusterDataReducer = (state = initialState, action) => {
       return {
         ...state,
         comparison_report: action.payload,
+        loading: false,
       };
     case ACTION_TYPES.GET_COMP_REPORT_PROGRESS:
       return {
