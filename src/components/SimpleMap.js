@@ -21,20 +21,9 @@ import stars3 from '../assets/imgs/hote-icons/3stars.png';
 import stars4 from '../assets/imgs/hote-icons/4stars.png';
 import stars5 from '../assets/imgs/hote-icons/5stars.png';
 import black_Hotel from '../assets/imgs/hote-icons/blck_Hotel.png';
-import {
-  greatPlaceStyle,
-  greatPlaceStyleHover,
-  K_SIZE,
-} from '../styles/mapStyles';
+
 import { GOOGLE_MAP_KEY } from '../env';
-import {
-  Badge,
-  ListGroup,
-  OverlayTrigger,
-  Toast,
-  Tooltip,
-} from 'react-bootstrap';
-import LocationCityOutlinedIcon from '@material-ui/icons/LocationCityOutlined';
+import { Badge, Toast } from 'react-bootstrap';
 import moment from 'moment';
 
 const hotelIconDim = {
@@ -98,6 +87,8 @@ const SimpleMap = () => {
 
   const [infoWindow, setInfoWindow] = useState(false);
   const [infoWindowID, setInfoWindowID] = useState();
+
+  const [loadHotelsList, setLoadHotelsList] = useState(false);
 
   const handleInfoOpen = (key, lat_lng) => {
     setInfoWindow(true);
@@ -187,11 +178,6 @@ const SimpleMap = () => {
   }) => {
     return (
       <div key={id} style={{ cursor: 'pointer' }}>
-        {/* <OverlayTrigger
-        key={placement}
-        placement={placement}
-        overlay=
-      > */}
         <img
           src={
             mod_w === 2
@@ -238,11 +224,6 @@ const SimpleMap = () => {
                 <p>{`Ratings: ${ratings}`}</p>
                 <p>{`Weekday Bucket: ${mod_wd}`}</p>
                 <p>{`Weekend Bucket: ${mod_we}`}</p>
-                {/* <ul>
-                <li className="bg-dark">Stars {stars}</li>
-                <li className="bg-dark"> Date</li>
-                <li className="bg-dark">Rate</li>
-              </ul> */}
               </Toast.Body>
             </Toast>
           </div>
@@ -272,8 +253,12 @@ const SimpleMap = () => {
                 '& ul': { padding: 0 },
               }}
             >
-              {hotels
-                .sort((a, b) => a.hotelName.localeCompare(b.hotelName))
+              {[hotels[0]]
+                .concat(
+                  hotels
+                    .slice(1, hotels.length)
+                    .sort((a, b) => a.hotelName.localeCompare(b.hotelName))
+                )
                 .map((_hotel, index) =>
                   (() => {
                     let cluster_arr_wd = [];
@@ -424,6 +409,10 @@ const SimpleMap = () => {
               key: GOOGLE_MAP_KEY,
             }}
             yesIWantToUseGoogleMapApiInternals
+            // initialCenter={{
+            //   lat: Number(hotels[0].location.lat),
+            //   lng: Number(hotels[0].location.lng),
+            // }}
             defaultCenter={defaultProps.center}
             defaultZoom={defaultProps.zoom}
             options={{
@@ -442,51 +431,60 @@ const SimpleMap = () => {
                 },
               ],
             }}
-            onGoogleApiLoaded={({ map, maps }) =>
-              apiIsLoaded(map, maps, hotels)
-            }
+            onGoogleApiLoaded={({ map, maps }) => {
+              apiIsLoaded(map, maps, hotels);
+              setLoadHotelsList(true);
+            }}
           >
-            {hotels.map((_hotel, index) =>
-              (() => {
-                let cluster_arr_wd = [];
-                let cluster_arr_we = [];
-                let cluster_arr_w = [];
-                _hotel.prices.map((dt, ix) => {
-                  if (dt !== null) {
-                    const day = moment(dt.date).format('dddd').substring(0, 3);
-                    cluster_arr_w.push(
-                      getClusterByPrice(dt.price[getPrice(dt.price)], ix) + 2
-                    );
-                    if (day === 'Sat' || day === 'Fri') {
-                      cluster_arr_we.push(
+            {loadHotelsList ? (
+              hotels.map((_hotel, index) =>
+                (() => {
+                  let cluster_arr_wd = [];
+                  let cluster_arr_we = [];
+                  let cluster_arr_w = [];
+                  _hotel.prices.map((dt, ix) => {
+                    if (dt !== null) {
+                      const day = moment(dt.date)
+                        .format('dddd')
+                        .substring(0, 3);
+                      cluster_arr_w.push(
                         getClusterByPrice(dt.price[getPrice(dt.price)], ix) + 2
                       );
-                    } else {
-                      cluster_arr_wd.push(
-                        getClusterByPrice(dt.price[getPrice(dt.price)], ix) + 2
-                      );
+                      if (day === 'Sat' || day === 'Fri') {
+                        cluster_arr_we.push(
+                          getClusterByPrice(dt.price[getPrice(dt.price)], ix) +
+                            2
+                        );
+                      } else {
+                        cluster_arr_wd.push(
+                          getClusterByPrice(dt.price[getPrice(dt.price)], ix) +
+                            2
+                        );
+                      }
                     }
-                  }
-                });
-                return (
-                  <AnyReactComponent
-                    id={_hotel.hotelID}
-                    lat={_hotel.location.lat}
-                    lng={_hotel.location.lng}
-                    stars={Math.floor(_hotel.stars)}
-                    ratings={_hotel.ratings}
-                    text={_hotel.hotelName}
-                    prices={_hotel.prices}
-                    mod_wd={mode(cluster_arr_wd)}
-                    mod_we={mode(cluster_arr_we)}
-                    mod_w={mode(cluster_arr_w)}
-                    lat_lng={{
-                      lat: _hotel.location.lat,
-                      lng: _hotel.location.lng,
-                    }}
-                  />
-                );
-              })()
+                  });
+                  return (
+                    <AnyReactComponent
+                      id={_hotel.hotelID}
+                      lat={_hotel.location.lat}
+                      lng={_hotel.location.lng}
+                      stars={Math.floor(_hotel.stars)}
+                      ratings={_hotel.ratings}
+                      text={_hotel.hotelName}
+                      prices={_hotel.prices}
+                      mod_wd={mode(cluster_arr_wd)}
+                      mod_we={mode(cluster_arr_we)}
+                      mod_w={mode(cluster_arr_w)}
+                      lat_lng={{
+                        lat: _hotel.location.lat,
+                        lng: _hotel.location.lng,
+                      }}
+                    />
+                  );
+                })()
+              )
+            ) : (
+              <></>
             )}
           </GoogleMapReact>
         ) : (
