@@ -418,7 +418,6 @@ const SimpleMap = () => {
         )}
       </div>
       <div className="mt-5" style={{ height: '100vh', width: '50%' }}>
-        {/* {console.log(defaultProps)}, */}
         {hotels.length > 0 && !loading ? (
           <GoogleMapReact
             bootstrapURLKeys={{

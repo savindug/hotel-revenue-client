@@ -103,7 +103,13 @@ export const Ratebuckets = ({ selectedDate }) => {
               stars={5}
               type="cluster"
               selectedDate={selectedDate}
-              comparison_report={comparison_report.clusterData}
+              comparison_report={
+                comparison_report
+                  ? comparison_report.clusterData.length > 0
+                    ? comparison_report.clusterData
+                    : []
+                  : []
+              }
             />
           </div>
           <div id="stars4" className="my-5">
@@ -112,7 +118,13 @@ export const Ratebuckets = ({ selectedDate }) => {
               stars={4}
               type="cluster"
               selectedDate={selectedDate}
-              comparison_report={comparison_report.clusterData}
+              comparison_report={
+                comparison_report
+                  ? comparison_report.clusterData.length > 0
+                    ? comparison_report.clusterData
+                    : []
+                  : []
+              }
             />
           </div>
           <div id="stars3" className="my-5">
@@ -121,7 +133,13 @@ export const Ratebuckets = ({ selectedDate }) => {
               stars={3}
               type="cluster"
               selectedDate={selectedDate}
-              comparison_report={comparison_report.clusterData}
+              comparison_report={
+                comparison_report
+                  ? comparison_report.clusterData.length > 0
+                    ? comparison_report.clusterData
+                    : []
+                  : []
+              }
             />
           </div>
           <div id="stars2" className="my-5">
@@ -130,7 +148,13 @@ export const Ratebuckets = ({ selectedDate }) => {
               stars={2}
               type="cluster"
               selectedDate={selectedDate}
-              comparison_report={comparison_report.clusterData}
+              comparison_report={
+                comparison_report
+                  ? comparison_report.clusterData.length > 0
+                    ? comparison_report.clusterData
+                    : []
+                  : []
+              }
             />
           </div>
         </>
@@ -154,7 +178,11 @@ export const Ratebuckets = ({ selectedDate }) => {
               type="ratingCluster"
               selectedDate={selectedDate}
               comparison_report={
-                comparison_report.rating_cluster_report[0].clusters
+                comparison_report
+                  ? comparison_report.rating_cluster_report.length > 0
+                    ? comparison_report.rating_cluster_report[0].clusters
+                    : []
+                  : []
               }
             />
           </div>
@@ -165,7 +193,11 @@ export const Ratebuckets = ({ selectedDate }) => {
               type="ratingCluster"
               selectedDate={selectedDate}
               comparison_report={
-                comparison_report.rating_cluster_report[0].clusters
+                comparison_report
+                  ? comparison_report.rating_cluster_report.length > 0
+                    ? comparison_report.rating_cluster_report[0].clusters
+                    : []
+                  : []
               }
             />
           </div>
@@ -176,7 +208,11 @@ export const Ratebuckets = ({ selectedDate }) => {
               type="ratingCluster"
               selectedDate={selectedDate}
               comparison_report={
-                comparison_report.rating_cluster_report[0].clusters
+                comparison_report
+                  ? comparison_report.rating_cluster_report.length > 0
+                    ? comparison_report.rating_cluster_report[0].clusters
+                    : []
+                  : []
               }
             />
           </div>
@@ -187,7 +223,11 @@ export const Ratebuckets = ({ selectedDate }) => {
               type="ratingCluster"
               selectedDate={selectedDate}
               comparison_report={
-                comparison_report.rating_cluster_report[0].clusters
+                comparison_report
+                  ? comparison_report.rating_cluster_report.length > 0
+                    ? comparison_report.rating_cluster_report[0].clusters
+                    : []
+                  : []
               }
             />
           </div>

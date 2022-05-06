@@ -348,6 +348,7 @@ export default function ClusterDataTable({
 
   useEffect(() => {
     const CompareReport = async () => {
+      setLoad(true);
       cluster.map((e) => {
         let dateMatch = comparison_report.find(
           (obj) =>
@@ -360,19 +361,16 @@ export default function ClusterDataTable({
           delete dateMatch[stars - 2].unwanted;
 
           e.comp_report = dateMatch[stars - 2];
-
-          // console.log(`date: ${e.date}, match: ${JSON.stringify(dateMatch)}`);
-          // console.log(dateMatch[stars - 2]);
         }
       });
 
-      // console.log(cluster);
+      setLoad(false);
     };
 
     if (comparison_report && cluster.length > 0) {
       CompareReport();
     }
-  }, []);
+  }, [comparison_report]);
 
   return (
     <>
