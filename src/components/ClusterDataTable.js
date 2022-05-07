@@ -350,17 +350,26 @@ export default function ClusterDataTable({
     const CompareReport = async () => {
       setLoad(true);
       cluster.map((e) => {
-        let dateMatch = comparison_report.find(
-          (obj) =>
-            moment(e.date).format('YYYY-MM-DD') ===
-            moment(obj[stars - 2].date).format('YYYY-MM-DD')
-        );
+        if (e && e != undefined) {
+          let dateMatch = comparison_report.find((obj) => {
+            try {
+              if (obj && obj != undefined && obj[stars - 2] != undefined) {
+                if (
+                  moment(e.date).format('YYYY-MM-DD') ===
+                  moment(obj[stars - 2].date).format('YYYY-MM-DD')
+                ) {
+                  return obj;
+                }
+              }
+            } catch (e) {}
+          });
 
-        if (dateMatch) {
-          delete dateMatch[stars - 2].cluster;
-          delete dateMatch[stars - 2].unwanted;
+          if (dateMatch) {
+            delete dateMatch[stars - 2].cluster;
+            delete dateMatch[stars - 2].unwanted;
 
-          e.comp_report = dateMatch[stars - 2];
+            e.comp_report = dateMatch[stars - 2];
+          }
         }
       });
 

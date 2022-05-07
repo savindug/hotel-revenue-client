@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
 export const ClusteredData = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const [tab, setTab] = useState(-1);
+  const [tab, setTab] = useState(4);
 
   const [selectedProperty, setSelectedProperty] = useState(0);
 
@@ -142,11 +142,11 @@ export const ClusteredData = () => {
     }
   }, [dispatch, refreshDates]);
 
-  useEffect(() => {
-    if (clusterData.length > 0) {
-      setTab(4);
-    }
-  }, [dispatch, clusterData]);
+  // useEffect(() => {
+  //   if (clusterData.length > 0) {
+  //     setTab(4);
+  //   }
+  // }, [dispatch, clusterData]);
 
   useEffect(() => {
     async function autoFetchproperties(mrkt) {
@@ -200,6 +200,36 @@ export const ClusteredData = () => {
     setPropertyOptionsHook();
   }, []);
 
+  const fetch_full_report = async (
+    destID,
+    date,
+    range,
+    property,
+    refreshDate
+  ) => {
+    await dispatch(
+      fetchClusterData(destID, date, range, property, refreshDate)
+    );
+    if (refreshDates.dates.length > 1) {
+      const comp_report_date = refreshDates.dates.findIndex(
+        (element) =>
+          moment(refreshDate).format('YYYY-MM-DD') ===
+          moment(element).format('YYYY-MM-DD')
+      );
+
+      await dispatch(
+        fetchCompReport(
+          destID,
+          date,
+          range,
+          property,
+          refreshDates.dates[comp_report_date + 1]
+        )
+      );
+    }
+    await dispatch(fetchHotelData(destID, date, range, property, refreshDate));
+  };
+
   useEffect(() => {
     async function getClusters() {
       await dispatch(
@@ -211,22 +241,28 @@ export const ClusteredData = () => {
           selectedDate
         )
       );
+    }
 
-      const comp_report_date = refreshDates.dates.findIndex(
-        (element) =>
-          moment(selectedDate).format('YYYY-MM-DD') ===
-          moment(element).format('YYYY-MM-DD')
-      );
+    async function getCompReport() {
+      try {
+        const comp_report_date = refreshDates.dates.findIndex(
+          (element) =>
+            moment(selectedDate).format('YYYY-MM-DD') ===
+            moment(element).format('YYYY-MM-DD')
+        );
 
-      await dispatch(
-        fetchCompReport(
-          selectedMarket,
-          moment().format('YYYY-MM-DD'),
-          90,
-          selectedProperty,
-          refreshDates.dates[comp_report_date + 1]
-        )
-      );
+        if (refreshDates.dates[comp_report_date + 1]) {
+          await dispatch(
+            fetchCompReport(
+              selectedMarket,
+              moment().format('YYYY-MM-DD'),
+              90,
+              selectedProperty,
+              refreshDates.dates[comp_report_date + 1]
+            )
+          );
+        }
+      } catch (e) {}
     }
 
     async function getHotels() {
@@ -242,7 +278,9 @@ export const ClusteredData = () => {
     }
 
     if (selectedMarket > 0 && selectedProperty > 0) {
+      console.log('report fetching.....');
       getClusters();
+      getCompReport();
       getHotels();
     }
   }, [selectedDate, dispatch, selectedProperty]);
