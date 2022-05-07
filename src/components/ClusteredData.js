@@ -278,7 +278,7 @@ export const ClusteredData = () => {
     }
 
     if (selectedMarket > 0 && selectedProperty > 0) {
-      console.log('report fetching.....');
+      // console.log('report fetching.....');
       getClusters();
       getCompReport();
       getHotels();
