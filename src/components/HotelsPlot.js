@@ -576,6 +576,8 @@ export function HotelsPlot({ hotels }) {
             labels: plotLabels,
             datasets: plotDataset,
           }}
+          height={25}
+          width={100}
         />
       ) : (
         <></>
@@ -687,6 +689,8 @@ export function HotelsPlot({ hotels }) {
               labels: plotLabels,
               datasets: plotData,
             }}
+            height={25}
+            width={100}
           />
         </>
       ) : (
