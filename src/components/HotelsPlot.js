@@ -50,8 +50,8 @@ export function HotelsPlot({ hotels }) {
   const quard_colors = [
     { color: '#C5CAE9', label: 'More Expensive Lower Rated' },
     { color: '#C8E6C9', label: 'More Expensive Bestter Rated' },
-    { color: '#FFF9C4', label: 'Less Expensive Lower Rated' },
-    { color: '#FFCCBC', label: 'Less Expensive Bestter Rated' },
+    { color: '#FFCCBC', label: 'Less Expensive Lower Rated' },
+    { color: '#FFF9C4', label: 'Less Expensive Bestter Rated' },
   ];
 
   const [wDPlotDataset, setWDPlotDataset] = useState([]);
@@ -105,7 +105,7 @@ export function HotelsPlot({ hotels }) {
         );
 
         // Bottom right quadrant
-        ctx.fillStyle = '#FFCCBC';
+        ctx.fillStyle = '#FFF9C4';
         ctx.fillRect(
           midX,
           midY,
@@ -114,7 +114,7 @@ export function HotelsPlot({ hotels }) {
         );
 
         // Bottom left quadrant
-        ctx.fillStyle = '#FFF9C4';
+        ctx.fillStyle = '#FFCCBC';
         ctx.fillRect(
           chartArea.left,
           midY,
@@ -303,7 +303,7 @@ export function HotelsPlot({ hotels }) {
               getReqHotelData().localeCompare(_hotel.hotelName) == 0 ? 6 : 3,
             backgroundColor:
               getReqHotelData().localeCompare(_hotel.hotelName) == 0
-                ? '#516B8F'
+                ? '#EF5350'
                 : '#757575',
             data: [
               {
@@ -362,7 +362,7 @@ export function HotelsPlot({ hotels }) {
               getReqHotelData().localeCompare(_hotel.hotelName) == 0 ? 6 : 3,
             backgroundColor:
               getReqHotelData().localeCompare(_hotel.hotelName) == 0
-                ? '#516B8F'
+                ? '#EF5350'
                 : '#757575',
             data: [
               {
@@ -410,7 +410,7 @@ export function HotelsPlot({ hotels }) {
             getReqHotelData().localeCompare(_hotel.hotelName) == 0 ? 6 : 3,
           backgroundColor:
             getReqHotelData().localeCompare(_hotel.hotelName) == 0
-              ? '#516B8F'
+              ? '#EF5350'
               : '#757575',
           data: [
             {
@@ -466,7 +466,7 @@ export function HotelsPlot({ hotels }) {
             getReqHotelData().localeCompare(_hotel.hotelName) == 0 ? 6 : 3,
           backgroundColor:
             getReqHotelData().localeCompare(_hotel.hotelName) == 0
-              ? '#516B8F'
+              ? '#EF5350'
               : '#757575',
           data: [
             {
@@ -576,8 +576,8 @@ export function HotelsPlot({ hotels }) {
             labels: plotLabels,
             datasets: plotDataset,
           }}
-          height={25}
-          width={100}
+          height={'25%'}
+          width={'100%'}
         />
       ) : (
         <></>
@@ -689,8 +689,8 @@ export function HotelsPlot({ hotels }) {
               labels: plotLabels,
               datasets: plotData,
             }}
-            height={25}
-            width={100}
+            height={'25%'}
+            width={'100%'}
           />
         </>
       ) : (
