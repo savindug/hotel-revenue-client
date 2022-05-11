@@ -49,9 +49,9 @@ export function HotelsPlot({ hotels }) {
 
   const quard_colors = [
     { color: '#C5CAE9', label: 'More Expensive Lower Rated' },
-    { color: '#C8E6C9', label: 'More Expensive Bestter Rated' },
+    { color: '#C8E6C9', label: 'More Expensive Better Rated' },
     { color: '#FFCCBC', label: 'Less Expensive Lower Rated' },
-    { color: '#FFF9C4', label: 'Less Expensive Bestter Rated' },
+    { color: '#FFF9C4', label: 'Less Expensive Better Rated' },
   ];
 
   const [wDPlotDataset, setWDPlotDataset] = useState([]);
