@@ -14,6 +14,7 @@ import Paper from '@material-ui/core/Paper';
 import { useSelector } from 'react-redux';
 import moment from 'moment';
 import { CLUSTER_BACKGROUND, FONT_FAMILY } from '../utils/const';
+import { useEffect } from 'react';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -53,6 +54,13 @@ export default function ClusterBucket({ selectedDate, reqHotel }) {
 
   const getClusterDataSet = useSelector((state) => state.clusterDataSet);
   const { loading, clusterData, report_len } = getClusterDataSet;
+
+  const daily_fetch_len = selectedDate
+    ? moment(moment(selectedDate).add(90, 'days'))
+        .endOf('month')
+        .day('sunday')
+        .diff(selectedDate, 'days')
+    : 0;
 
   const RatePositionTable = ({ stars, cluster }) => {
     return (
@@ -492,6 +500,10 @@ export default function ClusterBucket({ selectedDate, reqHotel }) {
     );
   };
 
+  useEffect(() => {
+    console.log(daily_fetch_len);
+  }, []);
+
   return (
     <>
       {!loading && clusterData.length > 0 && reqHotel.length > 0 ? (
@@ -544,13 +556,21 @@ export default function ClusterBucket({ selectedDate, reqHotel }) {
                               ? 'bg-secondary text-light text-center'
                               : 'text-center'
                           }
-                          style={{ fontSize: '12px' }}
+                          style={{
+                            fontSize: '12px',
+                            borderRight:
+                              index == daily_fetch_len
+                                ? '5px solid rgba(66, 66, 66, 1)'
+                                : '',
+                          }}
                         >
-                          {`${
-                            date === 'Sat' || date === 'Fri' ? 'WEND' : 'WDAY'
-                          }\n${date.toUpperCase()}\n${moment(e.checkIn).format(
-                            'MM/DD'
-                          )}`}
+                          <>
+                            {date === 'Sat' || date === 'Fri' ? 'WEND' : 'WDAY'}
+                          </>
+                          <br />
+                          <>{date.toUpperCase()}</>
+                          <br />
+                          <>{moment(e.checkIn).format('MM/DD')}</>{' '}
                           <div class="dropdown-divider"></div>
                           {daysOut}
                         </StyledTableCell>
@@ -584,6 +604,10 @@ export default function ClusterBucket({ selectedDate, reqHotel }) {
                         key={index}
                         style={{
                           backgroundColor: CLUSTER_BACKGROUND[e.cluster - 2],
+                          borderRight:
+                            index == daily_fetch_len
+                              ? '5px solid rgba(66, 66, 66, 1)'
+                              : '',
                         }}
                         className={classes.rates}
                       >
@@ -607,6 +631,12 @@ export default function ClusterBucket({ selectedDate, reqHotel }) {
                         size="small"
                         key={index}
                         className={classes.rates}
+                        style={{
+                          borderRight:
+                            index == daily_fetch_len
+                              ? '5px solid rgba(66, 66, 66, 1)'
+                              : '',
+                        }}
                       >
                         {e.cluster}
                       </StyledTableCell>
@@ -624,22 +654,18 @@ export default function ClusterBucket({ selectedDate, reqHotel }) {
                       Rate Bucket Position
                     </StyledTableCell>
 
-                    <StyledTableCell size="small" className={classes.rates}>
-                      {(() => {
-                        let stars = null;
-                        reqHotel.map((e, index) => {
-                          if (e.name !== null) {
-                            stars = e.stars;
-                          }
-                        });
-                        return stars;
-                      })()}
-                    </StyledTableCell>
                     {reqHotel.map((e, index) => (
                       <StyledTableCell
                         size="small"
                         key={index}
-                        style={{ fontWeight: 'bold', fontSize: '12px' }}
+                        style={{
+                          fontWeight: 'bold',
+                          fontSize: '12px',
+                          borderRight:
+                            index == daily_fetch_len
+                              ? '5px solid rgba(66, 66, 66, 1)'
+                              : '',
+                        }}
                         className={classes.rates}
                       >
                         {e.pos}
@@ -662,22 +688,17 @@ export default function ClusterBucket({ selectedDate, reqHotel }) {
                       Rate Bucket Rank (Highest to Lowest)
                     </StyledTableCell>
 
-                    <StyledTableCell size="small" className={classes.rates}>
-                      {(() => {
-                        let stars = null;
-                        reqHotel.map((e, index) => {
-                          if (e.name !== null) {
-                            stars = e.stars;
-                          }
-                        });
-                        return stars;
-                      })()}
-                    </StyledTableCell>
                     {reqHotel.map((e, index) => (
                       <StyledTableCell
                         size="small"
                         key={index}
-                        style={{ fontSize: '14px' }}
+                        style={{
+                          fontSize: '14px',
+                          borderRight:
+                            index == daily_fetch_len
+                              ? '5px solid rgba(66, 66, 66, 1)'
+                              : '',
+                        }}
                         className={classes.rates}
                       >
                         <sup>{e.rank.split('/')[0]}</sup>&frasl;

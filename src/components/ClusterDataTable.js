@@ -454,7 +454,7 @@ export default function ClusterDataTable({
                         }
                         style={{
                           fontSize: '12px',
-                          borderLeft:
+                          borderRight:
                             index == daily_fetch_len
                               ? '5px solid rgba(66, 66, 66, 1)'
                               : '',
@@ -503,7 +503,7 @@ export default function ClusterDataTable({
                       key={index}
                       style={{
                         fontSize: '12px',
-                        borderLeft:
+                        borderRight:
                           index == daily_fetch_len
                             ? '5px solid rgba(66, 66, 66, 1)'
                             : '',
@@ -535,7 +535,7 @@ export default function ClusterDataTable({
                       key={index}
                       className={classes.rates}
                       style={{
-                        borderLeft:
+                        borderRight:
                           index == daily_fetch_len
                             ? '5px solid rgba(66, 66, 66, 1)'
                             : '',
@@ -602,7 +602,7 @@ export default function ClusterDataTable({
                       key={index}
                       className={classes.rates}
                       style={{
-                        borderLeft:
+                        borderRight:
                           index == daily_fetch_len
                             ? '5px solid rgba(66, 66, 66, 1)'
                             : '',
@@ -669,7 +669,7 @@ export default function ClusterDataTable({
                       key={index}
                       className={classes.rates}
                       style={{
-                        borderLeft:
+                        borderRight:
                           index == daily_fetch_len
                             ? '5px solid rgba(66, 66, 66, 1)'
                             : '',
@@ -735,7 +735,7 @@ export default function ClusterDataTable({
                       key={index}
                       className={classes.rates}
                       style={{
-                        borderLeft:
+                        borderRight:
                           index == daily_fetch_len
                             ? '5px solid rgba(66, 66, 66, 1)'
                             : '',
@@ -806,7 +806,7 @@ export default function ClusterDataTable({
                       className={classes.rates}
                       style={{
                         borderTop: '3px solid grey',
-                        borderLeft:
+                        borderRight:
                           index == daily_fetch_len
                             ? '5px solid rgba(66, 66, 66, 1)'
                             : '',
@@ -872,7 +872,7 @@ export default function ClusterDataTable({
                       key={index}
                       className={classes.rates}
                       style={{
-                        borderLeft:
+                        borderRight:
                           index == daily_fetch_len
                             ? '5px solid rgba(66, 66, 66, 1)'
                             : '',
@@ -943,7 +943,7 @@ export default function ClusterDataTable({
                       className={classes.rates}
                       style={{
                         borderBottom: '3px solid grey',
-                        borderLeft:
+                        borderRight:
                           index == daily_fetch_len
                             ? '5px solid rgba(66, 66, 66, 1)'
                             : '',
@@ -1009,7 +1009,7 @@ export default function ClusterDataTable({
                       key={index}
                       className={classes.rates}
                       style={{
-                        borderLeft:
+                        borderRight:
                           index == daily_fetch_len
                             ? '5px solid rgba(66, 66, 66, 1)'
                             : '',
