@@ -94,6 +94,13 @@ export default function ClusterDataTable({
 
   const [rateStrength, setRateStrength] = useState([]);
 
+  const daily_fetch_len = selectedDate
+    ? moment(moment(selectedDate).add(90, 'days'))
+        .endOf('month')
+        .day('sunday')
+        .diff(selectedDate, 'days')
+    : 0;
+
   const tablesToExcel = function () {
     var uri = 'data:application/vnd.ms-excel;base64,',
       tmplWorkbookXML =
@@ -445,13 +452,21 @@ export default function ClusterDataTable({
                             ? 'bg-secondary text-light text-center'
                             : 'text-center'
                         }
-                        style={{ fontSize: '12px' }}
+                        style={{
+                          fontSize: '12px',
+                          borderLeft:
+                            index == daily_fetch_len
+                              ? '5px solid rgba(66, 66, 66, 1)'
+                              : '',
+                        }}
                       >
-                        {`${
-                          date === 'Sat' || date === 'Fri' ? 'WEND' : 'WDAY'
-                        }\n${date.toUpperCase()}\n${moment(e.date).format(
-                          'MM/DD'
-                        )}`}{' '}
+                        <>
+                          {date === 'Sat' || date === 'Fri' ? 'WEND' : 'WDAY'}
+                        </>
+                        <br />
+                        <>{date.toUpperCase()}</>
+                        <br />
+                        <>{moment(e.date).format('MM/DD')}</>{' '}
                         <div class="dropdown-divider"></div>
                         {daysOut}
                       </StyledTableCell>
@@ -486,7 +501,13 @@ export default function ClusterDataTable({
                     <StyledTableCell
                       size="small"
                       key={index}
-                      style={{ fontSize: '12px' }}
+                      style={{
+                        fontSize: '12px',
+                        borderLeft:
+                          index == daily_fetch_len
+                            ? '5px solid rgba(66, 66, 66, 1)'
+                            : '',
+                      }}
                     >
                       {e.rateStrength ? (
                         <span className="">{e.rateStrength}</span>
@@ -513,6 +534,12 @@ export default function ClusterDataTable({
                       size="small"
                       key={index}
                       className={classes.rates}
+                      style={{
+                        borderLeft:
+                          index == daily_fetch_len
+                            ? '5px solid rgba(66, 66, 66, 1)'
+                            : '',
+                      }}
                     >
                       {e.mean !== 'NaN' && e.items > 0 ? (
                         <span>
@@ -574,6 +601,12 @@ export default function ClusterDataTable({
                       size="small"
                       key={index}
                       className={classes.rates}
+                      style={{
+                        borderLeft:
+                          index == daily_fetch_len
+                            ? '5px solid rgba(66, 66, 66, 1)'
+                            : '',
+                      }}
                     >
                       {e.mod !== 'NaN' && e.items > 0 ? (
                         <span className="text-wrap">
@@ -635,6 +668,12 @@ export default function ClusterDataTable({
                       size="small"
                       key={index}
                       className={classes.rates}
+                      style={{
+                        borderLeft:
+                          index == daily_fetch_len
+                            ? '5px solid rgba(66, 66, 66, 1)'
+                            : '',
+                      }}
                     >
                       {e.median !== 'NaN' && e.items > 0 ? (
                         <span>
@@ -695,6 +734,12 @@ export default function ClusterDataTable({
                       size="small"
                       key={index}
                       className={classes.rates}
+                      style={{
+                        borderLeft:
+                          index == daily_fetch_len
+                            ? '5px solid rgba(66, 66, 66, 1)'
+                            : '',
+                      }}
                     >
                       {e.max !== 'NaN' && e.items > 0 ? (
                         <span>
@@ -761,6 +806,10 @@ export default function ClusterDataTable({
                       className={classes.rates}
                       style={{
                         borderTop: '3px solid grey',
+                        borderLeft:
+                          index == daily_fetch_len
+                            ? '5px solid rgba(66, 66, 66, 1)'
+                            : '',
                       }}
                     >
                       {e.highAVG !== 'NaN' && e.items > 0 ? (
@@ -822,6 +871,12 @@ export default function ClusterDataTable({
                       size="small"
                       key={index}
                       className={classes.rates}
+                      style={{
+                        borderLeft:
+                          index == daily_fetch_len
+                            ? '5px solid rgba(66, 66, 66, 1)'
+                            : '',
+                      }}
                     >
                       {e.midAVG !== 'NaN' && e.items > 0 ? (
                         <span>
@@ -888,6 +943,10 @@ export default function ClusterDataTable({
                       className={classes.rates}
                       style={{
                         borderBottom: '3px solid grey',
+                        borderLeft:
+                          index == daily_fetch_len
+                            ? '5px solid rgba(66, 66, 66, 1)'
+                            : '',
                       }}
                     >
                       {e.lowAVG !== 'NaN' && e.items > 0 ? (
@@ -949,6 +1008,12 @@ export default function ClusterDataTable({
                       size="small"
                       key={index}
                       className={classes.rates}
+                      style={{
+                        borderLeft:
+                          index == daily_fetch_len
+                            ? '5px solid rgba(66, 66, 66, 1)'
+                            : '',
+                      }}
                     >
                       {e.min !== 'NaN' && e.items > 0 ? (
                         <span>
