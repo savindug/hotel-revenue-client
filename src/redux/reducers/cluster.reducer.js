@@ -35,19 +35,19 @@ const clusterDataReducer = (state = initialState, action) => {
       return {
         ...state,
         clusterData: action.payload,
-        loading: false,
+        //loading: false,
       };
 
     case ACTION_TYPES.GET_CLUSTER_PROGRESS:
       return {
         ...state,
-        loading: true,
+        //loading: true,
       };
 
     case ACTION_TYPES.GET_CLUSTER_FAILED:
       return {
         ...state,
-        loading: false,
+        //loading: false,
         err: action.payload,
       };
 
@@ -55,19 +55,19 @@ const clusterDataReducer = (state = initialState, action) => {
       return {
         ...state,
         hotels: action.payload,
-        loading: false,
+        //loading: false,
       };
 
     case ACTION_TYPES.GET_HOTELS_PROGRESS:
       return {
         ...state,
-        loading: true,
+        //loading: true,
       };
 
     case ACTION_TYPES.GET_HOTELS_FAILED:
       return {
         ...state,
-        loading: false,
+        //loading: false,
         err: action.payload,
       };
 
@@ -75,19 +75,19 @@ const clusterDataReducer = (state = initialState, action) => {
       return {
         ...state,
         markets: action.payload,
-        loading: false,
+        //loading: false,
       };
 
     case ACTION_TYPES.GET_MARKETS_PROGRESS:
       return {
         ...state,
-        loading: true,
+        //loading: true,
       };
 
     case ACTION_TYPES.GET_MARKETS_FAILED:
       return {
         ...state,
-        loading: false,
+        //loading: false,
         err: action.payload,
       };
 
@@ -95,25 +95,25 @@ const clusterDataReducer = (state = initialState, action) => {
       return {
         ...state,
         cluster1: action.payload,
-        loading: false,
+        //loading: false,
       };
     case ACTION_TYPES.SET_CLUSTER_2:
       return {
         ...state,
         cluster2: action.payload,
-        loading: false,
+        //loading: false,
       };
     case ACTION_TYPES.SET_CLUSTER_3:
       return {
         ...state,
         cluster3: action.payload,
-        loading: false,
+        //loading: false,
       };
     case ACTION_TYPES.SET_CLUSTER_4:
       return {
         ...state,
         cluster4: action.payload,
-        loading: false,
+        //loading: false,
       };
 
     case ACTION_TYPES.SET_QUARY:
@@ -126,26 +126,26 @@ const clusterDataReducer = (state = initialState, action) => {
       return {
         ...state,
         reqHotel: action.payload,
-        loading: false,
+        //loading: false,
       };
 
     case ACTION_TYPES.GET_HOTELSLIST:
       return {
         ...state,
         hotelList: action.payload,
-        loading: false,
+        //loading: false,
       };
 
     case ACTION_TYPES.GET_HOTELSLIST_PROGRESS:
       return {
         ...state,
-        loading: true,
+        //loading: true,
       };
 
     case ACTION_TYPES.GET_HOTELSLIST_FAILED:
       return {
         ...state,
-        loading: false,
+        //loading: false,
         err: action.payload,
       };
 
@@ -153,19 +153,19 @@ const clusterDataReducer = (state = initialState, action) => {
       return {
         ...state,
         refreshDates: action.payload,
-        loading: false,
+        //loading: false,
       };
 
     case ACTION_TYPES.GET_REFRESH_DATES_PROGRESS:
       return {
         ...state,
-        loading: true,
+        //loading: true,
       };
 
     case ACTION_TYPES.GET_REFRESH_DATES_FAILED:
       return {
         ...state,
-        loading: false,
+        //loading: false,
         err: action.payload,
       };
     case ACTION_TYPES.SET_REPORT_LEN:
@@ -182,18 +182,23 @@ const clusterDataReducer = (state = initialState, action) => {
       return {
         ...state,
         comparison_report: action.payload,
-        loading: false,
+        //loading: false,
       };
     case ACTION_TYPES.GET_COMP_REPORT_PROGRESS:
       return {
         ...state,
-        loading: true,
+        //loading: true,
       };
     case ACTION_TYPES.GET_COMP_REPORT_FAILED:
       return {
         ...state,
-        loading: false,
+        //loading: false,
         err: action.payload,
+      };
+    case ACTION_TYPES.SET_LOADING:
+      return {
+        ...state,
+        loading: action.payload,
       };
     default:
       return state;

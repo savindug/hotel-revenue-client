@@ -5,8 +5,31 @@ import { getReqHeaders } from '../../services/auth.service';
 import { refresh } from './auth.actions';
 import * as ACTION_TYPES from './types';
 
+let cluster_date_loading = true;
+let hotel_date_loading = true;
+let hotel_list_loading = true;
+let markets_loading = true;
+let refresh_dates_loading = true;
+let comp_report_loading = true;
+
+const check_loading = () => {
+  if (
+    cluster_date_loading === false &&
+    hotel_date_loading === false &&
+    hotel_list_loading === false &&
+    markets_loading === false &&
+    refresh_dates_loading === false &&
+    comp_report_loading === false
+  ) {
+    return false;
+  } else {
+    return true;
+  }
+};
+
 export const fetchClusterData =
   (destID, date, range, property, refreshDate) => async (dispatch) => {
+    cluster_date_loading = true;
     dispatch({ type: ACTION_TYPES.GET_CLUSTER_PROGRESS });
     let cl1 = [];
     let cl2 = [];
@@ -130,10 +153,18 @@ export const fetchClusterData =
       .catch(async (err) => {
         dispatch(handleErr(DATA_ERR));
       });
+
+    cluster_date_loading = false;
+
+    dispatch({
+      type: ACTION_TYPES.SET_LOADING,
+      payload: check_loading(),
+    });
   };
 
 export const fetchHotelData =
   (destID, date, range, property, refreshDate) => async (dispatch) => {
+    hotel_date_loading = true;
     dispatch({ type: ACTION_TYPES.GET_HOTELS_PROGRESS });
 
     await axios(
@@ -152,9 +183,17 @@ export const fetchHotelData =
       .catch(async (err) => {
         dispatch(handleErr(DATA_ERR));
       });
+
+    hotel_date_loading = false;
+
+    dispatch({
+      type: ACTION_TYPES.SET_LOADING,
+      payload: check_loading(),
+    });
   };
 
 export const fetchHotelsList = (destID) => async (dispatch) => {
+  hotel_list_loading = true;
   dispatch({ type: ACTION_TYPES.GET_HOTELSLIST_PROGRESS });
 
   await axios
@@ -170,9 +209,17 @@ export const fetchHotelsList = (destID) => async (dispatch) => {
     .catch(async (err) => {
       dispatch(handleErr(DATA_ERR));
     });
+
+  hotel_list_loading = false;
+
+  dispatch({
+    type: ACTION_TYPES.SET_LOADING,
+    payload: check_loading(),
+  });
 };
 
 export const fetchMarkets = () => async (dispatch) => {
+  markets_loading = false;
   dispatch({ type: ACTION_TYPES.GET_MARKETS_PROGRESS });
 
   await axios
@@ -188,9 +235,16 @@ export const fetchMarkets = () => async (dispatch) => {
     .catch(async (err) => {
       dispatch(handleErr(DATA_ERR));
     });
+  markets_loading = false;
+
+  dispatch({
+    type: ACTION_TYPES.SET_LOADING,
+    payload: check_loading(),
+  });
 };
 
 export const fetchRefreshDates = (destID) => async (dispatch) => {
+  refresh_dates_loading = true;
   dispatch({ type: ACTION_TYPES.GET_REFRESH_DATES_PROGRESS });
 
   await axios
@@ -206,6 +260,13 @@ export const fetchRefreshDates = (destID) => async (dispatch) => {
     .catch(async (err) => {
       dispatch(handleErr(DATA_ERR));
     });
+
+  refresh_dates_loading = false;
+
+  dispatch({
+    type: ACTION_TYPES.SET_LOADING,
+    payload: check_loading(),
+  });
 };
 
 export const handleErr = (err) => async (dispatch) => {
@@ -239,6 +300,7 @@ const setOutliers = (cluster, star) => {
 
 export const fetchCompReport =
   (destID, date, range, property, refreshDate) => async (dispatch) => {
+    comp_report_loading = true;
     dispatch({ type: ACTION_TYPES.GET_COMP_REPORT_PROGRESS });
 
     await axios(
@@ -264,4 +326,11 @@ export const fetchCompReport =
       .catch(async (err) => {
         dispatch(handleErr(DATA_ERR));
       });
+
+    comp_report_loading = false;
+
+    dispatch({
+      type: ACTION_TYPES.SET_LOADING,
+      payload: check_loading(),
+    });
   };

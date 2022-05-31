@@ -260,7 +260,6 @@ const SimpleMap = () => {
               {[hotels.sort((a, b) => a.distance - b.distance)[0]]
                 .concat(
                   hotels
-                    .sort((a, b) => a.distance - b.distance)
                     .slice(1, hotels.length)
                     .sort((a, b) => a.hotelName.localeCompare(b.hotelName))
                 )
