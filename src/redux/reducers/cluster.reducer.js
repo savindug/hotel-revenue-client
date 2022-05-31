@@ -41,7 +41,7 @@ const clusterDataReducer = (state = initialState, action) => {
     case ACTION_TYPES.GET_CLUSTER_PROGRESS:
       return {
         ...state,
-        //loading: true,
+        loading: true,
       };
 
     case ACTION_TYPES.GET_CLUSTER_FAILED:
@@ -61,7 +61,7 @@ const clusterDataReducer = (state = initialState, action) => {
     case ACTION_TYPES.GET_HOTELS_PROGRESS:
       return {
         ...state,
-        //loading: true,
+        loading: true,
       };
 
     case ACTION_TYPES.GET_HOTELS_FAILED:
@@ -81,7 +81,7 @@ const clusterDataReducer = (state = initialState, action) => {
     case ACTION_TYPES.GET_MARKETS_PROGRESS:
       return {
         ...state,
-        //loading: true,
+        loading: true,
       };
 
     case ACTION_TYPES.GET_MARKETS_FAILED:
@@ -139,7 +139,7 @@ const clusterDataReducer = (state = initialState, action) => {
     case ACTION_TYPES.GET_HOTELSLIST_PROGRESS:
       return {
         ...state,
-        //loading: true,
+        loading: true,
       };
 
     case ACTION_TYPES.GET_HOTELSLIST_FAILED:
@@ -159,7 +159,7 @@ const clusterDataReducer = (state = initialState, action) => {
     case ACTION_TYPES.GET_REFRESH_DATES_PROGRESS:
       return {
         ...state,
-        //loading: true,
+        loading: true,
       };
 
     case ACTION_TYPES.GET_REFRESH_DATES_FAILED:
@@ -187,7 +187,7 @@ const clusterDataReducer = (state = initialState, action) => {
     case ACTION_TYPES.GET_COMP_REPORT_PROGRESS:
       return {
         ...state,
-        //loading: true,
+        loading: true,
       };
     case ACTION_TYPES.GET_COMP_REPORT_FAILED:
       return {
