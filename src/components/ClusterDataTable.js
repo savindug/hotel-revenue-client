@@ -219,28 +219,28 @@ export default function ClusterDataTable({
       let _rateStrength = [];
 
       cluster.map((e, index) => {
-        if (index < 90) {
-          if (e.mean >= avg + 2 * sd) {
-            e.rateStrength = 'Very High';
-            _rateStrength.push('Very High');
-          }
-          if (e.mean >= avg + 1 * sd && e.mean < avg + 2 * sd) {
-            e.rateStrength = 'High';
-            _rateStrength.push('High');
-          }
-          if (e.mean >= avg - 1 * sd && e.mean < avg + 1 * sd) {
-            e.rateStrength = '';
-            _rateStrength.push('');
-          }
-          if (e.mean >= avg - 2 * sd && e.mean < avg - 1 * sd) {
-            e.rateStrength = 'Low';
-            _rateStrength.push('Low');
-          }
-          if (e.mean <= avg - 2 * sd) {
-            e.rateStrength = 'Very Low';
-            _rateStrength.push('Very Low');
-          }
+        // if (index < 90) {
+        if (e.mean >= avg + 2 * sd) {
+          e.rateStrength = 'Very High';
+          _rateStrength.push('Very High');
         }
+        if (e.mean >= avg + 1 * sd && e.mean < avg + 2 * sd) {
+          e.rateStrength = 'High';
+          _rateStrength.push('High');
+        }
+        if (e.mean >= avg - 1 * sd && e.mean < avg + 1 * sd) {
+          e.rateStrength = '';
+          _rateStrength.push('');
+        }
+        if (e.mean >= avg - 2 * sd && e.mean < avg - 1 * sd) {
+          e.rateStrength = 'Low';
+          _rateStrength.push('Low');
+        }
+        if (e.mean <= avg - 2 * sd) {
+          e.rateStrength = 'Very Low';
+          _rateStrength.push('Very Low');
+        }
+        // }
       });
 
       // console.log(`Bucket: ${stars} star sd: ${sd}, avg: ${avg},`);
