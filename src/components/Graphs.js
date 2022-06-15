@@ -774,7 +774,6 @@ export const Graphs = ({ selectedDate, selectedProperty }) => {
       let hotels_list = [];
 
       if (cluster1[day].unwanted) {
-        // console.log(cluster1[day].unwanted);
         hotels_list = hotels_list.concat(cluster1[day].unwanted);
       }
       if (cluster2[day].unwanted) {
@@ -794,38 +793,10 @@ export const Graphs = ({ selectedDate, selectedProperty }) => {
       rank = hotels_list.findIndex((e) => e.id == selectedProperty);
 
       if (rank > 0) {
-        return `${rank}`;
+        return rank + others;
       } else {
         return null;
       }
-
-      // if (reqHotel[day] != null) {
-      //   let pr_rnk =
-      //     parseInt(reqHotel[day].rank.split('/')[1]) -
-      //     parseInt(reqHotel[day].rank.split('/')[0]);
-
-      //   pr_rnk = pr_rnk + others;
-
-      //   if (reqHotel[day].cluster == 2) {
-      //     rank = pr_rnk;
-      //   }
-      //   if (reqHotel[day].cluster == 3) {
-      //     rank = cluster1[day].unwanted.length + pr_rnk;
-      //   }
-      //   if (reqHotel[day].cluster == 4) {
-      //     rank =
-      //       cluster1[day].unwanted.length +
-      //       cluster2[day].unwanted.length +
-      //       pr_rnk;
-      //   }
-      //   if (reqHotel[day].cluster == 5) {
-      //     rank =
-      //       cluster1[day].unwanted.length +
-      //       cluster2[day].unwanted.length +
-      //       cluster3[day].unwanted.length +
-      //       pr_rnk;
-      //   }
-      // }
     };
 
     const buildHotelsDataSet = async () => {
@@ -878,7 +849,10 @@ export const Graphs = ({ selectedDate, selectedProperty }) => {
         };
         datebyhotelcount.push(day);
 
-        reqHotel[ix].overallRank = getPropertyRankInCluster(ix, 0);
+        reqHotel[ix].overallRank = getPropertyRankInCluster(
+          ix,
+          noRateHotels.length + outliers.length
+        );
 
         // console.log(
         //   `date: ${hotels[0].prices[ix].date}, cls5h: ${cls5h.length}, cls4h: ${cls4h.length}, cls3h: ${cls3h.length}, cls2h: ${cls2h.length}, outliers: ${outliers.length}, noRateHotels: ${noRateHotels.length}`
