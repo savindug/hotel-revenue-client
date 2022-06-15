@@ -786,14 +786,14 @@ export const Graphs = ({ selectedDate, selectedProperty }) => {
         hotels_list = hotels_list.concat(cluster4[day].unwanted);
       }
 
-      console.log(hotels_list);
+      // console.log(hotels_list);
 
       hotels_list = hotels_list.sort((a, b) => a.rate - b.rate);
 
       rank = hotels_list.findIndex((e) => e.id == selectedProperty);
 
       if (rank > 0) {
-        return rank + others;
+        return rank;
       } else {
         return null;
       }
