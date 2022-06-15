@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 120,
   },
 }));
-export const Graphs = ({ selectedDate }) => {
+export const Graphs = ({ selectedDate, selectedProperty }) => {
   const classes = useStyles();
   const [matrix, setMatrix] = useState('avg');
   const getClusterDataSet = useSelector((state) => state.clusterDataSet);
@@ -770,40 +770,62 @@ export const Graphs = ({ selectedDate }) => {
 
   useEffect(() => {
     const getPropertyRankInCluster = (day, others) => {
-      let rank = null;
-      let rate = 'N/A';
+      let rank = 0;
+      let hotels_list = [];
 
-      if (reqHotel[day] != null) {
-        let pr_rnk =
-          parseInt(reqHotel[day].rank.split('/')[1]) -
-          parseInt(reqHotel[day].rank.split('/')[0]);
-
-        rate = reqHotel[day].rate;
-
-        pr_rnk = pr_rnk + others;
-
-        if (reqHotel[day].cluster == 2) {
-          rank = pr_rnk;
-        }
-        if (reqHotel[day].cluster == 3) {
-          rank = cluster1[day].unwanted.length + pr_rnk;
-        }
-        if (reqHotel[day].cluster == 4) {
-          rank =
-            cluster1[day].unwanted.length +
-            cluster2[day].unwanted.length +
-            pr_rnk;
-        }
-        if (reqHotel[day].cluster == 5) {
-          rank =
-            cluster1[day].unwanted.length +
-            cluster2[day].unwanted.length +
-            cluster3[day].unwanted.length +
-            pr_rnk;
-        }
+      if (cluster1[day].unwanted) {
+        // console.log(cluster1[day].unwanted);
+        hotels_list = hotels_list.concat(cluster1[day].unwanted);
+      }
+      if (cluster2[day].unwanted) {
+        hotels_list = hotels_list.concat(cluster2[day].unwanted);
+      }
+      if (cluster3[day].unwanted) {
+        hotels_list = hotels_list.concat(cluster3[day].unwanted);
+      }
+      if (cluster4[day].unwanted) {
+        hotels_list = hotels_list.concat(cluster4[day].unwanted);
       }
 
-      return `${rank}`;
+      console.log(hotels_list);
+
+      hotels_list = hotels_list.sort((a, b) => a.rate - b.rate);
+
+      rank = hotels_list.findIndex((e) => e.id == selectedProperty);
+
+      if (rank > 0) {
+        return `${rank}`;
+      } else {
+        return null;
+      }
+
+      // if (reqHotel[day] != null) {
+      //   let pr_rnk =
+      //     parseInt(reqHotel[day].rank.split('/')[1]) -
+      //     parseInt(reqHotel[day].rank.split('/')[0]);
+
+      //   pr_rnk = pr_rnk + others;
+
+      //   if (reqHotel[day].cluster == 2) {
+      //     rank = pr_rnk;
+      //   }
+      //   if (reqHotel[day].cluster == 3) {
+      //     rank = cluster1[day].unwanted.length + pr_rnk;
+      //   }
+      //   if (reqHotel[day].cluster == 4) {
+      //     rank =
+      //       cluster1[day].unwanted.length +
+      //       cluster2[day].unwanted.length +
+      //       pr_rnk;
+      //   }
+      //   if (reqHotel[day].cluster == 5) {
+      //     rank =
+      //       cluster1[day].unwanted.length +
+      //       cluster2[day].unwanted.length +
+      //       cluster3[day].unwanted.length +
+      //       pr_rnk;
+      //   }
+      // }
     };
 
     const buildHotelsDataSet = async () => {
@@ -856,10 +878,7 @@ export const Graphs = ({ selectedDate }) => {
         };
         datebyhotelcount.push(day);
 
-        reqHotel[ix].overallRank = getPropertyRankInCluster(
-          ix,
-          noRateHotels.length + outliers.length
-        );
+        reqHotel[ix].overallRank = getPropertyRankInCluster(ix, 0);
 
         // console.log(
         //   `date: ${hotels[0].prices[ix].date}, cls5h: ${cls5h.length}, cls4h: ${cls4h.length}, cls3h: ${cls3h.length}, cls2h: ${cls2h.length}, outliers: ${outliers.length}, noRateHotels: ${noRateHotels.length}`

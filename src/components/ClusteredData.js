@@ -622,7 +622,10 @@ export const ClusteredData = () => {
       ) : clusterData.length > 0 && tab === 1 ? (
         <BucketMovements selectedDate={selectedDate} />
       ) : clusterData.length > 0 && tab === 2 ? (
-        <Graphs selectedDate={selectedDate} />
+        <Graphs
+          selectedDate={selectedDate}
+          selectedProperty={selectedProperty}
+        />
       ) : hotels.length > 0 && tab === 3 ? (
         <HotelDataTable selectedDate={selectedDate} />
       ) : hotels.length > 0 && tab === 4 ? (
