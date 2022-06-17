@@ -773,18 +773,26 @@ export const Graphs = ({ selectedDate, selectedProperty }) => {
       let rank = 0;
       let hotels_list = [];
 
-      if (cluster1[day].unwanted) {
-        hotels_list = hotels_list.concat(cluster1[day].unwanted);
-      }
-      if (cluster2[day].unwanted) {
-        hotels_list = hotels_list.concat(cluster2[day].unwanted);
-      }
-      if (cluster3[day].unwanted) {
-        hotels_list = hotels_list.concat(cluster3[day].unwanted);
-      }
-      if (cluster4[day].unwanted) {
-        hotels_list = hotels_list.concat(cluster4[day].unwanted);
-      }
+      try {
+        if (cluster1[day]) {
+          hotels_list = hotels_list.concat(cluster1[day].unwanted);
+        }
+      } catch (e) {}
+      try {
+        if (cluster2[day]) {
+          hotels_list = hotels_list.concat(cluster2[day].unwanted);
+        }
+      } catch (e) {}
+      try {
+        if (cluster3[day]) {
+          hotels_list = hotels_list.concat(cluster3[day].unwanted);
+        }
+      } catch (e) {}
+      try {
+        if (cluster4[day]) {
+          hotels_list = hotels_list.concat(cluster4[day].unwanted);
+        }
+      } catch (e) {}
 
       // console.log(hotels_list);
 

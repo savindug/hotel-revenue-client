@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
 export const ClusteredData = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const [tab, setTab] = useState(4);
+  const [tab, setTab] = useState(0);
 
   const [selectedProperty, setSelectedProperty] = useState(0);
 
@@ -315,16 +315,6 @@ export const ClusteredData = () => {
       <Nav variant="tabs" justify="space-around">
         <Nav.Item>
           <Nav.Link
-            className={tab === 4 ? tabularNavCls : 'text-dark font-weight-bold'}
-            eventKey="link-1"
-            disabled={loading}
-            onClick={() => setTab(4)}
-          >
-            Hotels Map
-          </Nav.Link>{' '}
-        </Nav.Item>
-        <Nav.Item>
-          <Nav.Link
             className={tab === 0 ? tabularNavCls : 'text-dark font-weight-bold'}
             eventKey="link-0"
             disabled={loading}
@@ -383,6 +373,16 @@ export const ClusteredData = () => {
             Similarity Analysis
           </Nav.Link>
         </Nav.Item>{' '}
+        <Nav.Item>
+          <Nav.Link
+            className={tab === 4 ? tabularNavCls : 'text-dark font-weight-bold'}
+            eventKey="link-1"
+            disabled={loading}
+            onClick={() => setTab(4)}
+          >
+            Hotels Map
+          </Nav.Link>{' '}
+        </Nav.Item>
       </Nav>
     );
   };
