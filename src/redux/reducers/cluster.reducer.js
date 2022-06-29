@@ -26,7 +26,7 @@ const initialState = {
     dates: [],
   },
   report_len: 0,
-  comparison_report: {},
+  comparison_report: { clusterData: [] },
 };
 
 const clusterDataReducer = (state = initialState, action) => {
