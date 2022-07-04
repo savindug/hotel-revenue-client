@@ -78,6 +78,7 @@ export const ClusteredData = () => {
     markets,
     refreshDates,
     ratingCluster,
+    reqHotel,
   } = getClusterDataSet;
 
   const auth = useSelector((state) => state.auth);
@@ -325,6 +326,16 @@ export const ClusteredData = () => {
         </Nav.Item>{' '}
         <Nav.Item>
           <Nav.Link
+            className={tab === 7 ? tabularNavCls : 'text-dark font-weight-bold'}
+            eventKey="link-1"
+            disabled={loading}
+            onClick={() => setTab(7)}
+          >
+            Rate Position
+          </Nav.Link>
+        </Nav.Item>{' '}
+        <Nav.Item>
+          <Nav.Link
             className={tab === 2 ? tabularNavCls : 'text-dark font-weight-bold'}
             eventKey="link-1"
             disabled={loading}
@@ -333,16 +344,6 @@ export const ClusteredData = () => {
             Visuals
           </Nav.Link>
         </Nav.Item>{' '}
-        {/* <Nav.Item>
-          <Nav.Link
-            className={tab === 7 ? tabularNavCls : 'text-dark font-weight-bold'}
-            eventKey="link-1"
-            disabled={loading}
-            onClick={() => setTab(7)}
-          >
-            Rate Position
-          </Nav.Link>
-        </Nav.Item>{' '} */}
         <Nav.Item>
           <Nav.Link
             className={tab === 1 ? tabularNavCls : 'text-dark font-weight-bold'}
@@ -632,6 +633,8 @@ export const ClusteredData = () => {
         <SimpleMap />
       ) : hotels.length > 0 && tab === 5 ? (
         <Similarity selectedDate={selectedDate} />
+      ) : hotels.length > 0 && reqHotel.length > 0 && tab === 7 ? (
+        <ClusterBucket selectedDate={selectedDate} reqHotel={reqHotel} />
       ) : (
         <></>
       )}

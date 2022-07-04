@@ -26,7 +26,13 @@ const initialState = {
     dates: [],
   },
   report_len: 0,
-  comparison_report: { clusterData: [] },
+  comparison_report: {
+    clusterData: [],
+    cluster1: [],
+    cluster2: [],
+    cluster3: [],
+    cluster4: [],
+  },
 };
 
 const clusterDataReducer = (state = initialState, action) => {
@@ -182,7 +188,6 @@ const clusterDataReducer = (state = initialState, action) => {
       return {
         ...state,
         comparison_report: action.payload,
-        //loading: false,
       };
     case ACTION_TYPES.GET_COMP_REPORT_PROGRESS:
       return {

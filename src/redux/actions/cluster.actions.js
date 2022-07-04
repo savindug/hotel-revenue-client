@@ -284,22 +284,31 @@ export const handleErr = (err) => async (dispatch) => {
 };
 
 const setOutliers = (cluster, star) => {
-  cluster.map((day, index) => {
-    day.stars2 = day.unwanted.filter((e) => Math.floor(e.stars) === 2);
-    day.stars3 = day.unwanted.filter((e) => Math.floor(e.stars) === 3);
-    day.stars4 = day.unwanted.filter((e) => Math.floor(e.stars) === 4);
-    day.stars5 = day.unwanted.filter((e) => Math.floor(e.stars) === 5);
-    day.outliers_up = day.unwanted.filter((e) => Math.floor(e.stars) > star);
-    day.outliers_down = day.unwanted.filter((e) => Math.floor(e.stars) < star);
-    // console.log(` ${star} outlier Up => ${day.unwanted.filter(e => e.stars < star).length}`)
-    // console.log(` ${star} outlier Down => ${day.unwanted.filter(e => e.stars > star).length}`)
-  });
+  if (cluster.length > 0) {
+    cluster.map((day, index) => {
+      day.stars2 = day.unwanted.filter((e) => Math.floor(e.stars) === 2);
+      day.stars3 = day.unwanted.filter((e) => Math.floor(e.stars) === 3);
+      day.stars4 = day.unwanted.filter((e) => Math.floor(e.stars) === 4);
+      day.stars5 = day.unwanted.filter((e) => Math.floor(e.stars) === 5);
+      day.outliers_up = day.unwanted.filter((e) => Math.floor(e.stars) > star);
+      day.outliers_down = day.unwanted.filter(
+        (e) => Math.floor(e.stars) < star
+      );
+      // console.log(` ${star} outlier Up => ${day.unwanted.filter(e => e.stars < star).length}`)
+      // console.log(` ${star} outlier Down => ${day.unwanted.filter(e => e.stars > star).length}`)
+    });
+  }
 
   return cluster;
 };
 
 export const fetchCompReport =
   (destID, date, range, property, refreshDate) => async (dispatch) => {
+    let cl1 = [];
+    let cl2 = [];
+    let cl3 = [];
+    let cl4 = [];
+
     comp_report_loading = true;
     dispatch({ type: ACTION_TYPES.GET_COMP_REPORT_PROGRESS });
 
@@ -314,10 +323,34 @@ export const fetchCompReport =
         let reqHotelData = res.data.data.property_report;
         let rating_cluster_report = res.data.data.rating_cluster_report;
 
+        if (clusterData.length > 0) {
+          clusterData.map((day, index) => {
+            day.map((cl, el) => {
+              if (el === 0) {
+                cl1.push(cl);
+              }
+              if (el === 1) {
+                cl2.push(cl);
+              }
+              if (el === 2) {
+                cl3.push(cl);
+              }
+              if (el === 3) {
+                cl4.push(cl);
+              }
+            });
+          });
+        }
+
         dispatch({
           type: ACTION_TYPES.GET_COMP_REPORT,
           payload: {
             clusterData: clusterData,
+            cluster1: setOutliers(cl1, 2),
+            cluster2: setOutliers(cl2, 3),
+            cluster3: setOutliers(cl3, 4),
+            cluster4: setOutliers(cl4, 5),
+
             reqHotelData: reqHotelData,
             rating_cluster_report: rating_cluster_report,
           },
