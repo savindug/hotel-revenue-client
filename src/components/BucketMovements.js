@@ -57,15 +57,19 @@ export default function BucketMovements({ selectedDate }) {
   const {
     loading,
     reqHotel,
+    clusterData,
     cluster1,
     cluster2,
     cluster3,
     cluster4,
     hotels,
     report_len,
+    comparison_report,
   } = getClusterDataSet;
 
   const [totalHotelCount, setTotalHotelCount] = useState(0);
+
+  const [load, setLoad] = useState(true);
 
   const getFilterHotels = (arr) => {
     if (hotels.length > 0) {
@@ -110,6 +114,114 @@ export default function BucketMovements({ selectedDate }) {
   const getPricingUps = (stars) => {
     [...Array(report_len).keys()].map((day) => {});
   };
+
+  useEffect(() => {
+    const CompareReport = async () => {
+      setLoad(true);
+      cluster1.map((e) => {
+        if (e && e != undefined) {
+          let dateMatch = comparison_report.cluster1.find((obj) => {
+            try {
+              if (obj && obj != undefined && obj != undefined) {
+                if (
+                  moment(e.date).format('YYYY-MM-DD') ===
+                  moment(obj.date).format('YYYY-MM-DD')
+                ) {
+                  return obj;
+                }
+              }
+            } catch (e) {}
+          });
+
+          if (dateMatch) {
+            delete dateMatch.cluster;
+            delete dateMatch.unwanted;
+
+            e.comp_report = dateMatch;
+          }
+        }
+      });
+
+      cluster2.map((e) => {
+        if (e && e != undefined) {
+          let dateMatch = comparison_report.cluster2.find((obj) => {
+            try {
+              if (obj && obj != undefined && obj != undefined) {
+                if (
+                  moment(e.date).format('YYYY-MM-DD') ===
+                  moment(obj.date).format('YYYY-MM-DD')
+                ) {
+                  return obj;
+                }
+              }
+            } catch (e) {}
+          });
+
+          if (dateMatch) {
+            delete dateMatch.cluster;
+            delete dateMatch.unwanted;
+
+            e.comp_report = dateMatch;
+          }
+        }
+      });
+
+      cluster3.map((e) => {
+        if (e && e != undefined) {
+          let dateMatch = comparison_report.cluster3.find((obj) => {
+            try {
+              if (obj && obj != undefined && obj != undefined) {
+                if (
+                  moment(e.date).format('YYYY-MM-DD') ===
+                  moment(obj.date).format('YYYY-MM-DD')
+                ) {
+                  return obj;
+                }
+              }
+            } catch (e) {}
+          });
+
+          if (dateMatch) {
+            delete dateMatch.cluster;
+            delete dateMatch.unwanted;
+
+            e.comp_report = dateMatch;
+          }
+        }
+      });
+
+      cluster4.map((e) => {
+        if (e && e != undefined) {
+          let dateMatch = comparison_report.cluster4.find((obj) => {
+            try {
+              if (obj && obj != undefined && obj != undefined) {
+                if (
+                  moment(e.date).format('YYYY-MM-DD') ===
+                  moment(obj.date).format('YYYY-MM-DD')
+                ) {
+                  return obj;
+                }
+              }
+            } catch (e) {}
+          });
+
+          if (dateMatch) {
+            delete dateMatch.cluster;
+            delete dateMatch.unwanted;
+
+            e.comp_report = dateMatch;
+          }
+        }
+      });
+
+      setLoad(false);
+    };
+
+    if (comparison_report && clusterData.length > 0) {
+      CompareReport();
+      // console.log(cluster4);
+    }
+  }, [comparison_report]);
 
   return (
     <>
@@ -178,6 +290,8 @@ export default function BucketMovements({ selectedDate }) {
                     {[...Array(report_len).keys()].map((e, index) =>
                       (() => {
                         let hotel_count = 0;
+                        let comp_hotel_count = -1;
+
                         if (cluster2.length > 0 && cluster2[index]) {
                           hotel_count =
                             hotel_count + cluster2[index].stars5.length;
@@ -190,6 +304,34 @@ export default function BucketMovements({ selectedDate }) {
                           hotel_count =
                             hotel_count + cluster3[index].stars5.length;
                         }
+
+                        if (cluster2[index]) {
+                          if (cluster2[index].comp_report) {
+                            comp_hotel_count =
+                              comp_hotel_count +
+                              cluster2[index].comp_report.stars5.length +
+                              1;
+                          }
+                        }
+
+                        if (cluster1[index]) {
+                          if (cluster1[index].comp_report) {
+                            comp_hotel_count =
+                              comp_hotel_count +
+                              cluster1[index].comp_report.stars5.length +
+                              1;
+                          }
+                        }
+
+                        if (cluster3[index]) {
+                          if (cluster3[index].comp_report) {
+                            comp_hotel_count =
+                              comp_hotel_count +
+                              cluster3[index].comp_report.stars5.length +
+                              1;
+                          }
+                        }
+
                         return (
                           <StyledTableCell
                             size="small"
@@ -197,7 +339,34 @@ export default function BucketMovements({ selectedDate }) {
                             style={{ fontSize: '14px' }}
                             className={classes.rates}
                           >
-                            {hotel_count}
+                            <span>
+                              {hotel_count > comp_hotel_count ? (
+                                <sup
+                                  className={
+                                    comp_hotel_count == -1
+                                      ? ''
+                                      : hotel_count > comp_hotel_count
+                                      ? 'fa fa-long-arrow-up text-success'
+                                      : 'fa fa-long-arrow-down text-danger'
+                                  }
+                                  aria-hidden="true"
+                                >
+                                  &nbsp;
+                                </sup>
+                              ) : (
+                                <sub
+                                  className={
+                                    hotel_count > comp_hotel_count
+                                      ? 'fa fa-long-arrow-up text-success'
+                                      : 'fa fa-long-arrow-down text-danger'
+                                  }
+                                  aria-hidden="true"
+                                >
+                                  &nbsp;
+                                </sub>
+                              )}
+                              {hotel_count}
+                            </span>
                           </StyledTableCell>
                         );
                       })()
@@ -221,9 +390,18 @@ export default function BucketMovements({ selectedDate }) {
                     {[...Array(report_len).keys()].map((e, index) =>
                       (() => {
                         let hotel_count = 0;
+                        let comp_hotel_count = -1;
                         if (cluster4.length > 0 && cluster4[index]) {
                           hotel_count =
                             hotel_count + cluster4[index].stars4.length;
+                        }
+                        if (cluster4[index]) {
+                          if (cluster4[index].comp_report) {
+                            comp_hotel_count =
+                              comp_hotel_count +
+                              cluster4[index].comp_report.stars4.length +
+                              1;
+                          }
                         }
 
                         return (
@@ -233,7 +411,34 @@ export default function BucketMovements({ selectedDate }) {
                             style={{ fontSize: '14px' }}
                             className={classes.rates}
                           >
-                            {hotel_count}
+                            <span>
+                              {hotel_count > comp_hotel_count ? (
+                                <sup
+                                  className={
+                                    comp_hotel_count == -1
+                                      ? ''
+                                      : hotel_count > comp_hotel_count
+                                      ? 'fa fa-long-arrow-up text-success'
+                                      : 'fa fa-long-arrow-down text-danger'
+                                  }
+                                  aria-hidden="true"
+                                >
+                                  &nbsp;
+                                </sup>
+                              ) : (
+                                <sub
+                                  className={
+                                    hotel_count > comp_hotel_count
+                                      ? 'fa fa-long-arrow-up text-success'
+                                      : 'fa fa-long-arrow-down text-danger'
+                                  }
+                                  aria-hidden="true"
+                                >
+                                  &nbsp;
+                                </sub>
+                              )}
+                              {hotel_count}
+                            </span>
                           </StyledTableCell>
                         );
                       })()
@@ -257,6 +462,7 @@ export default function BucketMovements({ selectedDate }) {
                     {[...Array(report_len).keys()].map((e, index) =>
                       (() => {
                         let hotel_count = 0;
+                        let comp_hotel_count = -1;
                         if (cluster1.length > 0 && cluster1[index]) {
                           hotel_count =
                             hotel_count + cluster1[index].stars4.length;
@@ -266,6 +472,24 @@ export default function BucketMovements({ selectedDate }) {
                             hotel_count + cluster2[index].stars4.length;
                         }
 
+                        if (cluster1[index]) {
+                          if (cluster1[index].comp_report) {
+                            comp_hotel_count =
+                              comp_hotel_count +
+                              cluster1[index].comp_report.stars4.length +
+                              1;
+                          }
+                        }
+
+                        if (cluster2[index]) {
+                          if (cluster2[index].comp_report) {
+                            comp_hotel_count =
+                              comp_hotel_count +
+                              cluster2[index].comp_report.stars4.length +
+                              1;
+                          }
+                        }
+
                         return (
                           <StyledTableCell
                             size="small"
@@ -273,7 +497,34 @@ export default function BucketMovements({ selectedDate }) {
                             style={{ fontSize: '14px' }}
                             className={classes.rates}
                           >
-                            {hotel_count}
+                            <span>
+                              {hotel_count > comp_hotel_count ? (
+                                <sup
+                                  className={
+                                    comp_hotel_count == -1
+                                      ? ''
+                                      : hotel_count > comp_hotel_count
+                                      ? 'fa fa-long-arrow-up text-success'
+                                      : 'fa fa-long-arrow-down text-danger'
+                                  }
+                                  aria-hidden="true"
+                                >
+                                  &nbsp;
+                                </sup>
+                              ) : (
+                                <sub
+                                  className={
+                                    hotel_count > comp_hotel_count
+                                      ? 'fa fa-long-arrow-up text-success'
+                                      : 'fa fa-long-arrow-down text-danger'
+                                  }
+                                  aria-hidden="true"
+                                >
+                                  &nbsp;
+                                </sub>
+                              )}
+                              {hotel_count}
+                            </span>
                           </StyledTableCell>
                         );
                       })()
@@ -297,6 +548,7 @@ export default function BucketMovements({ selectedDate }) {
                     {[...Array(report_len).keys()].map((e, index) =>
                       (() => {
                         let hotel_count = 0;
+                        let comp_hotel_count = -1;
                         if (cluster3.length > 0 && cluster3[index]) {
                           hotel_count =
                             hotel_count + cluster3[index].stars3.length;
@@ -306,6 +558,23 @@ export default function BucketMovements({ selectedDate }) {
                             hotel_count + cluster4[index].stars3.length;
                         }
 
+                        if (cluster3[index]) {
+                          if (cluster3[index].comp_report) {
+                            comp_hotel_count =
+                              comp_hotel_count +
+                              cluster3[index].comp_report.stars3.length +
+                              1;
+                          }
+                        }
+                        if (cluster4[index]) {
+                          if (cluster4[index].comp_report) {
+                            comp_hotel_count =
+                              comp_hotel_count +
+                              cluster4[index].comp_report.stars3.length +
+                              1;
+                          }
+                        }
+
                         return (
                           <StyledTableCell
                             size="small"
@@ -313,7 +582,34 @@ export default function BucketMovements({ selectedDate }) {
                             style={{ fontSize: '14px' }}
                             className={classes.rates}
                           >
-                            {hotel_count}
+                            <span>
+                              {hotel_count > comp_hotel_count ? (
+                                <sup
+                                  className={
+                                    comp_hotel_count == -1
+                                      ? ''
+                                      : hotel_count > comp_hotel_count
+                                      ? 'fa fa-long-arrow-up text-success'
+                                      : 'fa fa-long-arrow-down text-danger'
+                                  }
+                                  aria-hidden="true"
+                                >
+                                  &nbsp;
+                                </sup>
+                              ) : (
+                                <sub
+                                  className={
+                                    hotel_count > comp_hotel_count
+                                      ? 'fa fa-long-arrow-up text-success'
+                                      : 'fa fa-long-arrow-down text-danger'
+                                  }
+                                  aria-hidden="true"
+                                >
+                                  &nbsp;
+                                </sub>
+                              )}
+                              {hotel_count}
+                            </span>
                           </StyledTableCell>
                         );
                       })()
@@ -337,9 +633,18 @@ export default function BucketMovements({ selectedDate }) {
                     {[...Array(report_len).keys()].map((e, index) =>
                       (() => {
                         let hotel_count = 0;
+                        let comp_hotel_count = -1;
                         if (cluster1.length > 0 && cluster1[index]) {
                           hotel_count =
                             hotel_count + cluster1[index].stars3.length;
+                        }
+                        if (cluster1[index]) {
+                          if (cluster1[index].comp_report) {
+                            comp_hotel_count =
+                              comp_hotel_count +
+                              cluster1[index].comp_report.stars3.length +
+                              1;
+                          }
                         }
                         return (
                           <StyledTableCell
@@ -348,7 +653,34 @@ export default function BucketMovements({ selectedDate }) {
                             style={{ fontSize: '14px' }}
                             className={classes.rates}
                           >
-                            {hotel_count}
+                            <span>
+                              {hotel_count > comp_hotel_count ? (
+                                <sup
+                                  className={
+                                    comp_hotel_count == -1
+                                      ? ''
+                                      : hotel_count > comp_hotel_count
+                                      ? 'fa fa-long-arrow-up text-success'
+                                      : 'fa fa-long-arrow-down text-danger'
+                                  }
+                                  aria-hidden="true"
+                                >
+                                  &nbsp;
+                                </sup>
+                              ) : (
+                                <sub
+                                  className={
+                                    hotel_count > comp_hotel_count
+                                      ? 'fa fa-long-arrow-up text-success'
+                                      : 'fa fa-long-arrow-down text-danger'
+                                  }
+                                  aria-hidden="true"
+                                >
+                                  &nbsp;
+                                </sub>
+                              )}
+                              {hotel_count}
+                            </span>
                           </StyledTableCell>
                         );
                       })()
@@ -372,6 +704,7 @@ export default function BucketMovements({ selectedDate }) {
                     {[...Array(report_len).keys()].map((e, index) =>
                       (() => {
                         let hotel_count = 0;
+                        let comp_hotel_count = -1;
                         if (cluster2.length > 0 && cluster2[index]) {
                           hotel_count =
                             hotel_count + cluster2[index].stars2.length;
@@ -384,6 +717,34 @@ export default function BucketMovements({ selectedDate }) {
                           hotel_count =
                             hotel_count + cluster4[index].stars2.length;
                         }
+
+                        if (cluster2[index]) {
+                          if (cluster2[index].comp_report) {
+                            comp_hotel_count =
+                              comp_hotel_count +
+                              cluster2[index].comp_report.stars2.length +
+                              1;
+                          }
+                        }
+
+                        if (cluster3[index]) {
+                          if (cluster3[index].comp_report) {
+                            comp_hotel_count =
+                              comp_hotel_count +
+                              cluster3[index].comp_report.stars2.length +
+                              1;
+                          }
+                        }
+
+                        if (cluster4[index]) {
+                          if (cluster4[index].comp_report) {
+                            comp_hotel_count =
+                              comp_hotel_count +
+                              cluster4[index].comp_report.stars2.length +
+                              1;
+                          }
+                        }
+
                         return (
                           <StyledTableCell
                             size="small"
@@ -391,7 +752,34 @@ export default function BucketMovements({ selectedDate }) {
                             style={{ fontSize: '14px' }}
                             className={classes.rates}
                           >
-                            {hotel_count}
+                            <span>
+                              {hotel_count > comp_hotel_count ? (
+                                <sup
+                                  className={
+                                    comp_hotel_count == -1
+                                      ? ''
+                                      : hotel_count > comp_hotel_count
+                                      ? 'fa fa-long-arrow-up text-success'
+                                      : 'fa fa-long-arrow-down text-danger'
+                                  }
+                                  aria-hidden="true"
+                                >
+                                  &nbsp;
+                                </sup>
+                              ) : (
+                                <sub
+                                  className={
+                                    hotel_count > comp_hotel_count
+                                      ? 'fa fa-long-arrow-up text-success'
+                                      : 'fa fa-long-arrow-down text-danger'
+                                  }
+                                  aria-hidden="true"
+                                >
+                                  &nbsp;
+                                </sub>
+                              )}
+                              {hotel_count}
+                            </span>
                           </StyledTableCell>
                         );
                       })()
