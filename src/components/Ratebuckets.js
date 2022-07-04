@@ -87,16 +87,6 @@ export const Ratebuckets = ({ selectedDate }) => {
       <TabularNav />
       {hotels.length > 0 && tab === 1 && clusterData.length > 0 ? (
         <>
-          {reqHotel.length > 0 ? (
-            <ClusterBucket
-              selectedDate={selectedDate}
-              reqHotel={reqHotel}
-              className="my-5"
-            />
-          ) : (
-            <></>
-          )}
-
           <div id="stars5" className="my-5">
             <ClusterDataTable
               cluster={cluster4}
