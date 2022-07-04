@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
 export const ClusteredData = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const [tab, setTab] = useState(0);
+  const [tab, setTab] = useState(7);
 
   const [selectedProperty, setSelectedProperty] = useState(0);
 
@@ -145,7 +145,7 @@ export const ClusteredData = () => {
 
   // useEffect(() => {
   //   if (clusterData.length > 0) {
-  //     setTab(4);
+  //     setTab(7);
   //   }
   // }, [dispatch, clusterData]);
 
@@ -316,22 +316,22 @@ export const ClusteredData = () => {
       <Nav variant="tabs" justify="space-around">
         <Nav.Item>
           <Nav.Link
-            className={tab === 0 ? tabularNavCls : 'text-dark font-weight-bold'}
-            eventKey="link-0"
-            disabled={loading}
-            onClick={() => setTab(0)}
-          >
-            Rate Buckets
-          </Nav.Link>
-        </Nav.Item>{' '}
-        <Nav.Item>
-          <Nav.Link
             className={tab === 7 ? tabularNavCls : 'text-dark font-weight-bold'}
             eventKey="link-1"
             disabled={loading}
             onClick={() => setTab(7)}
           >
             Rate Position
+          </Nav.Link>
+        </Nav.Item>{' '}
+        <Nav.Item>
+          <Nav.Link
+            className={tab === 0 ? tabularNavCls : 'text-dark font-weight-bold'}
+            eventKey="link-0"
+            disabled={loading}
+            onClick={() => setTab(0)}
+          >
+            Rate Buckets
           </Nav.Link>
         </Nav.Item>{' '}
         <Nav.Item>
