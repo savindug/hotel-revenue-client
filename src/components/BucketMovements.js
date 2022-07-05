@@ -221,7 +221,6 @@ export default function BucketMovements({ selectedDate }) {
 
     if (comparison_report && clusterData.length > 0) {
       CompareReport();
-      console.log(cluster4);
     }
   }, [comparison_report]);
 
