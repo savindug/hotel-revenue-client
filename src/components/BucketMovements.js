@@ -16,15 +16,17 @@ import { useSelector } from 'react-redux';
 import moment from 'moment';
 import { CLUSTER_BACKGROUND, FONT_FAMILY } from '../utils/const';
 import { useEffect, useState } from 'react';
+import { ClusteredData } from './ClusteredData';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
     backgroundColor: theme.palette.common.white,
     color: theme.palette.common.black,
-    fontWeight: 'bold',
+    fontWeight: 'bolder',
   },
   body: {
-    fontSize: 14,
+    fontSize: 15,
+    minWidth: 100,
   },
 }))(TableCell);
 
@@ -57,13 +59,13 @@ export default function BucketMovements({ selectedDate }) {
   const {
     loading,
     reqHotel,
-    clusterData,
     cluster1,
     cluster2,
     cluster3,
     cluster4,
     hotels,
     report_len,
+    clusterData,
     comparison_report,
   } = getClusterDataSet;
 
@@ -192,7 +194,7 @@ export default function BucketMovements({ selectedDate }) {
 
       cluster4.map((e) => {
         if (e && e != undefined) {
-          let dateMatch = comparison_report.cluster4.find((obj) => {
+          let dateMatch = comparison_report.cluster1.find((obj) => {
             try {
               if (obj && obj != undefined && obj != undefined) {
                 if (
@@ -219,7 +221,7 @@ export default function BucketMovements({ selectedDate }) {
 
     if (comparison_report && clusterData.length > 0) {
       CompareReport();
-      // console.log(cluster4);
+      console.log(cluster4);
     }
   }, [comparison_report]);
 
@@ -227,6 +229,579 @@ export default function BucketMovements({ selectedDate }) {
     <>
       {!loading && hotels.length > 0 ? (
         <>
+          <TableContainer component={Paper} className="my-5">
+            <Box width={100}>
+              <Table
+                id="stars3"
+                className={classes.table}
+                aria-label="customized table"
+                bodyStyle={{ overflow: 'visible' }}
+                stickyHeader
+              >
+                <TableHead>
+                  <StyledTableCell
+                    style={{
+                      fontWeight: 'bold',
+                      width: '250px',
+                      zIndex: 100,
+                    }}
+                  >
+                    Bucket Size Index <hr />
+                    Days Out
+                  </StyledTableCell>
+                  {/* <StyledTableCell size="small">Stars</StyledTableCell> */}
+                  {cluster1.map((e, index) =>
+                    (() => {
+                      let _date = moment(e.date);
+                      let daysOut = _date.diff(selectedDate, 'days');
+                      let day = _date.format('dddd').substring(0, 3);
+                      return (
+                        <StyledTableCell
+                          size="small"
+                          key={index}
+                          className={
+                            day === 'Sat' || day === 'Fri'
+                              ? 'bg-secondary text-light text-center'
+                              : 'text-center'
+                          }
+                          style={{ fontSize: '12px' }}
+                        >
+                          <>
+                            {day === 'Sat' || day === 'Fri' ? 'WEND' : 'WDAY'}
+                          </>
+                          <br />
+                          <>{day.toUpperCase()}</>
+                          <br />
+                          <>{moment(e.date).format('MM/DD')}</>{' '}
+                          <div class="dropdown-divider"></div>
+                          {daysOut}
+                        </StyledTableCell>
+                      );
+                    })()
+                  )}
+                </TableHead>
+                <TableBody>
+                  <StyledTableRow>
+                    <StyledTableCell
+                      component="th"
+                      scope="row"
+                      className={classes.sticky}
+                      style={{
+                        fontWeight: 'bold',
+                        width: '250px',
+                        backgroundColor: CLUSTER_BACKGROUND[3],
+                        zIndex: 10,
+                      }}
+                    >
+                      5 Star Bucket
+                    </StyledTableCell>
+                    {[...Array(report_len).keys()].map((e, index) =>
+                      (() => {
+                        let star_hotel_count = 0;
+                        let hotel_count = 0;
+                        let comp_hotel_count = 0;
+                        let comp_star_hotel_count = 0;
+
+                        if (cluster4.length > 0 && cluster4[index]) {
+                          star_hotel_count += cluster4[index].unwanted.length;
+                        }
+
+                        if (cluster1.length > 0 && cluster1[index]) {
+                          hotel_count += cluster1[index].stars5.length;
+                        }
+                        if (cluster2.length > 0 && cluster2[index]) {
+                          hotel_count =
+                            hotel_count + cluster2[index].stars5.length;
+                        }
+                        if (cluster3.length > 0 && cluster3[index]) {
+                          hotel_count =
+                            hotel_count + cluster3[index].stars5.length;
+                        }
+                        if (cluster4.length > 0 && cluster4[index]) {
+                          hotel_count =
+                            hotel_count + cluster4[index].stars5.length;
+                        }
+
+                        if (cluster4[index]) {
+                          if (cluster4[index].comp_report) {
+                            comp_star_hotel_count =
+                              comp_star_hotel_count +
+                              cluster4[index].comp_report.items;
+                          }
+                        }
+
+                        if (cluster1[index]) {
+                          if (cluster1[index].comp_report) {
+                            comp_hotel_count =
+                              comp_hotel_count +
+                              cluster1[index].comp_report.stars5.length;
+                          }
+                        }
+
+                        if (cluster2[index]) {
+                          if (cluster2[index].comp_report) {
+                            comp_hotel_count =
+                              comp_hotel_count +
+                              cluster2[index].comp_report.stars5.length;
+                          }
+                        }
+
+                        if (cluster3[index]) {
+                          if (cluster3[index].comp_report) {
+                            comp_hotel_count =
+                              comp_hotel_count +
+                              cluster3[index].comp_report.stars5.length;
+                          }
+                        }
+
+                        if (cluster4[index]) {
+                          if (cluster4[index].comp_report) {
+                            comp_hotel_count =
+                              comp_hotel_count +
+                              cluster4[index].comp_report.stars5.length;
+                          }
+                        }
+
+                        const bucket_index = parseFloat(
+                          star_hotel_count / hotel_count
+                        ).toFixed(2);
+
+                        const comp_bucket_index = parseFloat(
+                          comp_star_hotel_count / comp_hotel_count
+                        ).toFixed(2);
+
+                        return (
+                          <StyledTableCell
+                            style={{
+                              fontWeight: 'bold',
+                            }}
+                            className={classes.rates + ' text-center'}
+                          >
+                            <span>
+                              {bucket_index == comp_bucket_index ? (
+                                <></>
+                              ) : bucket_index > comp_bucket_index ? (
+                                <sup
+                                  className={
+                                    bucket_index > comp_bucket_index
+                                      ? 'fa fa-long-arrow-up text-success'
+                                      : 'fa fa-long-arrow-down text-danger'
+                                  }
+                                  aria-hidden="true"
+                                >
+                                  &nbsp;
+                                </sup>
+                              ) : (
+                                <sub
+                                  className={
+                                    bucket_index > comp_bucket_index
+                                      ? 'fa fa-long-arrow-up text-success'
+                                      : 'fa fa-long-arrow-down text-danger'
+                                  }
+                                  aria-hidden="true"
+                                >
+                                  &nbsp;
+                                </sub>
+                              )}
+                              {bucket_index}
+                            </span>
+                          </StyledTableCell>
+                        );
+                      })()
+                    )}
+                  </StyledTableRow>
+                  <StyledTableRow>
+                    <StyledTableCell
+                      component="th"
+                      scope="row"
+                      className={classes.sticky}
+                      style={{
+                        fontWeight: 'bold',
+                        width: '250px',
+                        backgroundColor: CLUSTER_BACKGROUND[2],
+                        zIndex: 10,
+                      }}
+                    >
+                      4 Star Bucket
+                    </StyledTableCell>
+                    {[...Array(report_len).keys()].map((e, index) =>
+                      (() => {
+                        let star_hotel_count = 0;
+                        let hotel_count = 0;
+                        let comp_hotel_count = 0;
+                        let comp_star_hotel_count = 0;
+
+                        if (cluster3.length > 0 && cluster3[index]) {
+                          star_hotel_count += cluster3[index].unwanted.length;
+                        }
+
+                        if (cluster1.length > 0 && cluster1[index]) {
+                          hotel_count += cluster1[index].stars4.length;
+                        }
+                        if (cluster2.length > 0 && cluster2[index]) {
+                          hotel_count =
+                            hotel_count + cluster2[index].stars4.length;
+                        }
+                        if (cluster3.length > 0 && cluster3[index]) {
+                          hotel_count =
+                            hotel_count + cluster3[index].stars4.length;
+                        }
+                        if (cluster4.length > 0 && cluster4[index]) {
+                          hotel_count =
+                            hotel_count + cluster4[index].stars4.length;
+                        }
+
+                        if (cluster3[index]) {
+                          if (cluster3[index].comp_report) {
+                            comp_star_hotel_count =
+                              comp_star_hotel_count +
+                              cluster3[index].comp_report.items;
+                          }
+                        }
+
+                        if (cluster1[index]) {
+                          if (cluster1[index].comp_report) {
+                            comp_hotel_count =
+                              comp_hotel_count +
+                              cluster1[index].comp_report.stars4.length;
+                          }
+                        }
+
+                        if (cluster2[index]) {
+                          if (cluster2[index].comp_report) {
+                            comp_hotel_count =
+                              comp_hotel_count +
+                              cluster2[index].comp_report.stars4.length;
+                          }
+                        }
+
+                        if (cluster3[index]) {
+                          if (cluster3[index].comp_report) {
+                            comp_hotel_count =
+                              comp_hotel_count +
+                              cluster3[index].comp_report.stars4.length;
+                          }
+                        }
+
+                        if (cluster4[index]) {
+                          if (cluster4[index].comp_report) {
+                            comp_hotel_count =
+                              comp_hotel_count +
+                              cluster4[index].comp_report.stars4.length;
+                          }
+                        }
+
+                        const bucket_index = parseFloat(
+                          star_hotel_count / hotel_count
+                        ).toFixed(2);
+
+                        const comp_bucket_index = parseFloat(
+                          comp_star_hotel_count / comp_hotel_count
+                        ).toFixed(2);
+
+                        return (
+                          <StyledTableCell
+                            style={{
+                              fontWeight: 'bold',
+                            }}
+                            className={classes.rates + ' text-center'}
+                          >
+                            <span>
+                              {bucket_index == comp_bucket_index ? (
+                                <></>
+                              ) : bucket_index > comp_bucket_index ? (
+                                <sup
+                                  className={
+                                    bucket_index > comp_bucket_index
+                                      ? 'fa fa-long-arrow-up text-success'
+                                      : 'fa fa-long-arrow-down text-danger'
+                                  }
+                                  aria-hidden="true"
+                                >
+                                  &nbsp;
+                                </sup>
+                              ) : (
+                                <sub
+                                  className={
+                                    bucket_index > comp_bucket_index
+                                      ? 'fa fa-long-arrow-up text-success'
+                                      : 'fa fa-long-arrow-down text-danger'
+                                  }
+                                  aria-hidden="true"
+                                >
+                                  &nbsp;
+                                </sub>
+                              )}
+                              {bucket_index}
+                            </span>
+                          </StyledTableCell>
+                        );
+                      })()
+                    )}
+                  </StyledTableRow>
+                  <StyledTableRow>
+                    <StyledTableCell
+                      component="th"
+                      scope="row"
+                      className={classes.sticky}
+                      style={{
+                        fontWeight: 'bold',
+                        width: '250px',
+                        backgroundColor: CLUSTER_BACKGROUND[1],
+                        zIndex: 10,
+                      }}
+                    >
+                      3 Star Bucket
+                    </StyledTableCell>
+                    {[...Array(report_len).keys()].map((e, index) =>
+                      (() => {
+                        let star_hotel_count = 0;
+                        let hotel_count = 0;
+                        let comp_hotel_count = 0;
+                        let comp_star_hotel_count = 0;
+
+                        if (cluster2.length > 0 && cluster2[index]) {
+                          star_hotel_count += cluster2[index].unwanted.length;
+                        }
+
+                        if (cluster1.length > 0 && cluster1[index]) {
+                          hotel_count += cluster1[index].stars3.length;
+                        }
+                        if (cluster2.length > 0 && cluster2[index]) {
+                          hotel_count =
+                            hotel_count + cluster2[index].stars3.length;
+                        }
+                        if (cluster3.length > 0 && cluster3[index]) {
+                          hotel_count =
+                            hotel_count + cluster3[index].stars3.length;
+                        }
+                        if (cluster4.length > 0 && cluster4[index]) {
+                          hotel_count =
+                            hotel_count + cluster4[index].stars3.length;
+                        }
+
+                        if (cluster2[index]) {
+                          if (cluster2[index].comp_report) {
+                            comp_star_hotel_count =
+                              comp_star_hotel_count +
+                              cluster2[index].comp_report.items;
+                          }
+                        }
+
+                        if (cluster1[index]) {
+                          if (cluster1[index].comp_report) {
+                            comp_hotel_count =
+                              comp_hotel_count +
+                              cluster1[index].comp_report.stars3.length;
+                          }
+                        }
+
+                        if (cluster2[index]) {
+                          if (cluster2[index].comp_report) {
+                            comp_hotel_count =
+                              comp_hotel_count +
+                              cluster2[index].comp_report.stars3.length;
+                          }
+                        }
+
+                        if (cluster3[index]) {
+                          if (cluster3[index].comp_report) {
+                            comp_hotel_count =
+                              comp_hotel_count +
+                              cluster3[index].comp_report.stars3.length;
+                          }
+                        }
+
+                        if (cluster4[index]) {
+                          if (cluster4[index].comp_report) {
+                            comp_hotel_count =
+                              comp_hotel_count +
+                              cluster4[index].comp_report.stars3.length;
+                          }
+                        }
+
+                        const bucket_index = parseFloat(
+                          star_hotel_count / hotel_count
+                        ).toFixed(2);
+
+                        const comp_bucket_index = parseFloat(
+                          comp_star_hotel_count / comp_hotel_count
+                        ).toFixed(2);
+
+                        return (
+                          <StyledTableCell
+                            style={{
+                              fontWeight: 'bold',
+                            }}
+                            className={classes.rates + ' text-center'}
+                          >
+                            <span>
+                              {bucket_index == comp_bucket_index ? (
+                                <></>
+                              ) : bucket_index > comp_bucket_index ? (
+                                <sup
+                                  className={
+                                    bucket_index > comp_bucket_index
+                                      ? 'fa fa-long-arrow-up text-success'
+                                      : 'fa fa-long-arrow-down text-danger'
+                                  }
+                                  aria-hidden="true"
+                                >
+                                  &nbsp;
+                                </sup>
+                              ) : (
+                                <sub
+                                  className={
+                                    bucket_index > comp_bucket_index
+                                      ? 'fa fa-long-arrow-up text-success'
+                                      : 'fa fa-long-arrow-down text-danger'
+                                  }
+                                  aria-hidden="true"
+                                >
+                                  &nbsp;
+                                </sub>
+                              )}
+                              {bucket_index}
+                            </span>
+                          </StyledTableCell>
+                        );
+                      })()
+                    )}
+                  </StyledTableRow>
+                  <StyledTableRow>
+                    <StyledTableCell
+                      component="th"
+                      scope="row"
+                      className={classes.sticky}
+                      style={{
+                        fontWeight: 'bold',
+                        width: '250px',
+                        backgroundColor: CLUSTER_BACKGROUND[0],
+                        zIndex: 10,
+                      }}
+                    >
+                      2 Star Bucket
+                    </StyledTableCell>
+                    {[...Array(report_len).keys()].map((e, index) =>
+                      (() => {
+                        let star_hotel_count = 0;
+                        let hotel_count = 0;
+                        let comp_hotel_count = 0;
+                        let comp_star_hotel_count = 0;
+
+                        if (cluster1.length > 0 && cluster1[index]) {
+                          star_hotel_count += cluster1[index].unwanted.length;
+                        }
+
+                        if (cluster1.length > 0 && cluster1[index]) {
+                          hotel_count += cluster1[index].stars2.length;
+                        }
+                        if (cluster2.length > 0 && cluster2[index]) {
+                          hotel_count =
+                            hotel_count + cluster2[index].stars2.length;
+                        }
+                        if (cluster3.length > 0 && cluster3[index]) {
+                          hotel_count =
+                            hotel_count + cluster3[index].stars2.length;
+                        }
+                        if (cluster4.length > 0 && cluster4[index]) {
+                          hotel_count =
+                            hotel_count + cluster4[index].stars2.length;
+                        }
+
+                        if (cluster1[index]) {
+                          if (cluster1[index].comp_report) {
+                            comp_star_hotel_count =
+                              comp_star_hotel_count +
+                              cluster1[index].comp_report.items;
+                          }
+                        }
+
+                        if (cluster1[index]) {
+                          if (cluster1[index].comp_report) {
+                            comp_hotel_count =
+                              comp_hotel_count +
+                              cluster1[index].comp_report.stars2.length;
+                          }
+                        }
+
+                        if (cluster2[index]) {
+                          if (cluster2[index].comp_report) {
+                            comp_hotel_count =
+                              comp_hotel_count +
+                              cluster2[index].comp_report.stars2.length;
+                          }
+                        }
+
+                        if (cluster3[index]) {
+                          if (cluster3[index].comp_report) {
+                            comp_hotel_count =
+                              comp_hotel_count +
+                              cluster3[index].comp_report.stars2.length;
+                          }
+                        }
+
+                        if (cluster4[index]) {
+                          if (cluster4[index].comp_report) {
+                            comp_hotel_count =
+                              comp_hotel_count +
+                              cluster4[index].comp_report.stars2.length;
+                          }
+                        }
+
+                        const bucket_index = parseFloat(
+                          star_hotel_count / hotel_count
+                        ).toFixed(2);
+
+                        const comp_bucket_index = parseFloat(
+                          comp_star_hotel_count / comp_hotel_count
+                        ).toFixed(2);
+
+                        return (
+                          <StyledTableCell
+                            style={{
+                              fontWeight: 'bold',
+                            }}
+                            className={classes.rates + ' text-center'}
+                          >
+                            <span>
+                              {bucket_index == comp_bucket_index ? (
+                                <></>
+                              ) : bucket_index > comp_bucket_index ? (
+                                <sup
+                                  className={
+                                    bucket_index > comp_bucket_index
+                                      ? 'fa fa-long-arrow-up text-success'
+                                      : 'fa fa-long-arrow-down text-danger'
+                                  }
+                                  aria-hidden="true"
+                                >
+                                  &nbsp;
+                                </sup>
+                              ) : (
+                                <sub
+                                  className={
+                                    bucket_index > comp_bucket_index
+                                      ? 'fa fa-long-arrow-up text-success'
+                                      : 'fa fa-long-arrow-down text-danger'
+                                  }
+                                  aria-hidden="true"
+                                >
+                                  &nbsp;
+                                </sub>
+                              )}
+                              {bucket_index}
+                            </span>
+                          </StyledTableCell>
+                        );
+                      })()
+                    )}
+                  </StyledTableRow>
+                </TableBody>
+              </Table>
+            </Box>
+          </TableContainer>
+
           <TableContainer component={Paper} className="my-5">
             <Box width={100}>
               <Table
@@ -259,11 +834,13 @@ export default function BucketMovements({ selectedDate }) {
                           }
                           style={{ fontSize: '12px' }}
                         >
-                          {`${
-                            day === 'Sat' || day === 'Fri' ? 'WEND' : 'WDAY'
-                          }\n${day.toUpperCase()}\n${moment(_date).format(
-                            'MM/DD'
-                          )}`}
+                          <>
+                            {day === 'Sat' || day === 'Fri' ? 'WEND' : 'WDAY'}
+                          </>
+                          <br />
+                          <>{day.toUpperCase()}</>
+                          <br />
+                          <>{moment(e.date).format('MM/DD')}</>{' '}
                           <div class="dropdown-divider"></div>
                           {daysOut}
                         </StyledTableCell>
@@ -290,8 +867,6 @@ export default function BucketMovements({ selectedDate }) {
                     {[...Array(report_len).keys()].map((e, index) =>
                       (() => {
                         let hotel_count = 0;
-                        let comp_hotel_count = -1;
-
                         if (cluster2.length > 0 && cluster2[index]) {
                           hotel_count =
                             hotel_count + cluster2[index].stars5.length;
@@ -304,34 +879,6 @@ export default function BucketMovements({ selectedDate }) {
                           hotel_count =
                             hotel_count + cluster3[index].stars5.length;
                         }
-
-                        if (cluster2[index]) {
-                          if (cluster2[index].comp_report) {
-                            comp_hotel_count =
-                              comp_hotel_count +
-                              cluster2[index].comp_report.stars5.length +
-                              1;
-                          }
-                        }
-
-                        if (cluster1[index]) {
-                          if (cluster1[index].comp_report) {
-                            comp_hotel_count =
-                              comp_hotel_count +
-                              cluster1[index].comp_report.stars5.length +
-                              1;
-                          }
-                        }
-
-                        if (cluster3[index]) {
-                          if (cluster3[index].comp_report) {
-                            comp_hotel_count =
-                              comp_hotel_count +
-                              cluster3[index].comp_report.stars5.length +
-                              1;
-                          }
-                        }
-
                         return (
                           <StyledTableCell
                             size="small"
@@ -339,34 +886,7 @@ export default function BucketMovements({ selectedDate }) {
                             style={{ fontSize: '14px' }}
                             className={classes.rates}
                           >
-                            <span>
-                              {hotel_count > comp_hotel_count ? (
-                                <sup
-                                  className={
-                                    comp_hotel_count == -1
-                                      ? ''
-                                      : hotel_count > comp_hotel_count
-                                      ? 'fa fa-long-arrow-up text-success'
-                                      : 'fa fa-long-arrow-down text-danger'
-                                  }
-                                  aria-hidden="true"
-                                >
-                                  &nbsp;
-                                </sup>
-                              ) : (
-                                <sub
-                                  className={
-                                    hotel_count > comp_hotel_count
-                                      ? 'fa fa-long-arrow-up text-success'
-                                      : 'fa fa-long-arrow-down text-danger'
-                                  }
-                                  aria-hidden="true"
-                                >
-                                  &nbsp;
-                                </sub>
-                              )}
-                              {hotel_count}
-                            </span>
+                            {hotel_count}
                           </StyledTableCell>
                         );
                       })()
@@ -390,18 +910,9 @@ export default function BucketMovements({ selectedDate }) {
                     {[...Array(report_len).keys()].map((e, index) =>
                       (() => {
                         let hotel_count = 0;
-                        let comp_hotel_count = -1;
                         if (cluster4.length > 0 && cluster4[index]) {
                           hotel_count =
                             hotel_count + cluster4[index].stars4.length;
-                        }
-                        if (cluster4[index]) {
-                          if (cluster4[index].comp_report) {
-                            comp_hotel_count =
-                              comp_hotel_count +
-                              cluster4[index].comp_report.stars4.length +
-                              1;
-                          }
                         }
 
                         return (
@@ -411,34 +922,7 @@ export default function BucketMovements({ selectedDate }) {
                             style={{ fontSize: '14px' }}
                             className={classes.rates}
                           >
-                            <span>
-                              {hotel_count > comp_hotel_count ? (
-                                <sup
-                                  className={
-                                    comp_hotel_count == -1
-                                      ? ''
-                                      : hotel_count > comp_hotel_count
-                                      ? 'fa fa-long-arrow-up text-success'
-                                      : 'fa fa-long-arrow-down text-danger'
-                                  }
-                                  aria-hidden="true"
-                                >
-                                  &nbsp;
-                                </sup>
-                              ) : (
-                                <sub
-                                  className={
-                                    hotel_count > comp_hotel_count
-                                      ? 'fa fa-long-arrow-up text-success'
-                                      : 'fa fa-long-arrow-down text-danger'
-                                  }
-                                  aria-hidden="true"
-                                >
-                                  &nbsp;
-                                </sub>
-                              )}
-                              {hotel_count}
-                            </span>
+                            {hotel_count}
                           </StyledTableCell>
                         );
                       })()
@@ -462,7 +946,6 @@ export default function BucketMovements({ selectedDate }) {
                     {[...Array(report_len).keys()].map((e, index) =>
                       (() => {
                         let hotel_count = 0;
-                        let comp_hotel_count = -1;
                         if (cluster1.length > 0 && cluster1[index]) {
                           hotel_count =
                             hotel_count + cluster1[index].stars4.length;
@@ -472,24 +955,6 @@ export default function BucketMovements({ selectedDate }) {
                             hotel_count + cluster2[index].stars4.length;
                         }
 
-                        if (cluster1[index]) {
-                          if (cluster1[index].comp_report) {
-                            comp_hotel_count =
-                              comp_hotel_count +
-                              cluster1[index].comp_report.stars4.length +
-                              1;
-                          }
-                        }
-
-                        if (cluster2[index]) {
-                          if (cluster2[index].comp_report) {
-                            comp_hotel_count =
-                              comp_hotel_count +
-                              cluster2[index].comp_report.stars4.length +
-                              1;
-                          }
-                        }
-
                         return (
                           <StyledTableCell
                             size="small"
@@ -497,34 +962,7 @@ export default function BucketMovements({ selectedDate }) {
                             style={{ fontSize: '14px' }}
                             className={classes.rates}
                           >
-                            <span>
-                              {hotel_count > comp_hotel_count ? (
-                                <sup
-                                  className={
-                                    comp_hotel_count == -1
-                                      ? ''
-                                      : hotel_count > comp_hotel_count
-                                      ? 'fa fa-long-arrow-up text-success'
-                                      : 'fa fa-long-arrow-down text-danger'
-                                  }
-                                  aria-hidden="true"
-                                >
-                                  &nbsp;
-                                </sup>
-                              ) : (
-                                <sub
-                                  className={
-                                    hotel_count > comp_hotel_count
-                                      ? 'fa fa-long-arrow-up text-success'
-                                      : 'fa fa-long-arrow-down text-danger'
-                                  }
-                                  aria-hidden="true"
-                                >
-                                  &nbsp;
-                                </sub>
-                              )}
-                              {hotel_count}
-                            </span>
+                            {hotel_count}
                           </StyledTableCell>
                         );
                       })()
@@ -548,7 +986,6 @@ export default function BucketMovements({ selectedDate }) {
                     {[...Array(report_len).keys()].map((e, index) =>
                       (() => {
                         let hotel_count = 0;
-                        let comp_hotel_count = -1;
                         if (cluster3.length > 0 && cluster3[index]) {
                           hotel_count =
                             hotel_count + cluster3[index].stars3.length;
@@ -558,23 +995,6 @@ export default function BucketMovements({ selectedDate }) {
                             hotel_count + cluster4[index].stars3.length;
                         }
 
-                        if (cluster3[index]) {
-                          if (cluster3[index].comp_report) {
-                            comp_hotel_count =
-                              comp_hotel_count +
-                              cluster3[index].comp_report.stars3.length +
-                              1;
-                          }
-                        }
-                        if (cluster4[index]) {
-                          if (cluster4[index].comp_report) {
-                            comp_hotel_count =
-                              comp_hotel_count +
-                              cluster4[index].comp_report.stars3.length +
-                              1;
-                          }
-                        }
-
                         return (
                           <StyledTableCell
                             size="small"
@@ -582,34 +1002,7 @@ export default function BucketMovements({ selectedDate }) {
                             style={{ fontSize: '14px' }}
                             className={classes.rates}
                           >
-                            <span>
-                              {hotel_count > comp_hotel_count ? (
-                                <sup
-                                  className={
-                                    comp_hotel_count == -1
-                                      ? ''
-                                      : hotel_count > comp_hotel_count
-                                      ? 'fa fa-long-arrow-up text-success'
-                                      : 'fa fa-long-arrow-down text-danger'
-                                  }
-                                  aria-hidden="true"
-                                >
-                                  &nbsp;
-                                </sup>
-                              ) : (
-                                <sub
-                                  className={
-                                    hotel_count > comp_hotel_count
-                                      ? 'fa fa-long-arrow-up text-success'
-                                      : 'fa fa-long-arrow-down text-danger'
-                                  }
-                                  aria-hidden="true"
-                                >
-                                  &nbsp;
-                                </sub>
-                              )}
-                              {hotel_count}
-                            </span>
+                            {hotel_count}
                           </StyledTableCell>
                         );
                       })()
@@ -633,18 +1026,9 @@ export default function BucketMovements({ selectedDate }) {
                     {[...Array(report_len).keys()].map((e, index) =>
                       (() => {
                         let hotel_count = 0;
-                        let comp_hotel_count = -1;
                         if (cluster1.length > 0 && cluster1[index]) {
                           hotel_count =
                             hotel_count + cluster1[index].stars3.length;
-                        }
-                        if (cluster1[index]) {
-                          if (cluster1[index].comp_report) {
-                            comp_hotel_count =
-                              comp_hotel_count +
-                              cluster1[index].comp_report.stars3.length +
-                              1;
-                          }
                         }
                         return (
                           <StyledTableCell
@@ -653,34 +1037,7 @@ export default function BucketMovements({ selectedDate }) {
                             style={{ fontSize: '14px' }}
                             className={classes.rates}
                           >
-                            <span>
-                              {hotel_count > comp_hotel_count ? (
-                                <sup
-                                  className={
-                                    comp_hotel_count == -1
-                                      ? ''
-                                      : hotel_count > comp_hotel_count
-                                      ? 'fa fa-long-arrow-up text-success'
-                                      : 'fa fa-long-arrow-down text-danger'
-                                  }
-                                  aria-hidden="true"
-                                >
-                                  &nbsp;
-                                </sup>
-                              ) : (
-                                <sub
-                                  className={
-                                    hotel_count > comp_hotel_count
-                                      ? 'fa fa-long-arrow-up text-success'
-                                      : 'fa fa-long-arrow-down text-danger'
-                                  }
-                                  aria-hidden="true"
-                                >
-                                  &nbsp;
-                                </sub>
-                              )}
-                              {hotel_count}
-                            </span>
+                            {hotel_count}
                           </StyledTableCell>
                         );
                       })()
@@ -704,7 +1061,6 @@ export default function BucketMovements({ selectedDate }) {
                     {[...Array(report_len).keys()].map((e, index) =>
                       (() => {
                         let hotel_count = 0;
-                        let comp_hotel_count = -1;
                         if (cluster2.length > 0 && cluster2[index]) {
                           hotel_count =
                             hotel_count + cluster2[index].stars2.length;
@@ -717,34 +1073,6 @@ export default function BucketMovements({ selectedDate }) {
                           hotel_count =
                             hotel_count + cluster4[index].stars2.length;
                         }
-
-                        if (cluster2[index]) {
-                          if (cluster2[index].comp_report) {
-                            comp_hotel_count =
-                              comp_hotel_count +
-                              cluster2[index].comp_report.stars2.length +
-                              1;
-                          }
-                        }
-
-                        if (cluster3[index]) {
-                          if (cluster3[index].comp_report) {
-                            comp_hotel_count =
-                              comp_hotel_count +
-                              cluster3[index].comp_report.stars2.length +
-                              1;
-                          }
-                        }
-
-                        if (cluster4[index]) {
-                          if (cluster4[index].comp_report) {
-                            comp_hotel_count =
-                              comp_hotel_count +
-                              cluster4[index].comp_report.stars2.length +
-                              1;
-                          }
-                        }
-
                         return (
                           <StyledTableCell
                             size="small"
@@ -752,34 +1080,7 @@ export default function BucketMovements({ selectedDate }) {
                             style={{ fontSize: '14px' }}
                             className={classes.rates}
                           >
-                            <span>
-                              {hotel_count > comp_hotel_count ? (
-                                <sup
-                                  className={
-                                    comp_hotel_count == -1
-                                      ? ''
-                                      : hotel_count > comp_hotel_count
-                                      ? 'fa fa-long-arrow-up text-success'
-                                      : 'fa fa-long-arrow-down text-danger'
-                                  }
-                                  aria-hidden="true"
-                                >
-                                  &nbsp;
-                                </sup>
-                              ) : (
-                                <sub
-                                  className={
-                                    hotel_count > comp_hotel_count
-                                      ? 'fa fa-long-arrow-up text-success'
-                                      : 'fa fa-long-arrow-down text-danger'
-                                  }
-                                  aria-hidden="true"
-                                >
-                                  &nbsp;
-                                </sub>
-                              )}
-                              {hotel_count}
-                            </span>
+                            {hotel_count}
                           </StyledTableCell>
                         );
                       })()
@@ -828,11 +1129,13 @@ export default function BucketMovements({ selectedDate }) {
                             }
                             style={{ fontSize: '12px' }}
                           >
-                            {`${
-                              day === 'Sat' || day === 'Fri' ? 'WEND' : 'WDAY'
-                            }\n${day.toUpperCase()}\n${moment(_date).format(
-                              'MM/DD'
-                            )}`}
+                            <>
+                              {day === 'Sat' || day === 'Fri' ? 'WEND' : 'WDAY'}
+                            </>
+                            <br />
+                            <>{day.toUpperCase()}</>
+                            <br />
+                            <>{moment(e.date).format('MM/DD')}</>{' '}
                             <div class="dropdown-divider"></div>
                             {daysOut}
                           </StyledTableCell>
@@ -841,56 +1144,6 @@ export default function BucketMovements({ selectedDate }) {
                     )}
                   </TableHead>
                   <TableBody>
-                    <StyledTableRow>
-                      <StyledTableCell
-                        component="th"
-                        scope="row"
-                        className={classes.sticky}
-                        style={{
-                          fontWeight: 'bold',
-                          width: '250px',
-                          borderTop: '2px solid grey',
-                        }}
-                      >
-                        Bucket Size Index
-                      </StyledTableCell>
-                      {[...Array(report_len).keys()].map((e, index) =>
-                        (() => {
-                          let star_hotel_count =
-                            cluster4.length > 0 && cluster4[index]
-                              ? cluster4[index].unwanted.length
-                              : 0;
-
-                          let hotel_count = 0;
-                          if (cluster1.length > 0 && cluster1[index]) {
-                            hotel_count += cluster1[index].stars5.length;
-                          }
-                          if (cluster2.length > 0 && cluster2[index]) {
-                            hotel_count += cluster2[index].stars5.length;
-                          }
-                          if (cluster3.length > 0 && cluster3[index]) {
-                            hotel_count += cluster3[index].stars5.length;
-                          }
-                          if (cluster4.length > 0 && cluster4[index]) {
-                            hotel_count += cluster4[index].stars5.length;
-                          }
-
-                          return (
-                            <StyledTableCell
-                              style={{
-                                borderTop: '2px solid grey',
-                                fontWeight: 'bold',
-                              }}
-                              className={classes.rates + ' text-center'}
-                            >
-                              {parseFloat(
-                                star_hotel_count / hotel_count
-                              ).toFixed(2)}
-                            </StyledTableCell>
-                          );
-                        })()
-                      )}
-                    </StyledTableRow>
                     <StyledTableRow>
                       <StyledTableCell
                         component="th"
@@ -992,11 +1245,13 @@ export default function BucketMovements({ selectedDate }) {
                             }
                             style={{ fontSize: '12px' }}
                           >
-                            {`${
-                              day === 'Sat' || day === 'Fri' ? 'WEND' : 'WDAY'
-                            }\n${day.toUpperCase()}\n${moment(_date).format(
-                              'MM/DD'
-                            )}`}
+                            <>
+                              {day === 'Sat' || day === 'Fri' ? 'WEND' : 'WDAY'}
+                            </>
+                            <br />
+                            <>{day.toUpperCase()}</>
+                            <br />
+                            <>{moment(e.date).format('MM/DD')}</>{' '}
                             <div class="dropdown-divider"></div>
                             {daysOut}
                           </StyledTableCell>
@@ -1005,60 +1260,6 @@ export default function BucketMovements({ selectedDate }) {
                     )}
                   </TableHead>
                   <TableBody>
-                    <StyledTableRow>
-                      <StyledTableCell
-                        component="th"
-                        scope="row"
-                        className={classes.sticky}
-                        style={{
-                          fontWeight: 'bold',
-                          width: '250px',
-                          borderTop: '2px solid grey',
-                        }}
-                      >
-                        Bucket Size Index
-                      </StyledTableCell>
-                      {[...Array(report_len).keys()].map((e, index) =>
-                        (() => {
-                          let star_hotel_count = 0;
-
-                          if (cluster3.length > 0 && cluster3[index]) {
-                            star_hotel_count += cluster3[index].unwanted.length;
-                          }
-
-                          let hotel_count = 0;
-                          if (cluster1.length > 0 && cluster1[index]) {
-                            hotel_count += cluster1[index].stars4.length;
-                          }
-                          if (cluster2.length > 0 && cluster2[index]) {
-                            hotel_count =
-                              hotel_count + cluster2[index].stars4.length;
-                          }
-                          if (cluster3.length > 0 && cluster3[index]) {
-                            hotel_count =
-                              hotel_count + cluster3[index].stars4.length;
-                          }
-                          if (cluster4.length > 0 && cluster4[index]) {
-                            hotel_count =
-                              hotel_count + cluster4[index].stars4.length;
-                          }
-
-                          return (
-                            <StyledTableCell
-                              style={{
-                                borderTop: '2px solid grey',
-                                fontWeight: 'bold',
-                              }}
-                              className={classes.rates + ' text-center'}
-                            >
-                              {parseFloat(
-                                star_hotel_count / hotel_count
-                              ).toFixed(2)}
-                            </StyledTableCell>
-                          );
-                        })()
-                      )}
-                    </StyledTableRow>
                     <StyledTableRow>
                       <StyledTableCell
                         component="th"
@@ -1156,11 +1357,13 @@ export default function BucketMovements({ selectedDate }) {
                             }
                             style={{ fontSize: '12px' }}
                           >
-                            {`${
-                              day === 'Sat' || day === 'Fri' ? 'WEND' : 'WDAY'
-                            }\n${day.toUpperCase()}\n${moment(_date).format(
-                              'MM/DD'
-                            )}`}
+                            <>
+                              {day === 'Sat' || day === 'Fri' ? 'WEND' : 'WDAY'}
+                            </>
+                            <br />
+                            <>{day.toUpperCase()}</>
+                            <br />
+                            <>{moment(e.date).format('MM/DD')}</>{' '}
                             <div class="dropdown-divider"></div>
                             {daysOut}
                           </StyledTableCell>
@@ -1169,60 +1372,6 @@ export default function BucketMovements({ selectedDate }) {
                     )}
                   </TableHead>
                   <TableBody>
-                    <StyledTableRow>
-                      <StyledTableCell
-                        component="th"
-                        scope="row"
-                        className={classes.sticky}
-                        style={{
-                          fontWeight: 'bold',
-                          width: '250px',
-                          borderTop: '2px solid grey',
-                        }}
-                      >
-                        Bucket Size Index
-                      </StyledTableCell>
-                      {[...Array(report_len).keys()].map((e, index) =>
-                        (() => {
-                          let star_hotel_count = 0;
-
-                          if (cluster2.length > 0 && cluster2[index]) {
-                            star_hotel_count += cluster2[index].unwanted.length;
-                          }
-
-                          let hotel_count = 0;
-                          if (cluster1.length > 0 && cluster1[index]) {
-                            hotel_count += cluster1[index].stars3.length;
-                          }
-                          if (cluster2.length > 0 && cluster2[index]) {
-                            hotel_count =
-                              hotel_count + cluster2[index].stars3.length;
-                          }
-                          if (cluster3.length > 0 && cluster3[index]) {
-                            hotel_count =
-                              hotel_count + cluster3[index].stars3.length;
-                          }
-                          if (cluster4.length > 0 && cluster4[index]) {
-                            hotel_count =
-                              hotel_count + cluster4[index].stars3.length;
-                          }
-
-                          return (
-                            <StyledTableCell
-                              style={{
-                                borderTop: '2px solid grey',
-                                fontWeight: 'bold',
-                              }}
-                              className={classes.rates + ' text-center'}
-                            >
-                              {parseFloat(
-                                star_hotel_count / hotel_count
-                              ).toFixed(2)}
-                            </StyledTableCell>
-                          );
-                        })()
-                      )}
-                    </StyledTableRow>
                     <StyledTableRow>
                       <StyledTableCell
                         component="th"
@@ -1323,11 +1472,13 @@ export default function BucketMovements({ selectedDate }) {
                             }
                             style={{ fontSize: '12px' }}
                           >
-                            {`${
-                              day === 'Sat' || day === 'Fri' ? 'WEND' : 'WDAY'
-                            }\n${day.toUpperCase()}\n${moment(_date).format(
-                              'MM/DD'
-                            )}`}
+                            <>
+                              {day === 'Sat' || day === 'Fri' ? 'WEND' : 'WDAY'}
+                            </>
+                            <br />
+                            <>{day.toUpperCase()}</>
+                            <br />
+                            <>{moment(e.date).format('MM/DD')}</>{' '}
                             <div class="dropdown-divider"></div>
                             {daysOut}
                           </StyledTableCell>
@@ -1336,60 +1487,6 @@ export default function BucketMovements({ selectedDate }) {
                     )}
                   </TableHead>
                   <TableBody>
-                    <StyledTableRow>
-                      <StyledTableCell
-                        component="th"
-                        scope="row"
-                        className={classes.sticky}
-                        style={{
-                          fontWeight: 'bold',
-                          width: '250px',
-                          borderTop: '2px solid grey',
-                        }}
-                      >
-                        Bucket Size Index
-                      </StyledTableCell>
-                      {[...Array(report_len).keys()].map((e, index) =>
-                        (() => {
-                          let star_hotel_count = 0;
-                          let hotel_count = 0;
-
-                          if (cluster1.length > 0 && cluster1[index]) {
-                            star_hotel_count += cluster1[index].unwanted.length;
-                          }
-
-                          if (cluster1.length > 0 && cluster1[index]) {
-                            hotel_count += cluster1[index].stars2.length;
-                          }
-                          if (cluster2.length > 0 && cluster2[index]) {
-                            hotel_count =
-                              hotel_count + cluster2[index].stars2.length;
-                          }
-                          if (cluster3.length > 0 && cluster3[index]) {
-                            hotel_count =
-                              hotel_count + cluster3[index].stars2.length;
-                          }
-                          if (cluster4.length > 0 && cluster4[index]) {
-                            hotel_count =
-                              hotel_count + cluster4[index].stars2.length;
-                          }
-
-                          return (
-                            <StyledTableCell
-                              style={{
-                                borderTop: '2px solid grey',
-                                fontWeight: 'bold',
-                              }}
-                              className={classes.rates + ' text-center'}
-                            >
-                              {parseFloat(
-                                star_hotel_count / hotel_count
-                              ).toFixed(2)}
-                            </StyledTableCell>
-                          );
-                        })()
-                      )}
-                    </StyledTableRow>
                     <StyledTableRow>
                       <StyledTableCell
                         component="th"
@@ -1483,11 +1580,13 @@ export default function BucketMovements({ selectedDate }) {
                           }
                           style={{ fontSize: '12px' }}
                         >
-                          {`${
-                            day === 'Sat' || day === 'Fri' ? 'WEND' : 'WDAY'
-                          }\n${day.toUpperCase()}\n${moment(_date).format(
-                            'MM/DD'
-                          )}`}
+                          <>
+                            {day === 'Sat' || day === 'Fri' ? 'WEND' : 'WDAY'}
+                          </>
+                          <br />
+                          <>{day.toUpperCase()}</>
+                          <br />
+                          <>{moment(e.date).format('MM/DD')}</>{' '}
                           <div class="dropdown-divider"></div>
                           {daysOut}
                         </StyledTableCell>
