@@ -500,9 +500,9 @@ export default function ClusterBucket({ selectedDate, reqHotel }) {
     );
   };
 
-  useEffect(() => {
-    console.log(daily_fetch_len);
-  }, []);
+  // useEffect(() => {
+  //   console.log(daily_fetch_len);
+  // }, []);
 
   return (
     <>
