@@ -794,14 +794,14 @@ export const Graphs = ({ selectedDate, selectedProperty }) => {
         }
       } catch (e) {}
 
-      // console.log(hotels_list);
-
       hotels_list = hotels_list.sort((a, b) => a.rate - b.rate);
+
+      // console.log(hotels_list);
 
       rank = hotels_list.findIndex((e) => e.id == selectedProperty);
 
       if (rank > 0) {
-        return rank + 1;
+        return rank;
       } else {
         return null;
       }
