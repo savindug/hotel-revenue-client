@@ -801,7 +801,7 @@ export const Graphs = ({ selectedDate, selectedProperty }) => {
       rank = hotels_list.findIndex((e) => e.id == selectedProperty);
 
       if (rank > 0) {
-        return rank;
+        return rank + 1;
       } else {
         return null;
       }
@@ -996,7 +996,30 @@ export const Graphs = ({ selectedDate, selectedProperty }) => {
               height={400}
               width={100}
               data={_hotelData}
-              options={stackedOptions}
+              options={{
+                ...stackedOptions,
+                tooltips: {
+                  callbacks: {
+                    label: function (tooltipItem, data) {
+                      if (tooltipItem.datasetIndex == 0) {
+                        // console.log(tooltipItem);
+                        // console.log(data);
+                        return (
+                          data.datasets[tooltipItem.datasetIndex].label +
+                          ': ' +
+                          (hotels.length - tooltipItem.yLabel)
+                        );
+                      }
+                      return (
+                        data.datasets[tooltipItem.datasetIndex].label +
+                        ': (' +
+                        tooltipItem.yLabel +
+                        ')'
+                      );
+                    },
+                  },
+                },
+              }}
             />
           </Box>
 
