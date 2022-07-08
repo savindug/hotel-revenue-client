@@ -15,6 +15,7 @@ import { useSelector } from 'react-redux';
 import moment from 'moment';
 import { CLUSTER_BACKGROUND, FONT_FAMILY } from '../utils/const';
 import { useEffect } from 'react';
+import HotelRanks from './HotelRanks';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -711,10 +712,8 @@ export default function ClusterBucket({ selectedDate, reqHotel }) {
               <br />
             </Box>
           </TableContainer>
-          {/* <RatePositionTable cluster={cluster4} stars={5} className="my-5" />
-          <RatePositionTable cluster={cluster3} stars={4} className="my-5" />
-          <RatePositionTable cluster={cluster2} stars={3} className="my-5" />
-          <RatePositionTable cluster={cluster1} stars={2} className="my-5" /> */}
+
+          <HotelRanks selectedDate={selectedDate} />
         </>
       ) : (
         <>loading</>
