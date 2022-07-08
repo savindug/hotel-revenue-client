@@ -196,6 +196,7 @@ export default function HotelRanks({ selectedDate }) {
 
     const CalculateHotelRanks = async () => {
       setLoad(true);
+      let ranked_hotels_list = [];
       if (hotels.length > 0) {
         await [...Array(report_len).keys()].map((e, index) => {
           let hotel_rates_by_day = [];
@@ -214,6 +215,7 @@ export default function HotelRanks({ selectedDate }) {
           });
 
           let ranked_hotels = getRankedHotels(hotel_rates_by_day);
+          ranked_hotels_list.push(ranked_hotels);
 
           hotels.map((_hotel) => {
             let dt = _hotel.prices[index];
@@ -227,31 +229,59 @@ export default function HotelRanks({ selectedDate }) {
               }
             } catch (error) {}
           });
+        });
 
-          hotels.map((_hotel) => {
-            let rank_stdev = [];
-            let rank_arr_wd = [];
-            let ranks_arr_we = [];
-            let ranks_arr_w = [];
-            _hotel.prices.map((dt, ix) => {
-              if (dt !== null) {
-                const day = moment(dt.date).format('dddd').substring(0, 3);
-                ranks_arr_w.push(dt.day_rank);
-                if (day === 'Sat' || day === 'Fri') {
-                  ranks_arr_we.push(dt.day_rank);
-                } else {
-                  rank_arr_wd.push(dt.day_rank);
-                }
-                if (checkHotelAvailability(_hotel.hotelID, ix)) {
-                  rank_stdev.push(dt.day_rank);
-                }
+        hotels.map((_hotel) => {
+          let rank_stdev = [];
+          let rank_arr_wd = [];
+          let ranks_arr_we = [];
+          let ranks_arr_w = [];
+          _hotel.prices.map((dt, ix) => {
+            if (dt !== null) {
+              const day = moment(dt.date).format('dddd').substring(0, 3);
+              ranks_arr_w.push(dt.day_rank);
+              if (day === 'Sat' || day === 'Fri') {
+                ranks_arr_we.push(dt.day_rank);
+              } else {
+                rank_arr_wd.push(dt.day_rank);
               }
+              if (checkHotelAvailability(_hotel.hotelID, ix)) {
+                rank_stdev.push(dt.day_rank);
+              }
+            }
 
-              _hotel.avg_rank_wd = getAverage(rank_arr_wd);
-              _hotel.avg_rank_we = getAverage(ranks_arr_we);
-              _hotel.avg_rank = getAverage(ranks_arr_w);
-              _hotel.stdev = getStandardDeviation(rank_stdev);
-            });
+            _hotel.avg_rank_wd = getAverage(rank_arr_wd);
+            _hotel.avg_rank_we = getAverage(ranks_arr_we);
+            _hotel.avg_rank = getAverage(ranks_arr_w);
+            _hotel.stdev = getStandardDeviation(rank_stdev);
+
+            //   let upper_bound_wd = Math.floor(
+            //     _hotel.avg_rank_wd + 2 * _hotel.stdev
+            //   );
+            //   let lower_bound_wd = Math.floor(
+            //     _hotel.avg_rank_wd - 2 * _hotel.stdev
+            //   );
+
+            //   let upper_bound_we = Math.floor(
+            //     _hotel.avg_rank_we + 2 * _hotel.stdev
+            //   );
+            //   let lower_bound_we = Math.floor(
+            //     _hotel.avg_rank_we - 2 * _hotel.stdev
+            //   );
+
+            //   _hotel.upper_bound_rate_wd = ranked_hotels_list[ix].find(
+            //     (obj) => obj.day_rank == upper_bound_wd
+            //   );
+            //   _hotel.lower_bound_rate_wd = ranked_hotels_list[ix].find(
+            //     (obj) => obj.day_rank == lower_bound_wd
+            //   );
+
+            //   _hotel.upper_bound_rate_we = ranked_hotels_list[ix].find(
+            //     (obj) => obj.day_rank == upper_bound_we
+            //   );
+            //   _hotel.lower_bound_rate_we = ranked_hotels_list[ix].find(
+            //     (obj) => obj.day_rank == lower_bound_we
+            //   );
           });
         });
       }
@@ -259,6 +289,7 @@ export default function HotelRanks({ selectedDate }) {
     };
 
     CalculateHotelRanks();
+    console.log(hotels);
 
     setOriginalRows(
       hotels.sort(
