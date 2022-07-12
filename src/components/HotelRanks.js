@@ -171,7 +171,7 @@ export default function HotelRanks({ selectedDate }) {
   const getAverage = (array) => {
     if (array.length > 0) {
       let avg = array.reduce((a, b) => a + b) / array.length;
-      return parseFloat(avg).toFixed(2);
+      return avg;
     } else {
       return -1;
     }
@@ -181,10 +181,8 @@ export default function HotelRanks({ selectedDate }) {
     const n = array.length;
     if (n > 0) {
       const mean = array.reduce((a, b) => a + b) / n;
-      return parseFloat(
-        Math.sqrt(
-          array.map((x) => Math.pow(x - mean, 2)).reduce((a, b) => a + b) / n
-        ).toFixed(2)
+      return Math.sqrt(
+        array.map((x) => Math.pow(x - mean, 2)).reduce((a, b) => a + b) / n
       );
     } else {
       return -1;
@@ -250,38 +248,35 @@ export default function HotelRanks({ selectedDate }) {
               }
             }
 
-            _hotel.avg_rank_wd = getAverage(rank_arr_wd);
-            _hotel.avg_rank_we = getAverage(ranks_arr_we);
-            _hotel.avg_rank = getAverage(ranks_arr_w);
-            _hotel.stdev = getStandardDeviation(rank_stdev);
+            let avg_rank_wd = getAverage(rank_arr_wd);
+            let avg_rank_we = getAverage(ranks_arr_we);
+            let avg_rank = getAverage(ranks_arr_w);
+            let stdev = getStandardDeviation(rank_stdev);
 
-            //   let upper_bound_wd = Math.floor(
-            //     _hotel.avg_rank_wd + 2 * _hotel.stdev
-            //   );
-            //   let lower_bound_wd = Math.floor(
-            //     _hotel.avg_rank_wd - 2 * _hotel.stdev
-            //   );
+            _hotel.avg_rank_wd = avg_rank_wd;
+            _hotel.avg_rank_we = avg_rank_we;
+            _hotel.avg_rank = avg_rank;
+            _hotel.stdev = stdev;
 
-            //   let upper_bound_we = Math.floor(
-            //     _hotel.avg_rank_we + 2 * _hotel.stdev
-            //   );
-            //   let lower_bound_we = Math.floor(
-            //     _hotel.avg_rank_we - 2 * _hotel.stdev
-            //   );
+            _hotel.upper_bound_wd = avg_rank_wd + 2 * _hotel.stdev;
+            _hotel.lower_bound_wd = avg_rank_wd - 2 * _hotel.stdev;
 
-            //   _hotel.upper_bound_rate_wd = ranked_hotels_list[ix].find(
-            //     (obj) => obj.day_rank == upper_bound_wd
-            //   );
-            //   _hotel.lower_bound_rate_wd = ranked_hotels_list[ix].find(
-            //     (obj) => obj.day_rank == lower_bound_wd
-            //   );
+            _hotel.upper_bound_we = avg_rank_we + 2 * _hotel.stdev;
+            _hotel.lower_bound_we = avg_rank_we - 2 * _hotel.stdev;
 
-            //   _hotel.upper_bound_rate_we = ranked_hotels_list[ix].find(
-            //     (obj) => obj.day_rank == upper_bound_we
-            //   );
-            //   _hotel.lower_bound_rate_we = ranked_hotels_list[ix].find(
-            //     (obj) => obj.day_rank == lower_bound_we
-            //   );
+            _hotel.upper_bound_rate_wd = ranked_hotels_list[ix].find(
+              (obj) => obj.day_rank == Math.ceil(avg_rank_wd + 2 * stdev)
+            );
+            _hotel.lower_bound_rate_wd = ranked_hotels_list[ix].find(
+              (obj) => obj.day_rank == Math.ceil(avg_rank_wd - 2 * stdev)
+            );
+
+            _hotel.upper_bound_rate_we = ranked_hotels_list[ix].find(
+              (obj) => obj.day_rank == Math.ceil(avg_rank_we + 2 * stdev)
+            );
+            _hotel.lower_bound_rate_we = ranked_hotels_list[ix].find(
+              (obj) => obj.day_rank == Math.ceil(avg_rank_we - 2 * stdev)
+            );
           });
         });
       }
@@ -713,6 +708,18 @@ export default function HotelRanks({ selectedDate }) {
                     <StyledTableCell className="text-center">
                       Std Dev Rank
                     </StyledTableCell>
+                    <StyledTableCell className="text-center">
+                      Upper bound Rank - WeekDay
+                    </StyledTableCell>
+                    <StyledTableCell className="text-center">
+                      Lower bound Rank - WeekDay
+                    </StyledTableCell>
+                    <StyledTableCell className="text-center">
+                      Upper bound Rank - WeekEnd
+                    </StyledTableCell>
+                    <StyledTableCell className="text-center">
+                      Lower bound Rank - WeekEnd
+                    </StyledTableCell>
                     {cluster1.map((e, i) =>
                       (() => {
                         let _date = moment(e.date);
@@ -764,17 +771,28 @@ export default function HotelRanks({ selectedDate }) {
                         {_hotel.stars}
                       </StyledTableCell>
                       <StyledTableCell className={classes.rates}>
-                        {_hotel.avg_rank}{' '}
-                      </StyledTableCell>{' '}
-                      <StyledTableCell className={classes.rates}>
-                        {' '}
-                        {_hotel.avg_rank_wd}{' '}
+                        {parseFloat(_hotel.avg_rank).toFixed(2)}{' '}
                       </StyledTableCell>
                       <StyledTableCell className={classes.rates}>
-                        {_hotel.avg_rank_we}
+                        {parseFloat(_hotel.avg_rank_wd).toFixed(2)}{' '}
                       </StyledTableCell>
                       <StyledTableCell className={classes.rates}>
-                        {_hotel.stdev}
+                        {parseFloat(_hotel.avg_rank_we).toFixed(2)}
+                      </StyledTableCell>
+                      <StyledTableCell className={classes.rates}>
+                        {parseFloat(_hotel.stdev).toFixed(2)}
+                      </StyledTableCell>
+                      <StyledTableCell className={classes.rates}>
+                        {parseFloat(_hotel.upper_bound_wd).toFixed(2)}
+                      </StyledTableCell>
+                      <StyledTableCell className={classes.rates}>
+                        {parseFloat(_hotel.lower_bound_wd).toFixed(2)}
+                      </StyledTableCell>
+                      <StyledTableCell className={classes.rates}>
+                        {parseFloat(_hotel.upper_bound_we).toFixed(2)}
+                      </StyledTableCell>
+                      <StyledTableCell className={classes.rates}>
+                        {parseFloat(_hotel.lower_bound_we).toFixed(2)}
                       </StyledTableCell>
                       {_hotel.prices.map((dt, ix) => {
                         return dt !== null ? (
