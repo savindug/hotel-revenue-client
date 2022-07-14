@@ -137,6 +137,10 @@ export default function HotelRanks({ selectedDate }) {
 
   const [load, setLoad] = useState(false);
 
+  const [date_select, setDate_select] = useState(0);
+
+  const [hotel_list_by_date, set_hotel_list_by_date] = useState([]);
+
   const getReportName = () => {
     let name = null;
     if (reqHotel.length > 0) {
@@ -163,6 +167,36 @@ export default function HotelRanks({ selectedDate }) {
     setSearched('');
     requestSearch(searched);
   };
+
+  useEffect(() => {
+    const sort_price_by_date = async () => {
+      let hotel_prices = [];
+      if (hotelsList.length > 0) {
+        hotelsList.map((_hotel, ix) => {
+          let dt = _hotel.prices[date_select];
+
+          if (dt != null) {
+            hotel_prices.push({
+              hotelID: _hotel.hotelID,
+              hotelName: _hotel.hotelName,
+              stars: _hotel.stars,
+              price: dt.price[getPrice(dt.price)],
+            });
+          }
+        });
+      }
+
+      set_hotel_list_by_date(
+        hotel_prices.sort(
+          (a, b) => b.price - a.price || a.hotelName.localeCompare(b.hotelName)
+        )
+      );
+    };
+
+    if (hotelsList.length > 0 && date_select >= 0) {
+      sort_price_by_date();
+    }
+  }, [date_select, hotelsList]);
 
   useEffect(() => {
     requestSearch(searched);
@@ -833,6 +867,191 @@ export default function HotelRanks({ selectedDate }) {
               <br />
             </Box>
           </TableContainer>
+
+          {hotel_list_by_date.length > 0 ? (
+            <div className="my-5 container">
+              <FormGroup className={classes.formControl}>
+                <InputLabel
+                  htmlFor="grouped-native-select"
+                  style={{ backgroundColor: 'white', fontFamily: FONT_FAMILY }}
+                >
+                  Select Date
+                </InputLabel>
+                <Select
+                  native
+                  id="grouped-native-select"
+                  onChange={(e) => setDate_select(e.target.value)}
+                  style={{ backgroundColor: 'white', fontFamily: FONT_FAMILY }}
+                >
+                  {cluster1.map((e, i) =>
+                    (() => {
+                      let _date = moment(e.date);
+                      let daysOut = _date.diff(selectedDate, 'days');
+                      let day = _date.format('dddd').substring(0, 3);
+
+                      return (
+                        <option value={daysOut}>
+                          {_date.format('YYYY-MM-DD')}
+                        </option>
+                      );
+                    })()
+                  )}
+                </Select>
+              </FormGroup>
+              <TableContainer
+                component={Paper}
+                className={classes.container + ' mt-3'}
+              >
+                <Box>
+                  <Table
+                    id="table-to-xls"
+                    className={classes.table}
+                    size="medium"
+                    aria-label="customized table"
+                    stickyHeader
+                    bodystyle={{ overflow: 'visible' }}
+                    ref={tableRef}
+                  >
+                    <TableHead>
+                      <StyledTableRow>
+                        <StyledTableCell size="small">#</StyledTableCell>
+                        <StyledTableCell
+                          style={{
+                            fontWeight: 'bold',
+                            width: '250px',
+                            zIndex: 100,
+                            fontFamily: FONT_FAMILY,
+                          }}
+                        >
+                          <TableSortLabel
+                            active={sortBy === 0}
+                            direction={sortDir}
+                            onClick={() => {
+                              handleSort(0, sortDir === 'asc' ? 'desc' : 'asc');
+                            }}
+                          >
+                            Hotel Name
+                          </TableSortLabel>
+                          <hr />
+                          <TableSortLabel disabled>Days Out</TableSortLabel>
+                          {/* <TableSortLabel onClick={handleSort(0)}></TableSortLabel> */}
+                        </StyledTableCell>
+                        <StyledTableCell>
+                          <TableSortLabel
+                            active={sortBy === 1}
+                            direction={sortDir}
+                            onClick={() => {
+                              handleSort(1, sortDir === 'asc' ? 'desc' : 'asc');
+                            }}
+                          >
+                            Stars
+                          </TableSortLabel>
+                        </StyledTableCell>
+
+                        {cluster1.map((e, i) =>
+                          (() => {
+                            let _date = moment(e.date);
+                            let daysOut = _date.diff(selectedDate, 'days');
+                            let day = _date.format('dddd').substring(0, 3);
+
+                            if (daysOut == date_select) {
+                              return (
+                                <StyledTableCell
+                                  size="small"
+                                  key={i}
+                                  className={
+                                    day === 'Sat' || day === 'Fri'
+                                      ? 'bg-secondary text-light text-center '
+                                      : 'text-center '
+                                  }
+                                  style={{ fontSize: '12px' }}
+                                >
+                                  {`${
+                                    day === 'Sat' || day === 'Fri'
+                                      ? 'WEND'
+                                      : 'WDAY'
+                                  }\n${day.toUpperCase()}\n${moment(
+                                    _date
+                                  ).format('MM/DD')}`}{' '}
+                                  <div class="dropdown-divider"></div>
+                                  {daysOut}
+                                </StyledTableCell>
+                              );
+                            }
+
+                            // console.log('selectedDate+: ' + date + ', day: ' + day);
+                          })()
+                        )}
+                      </StyledTableRow>
+                    </TableHead>
+
+                    <TableBody>
+                      {hotel_list_by_date.map((_hotel, index) => (
+                        <StyledTableRow>
+                          <StyledTableCell size="small">
+                            {index + 1}
+                          </StyledTableCell>
+                          <StyledTableCell
+                            size="medium"
+                            component="th"
+                            scope="col"
+                            className={classes.sticky}
+                            style={{ fontWeight: 'bold', width: '300px' }}
+                          >
+                            {_hotel.hotelName}
+                          </StyledTableCell>
+                          <StyledTableCell
+                            size="small"
+                            className={classes.rates}
+                          >
+                            {_hotel.stars}
+                          </StyledTableCell>
+                          {(() => {
+                            return _hotel.price !== null ? (
+                              <StyledTableCell
+                                size="small"
+                                className={classes.rates}
+                                style={
+                                  checkHotelAvailability(
+                                    _hotel.hotelID,
+                                    date_select
+                                  )
+                                    ? {
+                                        backgroundColor:
+                                          CLUSTER_BACKGROUND[
+                                            getClusterByPrice(
+                                              _hotel.price,
+                                              date_select
+                                            )
+                                          ],
+                                      }
+                                    : { backgroundColor: '#9E9E9E' }
+                                }
+                              >
+                                <span className="font-weight-bold">
+                                  {_hotel.price}
+                                </span>
+                              </StyledTableCell>
+                            ) : (
+                              <StyledTableCell
+                                size="small"
+                                className={classes.rates}
+                              >
+                                --
+                              </StyledTableCell>
+                            );
+                          })()}
+                        </StyledTableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                  <br />
+                </Box>
+              </TableContainer>
+            </div>
+          ) : (
+            <></>
+          )}
         </>
       ) : (
         <></>
