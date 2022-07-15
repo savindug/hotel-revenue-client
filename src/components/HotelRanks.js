@@ -223,6 +223,23 @@ export default function HotelRanks({ selectedDate }) {
     }
   };
 
+  const getRankedHotels = (arr) => {
+    var sorted = arr
+      .filter((e) => e.rate != 'NaN')
+      .sort((a, b) => b.rate - a.rate);
+
+    var rank = 1;
+    for (var i = 0; i < sorted.length; i++) {
+      if (i > 0 && sorted[i].rate < sorted[i - 1].rate) {
+        rank++;
+      }
+      sorted[i].day_rank = rank;
+    }
+
+    // console.log(sorted);
+    return sorted;
+  };
+
   useEffect(() => {
     // console.log(`selectedDate: ${selectedDate}`);
 
@@ -236,11 +253,15 @@ export default function HotelRanks({ selectedDate }) {
             let dt = _hotel.prices[index];
 
             try {
-              if (dt !== null) {
+              if (
+                dt !== null &&
+                checkHotelAvailability(_hotel.hotelID, index)
+              ) {
                 hotel_rates_by_day.push({
                   hotel_id: _hotel.hotelID,
                   hotel_name: _hotel.hotelName,
                   rate: dt.price[getPrice(dt.price)],
+                  date: dt.date,
                 });
               }
             } catch (error) {}
@@ -253,64 +274,92 @@ export default function HotelRanks({ selectedDate }) {
             let dt = _hotel.prices[index];
 
             try {
-              if (dt !== null) {
+              if (
+                dt !== null &&
+                checkHotelAvailability(_hotel.hotelID, index)
+              ) {
                 let day_rank = ranked_hotels.findIndex(
                   (e) => e.hotel_id == _hotel.hotelID
                 );
-                _hotel.prices[index].day_rank = day_rank;
+                if (day_rank >= 0) {
+                  dt.day_rank = day_rank;
+                }
               }
             } catch (error) {}
           });
         });
 
         hotels.map((_hotel) => {
-          let rank_stdev = [];
+          let rank_stdev_wd = [];
+          let rank_stdev_we = [];
           let rank_arr_wd = [];
           let ranks_arr_we = [];
           let ranks_arr_w = [];
           _hotel.prices.map((dt, ix) => {
             if (dt !== null) {
               const day = moment(dt.date).format('dddd').substring(0, 3);
-              ranks_arr_w.push(dt.day_rank);
-              if (day === 'Sat' || day === 'Fri') {
-                ranks_arr_we.push(dt.day_rank);
-              } else {
-                rank_arr_wd.push(dt.day_rank);
-              }
+
               if (checkHotelAvailability(_hotel.hotelID, ix)) {
-                rank_stdev.push(dt.day_rank);
+                ranks_arr_w.push(dt.day_rank);
+                if (day === 'Sat' || day === 'Fri') {
+                  ranks_arr_we.push(dt.day_rank);
+                  rank_stdev_we.push(dt.day_rank);
+                } else {
+                  rank_arr_wd.push(dt.day_rank);
+                  rank_stdev_wd.push(dt.day_rank);
+                }
               }
             }
 
             let avg_rank_wd = getAverage(rank_arr_wd);
             let avg_rank_we = getAverage(ranks_arr_we);
             let avg_rank = getAverage(ranks_arr_w);
-            let stdev = getStandardDeviation(rank_stdev);
+            let stdev_wd = getStandardDeviation(rank_stdev_wd);
+            let stdev_we = getStandardDeviation(rank_stdev_we);
 
             _hotel.avg_rank_wd = avg_rank_wd;
             _hotel.avg_rank_we = avg_rank_we;
             _hotel.avg_rank = avg_rank;
-            _hotel.stdev = stdev;
+            _hotel.stdev_wd = stdev_wd;
+            _hotel.stdev_we = stdev_we;
 
-            _hotel.upper_bound_wd = avg_rank_wd + 2 * _hotel.stdev;
-            _hotel.lower_bound_wd = avg_rank_wd - 2 * _hotel.stdev;
-
-            _hotel.upper_bound_we = avg_rank_we + 2 * _hotel.stdev;
-            _hotel.lower_bound_we = avg_rank_we - 2 * _hotel.stdev;
-
-            _hotel.upper_bound_rate_wd = ranked_hotels_list[ix].find(
-              (obj) => obj.day_rank == Math.ceil(avg_rank_wd + 2 * stdev)
+            _hotel.upper_bound_wd = Math.ceil(
+              avg_rank_wd - 2 * _hotel.stdev_wd
             );
-            _hotel.lower_bound_rate_wd = ranked_hotels_list[ix].find(
-              (obj) => obj.day_rank == Math.ceil(avg_rank_wd - 2 * stdev)
+            _hotel.lower_bound_wd = Math.ceil(
+              avg_rank_wd + 2 * _hotel.stdev_wd
             );
 
-            _hotel.upper_bound_rate_we = ranked_hotels_list[ix].find(
-              (obj) => obj.day_rank == Math.ceil(avg_rank_we + 2 * stdev)
+            _hotel.upper_bound_we = Math.ceil(
+              avg_rank_we - 2 * _hotel.stdev_we
             );
-            _hotel.lower_bound_rate_we = ranked_hotels_list[ix].find(
-              (obj) => obj.day_rank == Math.ceil(avg_rank_we - 2 * stdev)
+            _hotel.lower_bound_we = Math.ceil(
+              avg_rank_we + 2 * _hotel.stdev_we
             );
+          });
+        });
+
+        hotels.map((_hotel) => {
+          _hotel.prices.map((dt, ix) => {
+            if (dt !== null) {
+              let day = moment(dt.date).format('dddd').substring(0, 3);
+
+              if (day === 'Sat' || day === 'Fri') {
+                dt.upper_bound_rate = ranked_hotels_list[ix].find(
+                  (obj, i) => obj.day_rank == _hotel.upper_bound_we
+                );
+                dt.lower_bound_rate = ranked_hotels_list[ix].find(
+                  (obj, i) => obj.day_rank == _hotel.lower_bound_we
+                );
+              } else {
+                dt.upper_bound_rate = ranked_hotels_list[ix].find(
+                  (obj, i) => obj.day_rank == _hotel.upper_bound_wd
+                );
+                dt.lower_bound_rate = ranked_hotels_list[ix].find(
+                  (obj, i) => obj.day_rank == _hotel.lower_bound_wd
+                );
+              }
+            }
           });
         });
       }
@@ -318,7 +367,7 @@ export default function HotelRanks({ selectedDate }) {
     };
 
     CalculateHotelRanks();
-    console.log(hotels);
+    // console.log(hotels);
 
     setOriginalRows(
       hotels.sort(
@@ -490,23 +539,6 @@ export default function HotelRanks({ selectedDate }) {
     };
     handleStarsSelect();
   }, [selectedBuckets]);
-
-  const getRankedHotels = (arr) => {
-    var sorted = arr
-      .filter((e) => e.rate != 'NaN')
-      .sort((a, b) => b.rate - a.rate);
-
-    var rank = 1;
-    for (var i = 0; i < sorted.length; i++) {
-      if (i > 0 && sorted[i].rate < sorted[i - 1].rate) {
-        rank++;
-      }
-      sorted[i].day_rank = rank;
-    }
-
-    // console.log(sorted);
-    return sorted;
-  };
 
   const getPrice = (arr) => {
     const price = arr.findIndex((e) => e > 0);
@@ -740,7 +772,10 @@ export default function HotelRanks({ selectedDate }) {
                       Avg Rank - WeekEnd
                     </StyledTableCell>
                     <StyledTableCell className="text-center">
-                      Std Dev Rank
+                      Std Dev Rank - WeekDay
+                    </StyledTableCell>
+                    <StyledTableCell className="text-center">
+                      Std Dev Rank - WeekEnd
                     </StyledTableCell>
                     <StyledTableCell className="text-center">
                       Upper bound Rank - WeekDay
@@ -814,19 +849,22 @@ export default function HotelRanks({ selectedDate }) {
                         {parseFloat(_hotel.avg_rank_we).toFixed(2)}
                       </StyledTableCell>
                       <StyledTableCell className={classes.rates}>
-                        {parseFloat(_hotel.stdev).toFixed(2)}
+                        {parseFloat(_hotel.stdev_wd).toFixed(2)}
                       </StyledTableCell>
                       <StyledTableCell className={classes.rates}>
-                        {parseFloat(_hotel.upper_bound_wd).toFixed(2)}
+                        {parseFloat(_hotel.stdev_we).toFixed(2)}
                       </StyledTableCell>
                       <StyledTableCell className={classes.rates}>
-                        {parseFloat(_hotel.lower_bound_wd).toFixed(2)}
+                        {_hotel.upper_bound_wd}
                       </StyledTableCell>
                       <StyledTableCell className={classes.rates}>
-                        {parseFloat(_hotel.upper_bound_we).toFixed(2)}
+                        {_hotel.lower_bound_wd}
                       </StyledTableCell>
                       <StyledTableCell className={classes.rates}>
-                        {parseFloat(_hotel.lower_bound_we).toFixed(2)}
+                        {_hotel.upper_bound_we}
+                      </StyledTableCell>
+                      <StyledTableCell className={classes.rates}>
+                        {_hotel.lower_bound_we}
                       </StyledTableCell>
                       {_hotel.prices.map((dt, ix) => {
                         return dt !== null ? (
@@ -848,7 +886,13 @@ export default function HotelRanks({ selectedDate }) {
                             }
                           >
                             <span className="font-weight-bold">
-                              {dt.day_rank}
+                              {dt.upper_bound_rate != undefined
+                                ? dt.upper_bound_rate.rate
+                                : ''}{' '}
+                              -{' '}
+                              {dt.lower_bound_rate != undefined
+                                ? dt.lower_bound_rate.rate
+                                : ''}
                             </span>
                           </StyledTableCell>
                         ) : (
