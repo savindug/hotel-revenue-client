@@ -886,12 +886,12 @@ export default function HotelRanks({ selectedDate }) {
                             }
                           >
                             <span className="font-weight-bold">
-                              {dt.upper_bound_rate != undefined
-                                ? dt.upper_bound_rate.rate
-                                : ''}{' '}
-                              -{' '}
                               {dt.lower_bound_rate != undefined
                                 ? dt.lower_bound_rate.rate
+                                : ''}{' '}
+                              -{' '}
+                              {dt.upper_bound_rate != undefined
+                                ? dt.upper_bound_rate.rate
                                 : ''}
                             </span>
                           </StyledTableCell>
