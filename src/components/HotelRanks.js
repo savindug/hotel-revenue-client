@@ -348,6 +348,16 @@ export default function HotelRanks({ selectedDate }) {
                 dt.upper_bound_rate = ranked_hotels_list[ix].find(
                   (obj, i) => obj.day_rank == _hotel.upper_bound_we
                 );
+
+                if (dt.upper_bound_rate == undefined) {
+                  dt.upper_bound_rate = ranked_hotels_list[ix][0];
+                }
+
+                if (dt.lower_bound_rate == undefined) {
+                  dt.lower_bound_rate =
+                    ranked_hotels_list[ix][ranked_hotels_list[ix].length - 1];
+                }
+
                 dt.lower_bound_rate = ranked_hotels_list[ix].find(
                   (obj, i) => obj.day_rank == _hotel.lower_bound_we
                 );
@@ -358,6 +368,15 @@ export default function HotelRanks({ selectedDate }) {
                 dt.lower_bound_rate = ranked_hotels_list[ix].find(
                   (obj, i) => obj.day_rank == _hotel.lower_bound_wd
                 );
+
+                if (dt.upper_bound_rate == undefined) {
+                  dt.upper_bound_rate = ranked_hotels_list[ix][0];
+                }
+
+                if (dt.lower_bound_rate == undefined) {
+                  dt.lower_bound_rate =
+                    ranked_hotels_list[ix][ranked_hotels_list[ix].length - 1];
+                }
               }
             }
           });
@@ -367,7 +386,7 @@ export default function HotelRanks({ selectedDate }) {
     };
 
     CalculateHotelRanks();
-    // console.log(hotels);
+    console.log(hotels);
 
     setOriginalRows(
       hotels.sort(
