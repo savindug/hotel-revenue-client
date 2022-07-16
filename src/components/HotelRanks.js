@@ -378,6 +378,36 @@ export default function HotelRanks({ selectedDate }) {
                     ranked_hotels_list[ix][ranked_hotels_list[ix].length - 1];
                 }
               }
+
+              if (
+                dt.lower_bound_rate != undefined &&
+                dt.upper_bound_rate != undefined
+              ) {
+                let rate_range = Math.abs(
+                  dt.upper_bound_rate.rate - dt.lower_bound_rate.rate
+                );
+                let range_qr = rate_range / 3;
+                if (
+                  dt.price[getPrice(dt.price)] >= dt.lower_bound_rate.rate &&
+                  dt.price[getPrice(dt.price)] <=
+                    dt.lower_bound_rate.rate + range_qr
+                ) {
+                  dt.qr = 'HIGH';
+                } else if (
+                  dt.price[getPrice(dt.price)] >
+                    dt.lower_bound_rate.rate + range_qr &&
+                  dt.price[getPrice(dt.price)] <=
+                    dt.lower_bound_rate.rate + 2 * range_qr
+                ) {
+                  dt.qr = 'MID';
+                } else if (
+                  dt.price[getPrice(dt.price)] >
+                    dt.lower_bound_rate.rate + 2 * range_qr &&
+                  dt.price[getPrice(dt.price)] <= dt.upper_bound_rate.rate
+                ) {
+                  dt.qr = 'LOW';
+                }
+              }
             }
           });
         });
@@ -386,7 +416,7 @@ export default function HotelRanks({ selectedDate }) {
     };
 
     CalculateHotelRanks();
-    console.log(hotels);
+    // console.log(hotels);
 
     setOriginalRows(
       hotels.sort(
@@ -905,13 +935,15 @@ export default function HotelRanks({ selectedDate }) {
                             }
                           >
                             <span className="font-weight-bold">
+                              {dt.upper_bound_rate != undefined
+                                ? dt.upper_bound_rate.rate
+                                : ''}{' '}
+                              -{' '}
                               {dt.lower_bound_rate != undefined
                                 ? dt.lower_bound_rate.rate
                                 : ''}{' '}
-                              -{' '}
-                              {dt.upper_bound_rate != undefined
-                                ? dt.upper_bound_rate.rate
-                                : ''}
+                              <br />
+                              {dt.qr != undefined ? dt.qr : ''}
                             </span>
                           </StyledTableCell>
                         ) : (
