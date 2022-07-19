@@ -141,6 +141,26 @@ export default function HotelRanks({ selectedDate }) {
 
   const [hotel_list_by_date, set_hotel_list_by_date] = useState([]);
 
+  const [reqHotelID, setReqHotelID] = useState();
+
+  const [reqHotelStrategyZone, setReqHotelStrategyZone] = useState(undefined);
+
+  const getReqHotelID = () => {
+    let id = '';
+    reqHotel.map((e, index) => {
+      if (e.hotelID !== null && e.hotelID != 'N/A') {
+        id = e.hotelID;
+      }
+    });
+    return id;
+  };
+
+  useEffect(() => {
+    if (reqHotel.length > 0) {
+      getReqHotelID();
+    }
+  }, [reqHotel]);
+
   const getReportName = () => {
     let name = null;
     if (reqHotel.length > 0) {
@@ -411,6 +431,11 @@ export default function HotelRanks({ selectedDate }) {
             }
           });
         });
+
+        const req_hotel_data = hotels.find(
+          (e) => e.hotelName == reqHotel[0].name
+        );
+        setReqHotelStrategyZone(req_hotel_data);
       }
       setLoad(false);
     };
@@ -633,520 +658,484 @@ export default function HotelRanks({ selectedDate }) {
     }
   };
 
+  const daily_fetch_len = selectedDate
+    ? moment(moment(selectedDate).add(90, 'days'))
+        .endOf('month')
+        .day('sunday')
+        .diff(selectedDate, 'days')
+    : 0;
+
   return (
     <>
       {' '}
-      {hotels.length > 0 && originalRows.length > 0 && !load ? (
+      {hotels.length > 0 &&
+      originalRows.length > 0 &&
+      !load &&
+      reqHotelStrategyZone != undefined ? (
         <>
-          <Grid container justify="space-evenly" className="my-3">
-            <FormGroup className={classes.formControl}>
-              <SearchBar
-                value={searched}
-                onChange={(searchVal) => setSearched(searchVal)}
-                onCancelSearch={() => cancelSearch()}
-              />
-            </FormGroup>
-            <FormGroup className={classes.formControl}>
-              <InputLabel
-                htmlFor="grouped-native-select"
-                style={{ backgroundColor: 'white', fontFamily: FONT_FAMILY }}
-              >
-                Hotels Filter
-              </InputLabel>
-              <Select
-                native
-                id="grouped-native-select"
-                onChange={handleHotelsFilter}
-                style={{ backgroundColor: 'white', fontFamily: FONT_FAMILY }}
-              >
-                <option value={1}>All Hotels</option>
-                <option value={2}>Best Rated Hotels</option>
-                <option value={0}>Analysis Set</option>
-              </Select>
-            </FormGroup>
-
-            <FormControl className={classes.formControl}>
-              <InputLabel id="mutiple-select-label">Stars</InputLabel>
-              <Select
-                labelId="mutiple-select-label"
-                multiple
-                value={selectedStars}
-                onChange={handleStarsChange}
-                renderValue={(selected) => selected.join(', ')}
-                MenuProps={MenuProps}
-              >
-                <MenuItem
-                  value="all"
-                  classes={{
-                    root: isAllSelectedStars ? classes.selectedAll : '',
-                  }}
-                >
-                  <ListItemIcon>
-                    <Checkbox
-                      classes={{ indeterminate: classes.indeterminateColor }}
-                      checked={isAllSelectedStars}
-                      indeterminate={
-                        selectedStars.length > 0 &&
-                        selectedStars.length < options.length
-                      }
-                    />
-                  </ListItemIcon>
-                  <ListItemText
-                    classes={{ primary: classes.selectAllText }}
-                    primary="Select All"
-                  />
-                </MenuItem>
-                {options.map((option) => (
-                  <MenuItem key={option} value={option}>
-                    <ListItemIcon>
-                      <Checkbox checked={selectedStars.indexOf(option) > -1} />
-                    </ListItemIcon>
-                    <ListItemText primary={option} />
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-
-            <FormControl className={classes.formControl}>
-              <InputLabel id="mutiple-select-label">Bucket</InputLabel>
-              <Select
-                labelId="mutiple-select-label"
-                multiple
-                value={selectedBuckets}
-                onChange={handleBucketsChange}
-                renderValue={(selected) => selected.join(', ')}
-                MenuProps={MenuProps}
-              >
-                <MenuItem
-                  value="all"
-                  classes={{
-                    root: isAllSelectedBuckets ? classes.selectedAll : '',
-                  }}
-                >
-                  <ListItemIcon>
-                    <Checkbox
-                      classes={{ indeterminate: classes.indeterminateColor }}
-                      checked={isAllSelectedBuckets}
-                      indeterminate={
-                        selectedBuckets.length > 0 &&
-                        selectedBuckets.length < options.length
-                      }
-                    />
-                  </ListItemIcon>
-                  <ListItemText
-                    classes={{ primary: classes.selectAllText }}
-                    primary="Select All"
-                  />
-                </MenuItem>
-                {options.map((option) => (
-                  <MenuItem key={option} value={option}>
-                    <ListItemIcon>
-                      <Checkbox
-                        checked={selectedBuckets.indexOf(option) > -1}
-                      />
-                    </ListItemIcon>
-                    <ListItemText primary={option} />
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            <FormControl className={classes.formControl}>
-              <ReactHTMLTableToExcel
-                id="test-table-xls-button"
-                className="btn btn-success download-table-xls-button"
-                table="table-to-xls"
-                filename={getReportName()}
-                sheet={getReportName()}
-                buttonText="Export to XLS"
-              />
-            </FormControl>
-          </Grid>
-
           <TableContainer
             component={Paper}
             className={classes.container + ' mt-3'}
           >
-            <Box width={100}>
-              <Table
-                id="table-to-xls"
-                className={classes.table}
-                size="medium"
-                aria-label="customized table"
-                stickyHeader
-                bodystyle={{ overflow: 'visible' }}
-                ref={tableRef}
-              >
-                <TableHead>
-                  <StyledTableRow>
-                    <StyledTableCell size="small">#</StyledTableCell>
+            <TableContainer component={Paper} className="my-5">
+              <Box width={100}>
+                <Table
+                  className={classes.table}
+                  size="medium"
+                  aria-label="customized table"
+                  bodyStyle={{ overflow: 'visible' }}
+                  stickyHeader
+                >
+                  <TableHead>
                     <StyledTableCell
                       style={{
-                        fontWeight: 'bold',
                         width: '250px',
                         zIndex: 100,
                         fontFamily: FONT_FAMILY,
                       }}
                     >
-                      <TableSortLabel
-                        active={sortBy === 0}
-                        direction={sortDir}
-                        onClick={() => {
-                          handleSort(0, sortDir === 'asc' ? 'desc' : 'asc');
-                        }}
-                      >
-                        Hotel Name
-                      </TableSortLabel>
+                      <TableSortLabel disabled>
+                        Rate Strategy Zone
+                        {/* {(() => {
+                          let stars = null;
+                          reqHotel.map((e, index) => {
+                            if (e.stars !== null && e.stars != 'N/A') {
+                              stars = e.stars;
+                            }
+                          });
+
+                          return stars;
+                        })()}
+                        -stars{' '} */}
+                      </TableSortLabel>{' '}
                       <hr />
                       <TableSortLabel disabled>Days Out</TableSortLabel>
-                      {/* <TableSortLabel onClick={handleSort(0)}></TableSortLabel> */}
                     </StyledTableCell>
-                    <StyledTableCell>
-                      <TableSortLabel
-                        active={sortBy === 1}
-                        direction={sortDir}
-                        onClick={() => {
-                          handleSort(1, sortDir === 'asc' ? 'desc' : 'asc');
-                        }}
-                      >
-                        Stars
-                      </TableSortLabel>
-                    </StyledTableCell>
-                    <StyledTableCell className="text-center">
-                      Avg Rank - Overall
-                    </StyledTableCell>
-                    <StyledTableCell className="text-center">
-                      Avg Rank - WeekDay
-                    </StyledTableCell>
-                    <StyledTableCell className="text-center">
-                      Avg Rank - WeekEnd
-                    </StyledTableCell>
-                    <StyledTableCell className="text-center">
-                      Std Dev Rank - WeekDay
-                    </StyledTableCell>
-                    <StyledTableCell className="text-center">
-                      Std Dev Rank - WeekEnd
-                    </StyledTableCell>
-                    <StyledTableCell className="text-center">
-                      Upper bound Rank - WeekDay
-                    </StyledTableCell>
-                    <StyledTableCell className="text-center">
-                      Lower bound Rank - WeekDay
-                    </StyledTableCell>
-                    <StyledTableCell className="text-center">
-                      Upper bound Rank - WeekEnd
-                    </StyledTableCell>
-                    <StyledTableCell className="text-center">
-                      Lower bound Rank - WeekEnd
-                    </StyledTableCell>
-                    {cluster1.map((e, i) =>
+                    {reqHotel.map((e, index) =>
                       (() => {
-                        let _date = moment(e.date);
+                        let _date = moment(e.checkIn);
                         let daysOut = _date.diff(selectedDate, 'days');
-                        let day = _date.format('dddd').substring(0, 3);
-
-                        // console.log('selectedDate+: ' + date + ', day: ' + day);
+                        let date = _date.format('dddd').substring(0, 3);
                         return (
                           <StyledTableCell
                             size="small"
-                            key={i}
+                            key={index}
                             className={
-                              day === 'Sat' || day === 'Fri'
-                                ? 'bg-secondary text-light text-center '
-                                : 'text-center '
+                              date === 'Sat' || date === 'Fri'
+                                ? 'bg-secondary text-light text-center'
+                                : 'text-center'
                             }
-                            style={{ fontSize: '12px' }}
+                            style={{
+                              fontSize: '12px',
+                              borderRight:
+                                index == daily_fetch_len
+                                  ? '5px solid rgba(66, 66, 66, 1)'
+                                  : '',
+                            }}
                           >
-                            {`${
-                              day === 'Sat' || day === 'Fri' ? 'WEND' : 'WDAY'
-                            }\n${day.toUpperCase()}\n${moment(_date).format(
-                              'MM/DD'
-                            )}`}{' '}
+                            <>
+                              {date === 'Sat' || date === 'Fri'
+                                ? 'WEND'
+                                : 'WDAY'}
+                            </>
+                            <br />
+                            <>{date.toUpperCase()}</>
+                            <br />
+                            <>{moment(e.checkIn).format('MM/DD')}</>{' '}
                             <div class="dropdown-divider"></div>
                             {daysOut}
                           </StyledTableCell>
                         );
                       })()
                     )}
-                  </StyledTableRow>
-                </TableHead>
-
-                <TableBody>
-                  {hotelsList.map((_hotel, index) => (
+                  </TableHead>
+                  <TableBody>
                     <StyledTableRow>
-                      <StyledTableCell size="small">
-                        {index + 1}
-                      </StyledTableCell>
                       <StyledTableCell
-                        size="medium"
+                        size="small"
                         component="th"
-                        scope="col"
+                        scope="row"
                         className={classes.sticky}
-                        style={{ fontWeight: 'bold', width: '300px' }}
+                        style={{ fontWeight: 'bold', width: '250px' }}
                       >
-                        {_hotel.hotelName}
+                        Rate Strategy Position
                       </StyledTableCell>
-                      <StyledTableCell size="small" className={classes.rates}>
-                        {_hotel.stars}
-                      </StyledTableCell>
-                      <StyledTableCell className={classes.rates}>
-                        {parseFloat(_hotel.avg_rank).toFixed(2)}{' '}
-                      </StyledTableCell>
-                      <StyledTableCell className={classes.rates}>
-                        {parseFloat(_hotel.avg_rank_wd).toFixed(2)}{' '}
-                      </StyledTableCell>
-                      <StyledTableCell className={classes.rates}>
-                        {parseFloat(_hotel.avg_rank_we).toFixed(2)}
-                      </StyledTableCell>
-                      <StyledTableCell className={classes.rates}>
-                        {parseFloat(_hotel.stdev_wd).toFixed(2)}
-                      </StyledTableCell>
-                      <StyledTableCell className={classes.rates}>
-                        {parseFloat(_hotel.stdev_we).toFixed(2)}
-                      </StyledTableCell>
-                      <StyledTableCell className={classes.rates}>
-                        {_hotel.upper_bound_wd}
-                      </StyledTableCell>
-                      <StyledTableCell className={classes.rates}>
-                        {_hotel.lower_bound_wd}
-                      </StyledTableCell>
-                      <StyledTableCell className={classes.rates}>
-                        {_hotel.upper_bound_we}
-                      </StyledTableCell>
-                      <StyledTableCell className={classes.rates}>
-                        {_hotel.lower_bound_we}
-                      </StyledTableCell>
-                      {_hotel.prices.map((dt, ix) => {
-                        return dt !== null ? (
-                          <StyledTableCell
-                            size="small"
-                            className={classes.rates}
-                            style={
-                              checkHotelAvailability(_hotel.hotelID, ix)
-                                ? {
-                                    backgroundColor:
-                                      CLUSTER_BACKGROUND[
-                                        getClusterByPrice(
-                                          dt.price[getPrice(dt.price)],
-                                          ix
-                                        )
-                                      ],
-                                  }
-                                : { backgroundColor: '#9E9E9E' }
-                            }
-                          >
-                            <span className="font-weight-bold">
-                              {dt.upper_bound_rate != undefined
-                                ? dt.upper_bound_rate.rate
-                                : ''}{' '}
-                              -{' '}
-                              {dt.lower_bound_rate != undefined
-                                ? dt.lower_bound_rate.rate
-                                : ''}{' '}
-                              <br />
-                              {dt.qr != undefined ? dt.qr : ''}
-                            </span>
-                          </StyledTableCell>
-                        ) : (
-                          <StyledTableCell
-                            size="small"
-                            className={classes.rates}
-                          >
-                            --
-                          </StyledTableCell>
-                        );
-                      })}
+
+                      {[...Array(report_len).keys()].map((e, index) =>
+                        (() => {
+                          if (reqHotelStrategyZone.prices[index] != null) {
+                            return (
+                              <StyledTableCell
+                                size="small"
+                                key={index}
+                                style={{
+                                  fontWeight: 'bold',
+                                  borderRight:
+                                    index == daily_fetch_len
+                                      ? '5px solid rgba(66, 66, 66, 1)'
+                                      : '',
+                                }}
+                                className={classes.rates}
+                              >
+                                {reqHotelStrategyZone.prices[index].qr}
+                              </StyledTableCell>
+                            );
+                          } else {
+                            return (
+                              <StyledTableCell
+                                size="small"
+                                key={index}
+                                style={{
+                                  borderRight:
+                                    index == daily_fetch_len
+                                      ? '5px solid rgba(66, 66, 66, 1)'
+                                      : '',
+                                }}
+                                className={classes.rates}
+                              >
+                                N/A
+                              </StyledTableCell>
+                            );
+                          }
+                        })()
+                      )}
                     </StyledTableRow>
-                  ))}
-                </TableBody>
-              </Table>
-              <br />
-            </Box>
-          </TableContainer>
 
-          {hotel_list_by_date.length > 0 ? (
-            <div className="my-5 container">
-              <FormGroup className={classes.formControl}>
-                <InputLabel
-                  htmlFor="grouped-native-select"
-                  style={{ backgroundColor: 'white', fontFamily: FONT_FAMILY }}
-                >
-                  Select Date
-                </InputLabel>
-                <Select
-                  native
-                  id="grouped-native-select"
-                  onChange={(e) => setDate_select(e.target.value)}
-                  style={{ backgroundColor: 'white', fontFamily: FONT_FAMILY }}
-                >
-                  {cluster1.map((e, i) =>
-                    (() => {
-                      let _date = moment(e.date);
-                      let daysOut = _date.diff(selectedDate, 'days');
-                      let day = _date.format('dddd').substring(0, 3);
+                    <StyledTableRow>
+                      <StyledTableCell
+                        size="small"
+                        component="th"
+                        scope="row"
+                        className={classes.sticky}
+                        style={{ fontWeight: 'bold', width: '250px' }}
+                      >
+                        Upper Bound
+                      </StyledTableCell>
 
-                      return (
-                        <option value={daysOut}>
-                          {_date.format('YYYY-MM-DD')}
-                        </option>
-                      );
-                    })()
-                  )}
-                </Select>
-              </FormGroup>
-              <TableContainer
-                component={Paper}
-                className={classes.container + ' mt-3'}
-              >
-                <Box>
-                  <Table
-                    id="table-to-xls"
-                    className={classes.table}
-                    size="medium"
-                    aria-label="customized table"
-                    stickyHeader
-                    bodystyle={{ overflow: 'visible' }}
-                    ref={tableRef}
-                  >
-                    <TableHead>
-                      <StyledTableRow>
-                        <StyledTableCell size="small">#</StyledTableCell>
-                        <StyledTableCell
-                          style={{
-                            fontWeight: 'bold',
-                            width: '250px',
-                            zIndex: 100,
-                            fontFamily: FONT_FAMILY,
-                          }}
-                        >
-                          <TableSortLabel
-                            active={sortBy === 0}
-                            direction={sortDir}
-                            onClick={() => {
-                              handleSort(0, sortDir === 'asc' ? 'desc' : 'asc');
-                            }}
-                          >
-                            Hotel Name
-                          </TableSortLabel>
-                          <hr />
-                          <TableSortLabel disabled>Days Out</TableSortLabel>
-                          {/* <TableSortLabel onClick={handleSort(0)}></TableSortLabel> */}
-                        </StyledTableCell>
-                        <StyledTableCell>
-                          <TableSortLabel
-                            active={sortBy === 1}
-                            direction={sortDir}
-                            onClick={() => {
-                              handleSort(1, sortDir === 'asc' ? 'desc' : 'asc');
-                            }}
-                          >
-                            Stars
-                          </TableSortLabel>
-                        </StyledTableCell>
-
-                        {cluster1.map((e, i) =>
-                          (() => {
-                            let _date = moment(e.date);
-                            let daysOut = _date.diff(selectedDate, 'days');
-                            let day = _date.format('dddd').substring(0, 3);
-
-                            if (daysOut == date_select) {
+                      {[...Array(report_len).keys()].map((e, index) =>
+                        (() => {
+                          if (reqHotelStrategyZone.prices[index] != null) {
+                            if (
+                              reqHotelStrategyZone.prices[index]
+                                .upper_bound_rate
+                            ) {
                               return (
                                 <StyledTableCell
                                   size="small"
-                                  key={i}
-                                  className={
-                                    day === 'Sat' || day === 'Fri'
-                                      ? 'bg-secondary text-light text-center '
-                                      : 'text-center '
-                                  }
-                                  style={{ fontSize: '12px' }}
+                                  key={index}
+                                  style={{
+                                    borderRight:
+                                      index == daily_fetch_len
+                                        ? '5px solid rgba(66, 66, 66, 1)'
+                                        : '',
+                                  }}
+                                  className={classes.rates}
                                 >
-                                  {`${
-                                    day === 'Sat' || day === 'Fri'
-                                      ? 'WEND'
-                                      : 'WDAY'
-                                  }\n${day.toUpperCase()}\n${moment(
-                                    _date
-                                  ).format('MM/DD')}`}{' '}
-                                  <div class="dropdown-divider"></div>
-                                  {daysOut}
+                                  {
+                                    reqHotelStrategyZone.prices[index]
+                                      .upper_bound_rate.rate
+                                  }
+                                </StyledTableCell>
+                              );
+                            } else {
+                              return (
+                                <StyledTableCell
+                                  size="small"
+                                  key={index}
+                                  style={{
+                                    fontWeight: 'bold',
+
+                                    borderRight:
+                                      index == daily_fetch_len
+                                        ? '5px solid rgba(66, 66, 66, 1)'
+                                        : '',
+                                  }}
+                                  className={classes.rates}
+                                >
+                                  N/A
                                 </StyledTableCell>
                               );
                             }
-
-                            // console.log('selectedDate+: ' + date + ', day: ' + day);
-                          })()
-                        )}
-                      </StyledTableRow>
-                    </TableHead>
-
-                    <TableBody>
-                      {hotel_list_by_date.map((_hotel, index) => (
-                        <StyledTableRow>
-                          <StyledTableCell size="small">
-                            {index + 1}
-                          </StyledTableCell>
-                          <StyledTableCell
-                            size="medium"
-                            component="th"
-                            scope="col"
-                            className={classes.sticky}
-                            style={{ fontWeight: 'bold', width: '300px' }}
-                          >
-                            {_hotel.hotelName}
-                          </StyledTableCell>
-                          <StyledTableCell
-                            size="small"
-                            className={classes.rates}
-                          >
-                            {_hotel.stars}
-                          </StyledTableCell>
-                          {(() => {
-                            return _hotel.price !== null ? (
+                          } else {
+                            return (
                               <StyledTableCell
                                 size="small"
-                                className={classes.rates}
-                                style={
-                                  checkHotelAvailability(
-                                    _hotel.hotelID,
-                                    date_select
-                                  )
-                                    ? {
-                                        backgroundColor:
-                                          CLUSTER_BACKGROUND[
-                                            getClusterByPrice(
-                                              _hotel.price,
-                                              date_select
-                                            )
-                                          ],
-                                      }
-                                    : { backgroundColor: '#9E9E9E' }
-                                }
-                              >
-                                <span className="font-weight-bold">
-                                  {_hotel.price}
-                                </span>
-                              </StyledTableCell>
-                            ) : (
-                              <StyledTableCell
-                                size="small"
+                                key={index}
+                                style={{
+                                  fontWeight: 'bold',
+
+                                  borderRight:
+                                    index == daily_fetch_len
+                                      ? '5px solid rgba(66, 66, 66, 1)'
+                                      : '',
+                                }}
                                 className={classes.rates}
                               >
-                                --
+                                N/A
                               </StyledTableCell>
                             );
-                          })()}
-                        </StyledTableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                  <br />
-                </Box>
-              </TableContainer>
-            </div>
-          ) : (
-            <></>
-          )}
+                          }
+                        })()
+                      )}
+                    </StyledTableRow>
+
+                    <StyledTableRow>
+                      <StyledTableCell
+                        size="small"
+                        component="th"
+                        scope="row"
+                        className={classes.sticky}
+                        style={{
+                          fontWeight: 'bold',
+                          width: '250px',
+                          zIndex: 100,
+                        }}
+                      >
+                        High Range
+                      </StyledTableCell>
+
+                      {[...Array(report_len).keys()].map((e, index) =>
+                        (() => {
+                          if (reqHotelStrategyZone.prices[index] != null) {
+                            if (
+                              reqHotelStrategyZone.prices[index]
+                                .upper_bound_rate &&
+                              reqHotelStrategyZone.prices[index]
+                                .lower_bound_rate.rate
+                            ) {
+                              let rate_range = Math.abs(
+                                reqHotelStrategyZone.prices[index]
+                                  .upper_bound_rate.rate -
+                                  reqHotelStrategyZone.prices[index]
+                                    .lower_bound_rate.rate
+                              );
+                              let range_qr = rate_range / 3;
+                              return (
+                                <StyledTableCell
+                                  size="small"
+                                  key={index}
+                                  style={{
+                                    borderRight:
+                                      index == daily_fetch_len
+                                        ? '5px solid rgba(66, 66, 66, 1)'
+                                        : '',
+                                  }}
+                                  className={classes.rates}
+                                >
+                                  {parseFloat(
+                                    reqHotelStrategyZone.prices[index]
+                                      .upper_bound_rate.rate - range_qr
+                                  ).toFixed(0)}
+                                </StyledTableCell>
+                              );
+                            } else {
+                              return (
+                                <StyledTableCell
+                                  size="small"
+                                  key={index}
+                                  style={{
+                                    borderRight:
+                                      index == daily_fetch_len
+                                        ? '5px solid rgba(66, 66, 66, 1)'
+                                        : '',
+                                  }}
+                                  className={classes.rates}
+                                >
+                                  N/A
+                                </StyledTableCell>
+                              );
+                            }
+                          } else {
+                            return (
+                              <StyledTableCell
+                                size="small"
+                                key={index}
+                                style={{
+                                  borderRight:
+                                    index == daily_fetch_len
+                                      ? '5px solid rgba(66, 66, 66, 1)'
+                                      : '',
+                                }}
+                                className={classes.rates}
+                              >
+                                N/A
+                              </StyledTableCell>
+                            );
+                          }
+                        })()
+                      )}
+                    </StyledTableRow>
+
+                    <StyledTableRow>
+                      <StyledTableCell
+                        size="small"
+                        component="th"
+                        scope="row"
+                        className={classes.sticky}
+                        style={{
+                          fontWeight: 'bold',
+                          width: '250px',
+                          zIndex: 100,
+                        }}
+                      >
+                        Middle Range
+                      </StyledTableCell>
+
+                      {[...Array(report_len).keys()].map((e, index) =>
+                        (() => {
+                          if (reqHotelStrategyZone.prices[index] != null) {
+                            if (
+                              reqHotelStrategyZone.prices[index]
+                                .upper_bound_rate &&
+                              reqHotelStrategyZone.prices[index]
+                                .lower_bound_rate.rate
+                            ) {
+                              let rate_range = Math.abs(
+                                reqHotelStrategyZone.prices[index]
+                                  .upper_bound_rate.rate -
+                                  reqHotelStrategyZone.prices[index]
+                                    .lower_bound_rate.rate
+                              );
+                              let range_qr = rate_range / 3;
+                              return (
+                                <StyledTableCell
+                                  size="small"
+                                  key={index}
+                                  style={{
+                                    borderRight:
+                                      index == daily_fetch_len
+                                        ? '5px solid rgba(66, 66, 66, 1)'
+                                        : '',
+                                  }}
+                                  className={classes.rates}
+                                >
+                                  {parseFloat(
+                                    reqHotelStrategyZone.prices[index]
+                                      .lower_bound_rate.rate + range_qr
+                                  ).toFixed(0)}
+                                </StyledTableCell>
+                              );
+                            } else {
+                              return (
+                                <StyledTableCell
+                                  size="small"
+                                  key={index}
+                                  style={{
+                                    borderRight:
+                                      index == daily_fetch_len
+                                        ? '5px solid rgba(66, 66, 66, 1)'
+                                        : '',
+                                  }}
+                                  className={classes.rates}
+                                >
+                                  N/A
+                                </StyledTableCell>
+                              );
+                            }
+                          } else {
+                            return (
+                              <StyledTableCell
+                                size="small"
+                                key={index}
+                                style={{
+                                  borderRight:
+                                    index == daily_fetch_len
+                                      ? '5px solid rgba(66, 66, 66, 1)'
+                                      : '',
+                                }}
+                                className={classes.rates}
+                              >
+                                N/A
+                              </StyledTableCell>
+                            );
+                          }
+                        })()
+                      )}
+                    </StyledTableRow>
+
+                    <StyledTableRow>
+                      <StyledTableCell
+                        size="small"
+                        component="th"
+                        scope="row"
+                        className={classes.sticky}
+                        style={{
+                          fontWeight: 'bold',
+                          width: '250px',
+                          zIndex: 100,
+                        }}
+                      >
+                        Lower Bound
+                      </StyledTableCell>
+
+                      {[...Array(report_len).keys()].map((e, index) =>
+                        (() => {
+                          if (reqHotelStrategyZone.prices[index] != null) {
+                            if (
+                              reqHotelStrategyZone.prices[index]
+                                .lower_bound_rate
+                            ) {
+                              return (
+                                <StyledTableCell
+                                  size="small"
+                                  key={index}
+                                  style={{
+                                    borderRight:
+                                      index == daily_fetch_len
+                                        ? '5px solid rgba(66, 66, 66, 1)'
+                                        : '',
+                                  }}
+                                  className={classes.rates}
+                                >
+                                  {
+                                    reqHotelStrategyZone.prices[index]
+                                      .lower_bound_rate.rate
+                                  }
+                                </StyledTableCell>
+                              );
+                            } else {
+                              return (
+                                <StyledTableCell
+                                  size="small"
+                                  key={index}
+                                  style={{
+                                    borderRight:
+                                      index == daily_fetch_len
+                                        ? '5px solid rgba(66, 66, 66, 1)'
+                                        : '',
+                                  }}
+                                  className={classes.rates}
+                                >
+                                  N/A
+                                </StyledTableCell>
+                              );
+                            }
+                          } else {
+                            return (
+                              <StyledTableCell
+                                size="small"
+                                key={index}
+                                style={{
+                                  borderRight:
+                                    index == daily_fetch_len
+                                      ? '5px solid rgba(66, 66, 66, 1)'
+                                      : '',
+                                }}
+                                className={classes.rates}
+                              >
+                                N/A
+                              </StyledTableCell>
+                            );
+                          }
+                        })()
+                      )}
+                    </StyledTableRow>
+                  </TableBody>
+                </Table>
+                <br />
+              </Box>
+            </TableContainer>
+          </TableContainer>
         </>
       ) : (
         <></>
