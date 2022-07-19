@@ -412,7 +412,7 @@ export default function HotelRanks({ selectedDate }) {
                   dt.price[getPrice(dt.price)] <=
                     dt.lower_bound_rate.rate + range_qr
                 ) {
-                  dt.qr = 'HIGH';
+                  dt.qr = 'LOW';
                 } else if (
                   dt.price[getPrice(dt.price)] >
                     dt.lower_bound_rate.rate + range_qr &&
@@ -425,7 +425,7 @@ export default function HotelRanks({ selectedDate }) {
                     dt.lower_bound_rate.rate + 2 * range_qr &&
                   dt.price[getPrice(dt.price)] <= dt.upper_bound_rate.rate
                 ) {
-                  dt.qr = 'LOW';
+                  dt.qr = 'HIGH';
                 }
               }
             }
