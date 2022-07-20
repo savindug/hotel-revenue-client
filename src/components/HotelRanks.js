@@ -2,16 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import {
   Box,
-  Checkbox,
-  FormControl,
-  FormGroup,
-  Grid,
-  InputLabel,
-  ListItemIcon,
-  ListItemText,
   makeStyles,
-  MenuItem,
-  Select,
   TableCell,
   TableContainer,
   TableRow,
@@ -27,14 +18,8 @@ import moment from 'moment';
 import {
   CLUSTER_BACKGROUND,
   FONT_FAMILY,
-  MenuProps,
   multiSelectStyles,
 } from '../utils/const';
-import SearchBar from 'material-ui-search-bar';
-
-import ReactHTMLTableToExcel from 'react-html-table-to-excel';
-import { Nav } from 'react-bootstrap';
-import { HotelsPlot } from './HotelsPlot';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -86,26 +71,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function HotelRanks({ selectedDate }) {
-  const options = [2, 3, 4, 5];
-
   const classes = useStyles();
-  const multiSelectClasses = multiSelectStyles();
 
-  const [dates, setDates] = useState([]);
-  const [sortDir, setSortDir] = useState('desc');
-
-  const [selectedStars, setSelectedStars] = useState([]);
-  const [selectedBuckets, setSelectedBuckets] = useState([]);
-
-  const isAllSelectedStars =
-    options.length > 0 && selectedStars.length === options.length;
-
-  const isAllSelectedBuckets =
-    options.length > 0 && selectedBuckets.length === options.length;
-
-  const [sortBy, setSortBy] = useState(1);
-
-  // const [hotelsList, setHotelsList] = useState([]);
   const getClusterDataSet = useSelector((state) => state.clusterDataSet);
   const {
     loading,
@@ -127,21 +94,11 @@ export default function HotelRanks({ selectedDate }) {
 
   const [originalRows, setOriginalRows] = useState([]);
 
-  const [nights, setNights] = useState(0);
-
-  const [searched, setSearched] = useState('');
-
-  const tableRef = useRef(null);
-
-  const [tab, setTab] = useState(1);
-
   const [load, setLoad] = useState(false);
 
   const [date_select, setDate_select] = useState(0);
 
   const [hotel_list_by_date, set_hotel_list_by_date] = useState([]);
-
-  const [reqHotelID, setReqHotelID] = useState();
 
   const [reqHotelStrategyZone, setReqHotelStrategyZone] = useState(undefined);
 
@@ -160,33 +117,6 @@ export default function HotelRanks({ selectedDate }) {
       getReqHotelID();
     }
   }, [reqHotel]);
-
-  const getReportName = () => {
-    let name = null;
-    if (reqHotel.length > 0) {
-      reqHotel.map((e, index) => {
-        if (e.name !== null) {
-          name = e.name;
-          return;
-        }
-      });
-    }
-
-    return `${name}-Hotle_Radar-${moment(selectedDate).format('YYYY-MM-DD')}`;
-  };
-
-  const requestSearch = (searchedVal) => {
-    // setSearched(searchedVal);
-    const filteredRows = originalRows.filter((row) => {
-      return row.hotelName.toLowerCase().includes(searchedVal.toLowerCase());
-    });
-    setHotelsList(filteredRows);
-  };
-
-  const cancelSearch = () => {
-    setSearched('');
-    requestSearch(searched);
-  };
 
   useEffect(() => {
     const sort_price_by_date = async () => {
@@ -217,10 +147,6 @@ export default function HotelRanks({ selectedDate }) {
       sort_price_by_date();
     }
   }, [date_select, hotelsList]);
-
-  useEffect(() => {
-    requestSearch(searched);
-  }, [searched]);
 
   const getAverage = (array) => {
     if (array.length > 0) {
@@ -350,11 +276,24 @@ export default function HotelRanks({ selectedDate }) {
               avg_rank_wd + 2 * _hotel.stdev_wd
             );
 
+            _hotel.upper_start_wd = Math.ceil(
+              avg_rank_wd - 1 * _hotel.stdev_wd
+            );
+            _hotel.lower_start_wd = Math.ceil(
+              avg_rank_wd + 1 * _hotel.stdev_wd
+            );
+
             _hotel.upper_bound_we = Math.ceil(
               avg_rank_we - 2 * _hotel.stdev_we
             );
             _hotel.lower_bound_we = Math.ceil(
               avg_rank_we + 2 * _hotel.stdev_we
+            );
+            _hotel.upper_start_we = Math.ceil(
+              avg_rank_wd - 1 * _hotel.stdev_wd
+            );
+            _hotel.lower_start_we = Math.ceil(
+              avg_rank_wd + 1 * _hotel.stdev_wd
             );
           });
         });
@@ -369,6 +308,18 @@ export default function HotelRanks({ selectedDate }) {
                   (obj, i) => obj.day_rank == _hotel.upper_bound_we
                 );
 
+                dt.upper_start_rate = ranked_hotels_list[ix].find(
+                  (obj, i) => obj.day_rank == _hotel.upper_start_we
+                );
+
+                dt.lower_bound_rate = ranked_hotels_list[ix].find(
+                  (obj, i) => obj.day_rank == _hotel.lower_bound_we
+                );
+
+                dt.lower_start_rate = ranked_hotels_list[ix].find(
+                  (obj, i) => obj.day_rank == _hotel.lower_start_we
+                );
+
                 if (dt.upper_bound_rate == undefined) {
                   dt.upper_bound_rate = ranked_hotels_list[ix][0];
                 }
@@ -377,16 +328,18 @@ export default function HotelRanks({ selectedDate }) {
                   dt.lower_bound_rate =
                     ranked_hotels_list[ix][ranked_hotels_list[ix].length - 1];
                 }
-
-                dt.lower_bound_rate = ranked_hotels_list[ix].find(
-                  (obj, i) => obj.day_rank == _hotel.lower_bound_we
-                );
               } else {
                 dt.upper_bound_rate = ranked_hotels_list[ix].find(
                   (obj, i) => obj.day_rank == _hotel.upper_bound_wd
                 );
+                dt.upper_start_rate = ranked_hotels_list[ix].find(
+                  (obj, i) => obj.day_rank == _hotel.upper_start_wd
+                );
                 dt.lower_bound_rate = ranked_hotels_list[ix].find(
                   (obj, i) => obj.day_rank == _hotel.lower_bound_wd
+                );
+                dt.lower_start_rate = ranked_hotels_list[ix].find(
+                  (obj, i) => obj.day_rank == _hotel.lower_start_wd
                 );
 
                 if (dt.upper_bound_rate == undefined) {
@@ -401,28 +354,22 @@ export default function HotelRanks({ selectedDate }) {
 
               if (
                 dt.lower_bound_rate != undefined &&
-                dt.upper_bound_rate != undefined
+                dt.upper_bound_rate != undefined &&
+                dt.upper_start_rate &&
+                dt.lower_start_rate
               ) {
-                let rate_range = Math.abs(
-                  dt.upper_bound_rate.rate - dt.lower_bound_rate.rate
-                );
-                let range_qr = rate_range / 3;
                 if (
                   dt.price[getPrice(dt.price)] >= dt.lower_bound_rate.rate &&
-                  dt.price[getPrice(dt.price)] <=
-                    dt.lower_bound_rate.rate + range_qr
+                  dt.price[getPrice(dt.price)] < dt.lower_start_rate.rate
                 ) {
                   dt.qr = 'LOW';
                 } else if (
-                  dt.price[getPrice(dt.price)] >
-                    dt.lower_bound_rate.rate + range_qr &&
-                  dt.price[getPrice(dt.price)] <=
-                    dt.lower_bound_rate.rate + 2 * range_qr
+                  dt.price[getPrice(dt.price)] >= dt.lower_start_rate.rate &&
+                  dt.price[getPrice(dt.price)] < dt.upper_start_rate.rate
                 ) {
                   dt.qr = 'MID';
                 } else if (
-                  dt.price[getPrice(dt.price)] >
-                    dt.lower_bound_rate.rate + 2 * range_qr &&
+                  dt.price[getPrice(dt.price)] >= dt.upper_start_rate.rate &&
                   dt.price[getPrice(dt.price)] <= dt.upper_bound_rate.rate
                 ) {
                   dt.qr = 'HIGH';
@@ -488,144 +435,9 @@ export default function HotelRanks({ selectedDate }) {
     return res;
   };
 
-  const sortData = (sortBy, sortOrder) => {
-    // alert(`sortData (${sortBy}, ${sortOrder})`);
-    if (sortBy === 0) {
-      if (sortOrder === 'asc') {
-        hotelsList.sort(
-          (a, b) => a.hotelName.localeCompare(b.hotelName) || b.stars - a.stars
-        );
-      } else {
-        hotelsList.sort(
-          (a, b) => b.hotelName.localeCompare(a.hotelName) || b.stars - a.stars
-        );
-      }
-    }
-
-    if (sortBy === 1) {
-      if (sortOrder === 'asc') {
-        hotelsList.sort(
-          (a, b) => a.stars - b.stars || a.hotelName.localeCompare(b.hotelName)
-        );
-      } else {
-        hotelsList.sort(
-          (a, b) => b.stars - a.stars || a.hotelName.localeCompare(b.hotelName)
-        );
-      }
-    }
-  };
-
-  const handleSort = async (sb, sd) => {
-    setSortBy(sb);
-    setSortDir(sd);
-
-    await sortData(sb, sd);
-
-    //console.log('hotelList ', hotelsList);
-  };
-
-  const handleHotelsFilter = async (event) => {
-    if (event.target.value == 0) {
-      const selectedHotels = [hotels[0]];
-      user.application.candidate_properties.map((_filterHotel) =>
-        hotels.some((hotel) => {
-          if (hotel.hotelID === _filterHotel.id) {
-            selectedHotels.push(hotel);
-          }
-        })
-      );
-      setHotelsList(selectedHotels);
-    } else if (event.target.value == 2) {
-      if (ratingCluster.min_rating) {
-        setHotelsList(
-          hotels.filter((h) => h.ratings >= ratingCluster.min_rating)
-        );
-      }
-    } else {
-      setHotelsList(hotels);
-    }
-  };
-
-  const handleNightsFilter = async (event) => {
-    setNights(event.target.value);
-  };
-
-  const handleBucketsChange = (event) => {
-    const value = event.target.value;
-    if (value[value.length - 1] === 'all') {
-      setSelectedBuckets(
-        selectedBuckets.length === options.length ? [] : options
-      );
-      return;
-    }
-    setSelectedBuckets(value);
-  };
-
-  const handleStarsChange = (event) => {
-    const value = event.target.value;
-    if (value[value.length - 1] === 'all') {
-      setSelectedStars(selectedStars.length === options.length ? [] : options);
-      return;
-    }
-    setSelectedStars(value);
-  };
-
-  useEffect(() => {
-    const handleStarsSelect = () => {
-      if (selectedStars.length > 0) {
-        const selectedHotels = [];
-        selectedStars.map((star) => {
-          originalRows.some((_filterHotel) => {
-            if (star === Math.floor(_filterHotel.stars)) {
-              selectedHotels.push(_filterHotel);
-            }
-          });
-        });
-        setHotelsList(
-          selectedHotels.sort(
-            (a, b) =>
-              b.stars - a.stars || a.hotelName.localeCompare(b.hotelName)
-          )
-        );
-      }
-    };
-    handleStarsSelect();
-  }, [selectedStars]);
-
-  useEffect(() => {
-    const handleStarsSelect = () => {
-      if (selectedBuckets.length > 0) {
-        const selectedHotels = [];
-        selectedBuckets.map((bucket) => {
-          hotelsList.some((_filterHotel) => {
-            if (bucket == _filterHotel.freq_bucket) {
-              selectedHotels.push(_filterHotel);
-            }
-          });
-        });
-        setHotelsList(
-          selectedHotels.sort(
-            (a, b) =>
-              b.stars - a.stars || a.hotelName.localeCompare(b.hotelName)
-          )
-        );
-      }
-    };
-    handleStarsSelect();
-  }, [selectedBuckets]);
-
   const getPrice = (arr) => {
     const price = arr.findIndex((e) => e > 0);
     return price;
-  };
-
-  const mode = (arr) => {
-    return arr
-      .sort(
-        (a, b) =>
-          arr.filter((v) => v === a).length - arr.filter((v) => v === b).length
-      )
-      .pop();
   };
 
   const checkHotelAvailability = (id, day) => {
@@ -696,17 +508,6 @@ export default function HotelRanks({ selectedDate }) {
                     >
                       <TableSortLabel disabled>
                         Rate Strategy Zone
-                        {/* {(() => {
-                          let stars = null;
-                          reqHotel.map((e, index) => {
-                            if (e.stars !== null && e.stars != 'N/A') {
-                              stars = e.stars;
-                            }
-                          });
-
-                          return stars;
-                        })()}
-                        -stars{' '} */}
                       </TableSortLabel>{' '}
                       <hr />
                       <TableSortLabel disabled>Days Out</TableSortLabel>
@@ -770,6 +571,7 @@ export default function HotelRanks({ selectedDate }) {
                                 key={index}
                                 style={{
                                   fontWeight: 'bold',
+                                  fontSize: '12px',
                                   borderRight:
                                     index == daily_fetch_len
                                       ? '5px solid rgba(66, 66, 66, 1)'
@@ -891,7 +693,7 @@ export default function HotelRanks({ selectedDate }) {
                           zIndex: 100,
                         }}
                       >
-                        High Range
+                        &emsp;High Range
                       </StyledTableCell>
 
                       {[...Array(report_len).keys()].map((e, index) =>
@@ -899,17 +701,8 @@ export default function HotelRanks({ selectedDate }) {
                           if (reqHotelStrategyZone.prices[index] != null) {
                             if (
                               reqHotelStrategyZone.prices[index]
-                                .upper_bound_rate &&
-                              reqHotelStrategyZone.prices[index]
-                                .lower_bound_rate.rate
+                                .upper_start_rate
                             ) {
-                              let rate_range = Math.abs(
-                                reqHotelStrategyZone.prices[index]
-                                  .upper_bound_rate.rate -
-                                  reqHotelStrategyZone.prices[index]
-                                    .lower_bound_rate.rate
-                              );
-                              let range_qr = rate_range / 3;
                               return (
                                 <StyledTableCell
                                   size="small"
@@ -924,7 +717,7 @@ export default function HotelRanks({ selectedDate }) {
                                 >
                                   {parseFloat(
                                     reqHotelStrategyZone.prices[index]
-                                      .upper_bound_rate.rate - range_qr
+                                      .upper_start_rate.rate
                                   ).toFixed(0)}
                                 </StyledTableCell>
                               );
@@ -978,7 +771,7 @@ export default function HotelRanks({ selectedDate }) {
                           zIndex: 100,
                         }}
                       >
-                        Middle Range
+                        &emsp;Middle Range
                       </StyledTableCell>
 
                       {[...Array(report_len).keys()].map((e, index) =>
@@ -986,17 +779,8 @@ export default function HotelRanks({ selectedDate }) {
                           if (reqHotelStrategyZone.prices[index] != null) {
                             if (
                               reqHotelStrategyZone.prices[index]
-                                .upper_bound_rate &&
-                              reqHotelStrategyZone.prices[index]
-                                .lower_bound_rate.rate
+                                .lower_start_rate
                             ) {
-                              let rate_range = Math.abs(
-                                reqHotelStrategyZone.prices[index]
-                                  .upper_bound_rate.rate -
-                                  reqHotelStrategyZone.prices[index]
-                                    .lower_bound_rate.rate
-                              );
-                              let range_qr = rate_range / 3;
                               return (
                                 <StyledTableCell
                                   size="small"
@@ -1011,7 +795,7 @@ export default function HotelRanks({ selectedDate }) {
                                 >
                                   {parseFloat(
                                     reqHotelStrategyZone.prices[index]
-                                      .lower_bound_rate.rate + range_qr
+                                      .lower_start_rate.rate
                                   ).toFixed(0)}
                                 </StyledTableCell>
                               );
