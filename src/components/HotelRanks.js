@@ -634,6 +634,14 @@ export default function HotelRanks({ selectedDate }) {
                                   size="small"
                                   key={index}
                                   style={{
+                                    backgroundColor:
+                                      CLUSTER_BACKGROUND[
+                                        getClusterByPrice(
+                                          reqHotelStrategyZone.prices[index]
+                                            .upper_bound_rate.rate,
+                                          index
+                                        )
+                                      ],
                                     borderRight:
                                       index == daily_fetch_len
                                         ? '5px solid rgba(66, 66, 66, 1)'
@@ -716,6 +724,14 @@ export default function HotelRanks({ selectedDate }) {
                                   size="small"
                                   key={index}
                                   style={{
+                                    backgroundColor:
+                                      CLUSTER_BACKGROUND[
+                                        getClusterByPrice(
+                                          reqHotelStrategyZone.prices[index]
+                                            .upper_start_rate.rate,
+                                          index
+                                        )
+                                      ],
                                     borderRight:
                                       index == daily_fetch_len
                                         ? '5px solid rgba(66, 66, 66, 1)'
@@ -794,6 +810,14 @@ export default function HotelRanks({ selectedDate }) {
                                   size="small"
                                   key={index}
                                   style={{
+                                    backgroundColor:
+                                      CLUSTER_BACKGROUND[
+                                        getClusterByPrice(
+                                          reqHotelStrategyZone.prices[index]
+                                            .lower_start_rate.rate,
+                                          index
+                                        )
+                                      ],
                                     borderRight:
                                       index == daily_fetch_len
                                         ? '5px solid rgba(66, 66, 66, 1)'
@@ -872,6 +896,14 @@ export default function HotelRanks({ selectedDate }) {
                                   size="small"
                                   key={index}
                                   style={{
+                                    backgroundColor:
+                                      CLUSTER_BACKGROUND[
+                                        getClusterByPrice(
+                                          reqHotelStrategyZone.prices[index]
+                                            .lower_bound_rate.rate,
+                                          index
+                                        )
+                                      ],
                                     borderRight:
                                       index == daily_fetch_len
                                         ? '5px solid rgba(66, 66, 66, 1)'
