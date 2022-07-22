@@ -96,57 +96,7 @@ export default function HotelRanks({ selectedDate }) {
 
   const [load, setLoad] = useState(false);
 
-  const [date_select, setDate_select] = useState(0);
-
-  const [hotel_list_by_date, set_hotel_list_by_date] = useState([]);
-
   const [reqHotelStrategyZone, setReqHotelStrategyZone] = useState(undefined);
-
-  const getReqHotelID = () => {
-    let id = '';
-    reqHotel.map((e, index) => {
-      if (e.hotelID !== null && e.hotelID != 'N/A') {
-        id = e.hotelID;
-      }
-    });
-    return id;
-  };
-
-  useEffect(() => {
-    if (reqHotel.length > 0) {
-      getReqHotelID();
-    }
-  }, [reqHotel]);
-
-  useEffect(() => {
-    const sort_price_by_date = async () => {
-      let hotel_prices = [];
-      if (hotelsList.length > 0) {
-        hotelsList.map((_hotel, ix) => {
-          let dt = _hotel.prices[date_select];
-
-          if (dt != null) {
-            hotel_prices.push({
-              hotelID: _hotel.hotelID,
-              hotelName: _hotel.hotelName,
-              stars: _hotel.stars,
-              price: dt.price[getPrice(dt.price)],
-            });
-          }
-        });
-      }
-
-      set_hotel_list_by_date(
-        hotel_prices.sort(
-          (a, b) => b.price - a.price || a.hotelName.localeCompare(b.hotelName)
-        )
-      );
-    };
-
-    if (hotelsList.length > 0 && date_select >= 0) {
-      sort_price_by_date();
-    }
-  }, [date_select, hotelsList]);
 
   const getAverage = (array) => {
     if (array.length > 0) {
@@ -229,6 +179,7 @@ export default function HotelRanks({ selectedDate }) {
                 );
                 if (day_rank >= 0) {
                   dt.day_rank = day_rank;
+                  dt.total = ranked_hotels.length;
                 }
               }
             } catch (error) {}

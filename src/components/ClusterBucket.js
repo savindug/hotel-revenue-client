@@ -14,7 +14,7 @@ import Paper from '@material-ui/core/Paper';
 import { useSelector } from 'react-redux';
 import moment from 'moment';
 import { CLUSTER_BACKGROUND, FONT_FAMILY } from '../utils/const';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import HotelRanks from './HotelRanks';
 
 const StyledTableCell = withStyles((theme) => ({
@@ -54,7 +54,360 @@ export default function ClusterBucket({ selectedDate, reqHotel }) {
   const classes = useStyles();
 
   const getClusterDataSet = useSelector((state) => state.clusterDataSet);
-  const { loading, clusterData, report_len } = getClusterDataSet;
+  const {
+    loading,
+    err,
+    clusterData,
+    cluster1,
+    cluster2,
+    cluster3,
+    cluster4,
+    hotels,
+    report_len,
+    ratingCluster,
+  } = getClusterDataSet;
+
+  const auth = useSelector((state) => state.auth);
+  const { user } = auth;
+
+  const [hotelsList, setHotelsList] = useState([]);
+
+  const [originalRows, setOriginalRows] = useState([]);
+
+  const [load, setLoad] = useState(false);
+
+  const [reqHotelStrategyZone, setReqHotelStrategyZone] = useState(undefined);
+
+  const getAverage = (array) => {
+    if (array.length > 0) {
+      let avg = array.reduce((a, b) => a + b) / array.length;
+      return avg;
+    } else {
+      return -1;
+    }
+  };
+
+  const getStandardDeviation = (array) => {
+    const n = array.length;
+    if (n > 0) {
+      const mean = array.reduce((a, b) => a + b) / n;
+      return Math.sqrt(
+        array.map((x) => Math.pow(x - mean, 2)).reduce((a, b) => a + b) / n
+      );
+    } else {
+      return -1;
+    }
+  };
+
+  const getRankedHotels = (arr) => {
+    var sorted = arr
+      .filter((e) => e.rate != 'NaN')
+      .sort((a, b) => b.rate - a.rate);
+
+    var rank = 1;
+    for (var i = 0; i < sorted.length; i++) {
+      if (i > 0 && sorted[i].rate < sorted[i - 1].rate) {
+        rank++;
+      }
+      sorted[i].day_rank = rank;
+    }
+
+    // console.log(sorted);
+    return sorted;
+  };
+
+  useEffect(() => {
+    // console.log(`selectedDate: ${selectedDate}`);
+
+    const CalculateHotelRanks = async () => {
+      setLoad(true);
+      let ranked_hotels_list = [];
+      if (hotels.length > 0) {
+        await [...Array(report_len).keys()].map((e, index) => {
+          let hotel_rates_by_day = [];
+          hotels.map((_hotel) => {
+            let dt = _hotel.prices[index];
+
+            try {
+              if (
+                dt !== null &&
+                checkHotelAvailability(_hotel.hotelID, index)
+              ) {
+                hotel_rates_by_day.push({
+                  hotel_id: _hotel.hotelID,
+                  hotel_name: _hotel.hotelName,
+                  rate: dt.price[getPrice(dt.price)],
+                  date: dt.date,
+                });
+              }
+            } catch (error) {}
+          });
+
+          let ranked_hotels = getRankedHotels(hotel_rates_by_day);
+          ranked_hotels_list.push(ranked_hotels);
+
+          hotels.map((_hotel) => {
+            let dt = _hotel.prices[index];
+
+            try {
+              if (
+                dt !== null &&
+                checkHotelAvailability(_hotel.hotelID, index)
+              ) {
+                let day_rank = ranked_hotels.findIndex(
+                  (e) => e.hotel_id == _hotel.hotelID
+                );
+                if (day_rank >= 0) {
+                  dt.day_rank = day_rank;
+                  dt.total = ranked_hotels.length;
+                }
+              }
+            } catch (error) {}
+          });
+        });
+
+        hotels.map((_hotel) => {
+          let rank_stdev_wd = [];
+          let rank_stdev_we = [];
+          let rank_arr_wd = [];
+          let ranks_arr_we = [];
+          let ranks_arr_w = [];
+          _hotel.prices.map((dt, ix) => {
+            if (dt !== null) {
+              const day = moment(dt.date).format('dddd').substring(0, 3);
+
+              if (checkHotelAvailability(_hotel.hotelID, ix)) {
+                ranks_arr_w.push(dt.day_rank);
+                if (day === 'Sat' || day === 'Fri') {
+                  ranks_arr_we.push(dt.day_rank);
+                  rank_stdev_we.push(dt.day_rank);
+                } else {
+                  rank_arr_wd.push(dt.day_rank);
+                  rank_stdev_wd.push(dt.day_rank);
+                }
+              }
+            }
+
+            let avg_rank_wd = getAverage(rank_arr_wd);
+            let avg_rank_we = getAverage(ranks_arr_we);
+            let avg_rank = getAverage(ranks_arr_w);
+            let stdev_wd = getStandardDeviation(rank_stdev_wd);
+            let stdev_we = getStandardDeviation(rank_stdev_we);
+
+            _hotel.avg_rank_wd = avg_rank_wd;
+            _hotel.avg_rank_we = avg_rank_we;
+            _hotel.avg_rank = avg_rank;
+            _hotel.stdev_wd = stdev_wd;
+            _hotel.stdev_we = stdev_we;
+
+            _hotel.upper_bound_wd = Math.ceil(
+              avg_rank_wd - 2 * _hotel.stdev_wd
+            );
+            _hotel.lower_bound_wd = Math.ceil(
+              avg_rank_wd + 2 * _hotel.stdev_wd
+            );
+
+            _hotel.upper_start_wd = Math.ceil(
+              avg_rank_wd - 1 * _hotel.stdev_wd
+            );
+            _hotel.lower_start_wd = Math.ceil(
+              avg_rank_wd + 1 * _hotel.stdev_wd
+            );
+
+            _hotel.upper_bound_we = Math.ceil(
+              avg_rank_we - 2 * _hotel.stdev_we
+            );
+            _hotel.lower_bound_we = Math.ceil(
+              avg_rank_we + 2 * _hotel.stdev_we
+            );
+            _hotel.upper_start_we = Math.ceil(
+              avg_rank_wd - 1 * _hotel.stdev_wd
+            );
+            _hotel.lower_start_we = Math.ceil(
+              avg_rank_wd + 1 * _hotel.stdev_wd
+            );
+          });
+        });
+
+        hotels.map((_hotel) => {
+          _hotel.prices.map((dt, ix) => {
+            if (dt !== null) {
+              let day = moment(dt.date).format('dddd').substring(0, 3);
+
+              if (day === 'Sat' || day === 'Fri') {
+                dt.upper_bound_rate = ranked_hotels_list[ix].find(
+                  (obj, i) => obj.day_rank == _hotel.upper_bound_we
+                );
+
+                dt.upper_start_rate = ranked_hotels_list[ix].find(
+                  (obj, i) => obj.day_rank == _hotel.upper_start_we
+                );
+
+                dt.lower_bound_rate = ranked_hotels_list[ix].find(
+                  (obj, i) => obj.day_rank == _hotel.lower_bound_we
+                );
+
+                dt.lower_start_rate = ranked_hotels_list[ix].find(
+                  (obj, i) => obj.day_rank == _hotel.lower_start_we
+                );
+
+                if (dt.upper_bound_rate == undefined) {
+                  dt.upper_bound_rate = ranked_hotels_list[ix][0];
+                }
+
+                if (dt.lower_bound_rate == undefined) {
+                  dt.lower_bound_rate =
+                    ranked_hotels_list[ix][ranked_hotels_list[ix].length - 1];
+                }
+              } else {
+                dt.upper_bound_rate = ranked_hotels_list[ix].find(
+                  (obj, i) => obj.day_rank == _hotel.upper_bound_wd
+                );
+                dt.upper_start_rate = ranked_hotels_list[ix].find(
+                  (obj, i) => obj.day_rank == _hotel.upper_start_wd
+                );
+                dt.lower_bound_rate = ranked_hotels_list[ix].find(
+                  (obj, i) => obj.day_rank == _hotel.lower_bound_wd
+                );
+                dt.lower_start_rate = ranked_hotels_list[ix].find(
+                  (obj, i) => obj.day_rank == _hotel.lower_start_wd
+                );
+
+                if (dt.upper_bound_rate == undefined) {
+                  dt.upper_bound_rate = ranked_hotels_list[ix][0];
+                }
+
+                if (dt.lower_bound_rate == undefined) {
+                  dt.lower_bound_rate =
+                    ranked_hotels_list[ix][ranked_hotels_list[ix].length - 1];
+                }
+              }
+
+              if (
+                dt.lower_bound_rate != undefined &&
+                dt.upper_bound_rate != undefined &&
+                dt.upper_start_rate &&
+                dt.lower_start_rate
+              ) {
+                if (
+                  dt.price[getPrice(dt.price)] >= dt.lower_bound_rate.rate &&
+                  dt.price[getPrice(dt.price)] < dt.lower_start_rate.rate
+                ) {
+                  dt.qr = 'LOW';
+                } else if (
+                  dt.price[getPrice(dt.price)] >= dt.lower_start_rate.rate &&
+                  dt.price[getPrice(dt.price)] < dt.upper_start_rate.rate
+                ) {
+                  dt.qr = 'MID';
+                } else if (
+                  dt.price[getPrice(dt.price)] >= dt.upper_start_rate.rate &&
+                  dt.price[getPrice(dt.price)] <= dt.upper_bound_rate.rate
+                ) {
+                  dt.qr = 'HIGH';
+                } else if (
+                  dt.price[getPrice(dt.price)] < dt.lower_bound_rate.rate
+                ) {
+                  dt.qr = 'BELOW';
+                } else if (
+                  dt.price[getPrice(dt.price)] > dt.upper_bound_rate.rate
+                ) {
+                  dt.qr = 'OVER';
+                }
+              }
+            }
+          });
+        });
+
+        const req_hotel_data = hotels.find(
+          (e) => e.hotelName == reqHotel[0].name
+        );
+        setReqHotelStrategyZone(req_hotel_data);
+      }
+      setLoad(false);
+    };
+
+    CalculateHotelRanks();
+    // console.log(hotels);
+
+    setOriginalRows(
+      hotels.sort(
+        (a, b) => b.stars - a.stars || a.hotelName.localeCompare(b.hotelName)
+      )
+    );
+    setHotelsList(
+      hotels.sort(
+        (a, b) => b.stars - a.stars || a.hotelName.localeCompare(b.hotelName)
+      )
+    );
+  }, []);
+
+  const getClusterByPrice = (rate, ix) => {
+    let clustered = [];
+    let res;
+
+    if (cluster1.length > 0 && cluster1[ix]) {
+      clustered.push(cluster1[ix]);
+    }
+    if (cluster2.length > 0 && cluster2[ix]) {
+      clustered.push(cluster2[ix]);
+    }
+    if (cluster3.length > 0 && cluster3[ix]) {
+      clustered.push(cluster3[ix]);
+    }
+    if (cluster4.length > 0 && cluster4[ix]) {
+      clustered.push(cluster4[ix]);
+    }
+
+    clustered.sort((a, b) => a.mean - b.mean);
+
+    // console.log(clustered);
+
+    try {
+      clustered.map((cl, id) => {
+        if (rate >= cl.min && rate <= cl.max) {
+          res = id;
+          return;
+        }
+      });
+    } catch (e) {}
+
+    return res;
+  };
+
+  const getPrice = (arr) => {
+    const price = arr.findIndex((e) => e > 0);
+    return price;
+  };
+
+  const checkHotelAvailability = (id, day) => {
+    let clustered = [];
+
+    if (cluster1.length > 0 && cluster1[day]) {
+      clustered.push(cluster1[day].unwanted);
+    }
+    if (cluster2.length > 0 && cluster2[day]) {
+      clustered.push(cluster2[day].unwanted);
+    }
+    if (cluster3.length > 0 && cluster3[day]) {
+      clustered.push(cluster3[day].unwanted);
+    }
+    if (cluster4.length > 0 && cluster4[day]) {
+      clustered.push(cluster4[day].unwanted);
+    }
+    let hotels_arr = [];
+
+    for (var i = 0; i < clustered.length; i++) {
+      hotels_arr = hotels_arr.concat(clustered[i]);
+    }
+
+    const exists = hotels_arr.some((obj) => obj.id == id);
+
+    if (exists) {
+      return true;
+    } else {
+      return false;
+    }
+  };
 
   const daily_fetch_len = selectedDate
     ? moment(moment(selectedDate).add(90, 'days'))
@@ -63,447 +416,489 @@ export default function ClusterBucket({ selectedDate, reqHotel }) {
         .diff(selectedDate, 'days')
     : 0;
 
-  const RatePositionTable = ({ stars, cluster }) => {
+  const HotelRanksTable = () => {
     return (
       <>
-        {cluster.length > 0 ? (
-          <TableContainer component={Paper} className="my-5">
-            <Box width={100}>
-              <Table
-                className={classes.table}
-                size="medium"
-                aria-label="customized table"
-                bodyStyle={{ overflow: 'visible' }}
-                stickyHeader
-              >
-                <TableHead>
-                  <StyledTableCell
-                    style={{
-                      backgroundColor: CLUSTER_BACKGROUND[stars - 2],
-                      width: '250px',
-                      zIndex: 100,
-                      fontFamily: FONT_FAMILY,
-                    }}
+        {' '}
+        {hotels.length > 0 &&
+        originalRows.length > 0 &&
+        !load &&
+        reqHotelStrategyZone != undefined ? (
+          <>
+            <TableContainer
+              component={Paper}
+              className={classes.container + ' mt-3'}
+            >
+              <TableContainer component={Paper} className="my-5">
+                <Box width={100}>
+                  <Table
+                    className={classes.table}
+                    size="medium"
+                    aria-label="customized table"
+                    bodyStyle={{ overflow: 'visible' }}
+                    stickyHeader
                   >
-                    <TableSortLabel disabled>
-                      {' '}
-                      {`${stars} Star Bucket Matrix`}
-                    </TableSortLabel>{' '}
-                    <div class="dropdown-divider"></div>
-                    <TableSortLabel disabled>Days Out</TableSortLabel>
-                  </StyledTableCell>
-                  {cluster.map((e, index) =>
-                    (() => {
-                      let _date = moment(e.date);
-                      let daysOut = _date.diff(selectedDate, 'days');
-                      let date = _date.format('dddd').substring(0, 3);
-                      return (
+                    <TableHead>
+                      <StyledTableCell
+                        style={{
+                          width: '250px',
+                          zIndex: 100,
+                          fontFamily: FONT_FAMILY,
+                        }}
+                      >
+                        <TableSortLabel disabled>
+                          Rate Strategy Zone
+                        </TableSortLabel>{' '}
+                        <hr />
+                        <TableSortLabel disabled>Days Out</TableSortLabel>
+                      </StyledTableCell>
+                      {reqHotel.map((e, index) =>
+                        (() => {
+                          let _date = moment(e.checkIn);
+                          let daysOut = _date.diff(selectedDate, 'days');
+                          let date = _date.format('dddd').substring(0, 3);
+                          return (
+                            <StyledTableCell
+                              size="small"
+                              key={index}
+                              className={
+                                date === 'Sat' || date === 'Fri'
+                                  ? 'bg-secondary text-light text-center'
+                                  : 'text-center'
+                              }
+                              style={{
+                                fontSize: '12px',
+                                borderRight:
+                                  index == daily_fetch_len
+                                    ? '5px solid rgba(66, 66, 66, 1)'
+                                    : '',
+                              }}
+                            >
+                              <>
+                                {date === 'Sat' || date === 'Fri'
+                                  ? 'WEND'
+                                  : 'WDAY'}
+                              </>
+                              <br />
+                              <>{date.toUpperCase()}</>
+                              <br />
+                              <>{moment(e.checkIn).format('MM/DD')}</>{' '}
+                              <div class="dropdown-divider"></div>
+                              {daysOut}
+                            </StyledTableCell>
+                          );
+                        })()
+                      )}
+                    </TableHead>
+                    <TableBody>
+                      <StyledTableRow>
                         <StyledTableCell
                           size="small"
-                          key={index}
-                          className={
-                            date === 'Sat' || date === 'Fri'
-                              ? 'bg-secondary text-light text-center'
-                              : 'text-center'
-                          }
-                          style={{ fontSize: '12px' }}
+                          component="th"
+                          scope="row"
+                          className={classes.sticky}
+                          style={{ fontWeight: 'bold', width: '250px' }}
                         >
-                          {date === 'Sat' || date === 'Fri' ? 'WEND' : 'WDAY'}
-                          <div class="dropdown-divider"></div>
-                          {`${date.toUpperCase()}\n${moment(e.date).format(
-                            'MM/DD'
-                          )}`}{' '}
-                          <div class="dropdown-divider"></div>
-                          {daysOut}
+                          Rate Strategy Position
                         </StyledTableCell>
-                      );
-                    })()
-                  )}
-                </TableHead>
-                <TableBody>
-                  <StyledTableRow Key={stars}>
-                    <StyledTableCell
-                      size="small"
-                      component="th"
-                      scope="row"
-                      className={classes.sticky}
-                      style={{ fontWeight: 'bold', width: '250px' }}
-                    >
-                      Average Rate
-                    </StyledTableCell>
 
-                    {[...Array(report_len).keys()].map((e, index) => (
-                      <StyledTableCell
-                        size="small"
-                        key={index}
-                        className={classes.rates}
-                      >
-                        {cluster[index] ? (
-                          cluster[index].mean !== 'NaN' &&
-                          cluster[index].items > 0 ? (
-                            <span
-                              className={
-                                Math.round(cluster[index].mean) -
-                                  reqHotel[index].rate >=
-                                0
-                                  ? 'text-success'
-                                  : 'text-danger'
-                              }
-                            >
-                              {Math.round(cluster[index].mean) -
-                                reqHotel[index].rate}
-                            </span>
-                          ) : cluster[index].mean !== 'NaN' &&
-                            cluster[index].items < 0 ? (
-                            'NED'
-                          ) : (
-                            'N/A'
-                          )
-                        ) : (
-                          'N/A'
+                        {[...Array(report_len).keys()].map((e, index) =>
+                          (() => {
+                            if (reqHotelStrategyZone.prices[index] != null) {
+                              return (
+                                <StyledTableCell
+                                  size="small"
+                                  key={index}
+                                  style={{
+                                    fontWeight: 'bold',
+                                    fontSize: '12px',
+                                    borderRight:
+                                      index == daily_fetch_len
+                                        ? '5px solid rgba(66, 66, 66, 1)'
+                                        : '',
+                                  }}
+                                  className={classes.rates}
+                                >
+                                  {reqHotelStrategyZone.prices[index].qr}
+                                </StyledTableCell>
+                              );
+                            } else {
+                              return (
+                                <StyledTableCell
+                                  size="small"
+                                  key={index}
+                                  style={{
+                                    borderRight:
+                                      index == daily_fetch_len
+                                        ? '5px solid rgba(66, 66, 66, 1)'
+                                        : '',
+                                  }}
+                                  className={classes.rates}
+                                >
+                                  N/A
+                                </StyledTableCell>
+                              );
+                            }
+                          })()
                         )}
-                      </StyledTableCell>
-                    ))}
-                  </StyledTableRow>
+                      </StyledTableRow>
 
-                  <StyledTableRow Key={stars}>
-                    <StyledTableCell
-                      size="small"
-                      component="th"
-                      scope="row"
-                      className={classes.sticky}
-                      style={{ fontWeight: 'bold', width: '250px' }}
-                    >
-                      Most Repeated rate
-                    </StyledTableCell>
+                      <StyledTableRow>
+                        <StyledTableCell
+                          size="small"
+                          component="th"
+                          scope="row"
+                          className={classes.sticky}
+                          style={{ fontWeight: 'bold', width: '250px' }}
+                        >
+                          Upper Bound
+                        </StyledTableCell>
 
-                    {[...Array(report_len).keys()].map((e, index) => (
-                      <StyledTableCell
-                        size="small"
-                        key={index}
-                        className={classes.rates}
-                      >
-                        {cluster[index] ? (
-                          cluster[index].mod !== 'NaN' &&
-                          cluster[index].items > 0 ? (
-                            <span
-                              className={
-                                Math.round(cluster[index].mod) -
-                                  reqHotel[index].rate >=
-                                0
-                                  ? 'text-success'
-                                  : 'text-danger'
+                        {[...Array(report_len).keys()].map((e, index) =>
+                          (() => {
+                            if (reqHotelStrategyZone.prices[index] != null) {
+                              if (
+                                reqHotelStrategyZone.prices[index]
+                                  .upper_bound_rate
+                              ) {
+                                return (
+                                  <StyledTableCell
+                                    size="small"
+                                    key={index}
+                                    style={{
+                                      backgroundColor:
+                                        CLUSTER_BACKGROUND[
+                                          getClusterByPrice(
+                                            reqHotelStrategyZone.prices[index]
+                                              .upper_bound_rate.rate,
+                                            index
+                                          )
+                                        ],
+                                      borderRight:
+                                        index == daily_fetch_len
+                                          ? '5px solid rgba(66, 66, 66, 1)'
+                                          : '',
+                                    }}
+                                    className={classes.rates}
+                                  >
+                                    {
+                                      reqHotelStrategyZone.prices[index]
+                                        .upper_bound_rate.rate
+                                    }
+                                  </StyledTableCell>
+                                );
+                              } else {
+                                return (
+                                  <StyledTableCell
+                                    size="small"
+                                    key={index}
+                                    style={{
+                                      fontWeight: 'bold',
+
+                                      borderRight:
+                                        index == daily_fetch_len
+                                          ? '5px solid rgba(66, 66, 66, 1)'
+                                          : '',
+                                    }}
+                                    className={classes.rates}
+                                  >
+                                    N/A
+                                  </StyledTableCell>
+                                );
                               }
-                            >
-                              {Math.round(cluster[index].mod) -
-                                reqHotel[index].rate}
-                            </span>
-                          ) : cluster[index].mod !== 'NaN' &&
-                            cluster[index].items < 0 ? (
-                            'NED'
-                          ) : (
-                            'N/A'
-                          )
-                        ) : (
-                          'N/A'
+                            } else {
+                              return (
+                                <StyledTableCell
+                                  size="small"
+                                  key={index}
+                                  style={{
+                                    fontWeight: 'bold',
+
+                                    borderRight:
+                                      index == daily_fetch_len
+                                        ? '5px solid rgba(66, 66, 66, 1)'
+                                        : '',
+                                  }}
+                                  className={classes.rates}
+                                >
+                                  N/A
+                                </StyledTableCell>
+                              );
+                            }
+                          })()
                         )}
-                      </StyledTableCell>
-                    ))}
-                  </StyledTableRow>
+                      </StyledTableRow>
 
-                  <StyledTableRow Key={stars}>
-                    <StyledTableCell
-                      size="small"
-                      component="th"
-                      scope="row"
-                      className={classes.sticky}
-                      style={{ fontWeight: 'bold', width: '250px' }}
-                    >
-                      Middle Rate
-                    </StyledTableCell>
+                      <StyledTableRow>
+                        <StyledTableCell
+                          size="small"
+                          component="th"
+                          scope="row"
+                          className={classes.sticky}
+                          style={{
+                            fontWeight: 'bold',
+                            width: '250px',
+                            zIndex: 100,
+                          }}
+                        >
+                          &emsp;High Range
+                        </StyledTableCell>
 
-                    {[...Array(report_len).keys()].map((e, index) => (
-                      <StyledTableCell
-                        size="small"
-                        key={index}
-                        className={classes.rates}
-                      >
-                        {cluster[index] ? (
-                          cluster[index].median !== 'NaN' &&
-                          cluster[index].items > 0 ? (
-                            <span
-                              className={
-                                Math.round(cluster[index].median) -
-                                  reqHotel[index].rate >=
-                                0
-                                  ? 'text-success'
-                                  : 'text-danger'
+                        {[...Array(report_len).keys()].map((e, index) =>
+                          (() => {
+                            if (reqHotelStrategyZone.prices[index] != null) {
+                              if (
+                                reqHotelStrategyZone.prices[index]
+                                  .upper_start_rate
+                              ) {
+                                return (
+                                  <StyledTableCell
+                                    size="small"
+                                    key={index}
+                                    style={{
+                                      backgroundColor:
+                                        CLUSTER_BACKGROUND[
+                                          getClusterByPrice(
+                                            reqHotelStrategyZone.prices[index]
+                                              .upper_start_rate.rate,
+                                            index
+                                          )
+                                        ],
+                                      borderRight:
+                                        index == daily_fetch_len
+                                          ? '5px solid rgba(66, 66, 66, 1)'
+                                          : '',
+                                    }}
+                                    className={classes.rates}
+                                  >
+                                    {parseFloat(
+                                      reqHotelStrategyZone.prices[index]
+                                        .upper_start_rate.rate
+                                    ).toFixed(0)}
+                                  </StyledTableCell>
+                                );
+                              } else {
+                                return (
+                                  <StyledTableCell
+                                    size="small"
+                                    key={index}
+                                    style={{
+                                      borderRight:
+                                        index == daily_fetch_len
+                                          ? '5px solid rgba(66, 66, 66, 1)'
+                                          : '',
+                                    }}
+                                    className={classes.rates}
+                                  >
+                                    N/A
+                                  </StyledTableCell>
+                                );
                               }
-                            >
-                              {Math.round(cluster[index].median) -
-                                reqHotel[index].rate}
-                            </span>
-                          ) : cluster[index].median !== 'NaN' &&
-                            cluster[index].items < 0 ? (
-                            'NED'
-                          ) : (
-                            'N/A'
-                          )
-                        ) : (
-                          'N/A'
+                            } else {
+                              return (
+                                <StyledTableCell
+                                  size="small"
+                                  key={index}
+                                  style={{
+                                    borderRight:
+                                      index == daily_fetch_len
+                                        ? '5px solid rgba(66, 66, 66, 1)'
+                                        : '',
+                                  }}
+                                  className={classes.rates}
+                                >
+                                  N/A
+                                </StyledTableCell>
+                              );
+                            }
+                          })()
                         )}
-                      </StyledTableCell>
-                    ))}
-                  </StyledTableRow>
-                  <StyledTableRow Key={stars}>
-                    <StyledTableCell
-                      size="small"
-                      component="th"
-                      scope="row"
-                      className={classes.sticky}
-                      style={{ fontWeight: 'bold', width: '250px' }}
-                    >
-                      &emsp;Highest Rate
-                    </StyledTableCell>
+                      </StyledTableRow>
 
-                    {[...Array(report_len).keys()].map((e, index) => (
-                      <StyledTableCell
-                        size="small"
-                        key={index}
-                        className={classes.rates}
-                      >
-                        {cluster[index] ? (
-                          cluster[index].max !== 'NaN' &&
-                          cluster[index].items > 0 ? (
-                            <span
-                              className={
-                                Math.round(cluster[index].max) -
-                                  reqHotel[index].rate >=
-                                0
-                                  ? 'text-success'
-                                  : 'text-danger'
-                              }
-                            >
-                              {Math.round(cluster[index].max) -
-                                reqHotel[index].rate}
-                            </span>
-                          ) : cluster[index].max !== 'NaN' &&
-                            cluster[index].items < 0 ? (
-                            'NED'
-                          ) : (
-                            'N/A'
-                          )
-                        ) : (
-                          'N/A'
-                        )}
-                      </StyledTableCell>
-                    ))}
-                  </StyledTableRow>
-                  <StyledTableRow Key={stars}>
-                    <StyledTableCell
-                      size="small"
-                      component="th"
-                      scope="row"
-                      className={classes.sticky}
-                      style={{
-                        fontWeight: 'bold',
-                        width: '250px',
-                        borderTop: '2px solid grey',
-                      }}
-                    >
-                      &emsp;&emsp;Average of Highest Rates
-                    </StyledTableCell>
+                      <StyledTableRow>
+                        <StyledTableCell
+                          size="small"
+                          component="th"
+                          scope="row"
+                          className={classes.sticky}
+                          style={{
+                            fontWeight: 'bold',
+                            width: '250px',
+                            zIndex: 100,
+                          }}
+                        >
+                          &emsp;Middle Range
+                        </StyledTableCell>
 
-                    {[...Array(report_len).keys()].map((e, index) => (
-                      <StyledTableCell
-                        size="small"
-                        key={index}
-                        className={classes.rates}
-                        style={{
-                          borderTop: '3px solid grey',
-                        }}
-                      >
-                        {cluster[index] ? (
-                          cluster[index].highAVG !== 'NaN' &&
-                          cluster[index].items > 0 ? (
-                            <span
-                              className={
-                                Math.round(cluster[index].highAVG) -
-                                  reqHotel[index].rate >=
-                                0
-                                  ? 'text-success'
-                                  : 'text-danger'
+                        {[...Array(report_len).keys()].map((e, index) =>
+                          (() => {
+                            if (reqHotelStrategyZone.prices[index] != null) {
+                              if (
+                                reqHotelStrategyZone.prices[index]
+                                  .lower_start_rate
+                              ) {
+                                return (
+                                  <StyledTableCell
+                                    size="small"
+                                    key={index}
+                                    style={{
+                                      backgroundColor:
+                                        CLUSTER_BACKGROUND[
+                                          getClusterByPrice(
+                                            reqHotelStrategyZone.prices[index]
+                                              .lower_start_rate.rate,
+                                            index
+                                          )
+                                        ],
+                                      borderRight:
+                                        index == daily_fetch_len
+                                          ? '5px solid rgba(66, 66, 66, 1)'
+                                          : '',
+                                    }}
+                                    className={classes.rates}
+                                  >
+                                    {parseFloat(
+                                      reqHotelStrategyZone.prices[index]
+                                        .lower_start_rate.rate
+                                    ).toFixed(0)}
+                                  </StyledTableCell>
+                                );
+                              } else {
+                                return (
+                                  <StyledTableCell
+                                    size="small"
+                                    key={index}
+                                    style={{
+                                      borderRight:
+                                        index == daily_fetch_len
+                                          ? '5px solid rgba(66, 66, 66, 1)'
+                                          : '',
+                                    }}
+                                    className={classes.rates}
+                                  >
+                                    N/A
+                                  </StyledTableCell>
+                                );
                               }
-                            >
-                              {Math.round(cluster[index].highAVG) -
-                                reqHotel[index].rate}
-                            </span>
-                          ) : cluster[index].highAVG !== 'NaN' &&
-                            cluster[index].items < 0 ? (
-                            'NED'
-                          ) : (
-                            'N/A'
-                          )
-                        ) : (
-                          'N/A'
+                            } else {
+                              return (
+                                <StyledTableCell
+                                  size="small"
+                                  key={index}
+                                  style={{
+                                    borderRight:
+                                      index == daily_fetch_len
+                                        ? '5px solid rgba(66, 66, 66, 1)'
+                                        : '',
+                                  }}
+                                  className={classes.rates}
+                                >
+                                  N/A
+                                </StyledTableCell>
+                              );
+                            }
+                          })()
                         )}
-                      </StyledTableCell>
-                    ))}
-                  </StyledTableRow>
-                  <StyledTableRow Key={stars}>
-                    <StyledTableCell
-                      size="small"
-                      component="th"
-                      scope="row"
-                      className={classes.sticky}
-                      style={{ fontWeight: 'bold', width: '250px' }}
-                    >
-                      &emsp;&emsp;Average of Middle Rates
-                    </StyledTableCell>
+                      </StyledTableRow>
 
-                    {[...Array(report_len).keys()].map((e, index) => (
-                      <StyledTableCell
-                        size="small"
-                        key={index}
-                        className={classes.rates}
-                      >
-                        {cluster[index] ? (
-                          cluster[index].midAVG !== 'NaN' &&
-                          cluster[index].items > 0 ? (
-                            <span
-                              className={
-                                Math.round(cluster[index].midAVG) -
-                                  reqHotel[index].rate >=
-                                0
-                                  ? 'text-success'
-                                  : 'text-danger'
-                              }
-                            >
-                              {Math.round(cluster[index].midAVG) -
-                                reqHotel[index].rate}
-                            </span>
-                          ) : cluster[index].midAVG !== 'NaN' &&
-                            cluster[index].items < 0 ? (
-                            'NED'
-                          ) : (
-                            'N/A'
-                          )
-                        ) : (
-                          'N/A'
-                        )}
-                      </StyledTableCell>
-                    ))}
-                  </StyledTableRow>
-                  <StyledTableRow Key={stars}>
-                    <StyledTableCell
-                      size="small"
-                      component="th"
-                      scope="row"
-                      className={classes.sticky}
-                      style={{
-                        fontWeight: 'bold',
-                        width: '250px',
-                        borderBottom: '3px solid grey',
-                      }}
-                    >
-                      &emsp;&emsp;Average of Lowest Rates
-                    </StyledTableCell>
+                      <StyledTableRow>
+                        <StyledTableCell
+                          size="small"
+                          component="th"
+                          scope="row"
+                          className={classes.sticky}
+                          style={{
+                            fontWeight: 'bold',
+                            width: '250px',
+                            zIndex: 100,
+                          }}
+                        >
+                          Lower Bound
+                        </StyledTableCell>
 
-                    {[...Array(report_len).keys()].map((e, index) => (
-                      <StyledTableCell
-                        size="small"
-                        key={index}
-                        className={classes.rates}
-                        style={{
-                          borderBottom: '3px solid grey',
-                        }}
-                      >
-                        {cluster[index] ? (
-                          cluster[index].lowAVG !== 'NaN' &&
-                          cluster[index].items > 0 ? (
-                            <span
-                              className={
-                                Math.round(cluster[index].lowAVG) -
-                                  reqHotel[index].rate >=
-                                0
-                                  ? 'text-success'
-                                  : 'text-danger'
+                        {[...Array(report_len).keys()].map((e, index) =>
+                          (() => {
+                            if (reqHotelStrategyZone.prices[index] != null) {
+                              if (
+                                reqHotelStrategyZone.prices[index]
+                                  .lower_bound_rate
+                              ) {
+                                return (
+                                  <StyledTableCell
+                                    size="small"
+                                    key={index}
+                                    style={{
+                                      backgroundColor:
+                                        CLUSTER_BACKGROUND[
+                                          getClusterByPrice(
+                                            reqHotelStrategyZone.prices[index]
+                                              .lower_bound_rate.rate,
+                                            index
+                                          )
+                                        ],
+                                      borderRight:
+                                        index == daily_fetch_len
+                                          ? '5px solid rgba(66, 66, 66, 1)'
+                                          : '',
+                                    }}
+                                    className={classes.rates}
+                                  >
+                                    {
+                                      reqHotelStrategyZone.prices[index]
+                                        .lower_bound_rate.rate
+                                    }
+                                  </StyledTableCell>
+                                );
+                              } else {
+                                return (
+                                  <StyledTableCell
+                                    size="small"
+                                    key={index}
+                                    style={{
+                                      borderRight:
+                                        index == daily_fetch_len
+                                          ? '5px solid rgba(66, 66, 66, 1)'
+                                          : '',
+                                    }}
+                                    className={classes.rates}
+                                  >
+                                    N/A
+                                  </StyledTableCell>
+                                );
                               }
-                            >
-                              {Math.round(cluster[index].lowAVG) -
-                                reqHotel[index].rate}
-                            </span>
-                          ) : cluster[index].lowAVG !== 'NaN' &&
-                            cluster[index].items < 0 ? (
-                            'NED'
-                          ) : (
-                            'N/A'
-                          )
-                        ) : (
-                          'N/A'
+                            } else {
+                              return (
+                                <StyledTableCell
+                                  size="small"
+                                  key={index}
+                                  style={{
+                                    borderRight:
+                                      index == daily_fetch_len
+                                        ? '5px solid rgba(66, 66, 66, 1)'
+                                        : '',
+                                  }}
+                                  className={classes.rates}
+                                >
+                                  N/A
+                                </StyledTableCell>
+                              );
+                            }
+                          })()
                         )}
-                      </StyledTableCell>
-                    ))}
-                  </StyledTableRow>
-                  <StyledTableRow Key={stars}>
-                    <StyledTableCell
-                      size="small"
-                      component="th"
-                      scope="row"
-                      className={classes.sticky}
-                      style={{ fontWeight: 'bold', width: '250px' }}
-                    >
-                      &emsp;Lowest Rate
-                    </StyledTableCell>
-
-                    {[...Array(report_len).keys()].map((e, index) => (
-                      <StyledTableCell
-                        size="small"
-                        key={index}
-                        className={classes.rates}
-                      >
-                        {cluster[index] ? (
-                          cluster[index].min !== 'NaN' &&
-                          cluster[index].items > 0 ? (
-                            <span
-                              className={
-                                Math.round(cluster[index].min) -
-                                  reqHotel[index].rate >=
-                                0
-                                  ? 'text-success'
-                                  : 'text-danger'
-                              }
-                            >
-                              {Math.round(cluster[index].min) -
-                                reqHotel[index].rate}
-                            </span>
-                          ) : cluster[index].min !== 'NaN' &&
-                            cluster[index].items < 0 ? (
-                            'NED'
-                          ) : (
-                            'N/A'
-                          )
-                        ) : (
-                          'N/A'
-                        )}
-                      </StyledTableCell>
-                    ))}
-                  </StyledTableRow>
-                </TableBody>
-              </Table>
-              <br />
-            </Box>
-          </TableContainer>
+                      </StyledTableRow>
+                    </TableBody>
+                  </Table>
+                  <br />
+                </Box>
+              </TableContainer>
+            </TableContainer>
+          </>
         ) : (
           <></>
         )}
       </>
     );
   };
-
-  // useEffect(() => {
-  //   console.log(daily_fetch_len);
-  // }, []);
 
   return (
     <>
@@ -707,13 +1102,79 @@ export default function ClusterBucket({ selectedDate, reqHotel }) {
                       </StyledTableCell>
                     ))}
                   </StyledTableRow>
+
+                  {reqHotelStrategyZone != undefined ? (
+                    <StyledTableRow>
+                      <StyledTableCell
+                        size="small"
+                        component="th"
+                        scope="row"
+                        className={classes.sticky}
+                        style={{
+                          fontWeight: 'bold',
+                          width: '250px',
+                          zIndex: 100,
+                        }}
+                      >
+                        Total Market Rank (Highest to Lowest)
+                      </StyledTableCell>
+
+                      {[...Array(report_len).keys()].map((e, index) =>
+                        (() => {
+                          if (reqHotelStrategyZone.prices[index] != null) {
+                            return (
+                              <StyledTableCell
+                                size="small"
+                                key={index}
+                                style={{
+                                  borderRight:
+                                    index == daily_fetch_len
+                                      ? '5px solid rgba(66, 66, 66, 1)'
+                                      : '',
+                                }}
+                                className={classes.rates}
+                              >
+                                <sup>
+                                  {reqHotelStrategyZone.prices[index].day_rank}
+                                </sup>
+                                &frasl;
+                                <sub>
+                                  {reqHotelStrategyZone.prices[index].total}
+                                </sub>
+                              </StyledTableCell>
+                            );
+                          } else {
+                            return (
+                              <StyledTableCell
+                                size="small"
+                                key={index}
+                                style={{
+                                  fontWeight: 'bold',
+
+                                  borderRight:
+                                    index == daily_fetch_len
+                                      ? '5px solid rgba(66, 66, 66, 1)'
+                                      : '',
+                                }}
+                                className={classes.rates}
+                              >
+                                N/A
+                              </StyledTableCell>
+                            );
+                          }
+                        })()
+                      )}
+                    </StyledTableRow>
+                  ) : (
+                    <></>
+                  )}
                 </TableBody>
               </Table>
               <br />
             </Box>
           </TableContainer>
 
-          <HotelRanks selectedDate={selectedDate} />
+          <HotelRanksTable />
         </>
       ) : (
         <>loading</>
