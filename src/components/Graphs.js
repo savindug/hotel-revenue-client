@@ -133,7 +133,7 @@ export const Graphs = ({ selectedDate, selectedProperty }) => {
     datasets: [
       cluster1.length > 0
         ? {
-            label: '2 Star Cluster',
+            label: '2 Star Bucket',
             fill: true,
             borderColor: CLUSTER_BACKGROUND[0],
             borderWidth: 5,
@@ -142,14 +142,14 @@ export const Graphs = ({ selectedDate, selectedProperty }) => {
               .map((a) => (a.items > 0 ? a.mean : 'NED')),
           }
         : {
-            label: '2 Star Cluster',
+            label: '2 Star Bucket',
             fill: true,
             borderColor: CLUSTER_BACKGROUND[0],
             borderWidth: 5,
           },
       cluster2.length > 0
         ? {
-            label: '3 Star Cluster',
+            label: '3 Star Bucket',
             fill: true,
             borderColor: CLUSTER_BACKGROUND[1],
             borderWidth: 5,
@@ -158,14 +158,14 @@ export const Graphs = ({ selectedDate, selectedProperty }) => {
               .map((a) => (a.items > 0 ? a.mean : 'NED')),
           }
         : {
-            label: '3 Star Cluster',
+            label: '3 Star Bucket',
             fill: true,
             borderColor: CLUSTER_BACKGROUND[1],
             borderWidth: 5,
           },
       cluster3.length > 0
         ? {
-            label: '4 Star Cluster',
+            label: '4 Star Bucket',
             fill: true,
             borderColor: CLUSTER_BACKGROUND[2],
             borderWidth: 5,
@@ -174,14 +174,14 @@ export const Graphs = ({ selectedDate, selectedProperty }) => {
               .map((a) => (a.items > 0 ? a.mean : 'NED')),
           }
         : {
-            label: '4 Star Cluster',
+            label: '4 Star Bucket',
             fill: true,
             borderColor: CLUSTER_BACKGROUND[2],
             borderWidth: 5,
           },
       cluster4.length > 0
         ? {
-            label: '5 Star Cluster',
+            label: '5 Star Bucket',
             fill: true,
             // backgroundColor: 'rgba(75,192,192,0.2)',
             borderColor: CLUSTER_BACKGROUND[3],
@@ -191,7 +191,7 @@ export const Graphs = ({ selectedDate, selectedProperty }) => {
               .map((a) => (a.items > 0 ? a.mean : 'NED')),
           }
         : {
-            label: '5 Star Cluster',
+            label: '5 Star Bucket',
             fill: true,
             // backgroundColor: 'rgba(75,192,192,0.2)',
             borderColor: CLUSTER_BACKGROUND[3],
