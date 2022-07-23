@@ -297,7 +297,7 @@ export default function ClusterBucket({ selectedDate, reqHotel }) {
                   dt.price[getPrice(dt.price)] >= dt.lower_start_rate.rate &&
                   dt.price[getPrice(dt.price)] < dt.upper_start_rate.rate
                 ) {
-                  dt.qr = 'MID';
+                  dt.qr = ''; // 'MID"
                 } else if (
                   dt.price[getPrice(dt.price)] >= dt.upper_start_rate.rate &&
                   dt.price[getPrice(dt.price)] <= dt.upper_bound_rate.rate
@@ -320,9 +320,48 @@ export default function ClusterBucket({ selectedDate, reqHotel }) {
         const req_hotel_data = hotels.find(
           (e) => e.hotelName == reqHotel[0].name
         );
+
+        if (req_hotel_data != undefined) {
+          let cluster_arr_wd = [];
+          let cluster_arr_we = [];
+          let day_ranks_wd = [];
+          let day_ranks_we = [];
+          req_hotel_data.prices.map((dt, ix) => {
+            if (dt !== null) {
+              const day = moment(dt.date).format('dddd').substring(0, 3);
+
+              if (day === 'Sat' || day === 'Fri') {
+                cluster_arr_we.push(
+                  getClusterByPrice(dt.price[getPrice(dt.price)], ix) + 2
+                );
+                day_ranks_we.push(dt.day_rank);
+              } else {
+                cluster_arr_wd.push(
+                  getClusterByPrice(dt.price[getPrice(dt.price)], ix) + 2
+                );
+                day_ranks_wd.push(dt.day_rank);
+              }
+            }
+          });
+          req_hotel_data.freq_bucket_wd = mode(cluster_arr_wd);
+          req_hotel_data.freq_bucket_we = mode(cluster_arr_we);
+          req_hotel_data.avg_day_rank_wd = getAverage(day_ranks_wd);
+          req_hotel_data.avg_day_rank_we = getAverage(day_ranks_we);
+        }
+
         setReqHotelStrategyZone(req_hotel_data);
       }
       setLoad(false);
+    };
+
+    const mode = (arr) => {
+      return arr
+        .sort(
+          (a, b) =>
+            arr.filter((v) => v === a).length -
+            arr.filter((v) => v === b).length
+        )
+        .pop();
     };
 
     CalculateHotelRanks();
@@ -726,7 +765,7 @@ export default function ClusterBucket({ selectedDate, reqHotel }) {
                             zIndex: 100,
                           }}
                         >
-                          &emsp;Middle Range
+                          &emsp;Most Frequent Range
                         </StyledTableCell>
 
                         {[...Array(report_len).keys()].map((e, index) =>
@@ -904,7 +943,26 @@ export default function ClusterBucket({ selectedDate, reqHotel }) {
       {!loading && clusterData.length > 0 && reqHotel.length > 0 ? (
         <>
           <Grid container justify="space-evenly" className="my-3">
-            <Typography></Typography>
+            <Typography>
+              Weekday: Most Freq Bucket is{' '}
+              {reqHotelStrategyZone != undefined
+                ? reqHotelStrategyZone.freq_bucket_wd
+                : ''}
+              , Avg Total Market Rank is{' '}
+              {reqHotelStrategyZone != undefined
+                ? Math.round(reqHotelStrategyZone.avg_day_rank_wd)
+                : ''}
+            </Typography>
+            <Typography>
+              Weekend: Most Freq Bucket is{' '}
+              {reqHotelStrategyZone != undefined
+                ? reqHotelStrategyZone.freq_bucket_we
+                : ''}
+              , Avg Total Market Rank is{' '}
+              {reqHotelStrategyZone != undefined
+                ? Math.round(reqHotelStrategyZone.avg_day_rank_we)
+                : ''}
+            </Typography>
           </Grid>
 
           <TableContainer component={Paper} className="my-5">
