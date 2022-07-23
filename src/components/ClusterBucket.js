@@ -1,10 +1,12 @@
 import {
   Box,
+  Grid,
   makeStyles,
   TableCell,
   TableContainer,
   TableRow,
   TableSortLabel,
+  Typography,
   withStyles,
 } from '@material-ui/core';
 import Table from '@material-ui/core/Table';
@@ -106,10 +108,7 @@ export default function ClusterBucket({ selectedDate, reqHotel }) {
 
     var rank = 1;
     for (var i = 0; i < sorted.length; i++) {
-      if (i > 0 && sorted[i].rate < sorted[i - 1].rate) {
-        rank++;
-      }
-      sorted[i].day_rank = rank;
+      sorted[i].day_rank = i + 1;
     }
 
     // console.log(sorted);
@@ -154,11 +153,11 @@ export default function ClusterBucket({ selectedDate, reqHotel }) {
                 dt !== null &&
                 checkHotelAvailability(_hotel.hotelID, index)
               ) {
-                let day_rank = ranked_hotels.findIndex(
+                let obj = ranked_hotels.find(
                   (e) => e.hotel_id == _hotel.hotelID
                 );
-                if (day_rank >= 0) {
-                  dt.day_rank = day_rank;
+                if (obj) {
+                  dt.day_rank = obj.day_rank;
                   dt.total = ranked_hotels.length;
                 }
               }
@@ -904,6 +903,10 @@ export default function ClusterBucket({ selectedDate, reqHotel }) {
     <>
       {!loading && clusterData.length > 0 && reqHotel.length > 0 ? (
         <>
+          <Grid container justify="space-evenly" className="my-3">
+            <Typography></Typography>
+          </Grid>
+
           <TableContainer component={Paper} className="my-5">
             <Box width={100}>
               <Table
@@ -1149,8 +1152,6 @@ export default function ClusterBucket({ selectedDate, reqHotel }) {
                                 size="small"
                                 key={index}
                                 style={{
-                                  fontWeight: 'bold',
-
                                   borderRight:
                                     index == daily_fetch_len
                                       ? '5px solid rgba(66, 66, 66, 1)'

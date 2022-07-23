@@ -794,11 +794,11 @@ export const Graphs = ({ selectedDate, selectedProperty }) => {
         }
       } catch (e) {}
 
-      hotels_list = hotels_list.sort((a, b) => a.rate - b.rate);
+      hotels_list = hotels_list.sort((a, b) => b.rate - a.rate);
 
       // console.log(hotels_list);
 
-      rank = hotels_list.findIndex((e) => e.id == selectedProperty);
+      rank = hotels_list.findIndex((e) => e.id == selectedProperty) + 1;
 
       if (rank > 0) {
         return rank;
@@ -857,10 +857,14 @@ export const Graphs = ({ selectedDate, selectedProperty }) => {
         };
         datebyhotelcount.push(day);
 
-        reqHotel[ix].overallRank = getPropertyRankInCluster(
-          ix,
-          noRateHotels.length + outliers.length
-        );
+        reqHotel[ix].overallRank =
+          cls5h.length +
+          cls4h.length +
+          cls3h.length +
+          cls2h.length -
+          getPropertyRankInCluster(ix, noRateHotels.length + outliers.length) +
+          noRateHotels.length +
+          outliers.length;
 
         // console.log(
         //   `date: ${hotels[0].prices[ix].date}, cls5h: ${cls5h.length}, cls4h: ${cls4h.length}, cls3h: ${cls3h.length}, cls2h: ${cls2h.length}, outliers: ${outliers.length}, noRateHotels: ${noRateHotels.length}`
