@@ -146,10 +146,6 @@ export default function ClusterBucket({ selectedDate, reqHotel }) {
           const ranked_hotels = getRankedHotels(hotel_rates_by_day);
           ranked_hotels_list.push(ranked_hotels);
 
-          if (index == 13) {
-            console.log(ranked_hotels);
-          }
-
           hotels.map((_hotel) => {
             let dt = _hotel.prices[index];
 

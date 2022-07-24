@@ -794,7 +794,9 @@ export const Graphs = ({ selectedDate, selectedProperty }) => {
         }
       } catch (e) {}
 
-      hotels_list = hotels_list.sort((a, b) => b.rate - a.rate);
+      hotels_list = hotels_list.sort(
+        (a, b) => b.rate - a.rate || b.raings - a.raings
+      );
 
       // console.log(hotels_list);
 
