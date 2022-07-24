@@ -104,7 +104,7 @@ export default function ClusterBucket({ selectedDate, reqHotel }) {
   const getRankedHotels = (arr) => {
     var sorted = arr
       .filter((e) => e.rate != 'NaN')
-      .sort((a, b) => b.rate - a.rate);
+      .sort((a, b) => b.rate - a.rate || b.ratings - a.ratings);
 
     var rank = 1;
     for (var i = 0; i < sorted.length; i++) {
@@ -137,13 +137,18 @@ export default function ClusterBucket({ selectedDate, reqHotel }) {
                   hotel_name: _hotel.hotelName,
                   rate: dt.price[getPrice(dt.price)],
                   date: dt.date,
+                  ratings: _hotel.ratings,
                 });
               }
             } catch (error) {}
           });
 
-          let ranked_hotels = getRankedHotels(hotel_rates_by_day);
+          const ranked_hotels = getRankedHotels(hotel_rates_by_day);
           ranked_hotels_list.push(ranked_hotels);
+
+          if (index == 13) {
+            console.log(ranked_hotels);
+          }
 
           hotels.map((_hotel) => {
             let dt = _hotel.prices[index];
@@ -153,11 +158,11 @@ export default function ClusterBucket({ selectedDate, reqHotel }) {
                 dt !== null &&
                 checkHotelAvailability(_hotel.hotelID, index)
               ) {
-                let obj = ranked_hotels.find(
-                  (e) => e.hotel_id == _hotel.hotelID
-                );
-                if (obj) {
-                  dt.day_rank = obj.day_rank;
+                let obj =
+                  ranked_hotels.findIndex((e) => e.hotel_id == _hotel.hotelID) +
+                  1;
+                if (obj > 0) {
+                  dt.day_rank = obj;
                   dt.total = ranked_hotels.length;
                 }
               }
